@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{B02CCB0E-EDDF-42ED-B0E4-6A41E328605E}</ProjectGuid>
+    <RootNamespace>bot</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\workspace\bot\dependencies\Win32\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\workspace\bot\dependencies\Win32\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\workspace\bot\dependencies\x64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\workspace\bot\dependencies\x64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;ENABLE_LOG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\bot_abilitytemplate.cpp" />
+    <ClCompile Include="src\bot_app.cpp" />
+    <ClCompile Include="src\bot_color.cpp" />
+    <ClCompile Include="src\bot_component.cpp" />
+    <ClCompile Include="src\bot_componenttemplate.cpp" />
+    <ClCompile Include="src\bot_config.cpp" />
+    <ClCompile Include="src\bot_csvreader.cpp" />
+    <ClCompile Include="src\bot_gamelib.cpp" />
+    <ClCompile Include="src\bot_gamemap.cpp" />
+    <ClCompile Include="src\bot_gameobject.cpp" />
+    <ClCompile Include="src\bot_gameobjecttemplate.cpp" />
+    <ClCompile Include="src\bot_gamescreen.cpp" />
+    <ClCompile Include="src\bot_inputevent.cpp" />
+    <ClCompile Include="src\bot_inputmanager.cpp" />
+    <ClCompile Include="src\bot_linkeditem.cpp" />
+    <ClCompile Include="src\bot_log.cpp" />
+    <ClCompile Include="src\bot_main.cpp" />
+    <ClCompile Include="src\bot_nameidmap.cpp" />
+    <ClCompile Include="src\bot_objectpool.cpp" />
+    <ClCompile Include="src\bot_polygon.cpp" />
+    <ClCompile Include="src\bot_queue.cpp" />
+    <ClCompile Include="src\bot_rectangle.cpp" />
+    <ClCompile Include="src\bot_screen.cpp" />
+    <ClCompile Include="src\bot_screenmanager.cpp" />
+    <ClCompile Include="src\bot_shaderprogram.cpp" />
+    <ClCompile Include="src\bot_shape.cpp" />
+    <ClCompile Include="src\bot_simpleshaderprogram.cpp" />
+    <ClCompile Include="src\bot_startscreen.cpp" />
+    <ClCompile Include="src\bot_textsystem.cpp" />
+    <ClCompile Include="src\bot_texture.cpp" />
+    <ClCompile Include="src\bot_timedeltasmoother.cpp" />
+    <ClCompile Include="src\bot_utils.cpp" />
+    <ClCompile Include="src\bot_vertexarray.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\bot_ability.h" />
+    <ClInclude Include="src\bot_abilitytemplate.h" />
+    <ClInclude Include="src\bot_app.h" />
+    <ClInclude Include="src\bot_color.h" />
+    <ClInclude Include="src\bot_component.h" />
+    <ClInclude Include="src\bot_componenttemplate.h" />
+    <ClInclude Include="src\bot_config.h" />
+    <ClInclude Include="src\bot_csvreader.h" />
+    <ClInclude Include="src\bot_gamelib.h" />
+    <ClInclude Include="src\bot_gamemap.h" />
+    <ClInclude Include="src\bot_gameobject.h" />
+    <ClInclude Include="src\bot_gameobjecttemplate.h" />
+    <ClInclude Include="src\bot_gamescreen.h" />
+    <ClInclude Include="src\bot_inputevent.h" />
+    <ClInclude Include="src\bot_inputmanager.h" />
+    <ClInclude Include="src\bot_log.h" />
+    <ClInclude Include="src\bot_nameidmap.h" />
+    <ClInclude Include="src\bot_objectpool.h" />
+    <ClInclude Include="src\bot_opengl.h" />
+    <ClInclude Include="src\bot_polygon.h" />
+    <ClInclude Include="src\bot_queue.h" />
+    <ClInclude Include="src\bot_rectangle.h" />
+    <ClInclude Include="src\bot_screen.h" />
+    <ClInclude Include="src\bot_screenmanager.h" />
+    <ClInclude Include="src\bot_shaderprogram.h" />
+    <ClInclude Include="src\bot_shape.h" />
+    <ClInclude Include="src\bot_simpleshaderprogram.h" />
+    <ClInclude Include="src\bot_startscreen.h" />
+    <ClInclude Include="src\bot_textsystem.h" />
+    <ClInclude Include="src\bot_texture.h" />
+    <ClInclude Include="src\bot_timedeltasmoother.h" />
+    <ClInclude Include="src\bot_utils.h" />
+    <ClInclude Include="src\bot_vertexarray.h" />
+    <ClInclude Include="src\stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config\bot.cfg" />
+    <None Include="res\glsl\simple_frag_shader.glsl" />
+    <None Include="res\glsl\simple_vertex_shader.glsl" />
+    <None Include="res\lib\color_lib.csv" />
+    <None Include="res\lib\component_template_lib.csv" />
+    <None Include="res\lib\game_obj_template_lib.csv" />
+    <None Include="res\lib\rect_lib.csv" />
+    <None Include="res\lib\texture_lib.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\fonts\ascii_100.png" />
+    <Image Include="res\fonts\ascii_101.png" />
+    <Image Include="res\fonts\ascii_102.png" />
+    <Image Include="res\fonts\ascii_103.png" />
+    <Image Include="res\fonts\ascii_104.png" />
+    <Image Include="res\fonts\ascii_105.png" />
+    <Image Include="res\fonts\ascii_106.png" />
+    <Image Include="res\fonts\ascii_107.png" />
+    <Image Include="res\fonts\ascii_108.png" />
+    <Image Include="res\fonts\ascii_109.png" />
+    <Image Include="res\fonts\ascii_110.png" />
+    <Image Include="res\fonts\ascii_111.png" />
+    <Image Include="res\fonts\ascii_112.png" />
+    <Image Include="res\fonts\ascii_113.png" />
+    <Image Include="res\fonts\ascii_114.png" />
+    <Image Include="res\fonts\ascii_115.png" />
+    <Image Include="res\fonts\ascii_116.png" />
+    <Image Include="res\fonts\ascii_117.png" />
+    <Image Include="res\fonts\ascii_118.png" />
+    <Image Include="res\fonts\ascii_119.png" />
+    <Image Include="res\fonts\ascii_120.png" />
+    <Image Include="res\fonts\ascii_121.png" />
+    <Image Include="res\fonts\ascii_122.png" />
+    <Image Include="res\fonts\ascii_123.png" />
+    <Image Include="res\fonts\ascii_124.png" />
+    <Image Include="res\fonts\ascii_125.png" />
+    <Image Include="res\fonts\ascii_126.png" />
+    <Image Include="res\fonts\ascii_32.png" />
+    <Image Include="res\fonts\ascii_33.png" />
+    <Image Include="res\fonts\ascii_34.png" />
+    <Image Include="res\fonts\ascii_35.png" />
+    <Image Include="res\fonts\ascii_36.png" />
+    <Image Include="res\fonts\ascii_37.png" />
+    <Image Include="res\fonts\ascii_38.png" />
+    <Image Include="res\fonts\ascii_39.png" />
+    <Image Include="res\fonts\ascii_40.png" />
+    <Image Include="res\fonts\ascii_41.png" />
+    <Image Include="res\fonts\ascii_42.png" />
+    <Image Include="res\fonts\ascii_43.png" />
+    <Image Include="res\fonts\ascii_44.png" />
+    <Image Include="res\fonts\ascii_45.png" />
+    <Image Include="res\fonts\ascii_46.png" />
+    <Image Include="res\fonts\ascii_47.png" />
+    <Image Include="res\fonts\ascii_48.png" />
+    <Image Include="res\fonts\ascii_49.png" />
+    <Image Include="res\fonts\ascii_50.png" />
+    <Image Include="res\fonts\ascii_51.png" />
+    <Image Include="res\fonts\ascii_52.png" />
+    <Image Include="res\fonts\ascii_53.png" />
+    <Image Include="res\fonts\ascii_54.png" />
+    <Image Include="res\fonts\ascii_55.png" />
+    <Image Include="res\fonts\ascii_56.png" />
+    <Image Include="res\fonts\ascii_57.png" />
+    <Image Include="res\fonts\ascii_58.png" />
+    <Image Include="res\fonts\ascii_59.png" />
+    <Image Include="res\fonts\ascii_60.png" />
+    <Image Include="res\fonts\ascii_61.png" />
+    <Image Include="res\fonts\ascii_62.png" />
+    <Image Include="res\fonts\ascii_63.png" />
+    <Image Include="res\fonts\ascii_64.png" />
+    <Image Include="res\fonts\ascii_65.png" />
+    <Image Include="res\fonts\ascii_66.png" />
+    <Image Include="res\fonts\ascii_67.png" />
+    <Image Include="res\fonts\ascii_68.png" />
+    <Image Include="res\fonts\ascii_69.png" />
+    <Image Include="res\fonts\ascii_70.png" />
+    <Image Include="res\fonts\ascii_71.png" />
+    <Image Include="res\fonts\ascii_72.png" />
+    <Image Include="res\fonts\ascii_73.png" />
+    <Image Include="res\fonts\ascii_74.png" />
+    <Image Include="res\fonts\ascii_75.png" />
+    <Image Include="res\fonts\ascii_76.png" />
+    <Image Include="res\fonts\ascii_77.png" />
+    <Image Include="res\fonts\ascii_78.png" />
+    <Image Include="res\fonts\ascii_79.png" />
+    <Image Include="res\fonts\ascii_80.png" />
+    <Image Include="res\fonts\ascii_81.png" />
+    <Image Include="res\fonts\ascii_82.png" />
+    <Image Include="res\fonts\ascii_83.png" />
+    <Image Include="res\fonts\ascii_84.png" />
+    <Image Include="res\fonts\ascii_85.png" />
+    <Image Include="res\fonts\ascii_86.png" />
+    <Image Include="res\fonts\ascii_87.png" />
+    <Image Include="res\fonts\ascii_88.png" />
+    <Image Include="res\fonts\ascii_89.png" />
+    <Image Include="res\fonts\ascii_90.png" />
+    <Image Include="res\fonts\ascii_91.png" />
+    <Image Include="res\fonts\ascii_92.png" />
+    <Image Include="res\fonts\ascii_93.png" />
+    <Image Include="res\fonts\ascii_94.png" />
+    <Image Include="res\fonts\ascii_95.png" />
+    <Image Include="res\fonts\ascii_96.png" />
+    <Image Include="res\fonts\ascii_97.png" />
+    <Image Include="res\fonts\ascii_98.png" />
+    <Image Include="res\fonts\ascii_99.png" />
+    <Image Include="res\ui\blue_button.png" />
+    <Image Include="res\ui\clay_tile.png" />
+    <Image Include="res\ui\darkgreen_barrel.png" />
+    <Image Include="res\ui\green_base.png" />
+    <Image Include="res\ui\ice_tile.png" />
+    <Image Include="res\ui\lightgreen_bullet.png" />
+    <Image Include="res\ui\steel_tile.png" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

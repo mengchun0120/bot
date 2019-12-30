@@ -1,0 +1,571 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{30542747-4764-45fc-ac3e-19a6695cc944}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\glsl">
+      <UniqueIdentifier>{062577a3-9729-4ff5-b6bb-99fc21b272fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\ui">
+      <UniqueIdentifier>{e3b080a8-67ed-42ca-93bd-4cafee5cbac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\lib">
+      <UniqueIdentifier>{836016f7-76e1-451e-9f57-a2f57e6f4a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\font">
+      <UniqueIdentifier>{bbd26678-c9d0-4394-9d99-8d828a22dfa7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\bot_log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_csvreader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_timedeltasmoother.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_inputmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_queue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_inputevent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_shaderprogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_simpleshaderprogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_vertexarray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_polygon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_rectangle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_screen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_startscreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_textsystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_screenmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_abilitytemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_componenttemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_gamelib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_gamemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_gameobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_gameobjecttemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_gamescreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_linkeditem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_nameidmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bot_objectpool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\bot_log.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_csvreader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_timedeltasmoother.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_app.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_opengl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_inputmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_inputevent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_shaderprogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_simpleshaderprogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_vertexarray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_polygon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_rectangle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_shape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_screen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_startscreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_textsystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_screenmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_ability.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_abilitytemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_componenttemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_gamelib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_gamemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_gameobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_gameobjecttemplate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_gamescreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_nameidmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\bot_objectpool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config\bot.cfg">
+      <Filter>config</Filter>
+    </None>
+    <None Include="res\glsl\simple_frag_shader.glsl">
+      <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="res\glsl\simple_vertex_shader.glsl">
+      <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="res\lib\color_lib.csv">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\component_template_lib.csv">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\game_obj_template_lib.csv">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\rect_lib.csv">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\texture_lib.csv">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\ui\blue_button.png">
+      <Filter>Resource Files\ui</Filter>
+    </Image>
+    <Image Include="res\ui\clay_tile.png">
+      <Filter>Resource Files\ui</Filter>
+    </Image>
+    <Image Include="res\ui\darkgreen_barrel.png">
+      <Filter>Resource Files\ui</Filter>
+    </Image>
+    <Image Include="res\ui\green_base.png">
+      <Filter>Resource Files\ui</Filter>
+    </Image>
+    <Image Include="res\ui\ice_tile.png">
+      <Filter>Resource Files\ui</Filter>
+    </Image>
+    <Image Include="res\ui\lightgreen_bullet.png">
+      <Filter>Resource Files\ui</Filter>
+    </Image>
+    <Image Include="res\ui\steel_tile.png">
+      <Filter>Resource Files\ui</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_32.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_33.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_34.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_35.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_36.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_37.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_38.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_39.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_40.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_41.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_42.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_43.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_44.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_45.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_46.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_47.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_48.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_49.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_50.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_51.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_52.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_53.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_54.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_55.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_56.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_57.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_58.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_59.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_60.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_61.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_62.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_63.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_64.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_65.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_66.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_67.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_68.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_69.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_70.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_71.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_72.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_73.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_74.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_75.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_76.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_77.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_78.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_79.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_80.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_81.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_82.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_83.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_84.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_85.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_86.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_87.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_88.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_89.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_90.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_91.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_92.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_93.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_94.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_95.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_96.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_97.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_98.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_99.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_100.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_101.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_102.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_103.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_104.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_105.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_106.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_107.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_108.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_109.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_110.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_111.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_112.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_113.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_114.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_115.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_116.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_117.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_118.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_119.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_120.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_121.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_122.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_123.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_124.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_125.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+    <Image Include="res\fonts\ascii_126.png">
+      <Filter>Resource Files\font</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,60 @@
+#ifndef INCLUDE_BOT_COMPONENT
+#define INCLUDE_BOT_COMPONENT
+
+#include "bot_constants.h"
+#include "bot_abilitytemplate.h"
+
+namespace bot {
+
+class Ability;
+class ComponentTemplate;
+
+class Component {
+public:
+    Component();
+
+    Component(ComponentTemplate *t, float x, float y);
+
+    virtual ~Component();
+
+    void init(ComponentTemplate *t, float x, float y);
+
+    float getX() const
+    {
+        return m_pos[0];
+    }
+
+    float getY() const
+    {
+        return m_pos[1];
+    }
+
+    const float *getPos() const
+    {
+        return static_cast<const float*>(m_pos);
+    }
+
+    float *getPos()
+    {
+        return static_cast<float *>(m_pos);
+    }
+
+    void present();
+
+    Ability *getAbility(AbilityTemplate::Type type);
+
+private:
+    void initAbilities();
+
+    void addAbility(Ability *a);
+
+private:
+    ComponentTemplate *m_template;
+    float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+    Ability *m_firstAbility;
+};
+
+} // end of namespace bot
+
+#endif
+

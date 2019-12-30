@@ -1,0 +1,9 @@
+build/*
+unit_test/build/*
+log.*
+test_log.*
+*.class
+.vscode
+.~lock*
+*.obj
+.vs
