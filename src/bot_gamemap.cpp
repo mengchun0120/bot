@@ -29,7 +29,7 @@ GameMap::~GameMap()
 
 void GameMap::init(int numRows, int numCols)
 {
-    m_pool.init(numRows * numCols);
+    m_pool.init(2 * numRows * numCols);
     
     m_map.resize(numRows);
     for(int i = 0; i < numRows; ++i) {
