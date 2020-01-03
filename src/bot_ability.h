@@ -9,30 +9,32 @@ namespace bot {
 
 class Ability: public LinkedItem {
 public:
-    Ability(AbilityTemplate::Type type)
-    : LinkedItem()
-    , m_type(type)
+    Ability(AbilityType type)
+        : LinkedItem()
+        , m_type(type)
     {}
 
     virtual ~Ability()
     {}
 
-    AbilityTemplate::Type getType() const
+    AbilityType getType() const
     {
         return m_type;
     }
 
 protected:
-    AbilityTemplate::Type m_type;
-    Ability *m_next;
+    AbilityType m_type;
 };
 
 class MoveAbility: public Ability {
 public:
     MoveAbility(MoveAbilityTemplate *t)
-    : Ability(AbilityTemplate::MOVE)
-    , m_template(t)
-    {}
+        : Ability(ABILITY_MOVE)
+        , m_template(t)
+    {
+        m_direction[0] = 1.0f;
+        m_direction[1] = 0.0f;
+    }
 
     virtual ~MoveAbility()
     {}
@@ -70,11 +72,15 @@ protected:
 
 class FireAbility: public Ability {
 public:
-    FireAbility(FireAbilityTemplate *t)
-    : Ability(AbilityTemplate::FIRE)
-    , m_template(t)
+    FireAbility(FireAbilityTemplate *t, float componentX, float componentY)
+        : Ability(ABILITY_FIRE)
+        , m_template(t)
     {
         m_lastFireTime = Clock::now();
+        m_firePos[0] = componentX + m_template->getFirePosX();
+        m_firePos[1] = componentY + m_template->getFirePosY();
+        m_fireDirection[0] = m_template->getFireDirectionX();
+        m_fireDirection[1] = m_template->getFireDirectionY();
     }
 
     virtual ~FireAbility()
@@ -99,6 +105,12 @@ public:
     {
         m_firePos[0] = x;
         m_firePos[1] = y;
+    }
+
+    void moveFirePos(float deltaX, float deltaY)
+    {
+        m_firePos[0] += deltaX;
+        m_firePos[1] += deltaY;
     }
 
     const float *getFireDirection() const
@@ -137,8 +149,8 @@ protected:
 class ExplodeAbility: public Ability {
 public:
     ExplodeAbility(ExplodeAbilityTemplate *t)
-    : Ability(AbilityTemplate::EXPLODE)
-    , m_template(t)
+        : Ability(ABILITY_EXPLODE)
+        , m_template(t)
     {}
 
     virtual ~ExplodeAbility()

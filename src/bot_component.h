@@ -1,13 +1,14 @@
 #ifndef INCLUDE_BOT_COMPONENT
 #define INCLUDE_BOT_COMPONENT
 
+#include <vector>
 #include "bot_constants.h"
 #include "bot_abilitytemplate.h"
+#include "bot_componenttemplate.h"
 
 namespace bot {
 
 class Ability;
-class ComponentTemplate;
 
 class Component {
 public:
@@ -41,20 +42,44 @@ public:
 
     void present();
 
-    Ability *getAbility(AbilityTemplate::Type type);
+    Ability* getAbility(AbilityType type) const;
+
+    Ability* getFirstAbility() const
+    {
+        return m_firstAbility;
+    }
+
+    float getCollideLeft() const
+    {
+        return m_pos[0] - m_template->getCollideBreathX();
+    }
+
+    float getCollideRight() const
+    {
+        return m_pos[0] + m_template->getCollideBreathY();
+    }
+
+    float getCollideTop() const
+    {
+        return m_pos[1] + m_template->getCollideBreathY();
+    }
+
+    float getCollideBottom() const
+    {
+        return m_pos[1] - m_template->getCollideBreathY();
+    }
 
 private:
     void initAbilities();
 
-    void addAbility(Ability *a);
+    void addAbility(Ability* ability);
 
 private:
-    ComponentTemplate *m_template;
+    ComponentTemplate* m_template;
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
-    Ability *m_firstAbility;
+    Ability* m_firstAbility;
 };
 
 } // end of namespace bot
 
 #endif
-

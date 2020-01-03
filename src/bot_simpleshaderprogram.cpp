@@ -9,7 +9,20 @@
 namespace bot {
 
 SimpleShaderProgram::SimpleShaderProgram()
-: ShaderProgram()
+    : ShaderProgram()
+    , m_positionLocation(-1)
+    , m_useObjRefLocation(-1)
+    , m_objRefLocation(-1)
+    , m_viewportSizeLocation(-1)
+    , m_viewportOriginLocation(-1)
+    , m_colorLocation(-1)
+    , m_useColorLocation(-1)
+    , m_texPosLocation(-1)
+    , m_textureLocation(-1)
+    , m_useDirectionLocation(-1)
+    , m_directionLocation(-1)
+    , m_useTexColorLocation(-1)
+    , m_texColorLocation(-1)
 {
 }
 

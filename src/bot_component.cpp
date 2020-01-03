@@ -1,7 +1,6 @@
 #include "bot_log.h"
 #include "bot_app.h"
 #include "bot_ability.h"
-#include "bot_componenttemplate.h"
 #include "bot_component.h"
 
 namespace bot {
@@ -9,7 +8,10 @@ namespace bot {
 Component::Component()
 : m_template(nullptr)
 , m_firstAbility(nullptr)
-{}
+{
+    m_pos[0] = 0.0f;
+    m_pos[1] = 0.0f;
+}
 
 Component::Component(ComponentTemplate *t, float x, float y)
 {
@@ -38,20 +40,18 @@ void Component::initAbilities()
     AbilityTemplate *t;
     for(t = m_template->firstAbility(); t; t = static_cast<AbilityTemplate*>(t->getNext())) {
         switch(t->getType()) {
-        case AbilityTemplate::MOVE: {
-            MoveAbility *a = new MoveAbility(static_cast<MoveAbilityTemplate*>(t));
-            a->setDirection(1.0f, 0.0f);
+        case ABILITY_MOVE: {
+            MoveAbility* a = new MoveAbility(static_cast<MoveAbilityTemplate*>(t));
             addAbility(a);
             break;
         }
-        case AbilityTemplate::FIRE: {
-            FireAbility *a = new FireAbility(static_cast<FireAbilityTemplate*>(t));
+        case ABILITY_FIRE: {
+            FireAbility *a = new FireAbility(static_cast<FireAbilityTemplate*>(t), m_pos[0], m_pos[1]);
             addAbility(a);
             break;
         }
-        case AbilityTemplate::EXPLODE: {
-            ExplodeAbility *a = new ExplodeAbility(
-                                        static_cast<ExplodeAbilityTemplate*>(t));
+        case ABILITY_EXPLODE: {
+            ExplodeAbility *a = new ExplodeAbility(static_cast<ExplodeAbilityTemplate*>(t));
             addAbility(a);
             break;
         }
@@ -61,7 +61,7 @@ void Component::initAbilities()
     }
 }
 
-Ability *Component::getAbility(AbilityTemplate::Type type)
+Ability* Component::getAbility(AbilityType type) const
 {
     Ability *t;
     for(t = m_firstAbility; t; t = static_cast<Ability*>(t->getNext())) {
@@ -82,9 +82,9 @@ void Component::present()
 {
     Rectangle &rect = m_template->getRect();
     const float *direction = nullptr;
-    Ability *t = getAbility(AbilityTemplate::MOVE);
-    if(t) {
-        direction = static_cast<MoveAbility*>(t)->getDirection();
+    Ability *ability = getAbility(ABILITY_MOVE);
+    if(ability) {
+        direction = static_cast<MoveAbility*>(ability)->getDirection();
     }
     rect.draw(App::g_app.program(), m_pos, direction, nullptr, nullptr,
               m_template->getTexture().textureId(), nullptr);

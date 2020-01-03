@@ -1,8 +1,6 @@
 #ifndef INCLUDE_BOT_COMPONENTTEMPLATE
 #define INCLUDE_BOT_COMPONENTTEMPLATE
 
-#include "bot_abilitytemplate.h"
-
 namespace bot {
 
 class Texture;
@@ -12,10 +10,13 @@ class AbilityTemplate;
 class ComponentTemplate {
 public:
     ComponentTemplate()
-    : m_texture(nullptr)
-    , m_rect(nullptr)
-    , m_numAbilities(0)
-    , m_firstAbility(nullptr)
+        : m_texture(nullptr)
+        , m_rect(nullptr)
+        , m_hp(0)
+        , m_numAbilities(0)
+        , m_firstAbility(nullptr)
+        , m_collideBreathX(0.0f)
+        , m_collideBreathY(0.0f)
     {}
 
     virtual ~ComponentTemplate();
@@ -55,12 +56,32 @@ public:
         return m_firstAbility;
     }
 
-    int numAbilities() const
+    int getNumAbilities() const
     {
         return m_numAbilities;
     }
 
     void addAbility(AbilityTemplate *ability);
+
+    float getCollideBreathX() const
+    {
+        return m_collideBreathX;
+    }
+
+    float getCollideBreathY() const
+    {
+        return m_collideBreathY;
+    }
+
+    void setCollideBreathX(float breathX)
+    {
+        m_collideBreathX = breathX;
+    }
+
+    void setCollideBreathY(float breathY)
+    {
+        m_collideBreathY = breathY;
+    }
 
 private:
     Texture *m_texture;
@@ -68,6 +89,8 @@ private:
     int m_hp;
     int m_numAbilities;
     AbilityTemplate *m_firstAbility;
+    float m_collideBreathX;
+    float m_collideBreathY;
 };
 
 } // end of namespace bot

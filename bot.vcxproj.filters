@@ -129,7 +129,7 @@
     <ClCompile Include="src\bot_objectpool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_collisionregion.cpp">
+    <ClCompile Include="src\bot_collisionrect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -239,7 +239,7 @@
     <ClInclude Include="src\bot_linkeditem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\bot_collisionregion.h">
+    <ClInclude Include="src\bot_collisionrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,35 +9,35 @@ namespace bot {
 
 class GameObjectTemplate;
 
+enum AbilityType {
+    ABILITY_MOVE,
+    ABILITY_FIRE,
+    ABILITY_EXPLODE
+};
+
 class AbilityTemplate: public LinkedItem {
 public:
-    enum Type {
-        MOVE,
-        FIRE,
-        EXPLODE
-    };
-
-    AbilityTemplate(Type type)
-    : LinkedItem()
-    , m_type(type)
+    AbilityTemplate(AbilityType type)
+        : LinkedItem()
+        , m_type(type)
     {}
 
     virtual ~AbilityTemplate()
     {}
 
-    Type getType() const
+    AbilityType getType() const
     {
         return m_type;
     }
 
 protected:
-    Type m_type;
+    AbilityType m_type;
 };
 
 class MoveAbilityTemplate: public AbilityTemplate {
 public:
     MoveAbilityTemplate(float speed)
-    : AbilityTemplate(MOVE)
+    : AbilityTemplate(ABILITY_MOVE)
     , m_speed(speed)
     {}
 
@@ -57,7 +57,7 @@ class FireAbilityTemplate: public AbilityTemplate {
 public:
     FireAbilityTemplate(float speed, float fireX, float fireY, float fireDirectionX,
                         float fireDirectionY, const std::string bulletName)
-    : AbilityTemplate(FIRE)
+    : AbilityTemplate(ABILITY_FIRE)
     , m_speed(speed)
     , m_bulletName(bulletName)
     , m_bulletTemplate(nullptr)
@@ -132,7 +132,7 @@ protected:
 class ExplodeAbilityTemplate: public AbilityTemplate {
 public:
     ExplodeAbilityTemplate(int explodePower)
-    : AbilityTemplate(EXPLODE)
+    : AbilityTemplate(ABILITY_EXPLODE)
     , m_explodePower(explodePower)
     {}
 

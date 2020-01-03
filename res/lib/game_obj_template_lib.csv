@@ -1,6 +1,6 @@
-name,type,base_component,component1,x1,y1,component2,x2,y2,component3,x3,y3,component4,x4,y4
-ice_tile,tile,ice_tile,,,,,,,,,,,,
-clay_tile,tile,clay_tile,,,,,,,,,,,,
-steel_tile,tile,steel_tile,,,,,,,,,,,,
-simple_bot,bot,green_base,darkgreen_barrel,38.28,0,,,,,,,,,
-basic_bullet,bullet,lightgreen_bullet,,,,,,,,,,,,
+name,type,cover_breath_x,cover_breath_y,base_component,component1,x1,y1,component2,x2,y2,component3,x3,y3,component4,x4,y4
+ice_tile,tile,20,20,ice_tile,,,,,,,,,,,,
+clay_tile,tile,20,20,clay_tile,,,,,,,,,,,,
+steel_tile,tile,20,20,steel_tile,,,,,,,,,,,,
+simple_bot,bot,48.28,48.28,green_base,darkgreen_barrel,38.28,0,,,,,,,,,
+basic_bullet,bullet,9,9,lightgreen_bullet,,,,,,,,,,,,

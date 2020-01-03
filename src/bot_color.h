@@ -8,7 +8,12 @@ namespace bot {
 class Color {
 public:
     Color()
-    {}
+    {
+        m_color[0] = 0.0f;
+        m_color[1] = 0.0f;
+        m_color[2] = 0.0f;
+        m_color[3] = 0.0f;
+    }
 
     ~Color()
     {}

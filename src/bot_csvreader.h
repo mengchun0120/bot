@@ -13,6 +13,7 @@ public:
     typedef std::list<std::vector<std::string>> CSVRecords;
 
     CSVReader()
+        : m_recordIdx(-1)
     {}
 
     virtual ~CSVReader()

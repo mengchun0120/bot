@@ -8,6 +8,13 @@ namespace bot {
 
 class ComponentTemplate;
 
+enum GameObjectType {
+    GAMEOBJ_BOT,
+    GAMEOBJ_TILE,
+    GAMEOBJ_BULLET,
+    GAMEOBJ_UNKNONWN
+};
+
 class GameObjectTemplate {
 public:
     enum {
@@ -19,26 +26,24 @@ public:
         float m_pos[Constants::NUM_FLOATS_PER_POSITION];
     };
 
-    enum Type {
-        BOT,
-        TILE,
-        BULLET,
-        UNKNONWN
-    };
+
 
     GameObjectTemplate()
-    : m_baseComponent(nullptr)
+        : m_baseComponent(nullptr)
+        , m_type(GAMEOBJ_UNKNONWN)
+        , m_coverBreathX(0.0f)
+        , m_coverBreathY(0.0f)
     {}
 
     virtual ~GameObjectTemplate()
     {}
 
-    Type getType() const
+    GameObjectType getType() const
     {
         return m_type;
     }
 
-    void setType(Type type)
+    void setType(GameObjectType type)
     {
         m_type = type;
     }
@@ -81,10 +86,32 @@ public:
         p.m_pos[1] = y;
     }
 
+    float getCoverBreathX() const
+    {
+        return m_coverBreathX;
+    }
+
+    void setCoverBreathX(float breathX)
+    {
+        m_coverBreathX = breathX;
+    }
+
+    float getCoverBreathY() const
+    {
+        return m_coverBreathY;
+    }
+
+    void setCoverBreathY(float breathY)
+    {
+        m_coverBreathY = breathY;
+    }
+
 private:
-    Type m_type;
+    GameObjectType m_type;
     ComponentTemplate *m_baseComponent;
     std::vector<Part> m_parts;
+    float m_coverBreathX;
+    float m_coverBreathY;
 };
 
 } // end of namespace bot

@@ -76,8 +76,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\workspace\bot\src;D:\workspace\bot\dependencies\x64\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\workspace\bot\dependencies\x64\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)\dependencies\x64\include;$(ProjectDir)\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)\dependencies\x64\lib;D:\workspace\bot\dependencies\x64\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>D:\workspace\bot\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,7 +103,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ENABLE_LOG;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -147,7 +147,7 @@
   <ItemGroup>
     <ClCompile Include="src\bot_abilitytemplate.cpp" />
     <ClCompile Include="src\bot_app.cpp" />
-    <ClCompile Include="src\bot_collisionregion.cpp" />
+    <ClCompile Include="src\bot_collisionrect.cpp" />
     <ClCompile Include="src\bot_color.cpp" />
     <ClCompile Include="src\bot_component.cpp" />
     <ClCompile Include="src\bot_componenttemplate.cpp" />
@@ -184,7 +184,7 @@
     <ClInclude Include="src\bot_ability.h" />
     <ClInclude Include="src\bot_abilitytemplate.h" />
     <ClInclude Include="src\bot_app.h" />
-    <ClInclude Include="src\bot_collisionregion.h" />
+    <ClInclude Include="src\bot_collisionrect.h" />
     <ClInclude Include="src\bot_color.h" />
     <ClInclude Include="src\bot_component.h" />
     <ClInclude Include="src\bot_componenttemplate.h" />

@@ -3,6 +3,7 @@
 #include "bot_log.h"
 #include "bot_config.h"
 #include "bot_utils.h"
+#include "bot_abilitytemplate.h"
 #include "bot_app.h"
 #include "bot_gamelib.h"
 
@@ -190,6 +191,11 @@ struct ComponentTemplateProcessor {
 
         t.setHP(stoi(reader.read("hp")));
 
+        float collideBreathX = stof(reader.read("collide_breath_x"));
+        t.setCollideBreathX(collideBreathX);
+        float collideBreathY = stof(reader.read("collide_breath_y"));
+        t.setCollideBreathY(collideBreathY);
+
         bool canMove = stoi(reader.read("can_move")) != 0;
         if(canMove) {
             float speed = stof(reader.read("speed"));
@@ -258,11 +264,16 @@ struct GameObjectTemplateProcessor {
         }
 
         const string &t = reader.read("type");
-        GameObjectTemplate::Type type = getType(t);
-        if(type == GameObjectTemplate::UNKNONWN) {
+        GameObjectType type = getType(t);
+        if(type == GAMEOBJ_UNKNONWN) {
             LOG_ERROR("Invalid GameObjectTemplate type %s", t.c_str());
         }
         obj.setType(type);
+
+        float coverBreathX = stof(reader.read("cover_breath_x"));
+        obj.setCoverBreathX(coverBreathX);
+        float coverBreathY = stof(reader.read("cover_breath_y"));
+        obj.setCoverBreathY(coverBreathY);
 
         const string &baseComponent = reader.read("base_component");
         int baseComponentIdx = m_componentTemplateMap.search(baseComponent);
@@ -282,7 +293,7 @@ struct GameObjectTemplateProcessor {
                 continue;
             }
 
-            partNames.emplace_back(std::move(partName));
+            partNames.emplace_back(partName);
             
             string xs = "x" + to_string(j);
             xPos.push_back(stof(reader.read(xs)));
@@ -312,16 +323,16 @@ struct GameObjectTemplateProcessor {
         return true;
     }
 
-    GameObjectTemplate::Type getType(const string &t)
+    GameObjectType getType(const string &t)
     {
         if(t == "bot") {
-            return GameObjectTemplate::BOT;
+            return GAMEOBJ_BOT;
         } else if(t == "tile") {
-            return GameObjectTemplate::TILE;
+            return GAMEOBJ_TILE;
         } else if(t == "bullet") {
-            return GameObjectTemplate::BULLET;
+            return GAMEOBJ_BULLET;
         } else {
-            return GameObjectTemplate::UNKNONWN;
+            return GAMEOBJ_UNKNONWN;
         }
     }
 };
@@ -423,13 +434,13 @@ void GameLib::organizeGameObjectTemplate()
 
     for(int i = 0; i < count; ++i) {
         switch(m_gameObjectTemplateLib[i].getType()) {
-        case GameObjectTemplate::BOT:
+        case GAMEOBJ_BOT:
             botCount++;
             break;
-        case GameObjectTemplate::TILE:
+        case GAMEOBJ_TILE:
             tileCount++;
             break;
-        case GameObjectTemplate::BULLET:
+        case GAMEOBJ_BULLET:
             bulletCount++;
             break;
         }
@@ -450,13 +461,13 @@ void GameLib::organizeGameObjectTemplate()
     for(int i = 0; i < count; ++i) {
         GameObjectTemplate &t = m_gameObjectTemplateLib[i];
         switch(t.getType()) {
-        case GameObjectTemplate::BOT:
+        case GAMEOBJ_BOT:
             m_botTemplateLib.push_back(&t);
             break;
-        case GameObjectTemplate::TILE:
+        case GAMEOBJ_TILE:
             m_tileTemplateLib.push_back(&t);
             break;
-        case GameObjectTemplate::BULLET:
+        case GAMEOBJ_BULLET:
             m_bulletTemplateLib.push_back(&t);
             break;
         }
@@ -471,7 +482,7 @@ bool GameLib::fillComponentBullet()
         ComponentTemplate &t = m_componentTemplateLib[i];
         AbilityTemplate *a;
         for(a = t.firstAbility(); a; a = static_cast<AbilityTemplate*>(a->getNext())) {
-            if(a->getType() != AbilityTemplate::FIRE) {
+            if(a->getType() != ABILITY_FIRE) {
                 continue;
             }
 
@@ -484,7 +495,7 @@ bool GameLib::fillComponentBullet()
             }
 
             GameObjectTemplate &bullet = m_gameObjectTemplateLib[bulletIdx];
-            if(bullet.getType() != GameObjectTemplate::BULLET) {
+            if(bullet.getType() != GAMEOBJ_BULLET) {
                 LOG_ERROR("GameObjectTemplate %s is not a bullet", bulletName.c_str());
                 return false;
             }

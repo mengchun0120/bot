@@ -1,56 +1,46 @@
 ﻿  bot_abilitytemplate.cpp
   bot_app.cpp
-D:\workspace\bot\src\bot_screenmanager.h(7,17): warning C4099: 'bot::InputEvent': type name first seen using 'struct' now seen using 'class'
-D:\workspace\bot\src\bot_inputevent.h(23): message : see declaration of 'bot::InputEvent'
+  bot_collisionrect.cpp
   bot_color.cpp
   bot_component.cpp
   bot_componenttemplate.cpp
   bot_config.cpp
-D:\workspace\bot\src\bot_config.cpp(33,31): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\workspace\bot\src\bot_config.cpp(50,42): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-D:\workspace\bot\src\bot_config.cpp(116,38): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\MengChun\Documents\chun_private\bot\src\bot_config.cpp(33,31): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\MengChun\Documents\chun_private\bot\src\bot_config.cpp(50,42): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\MengChun\Documents\chun_private\bot\src\bot_config.cpp(116,38): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
   bot_csvreader.cpp
   bot_gamelib.cpp
   bot_gamemap.cpp
   bot_gameobject.cpp
-D:\workspace\bot\src\bot_gameobject.cpp(43,31): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   bot_gameobjecttemplate.cpp
   bot_gamescreen.cpp
-D:\workspace\bot\src\bot_inputevent.h(23,19): warning C4099: 'bot::InputEvent': type name first seen using 'class' now seen using 'struct'
-D:\workspace\bot\src\bot_inputevent.h(23): message : see declaration of 'bot::InputEvent'
   bot_inputevent.cpp
   bot_inputmanager.cpp
-D:\workspace\bot\src\bot_inputevent.h(23,19): warning C4099: 'bot::InputEvent': type name first seen using 'class' now seen using 'struct'
-D:\workspace\bot\src\bot_inputevent.h(23): message : see declaration of 'bot::InputEvent'
   bot_linkeditem.cpp
   bot_log.cpp
   bot_main.cpp
   bot_nameidmap.cpp
   bot_objectpool.cpp
-  bot_polygon.cpp
   Generating Code...
   Compiling...
+  bot_polygon.cpp
   bot_queue.cpp
   bot_rectangle.cpp
   bot_screen.cpp
   bot_screenmanager.cpp
-D:\workspace\bot\src\bot_screenmanager.h(7,17): warning C4099: 'bot::InputEvent': type name first seen using 'struct' now seen using 'class'
-D:\workspace\bot\src\bot_screen.h(8): message : see declaration of 'bot::InputEvent'
   bot_shaderprogram.cpp
-D:\workspace\bot\src\bot_shaderprogram.cpp(39,32): warning C4267: 'initializing': conversion from 'size_t' to 'GLint', possible loss of data
+C:\Users\MengChun\Documents\chun_private\bot\src\bot_shaderprogram.cpp(39,32): warning C4267: 'initializing': conversion from 'size_t' to 'GLint', possible loss of data
   bot_shape.cpp
   bot_simpleshaderprogram.cpp
-D:\workspace\bot\src\bot_simpleshaderprogram.cpp(71,65): warning C4312: 'type cast': conversion from 'const unsigned int' to 'void *' of greater size
+C:\Users\MengChun\Documents\chun_private\bot\src\bot_simpleshaderprogram.cpp(84,65): warning C4312: 'type cast': conversion from 'const unsigned int' to 'void *' of greater size
   bot_startscreen.cpp
-D:\workspace\bot\src\bot_inputevent.h(23,19): warning C4099: 'bot::InputEvent': type name first seen using 'class' now seen using 'struct'
-D:\workspace\bot\src\bot_inputevent.h(23): message : see declaration of 'bot::InputEvent'
   bot_textsystem.cpp
   bot_texture.cpp
   bot_timedeltasmoother.cpp
-D:\workspace\bot\src\bot_timedeltasmoother.cpp(26,54): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-D:\workspace\bot\src\bot_timedeltasmoother.cpp(44,54): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\MengChun\Documents\chun_private\bot\src\bot_timedeltasmoother.cpp(26,54): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
+C:\Users\MengChun\Documents\chun_private\bot\src\bot_timedeltasmoother.cpp(44,54): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
   bot_utils.cpp
   bot_vertexarray.cpp
   Generating Code...
 LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  bot.vcxproj -> D:\workspace\bot\x64\Debug\bot.exe
+  bot.vcxproj -> C:\Users\MengChun\Documents\chun_private\bot\x64\Debug\bot.exe

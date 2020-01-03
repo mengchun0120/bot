@@ -1,7 +1,7 @@
-name,texture,rect,hp,collision_region,can_move,speed,can_fire,attack_speed,fire_point_x,fire_point_y,fire_direction_x,fire_direction_y,bullet,can_explode,explode_power
-green_base,green_base,square60,100,42.4264068711929,1,10,0,,,,,,,0,
-darkgreen_barrel,darkgreen_barrel,square20,100,14.142135623731,0,,1,10,10,0,1,0,basic_bullet,0,
-ice_tile,ice_tile,square40,1,40,0,,0,,,,,,,0,
-clay_tile,clay_tile,square40,5,40,0,,0,,,,,,,0,
-steel_tile,steel_tile,square40,-1,40,0,,0,,,,,,,0,
-lightgreen_bullet,lightgreen_bullet,square18,1,12.7279220613579,1,20,0,,,,,,,1,50
+name,texture,rect,hp,collide_breath_x,collide_breath_y,can_move,speed,can_fire,attack_speed,fire_point_x,fire_point_y,fire_direction_x,fire_direction_y,bullet,can_explode,explode_power
+green_base,green_base,square60,100,21.21320344,21.21320344,1,10,0,,,,,,,0,
+darkgreen_barrel,darkgreen_barrel,square20,100,7.071067812,7.071067812,0,,1,10,10,0,1,0,basic_bullet,0,
+ice_tile,ice_tile,square40,1,20,20,0,,0,,,,,,,0,
+clay_tile,clay_tile,square40,5,20,20,0,,0,,,,,,,0,
+steel_tile,steel_tile,square40,-1,20,20,0,,0,,,,,,,0,
+lightgreen_bullet,lightgreen_bullet,square18,1,6.363961031,6.363961031,1,20,0,,,,,,,1,50

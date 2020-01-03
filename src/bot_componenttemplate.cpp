@@ -1,3 +1,4 @@
+#include "bot_abilitytemplate.h"
 #include "bot_componenttemplate.h"
 
 namespace bot {

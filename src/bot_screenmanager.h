@@ -4,7 +4,7 @@
 namespace bot {
 
 class Screen;
-class InputEvent;
+struct InputEvent;
 
 class ScreenManager {
 public:

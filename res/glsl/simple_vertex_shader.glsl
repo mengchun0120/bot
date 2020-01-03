@@ -1,3 +1,5 @@
+#version 120
+
 uniform bool useObjRef;
 uniform vec2 objRef;
 uniform vec2 viewportSize;

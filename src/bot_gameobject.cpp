@@ -6,6 +6,10 @@ namespace bot {
 
 GameObject::GameObject()
 : m_template(nullptr)
+, m_coverStartRow(-1)
+, m_coverEndRow(-1)
+, m_coverStartCol(-1)
+, m_coverEndCol(-1)
 {
 }
 
@@ -40,7 +44,7 @@ void GameObject::present()
 {
     m_base.present();
 
-    int count = m_parts.size();
+    int count = static_cast<int>(m_parts.size());
     for(int i = 0; i < count; ++i) {
         m_parts[i].present();
     }

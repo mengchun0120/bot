@@ -40,13 +40,14 @@ public:
 
     T *alloc()
     {
-        T *ret;
+        T *ret = nullptr;
         if(m_free) {
             T *ret = m_free;
-            m_free = m_free->getNext();
+            m_free = static_cast<T*>(m_free->getNext());
         } else {
             ret = new T();
         }
+        return ret;
     }
 
     void free(T *t)
