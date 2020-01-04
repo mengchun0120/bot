@@ -1,20 +1,142 @@
 #include <algorithm>
+#include <rapidjson/filereadstream.h>
+#include "bot_log.h"
 #include "bot_app.h"
 #include "bot_inputevent.h"
 #include "bot_gamescreen.h"
 
 namespace bot {
 
+const float GameScreen::GRID_BREATH = 40.0f;
+const int GameScreen::MIN_NUM_ROWS = 20;
+const int GameScreen::MAX_NUM_ROWS = 75; 
+const int GameScreen::MIN_NUM_COLS = 25;
+const int GameScreen::MAX_NUM_COLS = 75;
+
+bool readMapDimension(int& numRows, int& numCols, const rapidjson::Document& doc)
+{
+
+}
+
 GameScreen::GameScreen()
+    : m_mapWidth(0.0f)
+    , m_mapHeight(0.0f)
 {
 }
 
 GameScreen::~GameScreen()
 {
+    clearMap();
 }
 
 bool GameScreen::init()
 {
+    return true;
+}
+
+bool GameScreen::loadMap(const char* fileName)
+{
+    using namespace rapidjson;
+
+    FILE* fp = fopen(fileName, "rb");
+    if (!fp) {
+        LOG_ERROR("Failed to open %s", fileName);
+        return false;
+    }
+
+    char readBuffer[1000];
+    FileReadStream stream(fp, readBuffer, sizeof(readBuffer));
+    Document doc;
+
+    doc.ParseStream(stream);
+    fclose(fp);
+
+    if (doc.HasParseError()) {
+        LOG_ERROR("Failed to parse %s", fileName);
+        return false;
+    }
+
+    if (!initMap(doc)) {
+        return false;
+    }
+
+
+}
+
+bool GameScreen::initMap(const rapidjson::Document& doc)
+{
+    using namespace rapidjson;
+
+    int numRows, numCols;
+
+    if (!doc.HasMember("numRows")) {
+        LOG_ERROR("Map doesn't specify numRows");
+        return false;
+    }
+    else {
+        const Value& v = doc["numRows"];
+        if (!v.IsInt()) {
+            LOG_ERROR("Invalid numRows in map");
+            return false;
+        }
+        numRows = v.GetInt();
+        if (numRows < GameScreen::MIN_NUM_ROWS || numRows > GameScreen::MAX_NUM_ROWS) {
+            LOG_ERROR("numRows must be in [%d,%d]", GameScreen::MIN_NUM_ROWS, GameScreen::MAX_NUM_ROWS);
+            return false;
+        }
+    }
+
+    if (!doc.HasMember("numCols")) {
+        LOG_ERROR("Map doesn't specify numCols");
+        return false;
+    }
+    else {
+        const Value& v = doc["numCols"];
+        if (!v.IsInt()) {
+            LOG_ERROR("Invalid numCols in map");
+            return false;
+        }
+        numCols = v.GetInt();
+        if (numCols < GameScreen::MIN_NUM_COLS || numCols > GameScreen::MAX_NUM_COLS) {
+            LOG_ERROR("numCols must be in [%d,%d]", GameScreen::MIN_NUM_COLS, GameScreen::MAX_NUM_COLS);
+        }
+    }
+
+    m_pool.init(2 * numRows * numCols);
+
+    m_map.resize(numRows);
+    for (int i = 0; i < numRows; ++i) {
+        m_map[i].resize(numCols);
+        for (int j = 0; j < numCols; ++j) {
+            m_map[i][j] = nullptr;
+        }
+    }
+
+    m_mapWidth = numCols * GRID_BREATH;
+    m_mapHeight = numRows * GRID_BREATH;
+
+    return true;
+}
+
+bool GameScreen::loadTiles(const rapidjson::Document& doc)
+{
+    using namespace rapidjson;
+
+    if (!doc.HasMember("tiles")) {
+        LOG_ERROR("No tiles specified");
+        return false;
+    }
+
+    const Value& v = doc["tiles"];
+    if (!v.IsArray()) {
+        LOG_ERROR("Invalid tiles");
+        return false;
+    }
+
+    for (SizeType i = 0; i < v.Size(); ++i) {
+
+    }
+
     return true;
 }
 
@@ -30,19 +152,6 @@ void GameScreen::present()
 int GameScreen::processInput(const InputEvent &e)
 {
     return 0;
-}
-
-void GameScreen::initMap(int numRows, int numCols)
-{
-    m_pool.init(2 * numRows * numCols);
-
-    m_map.resize(numRows);
-    for (int i = 0; i < numRows; ++i) {
-        m_map[i].resize(numCols);
-        for (int j = 0; j < numCols; ++j) {
-            m_map[i][j] = nullptr;
-        }
-    }
 }
 
 bool GameScreen::addGameObj(GameObject* obj)
@@ -244,5 +353,20 @@ void GameScreen::addGameObjToRect(GameObject* obj, int startRow, int endRow, int
     }
 }
 
+void GameScreen::clearMap()
+{
+    int numRows = getNumRows();
+    int numCols = getNumCols();
+
+    for (int r = 0; r < numRows; ++r) {
+        for (int c = 0; c < numCols; ++c) {
+            MapItem* item, * next;
+            for (item = m_map[r][c]; item; item = next) {
+                next = static_cast<MapItem*>(item->getNext());
+                m_pool.free(item);
+            }
+        }
+    }
+}
 
 } // end of namespace bot

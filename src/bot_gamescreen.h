@@ -2,6 +2,8 @@
 #define INCLUDE_BOT_GAMESCREEN
 
 #include <vector>
+#include <cmath>
+#include <rapidjson/document.h>
 #include "bot_objectpool.h"
 #include "bot_gameobject.h"
 #include "bot_screen.h"
@@ -33,19 +35,14 @@ protected:
 };
 
 class GameScreen: public Screen {
-    static const float GRID_BREATH;
-
-    static int getMapCoord(float z)
-    {
-        return static_cast<int>(z / GRID_BREATH);
-    }
-
 public:
     GameScreen();
 
     virtual ~GameScreen();
 
     virtual bool init();
+
+    bool loadMap(const char* fileName);
 
     virtual int update(float delta);
 
@@ -54,7 +51,14 @@ public:
     virtual int processInput(const InputEvent &e);
 
 private:
-    void initMap(int numRows, int numCols);
+    static int getMapCoord(float z)
+    {
+        return static_cast<int>(ceil(z / GRID_BREATH - 1.0f));
+    }
+
+    bool initMap(const rapidjson::Document& doc);
+
+    bool loadTiles(const rapidjson::Document& doc);
 
     // Add a GameObject to the map. Returns true if the GameObject is added in the map; or false if
     // the GameObject lies outside the map.
@@ -88,9 +92,19 @@ private:
 
     void addGameObjToRect(GameObject* obj, int startRow, int endRow, int startCol, int endCol);
 
+    void clearMap();
+
+public:
+    static const float GRID_BREATH;
+    static const int MIN_NUM_ROWS;
+    static const int MAX_NUM_ROWS;
+    static const int MIN_NUM_COLS;
+    static const int MAX_NUM_COLS;
+
 private:
     ObjectPool<MapItem> m_pool;
     std::vector<std::vector<MapItem*>> m_map;
+    float m_mapWidth, m_mapHeight;
     GameObject m_player;
 };
 

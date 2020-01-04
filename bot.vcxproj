@@ -214,7 +214,6 @@
     <ClInclude Include="src\bot_timedeltasmoother.h" />
     <ClInclude Include="src\bot_utils.h" />
     <ClInclude Include="src\bot_vertexarray.h" />
-    <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="config\bot_cfg.json" />
