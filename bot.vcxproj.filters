@@ -28,6 +28,12 @@
     <Filter Include="Resource Files\font">
       <UniqueIdentifier>{bbd26678-c9d0-4394-9d99-8d828a22dfa7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\map">
+      <UniqueIdentifier>{d0befe0f-181e-493d-8817-a0af8591da97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="save">
+      <UniqueIdentifier>{580368df-7943-4d45-bed7-62fe35ef08c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bot_log.cpp">
@@ -103,9 +109,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\bot_gamelib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\bot_gamemap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\bot_gameobject.cpp">
@@ -215,9 +218,6 @@
     <ClInclude Include="src\bot_gamelib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\bot_gamemap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\bot_gameobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -244,9 +244,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\bot.cfg">
-      <Filter>config</Filter>
-    </None>
     <None Include="res\glsl\simple_frag_shader.glsl">
       <Filter>Resource Files\glsl</Filter>
     </None>
@@ -267,6 +264,12 @@
     </None>
     <None Include="res\lib\texture_lib.csv">
       <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="save\saved.json">
+      <Filter>save</Filter>
+    </None>
+    <None Include="config\bot_cfg.json">
+      <Filter>config</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -576,5 +579,10 @@
     <Image Include="res\fonts\ascii_126.png">
       <Filter>Resource Files\font</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\map\map_01.json">
+      <Filter>Resource Files\map</Filter>
+    </Text>
   </ItemGroup>
 </Project>

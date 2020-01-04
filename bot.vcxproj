@@ -154,7 +154,6 @@
     <ClCompile Include="src\bot_config.cpp" />
     <ClCompile Include="src\bot_csvreader.cpp" />
     <ClCompile Include="src\bot_gamelib.cpp" />
-    <ClCompile Include="src\bot_gamemap.cpp" />
     <ClCompile Include="src\bot_gameobject.cpp" />
     <ClCompile Include="src\bot_gameobjecttemplate.cpp" />
     <ClCompile Include="src\bot_gamescreen.cpp" />
@@ -191,7 +190,6 @@
     <ClInclude Include="src\bot_config.h" />
     <ClInclude Include="src\bot_csvreader.h" />
     <ClInclude Include="src\bot_gamelib.h" />
-    <ClInclude Include="src\bot_gamemap.h" />
     <ClInclude Include="src\bot_gameobject.h" />
     <ClInclude Include="src\bot_gameobjecttemplate.h" />
     <ClInclude Include="src\bot_gamescreen.h" />
@@ -219,7 +217,7 @@
     <ClInclude Include="src\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="config\bot.cfg" />
+    <None Include="config\bot_cfg.json" />
     <None Include="res\glsl\simple_frag_shader.glsl" />
     <None Include="res\glsl\simple_vertex_shader.glsl" />
     <None Include="res\lib\color_lib.csv" />
@@ -227,6 +225,7 @@
     <None Include="res\lib\game_obj_template_lib.csv" />
     <None Include="res\lib\rect_lib.csv" />
     <None Include="res\lib\texture_lib.csv" />
+    <None Include="save\saved.json" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\fonts\ascii_100.png" />
@@ -331,6 +330,9 @@
     <Image Include="res\ui\ice_tile.png" />
     <Image Include="res\ui\lightgreen_bullet.png" />
     <Image Include="res\ui\steel_tile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\map\map_01.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

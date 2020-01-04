@@ -1,0 +1,18 @@
+{
+	"width": 30,
+	"height": 20,
+	"player": {
+		"startPos": [ 60.0, 60.0 ],
+		"startDirection": [1.0, 0.0]
+	},
+	"tiles": [
+		{
+			"name": "ice_tile",
+			"range": [ 0, 4, 0, 10 ]
+		},
+		{
+			"name": "steel_tile",
+			"range":  [ 1, 4, 10, 4 ]
+		}
+	]
+}
