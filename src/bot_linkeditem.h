@@ -12,7 +12,12 @@ public:
     virtual ~LinkedItem()
     {}
 
-    LinkedItem *getNext() const
+    const LinkedItem* getNext() const
+    {
+        return m_next;
+    }
+
+    LinkedItem* getNext()
     {
         return m_next;
     }

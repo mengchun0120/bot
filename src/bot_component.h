@@ -14,11 +14,11 @@ class Component {
 public:
     Component();
 
-    Component(ComponentTemplate *t, float x, float y);
+    Component(const ComponentTemplate *t, float x, float y);
 
     virtual ~Component();
 
-    void init(ComponentTemplate *t, float x, float y);
+    void init(const ComponentTemplate *t, float x, float y);
 
     float getX() const
     {
@@ -41,6 +41,12 @@ public:
     }
 
     void present();
+
+    void setPos(float x, float y);
+
+    void move(float deltaX, float deltaY);
+
+    void setDirection(float directionX, float directionY);
 
     Ability* getAbility(AbilityType type) const;
 
@@ -75,7 +81,7 @@ private:
     void addAbility(Ability* ability);
 
 private:
-    ComponentTemplate* m_template;
+    const ComponentTemplate* m_template;
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
     Ability* m_firstAbility;
 };

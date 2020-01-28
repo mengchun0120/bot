@@ -20,7 +20,7 @@ bool Polygon::init(const float *vertices, unsigned int numVertices, bool hasTexC
 void Polygon::draw(SimpleShaderProgram& program,
                    const float *pos, const float *direction,
                    const float *fillColor, const float *borderColor,
-                   unsigned int textureId, const float *texColor)
+                   unsigned int textureId, const float *texColor) const
 {
     if(pos) {
         program.setUseObjRef(true);

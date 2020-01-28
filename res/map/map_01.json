@@ -5,22 +5,10 @@
 		"startPos": [ 60.0, 60.0 ],
 		"startDirection": [ 1.0, 0.0 ]
 	},
-	"tiles": [
-		{
-			"name": "steel_tile",
-			"pos": [ 120.0, 100.0 ]
-		},
-		{
-			"name": "steel_tile",
-			"pos": [ 160.0, 100.0 ]
-		},
-		{
-			"name": "steel_tile",
-			"pos": [ 200.0, 100.0 ]
-		},
-		{
-			"name": "steel_tile",
-			"pos": [ 240.0, 100.0 ]
-		}
+	"objects": [
+		[ "steel_tile", 120.0, 100.0 ],
+		[ "steel_tile", 160.0, 100.0 ],
+		[ "steel_tile", 200.0, 100.0 ],
+		[ "steel_tile", 240.0, 100.0 ]
 	]
 }

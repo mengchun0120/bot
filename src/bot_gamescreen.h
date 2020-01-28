@@ -58,7 +58,9 @@ private:
 
     bool initMap(const rapidjson::Document& doc);
 
-    bool loadTiles(const rapidjson::Document& doc);
+    bool loadObjects(const rapidjson::Document& doc);
+
+    bool loadPlayer(const rapidjson::Document& doc);
 
     // Add a GameObject to the map. Returns true if the GameObject is added in the map; or false if
     // the GameObject lies outside the map.
@@ -94,6 +96,12 @@ private:
 
     void clearMap();
 
+    void updateViewport();
+
+    void getDisplayRegion(int& startRow, int& endRow, int& startCol, int& endCol);
+
+    void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag);
+
 public:
     static const float GRID_BREATH;
     static const int MIN_NUM_ROWS;
@@ -105,7 +113,9 @@ private:
     ObjectPool<MapItem> m_pool;
     std::vector<std::vector<MapItem*>> m_map;
     float m_mapWidth, m_mapHeight;
-    GameObject m_player;
+    GameObject* m_player;
+    float m_minViewportX, m_minViewportY, m_maxViewportX, m_maxViewportY;
+    float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 } // end of namespace bot

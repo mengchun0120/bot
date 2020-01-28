@@ -1,0 +1,7 @@
+{
+  "baseComponent": "green_base",
+  "coverBreath":  [ 48.28, 48.28 ],
+  "parts": [
+    [ "darkgreen_barrel", 38.28, 0.0 ]
+  ]
+}

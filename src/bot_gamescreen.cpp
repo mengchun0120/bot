@@ -2,8 +2,11 @@
 #include <rapidjson/filereadstream.h>
 #include "bot_log.h"
 #include "bot_app.h"
+#include "bot_utils.h"
 #include "bot_inputevent.h"
 #include "bot_gamescreen.h"
+
+using namespace rapidjson;
 
 namespace bot {
 
@@ -13,62 +16,8 @@ const int GameScreen::MAX_NUM_ROWS = 75;
 const int GameScreen::MIN_NUM_COLS = 25;
 const int GameScreen::MAX_NUM_COLS = 75;
 
-bool readMapDimension(int& numRows, int& numCols, const rapidjson::Document& doc)
+bool loadMapDimension(int& numRows, int& numCols, const Document& doc)
 {
-
-}
-
-GameScreen::GameScreen()
-    : m_mapWidth(0.0f)
-    , m_mapHeight(0.0f)
-{
-}
-
-GameScreen::~GameScreen()
-{
-    clearMap();
-}
-
-bool GameScreen::init()
-{
-    return true;
-}
-
-bool GameScreen::loadMap(const char* fileName)
-{
-    using namespace rapidjson;
-
-    FILE* fp = fopen(fileName, "rb");
-    if (!fp) {
-        LOG_ERROR("Failed to open %s", fileName);
-        return false;
-    }
-
-    char readBuffer[1000];
-    FileReadStream stream(fp, readBuffer, sizeof(readBuffer));
-    Document doc;
-
-    doc.ParseStream(stream);
-    fclose(fp);
-
-    if (doc.HasParseError()) {
-        LOG_ERROR("Failed to parse %s", fileName);
-        return false;
-    }
-
-    if (!initMap(doc)) {
-        return false;
-    }
-
-
-}
-
-bool GameScreen::initMap(const rapidjson::Document& doc)
-{
-    using namespace rapidjson;
-
-    int numRows, numCols;
-
     if (!doc.HasMember("numRows")) {
         LOG_ERROR("Map doesn't specify numRows");
         return false;
@@ -102,6 +51,110 @@ bool GameScreen::initMap(const rapidjson::Document& doc)
         }
     }
 
+    return true;
+}
+
+bool loadMapPlayerSetting(float& startPosX, float& startPosY, float& startDirectionX, float& startDirectionY,
+                       const Document& doc)
+{
+    if (!doc.HasMember("player")) {
+        LOG_ERROR("map doesn't have player setting");
+        return false;
+    }
+
+    const Value& playerSetting = doc["player"];
+
+    if (!playerSetting.HasMember("startPos")) {
+        LOG_ERROR("map doesn't have startPos for player");
+        return false;
+    }
+
+    const Value& startPos = playerSetting["startPos"];
+    if (!startPos.IsArray() || startPos.Size() != 2 || !startPos[0].IsFloat() || !startPos[1].IsFloat()) {
+        LOG_ERROR("Invalid startPos for player");
+        return false;
+    }
+
+    startPosX = startPos[0].GetFloat();
+    startPosY = startPos[1].GetFloat();
+
+    if (!playerSetting.HasMember("startDirection")) {
+        LOG_ERROR("map doesn't have startDirection for player");
+        return false;
+    }
+
+    const Value& startDirection = playerSetting["startDirection"];
+    if (!startDirection.IsArray() || startDirection.Size() != 2 || !startDirection[0].IsFloat()
+        || !startDirection[1].IsFloat()) {
+        LOG_ERROR("Invalid startDirection for player");
+        return false;
+    }
+
+    startDirectionX = startDirection[0].GetFloat();
+    startDirectionY = startDirection[1].GetFloat();
+
+    return true;
+}
+
+GameScreen::GameScreen()
+    : m_mapWidth(0.0f)
+    , m_mapHeight(0.0f)
+    , m_player(nullptr)
+    , m_minViewportX(0.0f)
+    , m_minViewportY(0.0f)
+    , m_maxViewportX(0.0f)
+    , m_maxViewportY(0.0f)
+{
+    m_viewportPos[0] = 0.0f;
+    m_viewportPos[1] = 0.0f;
+}
+
+GameScreen::~GameScreen()
+{
+    clearMap();
+}
+
+bool GameScreen::init()
+{
+    std::string mapFile = constructPath({App::g_app.getResourceDir(), "map", "map_01.json"});
+    if (!loadMap(mapFile.c_str())) {
+        return false;
+    }
+    return true;
+}
+
+bool GameScreen::loadMap(const char* fileName)
+{
+    Document doc;
+    if (!readJson(doc, fileName)) {
+        return false;
+    }
+
+    if (!initMap(doc)) {
+        return false;
+    }
+
+    if (!loadPlayer(doc)) {
+        return false;
+    }
+
+    if (!loadObjects(doc)) {
+        return false;
+    }
+
+    updateViewport();
+
+    return true;
+}
+
+bool GameScreen::initMap(const Document& doc)
+{
+    int numRows = 0, numCols = 0;
+
+    if (!loadMapDimension(numRows, numCols, doc)) {
+        return false;
+    }
+
     m_pool.init(2 * numRows * numCols);
 
     m_map.resize(numRows);
@@ -115,26 +168,99 @@ bool GameScreen::initMap(const rapidjson::Document& doc)
     m_mapWidth = numCols * GRID_BREATH;
     m_mapHeight = numRows * GRID_BREATH;
 
+    float windowBreathX = App::g_app.viewportWidth() / 2.0f;
+    float windowBreathY = App::g_app.viewportWidth() / 2.0f;
+
+    m_minViewportX = windowBreathX;
+    m_maxViewportX = m_mapWidth - windowBreathX;
+    m_minViewportY = windowBreathY;
+    m_maxViewportY = m_mapHeight - windowBreathY;
+
     return true;
 }
 
-bool GameScreen::loadTiles(const rapidjson::Document& doc)
+bool GameScreen::loadPlayer(const Document& doc)
+{
+    float startPosX = 0.0f, startPosY = 0.0f, startDirectionX = 1.0f, startDirectionY = 0.0f;
+    if (!loadMapPlayerSetting(startPosX, startPosY, startDirectionX, startDirectionY, doc)) {
+        return false;
+    }
+
+    std::string playerFile = constructPath({ App::g_app.getSaveDir(), "player.json" });
+    m_player = GameObject::createFromJson(playerFile.c_str());
+    if (!m_player) {
+        return false;
+    }
+
+    m_player->setPos(startPosX, startPosY);
+    m_player->setDirection(startDirectionX, startDirectionY);
+    addGameObj(m_player);
+    
+    return true;
+}
+
+bool GameScreen::loadObjects(const rapidjson::Document& doc)
 {
     using namespace rapidjson;
 
-    if (!doc.HasMember("tiles")) {
+    const GameLib& lib = App::g_app.gameLib();
+
+    if (!doc.HasMember("objects")) {
         LOG_ERROR("No tiles specified");
         return false;
     }
 
-    const Value& v = doc["tiles"];
-    if (!v.IsArray()) {
+    const Value& objects = doc["objects"];
+    if (!objects.IsArray()) {
         LOG_ERROR("Invalid tiles");
         return false;
     }
 
-    for (SizeType i = 0; i < v.Size(); ++i) {
+    for (SizeType i = 0; i < objects.Size(); ++i) {
+        const Value& obj = objects[i];
+        if (!obj.IsArray() && obj.Size() < 3 && !obj[0].IsString()) {
+            LOG_ERROR("Invalid object %d", i);
+            return 0;
+        }
 
+        const char* name = obj[0].GetString();
+        const GameObjectTemplate* objTemplate = lib.getGameObjectTemplate(name);
+        if (!objTemplate) {
+            LOG_ERROR("Cannot find GameObjectTemplate %s", name);
+            return false;
+        }
+
+        if (objTemplate->getType() == GAMEOBJ_BOT) {
+            if (obj.Size() != 5) {
+                LOG_ERROR("Invalid object %s", name);
+                return false;
+            }
+        }
+        else if (obj.Size() != 3) {
+            LOG_ERROR("Invalid object %s", name);
+            return false;
+        }
+
+        for (SizeType i = 1; i < obj.Size(); ++i) {
+            if (!obj.IsFloat()) {
+                LOG_ERROR("Invalid object setting %s", name);
+                return false;
+            }
+        }
+
+        float posX = obj[1].GetFloat();
+        float posY = obj[2].GetFloat();
+
+        GameObject* gameObj = GameObject::createFromTemplate(objTemplate);
+        gameObj->setPos(posX, posY);
+
+        if (objTemplate->getType() == GAMEOBJ_BOT) {
+            float directionX = obj[3].GetFloat();
+            float directionY = obj[4].GetFloat();
+            gameObj->setDirection(directionX, directionY);
+        }
+        
+        addGameObj(gameObj);
     }
 
     return true;
@@ -147,6 +273,24 @@ int GameScreen::update(float delta)
 
 void GameScreen::present()
 {
+    int startRow, endRow, startCol, endCol;
+
+    getDisplayRegion(startRow, endRow, startCol, endCol);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GOBJ_FLAG_DRAWN);
+
+    for (int r = startRow; r <= endRow; ++r) {
+        std::vector<MapItem*>& row = m_map[r];
+
+        for (int c = startCol; c <= endCol; ++c) {
+            for (MapItem* item = row[c]; item; item = static_cast<MapItem*>(item->getNext())) {
+                GameObject* obj = item->getObj();
+                if (!obj->testFlag(GOBJ_FLAG_DRAWN)) {
+                    obj->present();
+                    obj->setFlag(GOBJ_FLAG_DRAWN);
+                }
+            }
+        }
+    }
 }
 
 int GameScreen::processInput(const InputEvent &e)
@@ -239,6 +383,8 @@ void GameScreen::removeGameObj(GameObject* obj)
             removeGameObjAt(obj, row, col);
         }
     }
+
+    delete obj;
 }
 
 bool GameScreen::getMapPosForGameObj(int& startRow, int& endRow, int& startCol, int& endCol, GameObject* obj)
@@ -365,6 +511,51 @@ void GameScreen::clearMap()
                 next = static_cast<MapItem*>(item->getNext());
                 m_pool.free(item);
             }
+        }
+    }
+}
+
+void GameScreen::updateViewport()
+{
+    m_viewportPos[0] = clamp(m_player->getPosX(), m_minViewportX, m_maxViewportX);
+    m_viewportPos[1] = clamp(m_player->getPosY(), m_minViewportY, m_maxViewportY);
+    App::g_app.program().setViewportOrigin(m_viewportPos);
+}
+
+void GameScreen::getDisplayRegion(int& startRow, int& endRow, int& startCol, int& endCol)
+{
+    float windowBreathX = App::g_app.viewportWidth() / 2.0f;
+    float windowBreathY = App::g_app.viewportWidth() / 2.0f;
+
+    startCol = getMapCoord(m_viewportPos[0] - windowBreathX);
+    if (startCol < 0) {
+        startCol = 0;
+    }
+
+    endCol = getMapCoord(m_viewportPos[0] + windowBreathX);
+    if (endCol >= getNumCols()) {
+        endCol = getNumCols() - 1;
+    }
+    
+    
+    startRow = getMapCoord(m_viewportPos[1] - windowBreathY);
+    if (startRow < 0) {
+        startRow = 0;
+    }
+
+    endRow = getMapCoord(m_viewportPos[1] + windowBreathY);
+    if (endRow >= getNumRows()) {
+        endRow = getNumRows() - 1;
+    }
+}
+
+void GameScreen::clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag)
+{
+    for (int r = startRow; r <= endRow; ++r) {
+        std::vector<MapItem*>& row = m_map[r];
+
+        for (int c = startCol; c <= endCol; ++c) {
+            row[c]->getObj()->clearFlag(flag);
         }
     }
 }

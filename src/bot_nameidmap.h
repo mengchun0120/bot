@@ -49,4 +49,3 @@ private:
 } // end of namespace bot
 
 #endif
-

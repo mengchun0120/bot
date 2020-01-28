@@ -1,6 +1,7 @@
 #include "bot_log.h"
 #include "bot_config.h"
 #include "bot_inputmanager.h"
+#include "bot_utils.h"
 #include "bot_app.h"
 
 namespace bot {
@@ -8,7 +9,9 @@ namespace bot {
 App App::g_app;
 
 App::App()
-: m_window(nullptr)
+    : m_window(nullptr)
+    , m_viewportWidth(0.0f)
+    , m_viewportHeight(0.0f)
 {
 }
 
@@ -19,9 +22,11 @@ App::~App()
     }
 }
 
-bool App::init(const char *resDir)
+bool App::init(const char *appDir)
 {
-    m_resourceDir = resDir;
+    m_appDir = appDir;
+    m_resourceDir = constructPath({appDir, "res"});
+    m_saveDir = constructPath({ appDir, "save" });
 
     if(!initWindow()) {
         LOG_ERROR("Failed to initialize window");

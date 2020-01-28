@@ -507,4 +507,59 @@ bool GameLib::fillComponentBullet()
     return true;
 }
 
+const Texture* GameLib::getTexture(const char* name) const
+{
+    int idx = m_textureMap.search(name);
+    if (idx == -1) {
+        LOG_ERROR("Cannot find texture %s", name);
+        return nullptr;
+    }
+
+    return &m_textureLib[idx];
+}
+
+const Rectangle* GameLib::getRect(const char* name) const
+{
+    int idx = m_rectMap.search(name);
+    if (idx == -1) {
+        LOG_ERROR("Cannot find rect %s", name);
+        return nullptr;
+    }
+
+    return &m_rectLib[idx];
+}
+
+const Color* GameLib::getColor(const char* name) const
+{
+    int idx = m_colorMap.search(name);
+    if (idx == -1) {
+        LOG_ERROR("Cannot find color %s", name);
+        return nullptr;
+    }
+
+    return &m_colorLib[idx];
+}
+
+const ComponentTemplate* GameLib::getComponentTemplate(const char* name) const
+{
+    int idx = m_componentTemplateMap.search(name);
+    if (idx == -1) {
+        LOG_ERROR("Cannot find ComponentTemplate %s", name);
+        return nullptr;
+    }
+
+    return &m_componentTemplateLib[idx];
+}
+
+const GameObjectTemplate* GameLib::getGameObjectTemplate(const char* name) const
+{
+    int idx = m_gameObjectTemplateMap.search(name);
+    if (idx == -1) {
+        LOG_ERROR("Cannot find GameObjectTemplate %s", name);
+        return nullptr;
+    }
+
+    return &m_gameObjectTemplateLib[idx];
+}
+
 } // end of namespace bot

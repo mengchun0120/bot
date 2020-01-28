@@ -28,7 +28,7 @@ protected:
 
 class MoveAbility: public Ability {
 public:
-    MoveAbility(MoveAbilityTemplate *t)
+    MoveAbility(const MoveAbilityTemplate *t)
         : Ability(ABILITY_MOVE)
         , m_template(t)
     {
@@ -66,13 +66,13 @@ public:
     }
 
 protected:
-    MoveAbilityTemplate *m_template;
+    const MoveAbilityTemplate *m_template;
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 class FireAbility: public Ability {
 public:
-    FireAbility(FireAbilityTemplate *t, float componentX, float componentY)
+    FireAbility(const FireAbilityTemplate *t, float componentX, float componentY)
         : Ability(ABILITY_FIRE)
         , m_template(t)
     {
@@ -139,8 +139,13 @@ public:
         return m_template->getFireSpeed();
     }
 
+    const FireAbilityTemplate* getTemplate() const
+    {
+        return m_template;
+    }
+
 protected:
-    FireAbilityTemplate *m_template;
+    const FireAbilityTemplate *m_template;
     Clock::time_point m_lastFireTime;
     float m_firePos[Constants::NUM_FLOATS_PER_POSITION];
     float m_fireDirection[Constants::NUM_FLOATS_PER_POSITION];
@@ -148,7 +153,7 @@ protected:
 
 class ExplodeAbility: public Ability {
 public:
-    ExplodeAbility(ExplodeAbilityTemplate *t)
+    ExplodeAbility(const ExplodeAbilityTemplate *t)
         : Ability(ABILITY_EXPLODE)
         , m_template(t)
     {}
@@ -162,7 +167,7 @@ public:
     }
 
 protected:
-    ExplodeAbilityTemplate *m_template;
+    const ExplodeAbilityTemplate *m_template;
 };
 
 } // end of namespace bot

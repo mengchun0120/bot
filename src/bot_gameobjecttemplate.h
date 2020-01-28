@@ -26,8 +26,6 @@ public:
         float m_pos[Constants::NUM_FLOATS_PER_POSITION];
     };
 
-
-
     GameObjectTemplate()
         : m_baseComponent(nullptr)
         , m_type(GAMEOBJ_UNKNONWN)

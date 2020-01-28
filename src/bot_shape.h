@@ -16,7 +16,7 @@ public:
     virtual void draw(SimpleShaderProgram& program,
                       const float *pos, const float *direction,
                       const float *fillColor, const float *borderColor,
-                      const unsigned int textureId, const float *texColor) = 0;
+                      const unsigned int textureId, const float *texColor) const = 0;
 
     const VertexArray& vertexArray() const
     {

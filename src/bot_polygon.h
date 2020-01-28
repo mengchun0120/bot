@@ -16,7 +16,7 @@ public:
     virtual void draw(SimpleShaderProgram& program,
                       const float *pos, const float *direction,
                       const float *fillColor, const float *borderColor,
-                      unsigned int textureId, const float *texColor);
+                      unsigned int textureId, const float *texColor) const;
 };
 
 } // end of namespace bot

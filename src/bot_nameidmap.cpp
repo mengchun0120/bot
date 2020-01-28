@@ -171,4 +171,3 @@ void NameIdMap::print()
 }
 
 } // end of namespace bot
-

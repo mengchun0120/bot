@@ -262,11 +262,11 @@
     <None Include="res\lib\texture_lib.csv">
       <Filter>Resource Files\lib</Filter>
     </None>
-    <None Include="save\saved.json">
-      <Filter>save</Filter>
-    </None>
     <None Include="config\bot_cfg.json">
       <Filter>config</Filter>
+    </None>
+    <None Include="save\player.json">
+      <Filter>save</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

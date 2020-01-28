@@ -4,6 +4,7 @@
 #include <cctype>
 #include <utility>
 #include <cstdarg>
+#include <rapidjson/filereadstream.h>
 #include "bot_log.h"
 #include "bot_utils.h"
 
@@ -142,6 +143,35 @@ void tokenize(std::vector<std::string> &tokens, const std::string &s,
     for(int i = 0; i < count; ++i, ++it) {
         tokens[i] = std::move(*it);
     }
+}
+
+bool readJson(rapidjson::Document& doc, const char* fileName)
+{
+    FILE* fp = fopen(fileName, "rb");
+    if (!fp) {
+        LOG_ERROR("Cannot open %s", fileName);
+        return false;
+    }
+
+    char readBuffer[1000];
+    rapidjson::FileReadStream stream(fp, readBuffer, sizeof(readBuffer));
+    doc.ParseStream(stream);
+    fclose(fp);
+
+    if (doc.HasParseError()) {
+        LOG_ERROR("Failed to parse %s", fileName);
+        return false;
+    }
+
+    return true;
+}
+
+void rotate(float& x, float& y, float directionX, float directionY)
+{
+    float x1 = x * directionX + y * directionY;
+    float y1 = -x * directionY + y * directionX;
+    x = x1;
+    y = y1;
 }
 
 bool readSheet(std::vector<std::string> &fields,

@@ -21,12 +21,22 @@ public:
 
     virtual ~ComponentTemplate();
 
-    Texture &getTexture()
+    Texture& getTexture()
     {
         return *m_texture;
     }
 
-    Rectangle &getRect()
+    const Texture& getTexture() const
+    {
+        return *m_texture;
+    }
+
+    Rectangle& getRect()
+    {
+        return *m_rect;
+    }
+
+    const Rectangle& getRect() const
     {
         return *m_rect;
     }
@@ -51,7 +61,12 @@ public:
         m_hp = hp;
     }
 
-    AbilityTemplate *firstAbility()
+    const AbilityTemplate* firstAbility() const
+    {
+        return m_firstAbility;
+    }
+
+    AbilityTemplate* firstAbility()
     {
         return m_firstAbility;
     }

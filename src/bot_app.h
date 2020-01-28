@@ -20,7 +20,7 @@ public:
 
     bool run();
 
-    bool init(const char *resDir);
+    bool init(const char *appDir);
 
     SimpleShaderProgram& program()
     {
@@ -42,9 +42,19 @@ public:
         return m_viewportHeight;
     }
 
+    const std::string& getAppDir() const
+    {
+        return m_appDir;
+    }
+
     const std::string& getResourceDir() const
     {
         return m_resourceDir;
+    }
+
+    const std::string& getSaveDir() const
+    {
+        return m_saveDir;
     }
 
     ScreenManager& screenMgr()
@@ -71,7 +81,9 @@ private:
     GLFWwindow* m_window;
     float m_viewportWidth;
     float m_viewportHeight;
+    std::string m_appDir;
     std::string m_resourceDir;
+    std::string m_saveDir;
     TimeDeltaSmoother m_deltaSmoother;
     ScreenManager m_screenMgr;
     SimpleShaderProgram m_program;

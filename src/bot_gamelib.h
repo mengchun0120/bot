@@ -19,30 +19,40 @@ public:
 
     bool init();
 
-    Texture &getTexture(int idx)
+    const Texture* getTexture(int idx) const
     {
-        return m_textureLib[idx];
+        return &m_textureLib[idx];
     }
 
-    Rectangle &getRect(int idx)
+    const Texture* getTexture(const char* name) const;
+
+    const Rectangle* getRect(int idx) const
     {
-        return m_rectLib[idx];
+        return &m_rectLib[idx];
     }
 
-    Color &getColor(int idx)
+    const Rectangle* getRect(const char* name) const;
+
+    const Color* getColor(int idx) const
     {
-        return m_colorLib[idx];
+        return &m_colorLib[idx];
     }
 
-    ComponentTemplate &getComponentTemplate(int idx)
+    const Color* getColor(const char* name) const;
+
+    const ComponentTemplate* getComponentTemplate(int idx) const
     {
-        return m_componentTemplateLib[idx];
+        return &m_componentTemplateLib[idx];
     }
 
-    GameObjectTemplate &getGameObjectTemplate(int idx)
+    const ComponentTemplate* getComponentTemplate(const char* name) const;
+
+    const GameObjectTemplate* getGameObjectTemplate(int idx) const
     {
-        return m_gameObjectTemplateLib[idx];
+        return &m_gameObjectTemplateLib[idx];
     }
+
+    const GameObjectTemplate* getGameObjectTemplate(const char* name) const;
 
 private:
     bool initTextureLib();

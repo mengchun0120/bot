@@ -5,12 +5,26 @@
 #include <string>
 #include <chrono>
 #include <initializer_list>
+#include <rapidjson/document.h>
 #include "bot_log.h"
 #include "bot_csvreader.h"
 
 namespace bot {
 
 using Clock = std::chrono::high_resolution_clock;
+
+template <typename T>
+T clamp(const T& t, const T& min, const T& max)
+{
+    if (t < min) {
+        return min;
+    }
+    else if (t > max) {
+        return max;
+    }
+
+    return t;
+}
 
 bool readText(std::string& text, const std::string& fileName);
 
@@ -26,6 +40,10 @@ bool isBlank(const std::string &s);
 
 void tokenize(std::vector<std::string> &tokens, const std::string &s, 
               char delimiter, bool trimSpace=true);
+
+bool readJson(rapidjson::Document& doc, const char* fileName);
+
+void rotate(float& x, float& y, float directionX, float directionY);
 
 template <typename PROCESSOR>
 bool readAndProcessCSVFile(const std::string &file,

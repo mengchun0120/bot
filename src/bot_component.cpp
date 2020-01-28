@@ -1,6 +1,7 @@
 #include "bot_log.h"
 #include "bot_app.h"
 #include "bot_ability.h"
+#include "bot_utils.h"
 #include "bot_component.h"
 
 namespace bot {
@@ -13,7 +14,7 @@ Component::Component()
     m_pos[1] = 0.0f;
 }
 
-Component::Component(ComponentTemplate *t, float x, float y)
+Component::Component(const ComponentTemplate *t, float x, float y)
 {
     init(t, x, y);
 }
@@ -27,7 +28,7 @@ Component::~Component()
     }
 }
 
-void Component::init(ComponentTemplate *t, float x, float y)
+void Component::init(const ComponentTemplate *t, float x, float y)
 {
     m_template = t;
     m_pos[0] = x;
@@ -37,21 +38,21 @@ void Component::init(ComponentTemplate *t, float x, float y)
 
 void Component::initAbilities()
 {
-    AbilityTemplate *t;
-    for(t = m_template->firstAbility(); t; t = static_cast<AbilityTemplate*>(t->getNext())) {
+    const AbilityTemplate *t;
+    for(t = m_template->firstAbility(); t; t = static_cast<const AbilityTemplate*>(t->getNext())) {
         switch(t->getType()) {
         case ABILITY_MOVE: {
-            MoveAbility* a = new MoveAbility(static_cast<MoveAbilityTemplate*>(t));
+            MoveAbility* a = new MoveAbility(static_cast<const MoveAbilityTemplate*>(t));
             addAbility(a);
             break;
         }
         case ABILITY_FIRE: {
-            FireAbility *a = new FireAbility(static_cast<FireAbilityTemplate*>(t), m_pos[0], m_pos[1]);
+            FireAbility *a = new FireAbility(static_cast<const FireAbilityTemplate*>(t), m_pos[0], m_pos[1]);
             addAbility(a);
             break;
         }
         case ABILITY_EXPLODE: {
-            ExplodeAbility *a = new ExplodeAbility(static_cast<ExplodeAbilityTemplate*>(t));
+            ExplodeAbility *a = new ExplodeAbility(static_cast<const ExplodeAbilityTemplate*>(t));
             addAbility(a);
             break;
         }
@@ -80,14 +81,53 @@ void Component::addAbility(Ability *a)
 
 void Component::present()
 {
-    Rectangle &rect = m_template->getRect();
+    const Rectangle& rect = m_template->getRect();
     const float *direction = nullptr;
-    Ability *ability = getAbility(ABILITY_MOVE);
+    const Ability* ability = getAbility(ABILITY_MOVE);
     if(ability) {
-        direction = static_cast<MoveAbility*>(ability)->getDirection();
+        direction = static_cast<const MoveAbility*>(ability)->getDirection();
     }
     rect.draw(App::g_app.program(), m_pos, direction, nullptr, nullptr,
               m_template->getTexture().textureId(), nullptr);
+}
+
+void Component::setPos(float x, float y)
+{
+    float deltaX = x - m_pos[0];
+    float deltaY = y - m_pos[1];
+    move(deltaX, deltaY);
+}
+
+void Component::move(float deltaX, float deltaY)
+{
+    m_pos[0] += deltaX;
+    m_pos[1] += deltaY;
+    FireAbility* ability = static_cast<FireAbility*>(getAbility(ABILITY_FIRE));
+    if (ability) {
+        ability->moveFirePos(deltaX, deltaY);
+    }
+}
+
+void Component::setDirection(float directionX, float directionY)
+{
+    for (Ability* ability = m_firstAbility; ability; ability = static_cast<Ability*>(ability->getNext())) {
+        switch (ability->getType()) {
+            case ABILITY_MOVE: {
+                MoveAbility* moveAbility = static_cast<MoveAbility*>(ability);
+                moveAbility->setDirection(directionX, directionY);
+                break;
+            }
+            case ABILITY_FIRE: {
+                FireAbility* fireAbility = static_cast<FireAbility*>(ability);
+                const FireAbilityTemplate* t = fireAbility->getTemplate();
+                float fireDirectionX = t->getFireDirectionX();
+                float fireDirectionY = t->getFireDirectionY();
+                rotate(fireDirectionX, fireDirectionY, directionX, directionY);
+                fireAbility->setFireDirection(fireDirectionX, fireDirectionY);
+                break;
+            }
+        }
+    }
 }
 
 } // end of namespace bot
