@@ -125,6 +125,7 @@ bool GameScreen::init()
 
 bool GameScreen::loadMap(const char* fileName)
 {
+    LOG_INFO("loadMap: %s", fileName);
     Document doc;
     if (!readJson(doc, fileName)) {
         return false;
@@ -143,6 +144,9 @@ bool GameScreen::loadMap(const char* fileName)
     }
 
     updateViewport();
+    LOG_INFO("loadMap finished");
+
+    int numRows = getNumRows(), numCols = getNumCols();
 
     return true;
 }
@@ -169,7 +173,7 @@ bool GameScreen::initMap(const Document& doc)
     m_mapHeight = numRows * GRID_BREATH;
 
     float windowBreathX = App::g_app.viewportWidth() / 2.0f;
-    float windowBreathY = App::g_app.viewportWidth() / 2.0f;
+    float windowBreathY = App::g_app.viewportHeight() / 2.0f;
 
     m_minViewportX = windowBreathX;
     m_maxViewportX = m_mapWidth - windowBreathX;
@@ -181,6 +185,8 @@ bool GameScreen::initMap(const Document& doc)
 
 bool GameScreen::loadPlayer(const Document& doc)
 {
+    LOG_INFO("Loading player");
+
     float startPosX = 0.0f, startPosY = 0.0f, startDirectionX = 1.0f, startDirectionY = 0.0f;
     if (!loadMapPlayerSetting(startPosX, startPosY, startDirectionX, startDirectionY, doc)) {
         return false;
@@ -194,14 +200,19 @@ bool GameScreen::loadPlayer(const Document& doc)
 
     m_player->setPos(startPosX, startPosY);
     m_player->setDirection(startDirectionX, startDirectionY);
+
     addGameObj(m_player);
     
+    LOG_INFO("Finished loading player");
+
     return true;
 }
 
 bool GameScreen::loadObjects(const rapidjson::Document& doc)
 {
     using namespace rapidjson;
+
+    LOG_INFO("Loading objects to map");
 
     const GameLib& lib = App::g_app.gameLib();
 
@@ -242,7 +253,7 @@ bool GameScreen::loadObjects(const rapidjson::Document& doc)
         }
 
         for (SizeType i = 1; i < obj.Size(); ++i) {
-            if (!obj.IsFloat()) {
+            if (!obj[i].IsFloat()) {
                 LOG_ERROR("Invalid object setting %s", name);
                 return false;
             }
@@ -262,7 +273,7 @@ bool GameScreen::loadObjects(const rapidjson::Document& doc)
         
         addGameObj(gameObj);
     }
-
+    LOG_INFO("Finished loading objects");
     return true;
 }
 
@@ -291,6 +302,8 @@ void GameScreen::present()
             }
         }
     }
+
+    LOG_INFO("Finished present");
 }
 
 int GameScreen::processInput(const InputEvent &e)
@@ -301,7 +314,8 @@ int GameScreen::processInput(const InputEvent &e)
 bool GameScreen::addGameObj(GameObject* obj)
 {
     int startRow, endRow, startCol, endCol;
-    if (!getMapPosForGameObj(startRow, endRow, startCol, endCol, obj)) {
+    bool placeObjInMap = getMapPosForGameObj(startRow, endRow, startCol, endCol, obj);
+    if (!placeObjInMap) {
         return false;
     }
 
@@ -310,7 +324,7 @@ bool GameScreen::addGameObj(GameObject* obj)
             addGameObjAt(obj, row, col);
         }
     }
-
+ 
     obj->setCoverStartRow(startRow);
     obj->setCoverEndRow(endRow);
     obj->setCoverStartCol(startCol);
@@ -519,6 +533,7 @@ void GameScreen::updateViewport()
 {
     m_viewportPos[0] = clamp(m_player->getPosX(), m_minViewportX, m_maxViewportX);
     m_viewportPos[1] = clamp(m_player->getPosY(), m_minViewportY, m_maxViewportY);
+    LOG_INFO("viewport %f %f", m_viewportPos[0], m_viewportPos[1]);
     App::g_app.program().setViewportOrigin(m_viewportPos);
 }
 
@@ -553,9 +568,10 @@ void GameScreen::clearFlagsInRect(int startRow, int endRow, int startCol, int en
 {
     for (int r = startRow; r <= endRow; ++r) {
         std::vector<MapItem*>& row = m_map[r];
-
         for (int c = startCol; c <= endCol; ++c) {
-            row[c]->getObj()->clearFlag(flag);
+            for (MapItem* item = m_map[r][c]; item; item = static_cast<MapItem*>(item->getNext())) {
+                item->getObj()->clearFlag(flag);
+            }
         }
     }
 }

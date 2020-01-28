@@ -14,8 +14,9 @@ public:
                   "T must be derived from LinkedItem");
 
     ObjectPool()
-    : m_free(nullptr)
-    , m_pool(nullptr)
+        : m_free(nullptr)
+        , m_pool(nullptr)
+        , m_capacity(0)
     {}
 
     ObjectPool(int capacity)
@@ -42,7 +43,7 @@ public:
     {
         T *ret = nullptr;
         if(m_free) {
-            T *ret = m_free;
+            ret = m_free;
             m_free = static_cast<T*>(m_free->getNext());
         } else {
             ret = new T();

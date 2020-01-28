@@ -14,7 +14,7 @@ void showUsageAndExit()
 int main(int argc, char* argv[])
 {
     const char *logFile = nullptr;
-    const char *resDir = nullptr;
+    const char *appDir = nullptr;
     const char* cfgFile = nullptr;
 
     int i = 1;
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
             i += 2;
         }
         else if (strcmp(argv[i], "-r") == 0 && i + 1 < argc) {
-            resDir = argv[i + 1];
+            appDir = argv[i + 1];
             i += 2;
         }
         else {
@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    if (!logFile || !resDir || !cfgFile) {
+    if (!logFile || !appDir || !cfgFile) {
         showUsageAndExit();
     }
 
@@ -50,7 +50,7 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    if (!bot::App::g_app.init(resDir)) {
+    if (!bot::App::g_app.init(appDir)) {
         exit(1);
     }
 
