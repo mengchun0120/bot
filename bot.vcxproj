@@ -225,6 +225,11 @@
     <None Include="res\lib\rect_lib.csv" />
     <None Include="res\lib\texture_lib.csv" />
     <None Include="save\player.json" />
+    <None Include="tools\CreateCharImage.java" />
+    <None Include="tools\CreateOval.java" />
+    <None Include="tools\CreateRectangle.java" />
+    <None Include="tools\GetWidths.java" />
+    <None Include="tools\utils\Tokenizer.java" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\fonts\ascii_100.png" />

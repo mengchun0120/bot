@@ -7,7 +7,7 @@
 
 void showUsageAndExit() 
 {
-    std::cerr << "Usage: bot -l logFile -c configFile -r resourceFolder" << std::endl;
+    std::cerr << "Usage: bot -l logFile -c configFile -r appFolder" << std::endl;
     exit(1);
 }
 

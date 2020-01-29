@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstdio>
 #include <rapidjson/filereadstream.h>
 #include "bot_log.h"
 #include "bot_app.h"
@@ -111,7 +112,9 @@ GameScreen::GameScreen()
 
 GameScreen::~GameScreen()
 {
+    fprintf(stderr, "~GameScreen\n");
     clearMap();
+    fprintf(stderr, "~GameScreen finished\n");
 }
 
 bool GameScreen::init()
@@ -302,8 +305,6 @@ void GameScreen::present()
             }
         }
     }
-
-    LOG_INFO("Finished present");
 }
 
 int GameScreen::processInput(const InputEvent &e)
@@ -521,10 +522,12 @@ void GameScreen::clearMap()
     for (int r = 0; r < numRows; ++r) {
         for (int c = 0; c < numCols; ++c) {
             MapItem* item, * next;
+            fprintf(stderr, "clearMap %d %d\n", r, c);
             for (item = m_map[r][c]; item; item = next) {
                 next = static_cast<MapItem*>(item->getNext());
                 m_pool.free(item);
             }
+            fprintf(stderr, "clearMap %d %d finished\n", r, c);
         }
     }
 }
@@ -533,7 +536,6 @@ void GameScreen::updateViewport()
 {
     m_viewportPos[0] = clamp(m_player->getPosX(), m_minViewportX, m_maxViewportX);
     m_viewportPos[1] = clamp(m_player->getPosY(), m_minViewportY, m_maxViewportY);
-    LOG_INFO("viewport %f %f", m_viewportPos[0], m_viewportPos[1]);
     App::g_app.program().setViewportOrigin(m_viewportPos);
 }
 

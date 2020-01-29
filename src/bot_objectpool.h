@@ -53,7 +53,7 @@ public:
 
     void free(T *t)
     {
-        if(t >= m_free && t < m_free + m_capacity) {
+        if(t >= m_pool && t < m_pool + m_capacity) {
             t->setNext(m_free);
             m_free = t;
         } else {

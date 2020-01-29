@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "bot_log.h"
 #include "bot_config.h"
 #include "bot_inputmanager.h"
@@ -17,9 +18,11 @@ App::App()
 
 App::~App()
 {
+    fprintf(stderr, "~App\n");
     if(!m_window) {
         glfwTerminate();
     }
+    fprintf(stderr, "~App finished\n");
 }
 
 bool App::init(const char *appDir)
@@ -81,6 +84,8 @@ bool App::run()
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
+
+    LOG_INFO("app run end");
 
     return true;
 }

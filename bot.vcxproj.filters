@@ -34,6 +34,12 @@
     <Filter Include="save">
       <UniqueIdentifier>{580368df-7943-4d45-bed7-62fe35ef08c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{84cc3f56-a80d-4438-93ee-ce2934f8d074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\utils">
+      <UniqueIdentifier>{77773bc3-ff8c-45fb-902f-0a6b06be006f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bot_log.cpp">
@@ -267,6 +273,21 @@
     </None>
     <None Include="save\player.json">
       <Filter>save</Filter>
+    </None>
+    <None Include="tools\CreateCharImage.java">
+      <Filter>tools</Filter>
+    </None>
+    <None Include="tools\CreateOval.java">
+      <Filter>tools</Filter>
+    </None>
+    <None Include="tools\CreateRectangle.java">
+      <Filter>tools</Filter>
+    </None>
+    <None Include="tools\GetWidths.java">
+      <Filter>tools</Filter>
+    </None>
+    <None Include="tools\utils\Tokenizer.java">
+      <Filter>tools\utils</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
