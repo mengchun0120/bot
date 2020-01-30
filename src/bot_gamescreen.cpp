@@ -101,6 +101,7 @@ GameScreen::GameScreen()
     : m_mapWidth(0.0f)
     , m_mapHeight(0.0f)
     , m_player(nullptr)
+    , m_firstObj(nullptr)
     , m_minViewportX(0.0f)
     , m_minViewportY(0.0f)
     , m_maxViewportX(0.0f)
@@ -112,9 +113,7 @@ GameScreen::GameScreen()
 
 GameScreen::~GameScreen()
 {
-    fprintf(stderr, "~GameScreen\n");
     clearMap();
-    fprintf(stderr, "~GameScreen finished\n");
 }
 
 bool GameScreen::init()
@@ -276,6 +275,7 @@ bool GameScreen::loadObjects(const rapidjson::Document& doc)
         
         addGameObj(gameObj);
     }
+
     LOG_INFO("Finished loading objects");
     return true;
 }
@@ -330,6 +330,12 @@ bool GameScreen::addGameObj(GameObject* obj)
     obj->setCoverEndRow(endRow);
     obj->setCoverStartCol(startCol);
     obj->setCoverEndCol(endCol);
+
+    obj->setNext(m_firstObj);
+    if (m_firstObj) {
+        m_firstObj->setPrev(obj);
+    }
+    m_firstObj = obj;
 
     return true;
 }
@@ -396,6 +402,21 @@ void GameScreen::removeGameObj(GameObject* obj)
     for (int row = obj->getCoverStartRow(); row <= endRow; ++row) {
         for (int col = obj->getCoverStartCol(); col <= endCol; ++col) {
             removeGameObjAt(obj, row, col);
+        }
+    }
+
+    if (obj != m_player) {
+        GameObject* prev = static_cast<GameObject*>(obj->getPrev());
+        GameObject* next = static_cast<GameObject*>(obj->getNext());
+        if (prev) {
+            prev->setNext(next);
+        }
+        else {
+            m_firstObj = next;
+        }
+
+        if (next) {
+            next->setPrev(prev);
         }
     }
 
@@ -522,14 +543,20 @@ void GameScreen::clearMap()
     for (int r = 0; r < numRows; ++r) {
         for (int c = 0; c < numCols; ++c) {
             MapItem* item, * next;
-            fprintf(stderr, "clearMap %d %d\n", r, c);
             for (item = m_map[r][c]; item; item = next) {
                 next = static_cast<MapItem*>(item->getNext());
                 m_pool.free(item);
             }
-            fprintf(stderr, "clearMap %d %d finished\n", r, c);
         }
     }
+
+    GameObject* curObj, * nextObj;
+    for (curObj = m_firstObj; curObj; curObj = nextObj) {
+        nextObj = static_cast<GameObject*>(curObj->getNext());
+        delete curObj;
+    }
+
+    delete m_player;
 }
 
 void GameScreen::updateViewport()

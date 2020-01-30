@@ -114,6 +114,7 @@ private:
     std::vector<std::vector<MapItem*>> m_map;
     float m_mapWidth, m_mapHeight;
     GameObject* m_player;
+    GameObject* m_firstObj;
     float m_minViewportX, m_minViewportY, m_maxViewportX, m_maxViewportY;
     float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
 };

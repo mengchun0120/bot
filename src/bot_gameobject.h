@@ -12,7 +12,7 @@ enum GameObjectFlag {
     GOBJ_FLAG_UPDATED = 0x00000002
 };
 
-class GameObject {
+class GameObject: public DoubleLinkedItem {
 public:
     static GameObject* createFromTemplate(const GameObjectTemplate* t);
 

@@ -124,7 +124,8 @@ GameObject* GameObject::createFromJson(const char* jsonFile)
 }
 
 GameObject::GameObject()
-    : m_coverBreathX(0.0f)
+    : DoubleLinkedItem()
+    , m_coverBreathX(0.0f)
     , m_coverBreathY(0.0f)
     , m_coverStartRow(-1)
     , m_coverEndRow(-1)

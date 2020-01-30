@@ -1,5 +1,2 @@
-﻿  bot_gamescreen.cpp
-  bot_objectpool.cpp
-  bot_screenmanager.cpp
-  Generating Code...
+﻿  bot_app.cpp
   bot.vcxproj -> C:\Users\MengChun\Documents\chun_private\bot\x64\Debug\bot.exe
