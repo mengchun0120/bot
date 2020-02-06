@@ -405,19 +405,17 @@ void GameScreen::removeGameObj(GameObject* obj)
         }
     }
 
-    if (obj != m_player) {
-        GameObject* prev = static_cast<GameObject*>(obj->getPrev());
-        GameObject* next = static_cast<GameObject*>(obj->getNext());
-        if (prev) {
-            prev->setNext(next);
-        }
-        else {
-            m_firstObj = next;
-        }
+    GameObject* prev = static_cast<GameObject*>(obj->getPrev());
+    GameObject* next = static_cast<GameObject*>(obj->getNext());
+    if (prev) {
+        prev->setNext(next);
+    }
+    else {
+        m_firstObj = next;
+    }
 
-        if (next) {
-            next->setPrev(prev);
-        }
+    if (next) {
+        next->setPrev(prev);
     }
 
     delete obj;
@@ -555,8 +553,6 @@ void GameScreen::clearMap()
         nextObj = static_cast<GameObject*>(curObj->getNext());
         delete curObj;
     }
-
-    delete m_player;
 }
 
 void GameScreen::updateViewport()

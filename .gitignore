@@ -7,3 +7,4 @@ test_log.*
 .~lock*
 *.obj
 .vs
+*.exe

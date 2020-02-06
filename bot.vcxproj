@@ -216,6 +216,7 @@
     <ClInclude Include="src\bot_vertexarray.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="config\bot_cfg.json" />
     <None Include="res\glsl\simple_frag_shader.glsl" />
     <None Include="res\glsl\simple_vertex_shader.glsl" />

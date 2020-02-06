@@ -40,6 +40,9 @@
     <Filter Include="tools\utils">
       <UniqueIdentifier>{77773bc3-ff8c-45fb-902f-0a6b06be006f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="git">
+      <UniqueIdentifier>{a42341e7-e5a1-4c3d-b0b9-d36cc5835f99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bot_log.cpp">
@@ -288,6 +291,9 @@
     </None>
     <None Include="tools\utils\Tokenizer.java">
       <Filter>tools\utils</Filter>
+    </None>
+    <None Include=".gitignore">
+      <Filter>git</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

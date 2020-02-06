@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <cstdio>
 #include "bot_log.h"
 #include "bot_config.h"
 #include "bot_app.h"
@@ -55,4 +56,6 @@ int main(int argc, char* argv[])
     }
 
     bot::App::g_app.run();
+
+    exit(0);
 }
