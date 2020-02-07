@@ -55,26 +55,6 @@ public:
         return m_firstAbility;
     }
 
-    float getCollideLeft() const
-    {
-        return m_pos[0] - m_template->getCollideBreathX();
-    }
-
-    float getCollideRight() const
-    {
-        return m_pos[0] + m_template->getCollideBreathY();
-    }
-
-    float getCollideTop() const
-    {
-        return m_pos[1] + m_template->getCollideBreathY();
-    }
-
-    float getCollideBottom() const
-    {
-        return m_pos[1] - m_template->getCollideBreathY();
-    }
-
 private:
     void initAbilities();
 

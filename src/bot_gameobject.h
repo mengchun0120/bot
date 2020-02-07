@@ -15,9 +15,7 @@ enum GameObjectFlag {
 class GameObject: public DoubleLinkedItem {
 public:
     static GameObject* createFromTemplate(const GameObjectTemplate* t);
-
-    static GameObject* createFromJson(const char* jsonFile);
-
+    
     virtual ~GameObject();
 
     int update(float delta);
@@ -52,22 +50,12 @@ public:
 
     float getCoverBreathX() const
     {
-        return m_coverBreathX;
-    }
-
-    void setCoverBreathX(float breathX)
-    {
-        m_coverBreathX = breathX;
+        return m_template->getCoverBreathX();
     }
 
     float getCoverBreathY() const
     {
-        return m_coverBreathY;
-    }
-
-    void setCoverBreathY(float breathY)
-    {
-        m_coverBreathY = breathY;
+        return m_template->getCoverBreathY();
     }
 
     int getNumParts() const
@@ -87,22 +75,22 @@ public:
 
     float getCoverLeft() const
     {
-        return m_base.getX() - m_coverBreathX;
+        return m_base.getX() - m_template->getCoverBreathX();
     }
 
     float getCoverRight() const
     {
-        return m_base.getX() + m_coverBreathX;
+        return m_base.getX() + m_template->getCoverBreathX();
     }
 
     float getCoverTop() const
     {
-        return m_base.getY() + m_coverBreathY;
+        return m_base.getY() + m_template->getCoverBreathY();
     }
 
     float getCoverBottom() const
     {
-        return m_base.getY() - m_coverBreathY;
+        return m_base.getY() - m_template->getCoverBreathY();
     }
 
     int getCoverStartRow() const
@@ -165,16 +153,57 @@ public:
         return m_flags;
     }
 
+    int getHP() const
+    {
+        return m_hp;
+    }
+
+    void setHP(int hp)
+    {
+        m_hp = hp;
+    }
+
+    float getCollideBreathX() const
+    {
+        return m_template->getCollideBreathX();
+    }
+    
+    float getCollideBreathY() const
+    {
+        return m_template->getCollideBreathY();
+    }
+
+    float getCollideLeft() const
+    {
+        return m_base.getX() - m_template->getCollideBreathX();
+    }
+
+    float getCollideRight() const
+    {
+        return m_base.getX() + m_template->getCollideBreathX();
+    }
+
+    float getCollideBottom() const
+    {
+        return m_base.getY() - m_template->getCollideBreathY();
+    }
+
+    float getCollideTop() const
+    {
+        return m_base.getY() + m_template->getCollideBreathY();
+    }
+
 private:
     GameObject();
 
 private:
-    float m_coverBreathX, m_coverBreathY;
+    const GameObjectTemplate* m_template;
     int m_coverStartRow, m_coverEndRow;
     int m_coverStartCol, m_coverEndCol;
     Component m_base;
     std::vector<Component> m_parts;
     int m_flags;
+    int m_hp;
 };
 
 } // end of namespace bot

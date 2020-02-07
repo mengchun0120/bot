@@ -194,9 +194,16 @@ bool GameScreen::loadPlayer(const Document& doc)
         return false;
     }
 
-    std::string playerFile = constructPath({ App::g_app.getSaveDir(), "player.json" });
-    m_player = GameObject::createFromJson(playerFile.c_str());
+    const GameLib& lib = App::g_app.gameLib();
+    const GameObjectTemplate* playerTemplate = lib.getGameObjectTemplate("player");
+    if (!playerTemplate) {
+        LOG_ERROR("Failed to find player template");
+        return false;
+    }
+
+    m_player = GameObject::createFromTemplate(playerTemplate);
     if (!m_player) {
+        LOG_ERROR("Failed to create player");
         return false;
     }
 

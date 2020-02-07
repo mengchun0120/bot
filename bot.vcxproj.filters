@@ -31,9 +31,6 @@
     <Filter Include="Resource Files\map">
       <UniqueIdentifier>{d0befe0f-181e-493d-8817-a0af8591da97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="save">
-      <UniqueIdentifier>{580368df-7943-4d45-bed7-62fe35ef08c4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="tools">
       <UniqueIdentifier>{84cc3f56-a80d-4438-93ee-ce2934f8d074}</UniqueIdentifier>
     </Filter>
@@ -273,9 +270,6 @@
     </None>
     <None Include="config\bot_cfg.json">
       <Filter>config</Filter>
-    </None>
-    <None Include="save\player.json">
-      <Filter>save</Filter>
     </None>
     <None Include="tools\CreateCharImage.java">
       <Filter>tools</Filter>

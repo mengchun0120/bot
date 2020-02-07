@@ -189,13 +189,6 @@ struct ComponentTemplateProcessor {
         }
         t.setRect(&m_rectLib[rectIdx]);
 
-        t.setHP(stoi(reader.read("hp")));
-
-        float collideBreathX = stof(reader.read("collide_breath_x"));
-        t.setCollideBreathX(collideBreathX);
-        float collideBreathY = stof(reader.read("collide_breath_y"));
-        t.setCollideBreathY(collideBreathY);
-
         bool canMove = stoi(reader.read("can_move")) != 0;
         if(canMove) {
             float speed = stof(reader.read("speed"));
@@ -275,6 +268,14 @@ struct GameObjectTemplateProcessor {
         float coverBreathY = stof(reader.read("cover_breath_y"));
         obj.setCoverBreathY(coverBreathY);
 
+        int hp = stoi(reader.read("hp"));
+        obj.setHP(hp);
+
+        float collideBreathX = stof(reader.read("collide_breath_x"));
+        obj.setCollideBreathX(collideBreathX);
+        float collideBreathY = stof(reader.read("collide_breath_y"));
+        obj.setCollideBreathY(collideBreathY);
+
         const string &baseComponent = reader.read("base_component");
         int baseComponentIdx = m_componentTemplateMap.search(baseComponent);
         if(baseComponentIdx == -1) {
@@ -282,13 +283,12 @@ struct GameObjectTemplateProcessor {
             return false;
         }
         obj.setBaseComponent(&m_componentTemplateLib[baseComponentIdx]);
-
         list<string> partNames;
         list<float> xPos;
         list<float> yPos;
         for(int j = 1; j <= GameObjectTemplate::MAX_PARTS; ++j) {
             string c = "component" + to_string(j);
-            const string &partName = reader.read(c);
+            const string& partName = reader.read(c);
             if(partName.empty()) {
                 continue;
             }
@@ -349,44 +349,46 @@ GameLib::~GameLib()
 
 bool GameLib::init()
 {
-    if(!initTextureLib()) {
+    LOG_INFO("Loading GameLib");
+
+    if (!initTextureLib()) {
         LOG_ERROR("Failed to initialize texture lib");
         return false;
     }
 
-    if(!initRectLib()) {
+    if (!initRectLib()) {
         LOG_ERROR("Failed to initialize rect lib");
         return false;
     }
 
-    if(!initColorLib()) {
+    if (!initColorLib()) {
         LOG_ERROR("Failed to initialize color lib");
         return false;
     }
 
-    if(!initComponentTemplateLib()) {
+    if (!initComponentTemplateLib()) {
         LOG_ERROR("Failed to initialize component lib");
         return false;
     }
 
-    if(!initGameObjectTemplateLib()) {
+    if (!initGameObjectTemplateLib()) {
         LOG_ERROR("Failed to initialize GameObjectTemplateLib");
         return false;
     }
 
-    if(!fillComponentBullet()) {
+    if (!fillComponentBullet()) {
         LOG_ERROR("Failed to set bullet");
         return false;
     }
 
-    organizeGameObjectTemplate();
+    LOG_INFO("Finished loading GameLib");
 
     return true;
 }
 
 bool GameLib::initTextureLib()
 {
-    Config &cfg = Config::g_cfg;
+    LOG_INFO("Loading texture lib");
     string fileName = constructPath({App::g_app.getResourceDir(), "lib", "texture_lib.csv"});
     TextureProcessor processor(m_textureLib, m_textureMap);
     return readAndProcessCSVFile(fileName, processor);
@@ -394,7 +396,7 @@ bool GameLib::initTextureLib()
 
 bool GameLib::initRectLib()
 {
-    Config &cfg = Config::g_cfg;
+    LOG_INFO("Loading rect lib");
     string fileName = constructPath({ App::g_app.getResourceDir(), "lib", "rect_lib.csv" }); 
     RectProcessor processor(m_rectLib, m_rectMap);
     return readAndProcessCSVFile(fileName, processor);
@@ -402,7 +404,7 @@ bool GameLib::initRectLib()
 
 bool GameLib::initColorLib()
 {
-    Config &cfg = Config::g_cfg;
+    LOG_INFO("Loading color lib");
     string fileName = constructPath({ App::g_app.getResourceDir(), "lib", "color_lib.csv" });
     ColorProcessor processor(m_colorLib, m_colorMap);
     return readAndProcessCSVFile(fileName, processor);
@@ -410,7 +412,7 @@ bool GameLib::initColorLib()
 
 bool GameLib::initComponentTemplateLib()
 {
-    Config &cfg = Config::g_cfg;
+    LOG_INFO("Loading component template lib");
     string fileName = constructPath({ App::g_app.getResourceDir(), "lib", "component_template_lib.csv" });
     ComponentTemplateProcessor processor(m_textureLib, m_textureMap, m_rectLib,
                                          m_rectMap, m_componentTemplateLib,
@@ -420,59 +422,13 @@ bool GameLib::initComponentTemplateLib()
 
 bool GameLib::initGameObjectTemplateLib()
 {
-    Config &cfg = Config::g_cfg;
+    LOG_INFO("Loading game object template lib");
     string fileName = constructPath({ App::g_app.getResourceDir(), "lib", "game_obj_template_lib.csv" });
     GameObjectTemplateProcessor processor(m_componentTemplateLib, m_componentTemplateMap,
                                           m_gameObjectTemplateLib, m_gameObjectTemplateMap);
     return readAndProcessCSVFile(fileName, processor);
 }
 
-void GameLib::organizeGameObjectTemplate()
-{
-    int tileCount = 0, botCount = 0, bulletCount = 0;
-    int count = static_cast<int>(m_gameObjectTemplateLib.size());
-
-    for(int i = 0; i < count; ++i) {
-        switch(m_gameObjectTemplateLib[i].getType()) {
-        case GAMEOBJ_BOT:
-            botCount++;
-            break;
-        case GAMEOBJ_TILE:
-            tileCount++;
-            break;
-        case GAMEOBJ_BULLET:
-            bulletCount++;
-            break;
-        }
-    }
-
-    if(botCount > 0) {
-        m_botTemplateLib.reserve(botCount);
-    }
-
-    if(tileCount > 0) {
-        m_tileTemplateLib.reserve(tileCount);
-    }
-
-    if(bulletCount > 0) {
-        m_bulletTemplateLib.reserve(bulletCount);
-    }
-
-    for(int i = 0; i < count; ++i) {
-        GameObjectTemplate &t = m_gameObjectTemplateLib[i];
-        switch(t.getType()) {
-        case GAMEOBJ_BOT:
-            m_botTemplateLib.push_back(&t);
-            break;
-        case GAMEOBJ_TILE:
-            m_tileTemplateLib.push_back(&t);
-            break;
-        case GAMEOBJ_BULLET:
-            m_bulletTemplateLib.push_back(&t);
-            break;
-        }
-    }
-}
 
 bool GameLib::fillComponentBullet()
 {

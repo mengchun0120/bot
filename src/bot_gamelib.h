@@ -65,8 +65,6 @@ private:
 
     bool initGameObjectTemplateLib();
 
-    void organizeGameObjectTemplate();
-
     bool fillComponentBullet();
 
 private:
@@ -75,9 +73,6 @@ private:
     std::vector<Color> m_colorLib;
     std::vector<ComponentTemplate> m_componentTemplateLib;
     std::vector<GameObjectTemplate> m_gameObjectTemplateLib;
-    std::vector<GameObjectTemplate*> m_tileTemplateLib;
-    std::vector<GameObjectTemplate*> m_botTemplateLib;
-    std::vector<GameObjectTemplate*> m_bulletTemplateLib;
     NameIdMap m_textureMap;
     NameIdMap m_rectMap;
     NameIdMap m_colorMap;
