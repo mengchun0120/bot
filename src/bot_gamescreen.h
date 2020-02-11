@@ -102,6 +102,12 @@ private:
 
     void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag);
 
+    int handleMouseMove(const MouseMoveEvent& e);
+
+    int handleMouseButton(const MouseButtonEvent& e);
+
+    int handleKey(const KeyEvent& e);
+
 public:
     static const float GRID_BREATH;
     static const int MIN_NUM_ROWS;
@@ -117,6 +123,7 @@ private:
     GameObject* m_firstObj;
     float m_minViewportX, m_minViewportY, m_maxViewportX, m_maxViewportY;
     float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
+    float m_viewportWorldX, m_viewportWorldY;
 };
 
 } // end of namespace bot

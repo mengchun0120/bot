@@ -1,3 +1,4 @@
-﻿  bot_gamelib.cpp
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  bot.vcxproj -> C:\Users\MengChun\Documents\chun_private\bot\x64\Debug\bot.exe
+﻿  bot_gamescreen.cpp
+  bot_screenmanager.cpp
+  Generating Code...
+  bot.vcxproj -> D:\workspace\bot\x64\Debug\bot.exe

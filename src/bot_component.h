@@ -48,6 +48,16 @@ public:
 
     void setDirection(float directionX, float directionY);
 
+    float getDirectionX() const
+    {
+        return m_direction[0];
+    }
+
+    float getDirectionY() const
+    {
+        return m_direction[1];
+    }
+
     Ability* getAbility(AbilityType type) const;
 
     Ability* getFirstAbility() const
@@ -63,6 +73,7 @@ private:
 private:
     const ComponentTemplate* m_template;
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+    float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     Ability* m_firstAbility;
 };
 

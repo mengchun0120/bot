@@ -7,13 +7,13 @@
 
 namespace bot {
 
-class GameObjectTemplate;
-
 enum AbilityType {
     ABILITY_MOVE,
     ABILITY_FIRE,
     ABILITY_EXPLODE
 };
+
+class GameObjectTemplate;
 
 class AbilityTemplate: public LinkedItem {
 public:

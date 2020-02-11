@@ -7,33 +7,25 @@
 
 namespace bot {
 
+class Component;
+
 class Ability: public LinkedItem {
 public:
-    Ability(AbilityType type)
+    Ability(const AbilityTemplate* t)
         : LinkedItem()
-        , m_type(type)
     {}
 
     virtual ~Ability()
     {}
-
-    AbilityType getType() const
-    {
-        return m_type;
-    }
-
 protected:
-    AbilityType m_type;
+    AbilityTemplate* m_template;
 };
 
 class MoveAbility: public Ability {
 public:
-    MoveAbility(const MoveAbilityTemplate *t)
-        : Ability(ABILITY_MOVE)
-        , m_template(t)
+    MoveAbility(const MoveAbilityTemplate* t)
+        : Ability(t)
     {
-        m_direction[0] = 1.0f;
-        m_direction[1] = 0.0f;
     }
 
     virtual ~MoveAbility()
@@ -41,46 +33,20 @@ public:
 
     float getSpeed() const
     {
-        return m_template->getSpeed();
+        return static_cast<MoveAbilityTemplate*>(m_template)->getSpeed();
     }
-
-    const float *getDirection() const
-    {
-        return static_cast<const float *>(m_direction);
-    }
-
-    void setDirection(float directionX, float directionY)
-    {
-        m_direction[0] = directionX;
-        m_direction[1] = directionY;
-    }
-
-    float getDirectionX() const
-    {
-        return m_direction[0];
-    }
-
-    float getDirectionY() const
-    {
-        return m_direction[1];
-    }
-
-protected:
-    const MoveAbilityTemplate *m_template;
-    float m_direction[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 class FireAbility: public Ability {
 public:
-    FireAbility(const FireAbilityTemplate *t, float componentX, float componentY)
-        : Ability(ABILITY_FIRE)
-        , m_template(t)
+    FireAbility(const FireAbilityTemplate* t, const Component& component)
+        : Ability(t)
     {
         m_lastFireTime = Clock::now();
-        m_firePos[0] = componentX + m_template->getFirePosX();
-        m_firePos[1] = componentY + m_template->getFirePosY();
-        m_fireDirection[0] = m_template->getFireDirectionX();
-        m_fireDirection[1] = m_template->getFireDirectionY();
+
+        m_firePos[0] = component. + t->getFirePosX();
+        m_firePos[1] = componentY + t->getFirePosY();
+        rotate(m_fireDirection[0], m_fireDirection[1], componentDirectionX, componentDirectionY);
     }
 
     virtual ~FireAbility()
@@ -113,7 +79,7 @@ public:
         m_firePos[1] += deltaY;
     }
 
-    const float *getFireDirection() const
+    const float* getFireDirection() const
     {
         return static_cast<const float *>(m_fireDirection);
     }
@@ -128,24 +94,18 @@ public:
         return m_fireDirection[1];
     }
 
-    void setFireDirection(float x, float y)
+    void setFireDirection(float directionX, float directionY)
     {
-        m_fireDirection[0] = x;
-        m_fireDirection[1] = y;
+        m_fireDirection[0] = directionX;
+        m_fireDirection[1] = directionY;
     }
 
     float getFireSpeed() const
     {
-        return m_template->getFireSpeed();
-    }
-
-    const FireAbilityTemplate* getTemplate() const
-    {
-        return m_template;
+        return static_cast<FireAbilityTemplate*>(m_template)->getFireSpeed();
     }
 
 protected:
-    const FireAbilityTemplate *m_template;
     Clock::time_point m_lastFireTime;
     float m_firePos[Constants::NUM_FLOATS_PER_POSITION];
     float m_fireDirection[Constants::NUM_FLOATS_PER_POSITION];

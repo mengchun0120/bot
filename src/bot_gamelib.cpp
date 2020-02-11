@@ -286,6 +286,8 @@ struct GameObjectTemplateProcessor {
         list<string> partNames;
         list<float> xPos;
         list<float> yPos;
+        list<float> directionX;
+        list<float> directionY;
         for(int j = 1; j <= GameObjectTemplate::MAX_PARTS; ++j) {
             string c = "component" + to_string(j);
             const string& partName = reader.read(c);
@@ -295,10 +297,15 @@ struct GameObjectTemplateProcessor {
 
             partNames.emplace_back(partName);
             
-            string xs = "x" + to_string(j);
+            string postfix = to_string(j);
+            string xs = "x" + postfix;
             xPos.push_back(stof(reader.read(xs)));
-            string ys = "y" + to_string(j);
+            string ys = "y" + postfix;
             yPos.push_back(stof(reader.read(ys)));
+            string dxs = "dx" + postfix;
+            directionX.push_back(stof(reader.read(dxs)));
+            string dys = "dy" + postfix;
+            directionY.push_back(stof(reader.read(dys));
         }
 
         int numParts = static_cast<int>(partNames.size());
@@ -307,15 +314,17 @@ struct GameObjectTemplateProcessor {
         auto partNameIt = partNames.begin();
         auto xPosIt = xPos.begin();
         auto yPosIt = yPos.begin();
+        auto directionXIt = directionX.begin();
+        auto directionYIt = directionY.begin();
 
-        for(int i = 0; i < numParts; ++i, ++partNameIt, ++xPosIt, ++yPosIt) {
+        for(int i = 0; i < numParts; ++i, ++partNameIt, ++xPosIt, ++yPosIt, ++directionXIt, ++directionYIt) {
             int componentIdx = m_componentTemplateMap.search(*partNameIt);
             if(componentIdx == -1) {
                 LOG_ERROR("Cannot find component %s", partNameIt->c_str());
                 return false;
             }
 
-            obj.setPart(i, &m_componentTemplateLib[componentIdx], *xPosIt, *yPosIt);
+            obj.setPart(i, &m_componentTemplateLib[componentIdx], *xPosIt, *yPosIt, *directionXIt, *directionYIt);
         }
 
         m_gameObjectTemplateMap.add(name, idx);

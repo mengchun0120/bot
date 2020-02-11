@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cstdio>
+#include <cmath>
 #include <rapidjson/filereadstream.h>
 #include "bot_log.h"
 #include "bot_app.h"
@@ -106,6 +107,8 @@ GameScreen::GameScreen()
     , m_minViewportY(0.0f)
     , m_maxViewportX(0.0f)
     , m_maxViewportY(0.0f)
+    , m_viewportWorldX(0.0f)
+    , m_viewportWorldY(0.0f)
 {
     m_viewportPos[0] = 0.0f;
     m_viewportPos[1] = 0.0f;
@@ -315,6 +318,46 @@ void GameScreen::present()
 }
 
 int GameScreen::processInput(const InputEvent &e)
+{
+    switch (e.m_type) {
+    case InputEvent::ET_MOUSE_MOVE:
+        return handleMouseMove(e.m_mouseMoveEvent);
+    case InputEvent::ET_MOUSE_BUTTON:
+        return handleMouseButton(e.m_mouseButtonEvent);
+    case InputEvent::ET_KEY:
+        return handleKey(e.m_keyEvent);
+    default:
+        LOG_WARN("Unknown input type %d", static_cast<int>(e.m_type));
+    }
+    return 0;
+}
+
+int GameScreen::handleMouseMove(const MouseMoveEvent& e)
+{
+    if (!m_player) {
+        return 0;
+    }
+
+    float worldX = e.m_x + m_viewportWorldX;
+    float worldY = e.m_y + m_viewportWorldY;
+    float deltaX = worldX - m_player->getPosX();
+    float deltaY = worldY - m_player->getPosY();
+    float dist = sqrt(deltaX * deltaX + deltaY * deltaY);
+    float directionX = deltaX / dist;
+    float directionY = deltaY / dist;
+
+    m_player->setDirection(directionX, directionY);
+    LOG_INFO("new direction %f %f", directionX, directionY);
+
+    return 0;
+}
+
+int GameScreen::handleMouseButton(const MouseButtonEvent& e)
+{
+    return 0;
+}
+
+int GameScreen::handleKey(const KeyEvent& e)
 {
     return 0;
 }
@@ -566,6 +609,8 @@ void GameScreen::updateViewport()
 {
     m_viewportPos[0] = clamp(m_player->getPosX(), m_minViewportX, m_maxViewportX);
     m_viewportPos[1] = clamp(m_player->getPosY(), m_minViewportY, m_maxViewportY);
+    m_viewportWorldX = m_viewportPos[0] - App::g_app.viewportWidth() / 2.0f;
+    m_viewportWorldY = m_viewportPos[1] - App::g_app.viewportHeight() / 2.0f;
     App::g_app.program().setViewportOrigin(m_viewportPos);
 }
 

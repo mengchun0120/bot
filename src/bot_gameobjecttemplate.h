@@ -24,6 +24,7 @@ public:
     struct Part {
         ComponentTemplate *m_component;
         float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+        float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     };
 
     GameObjectTemplate()
@@ -76,12 +77,14 @@ public:
         return m_parts[idx];
     }
 
-    void setPart(int idx, ComponentTemplate *c, float x, float y)
+    void setPart(int idx, ComponentTemplate *c, float x, float y, float directionX, float directionY)
     {
         Part &p = m_parts[idx];
         p.m_component = c;
         p.m_pos[0] = x;
         p.m_pos[1] = y;
+        p.m_direction[0] = directionX;
+        p.m_direction[1] = directionY;
     }
 
     float getCoverBreathX() const
