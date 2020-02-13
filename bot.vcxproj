@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\bot_ability.cpp" />
     <ClCompile Include="src\bot_abilitytemplate.cpp" />
     <ClCompile Include="src\bot_app.cpp" />
     <ClCompile Include="src\bot_collisionrect.cpp" />

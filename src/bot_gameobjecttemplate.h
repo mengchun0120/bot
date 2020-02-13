@@ -27,12 +27,7 @@ public:
         float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     };
 
-    GameObjectTemplate()
-        : m_baseComponent(nullptr)
-        , m_type(GAMEOBJ_UNKNONWN)
-        , m_coverBreathX(0.0f)
-        , m_coverBreathY(0.0f)
-    {}
+    GameObjectTemplate();
 
     virtual ~GameObjectTemplate()
     {}

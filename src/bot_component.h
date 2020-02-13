@@ -14,11 +14,11 @@ class Component {
 public:
     Component();
 
-    Component(const ComponentTemplate *t, float x, float y);
+    Component(const ComponentTemplate *t, float x, float y, float directionX, float directionY);
 
     virtual ~Component();
 
-    void init(const ComponentTemplate *t, float x, float y);
+    void init(const ComponentTemplate *t, float x, float y, float directionX, float directionY);
 
     float getX() const
     {

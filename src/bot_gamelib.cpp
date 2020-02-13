@@ -201,12 +201,8 @@ struct ComponentTemplateProcessor {
             float speed = stof(reader.read("attack_speed"));
             float firePointX = stof(reader.read("fire_point_x"));
             float firePointY = stof(reader.read("fire_point_y"));
-            float fireDirectionX = stof(reader.read("fire_direction_x"));
-            float fireDirectionY = stof(reader.read("fire_direction_y"));
             const string &bulletName = reader.read("bullet");
-            FireAbilityTemplate *ability = new FireAbilityTemplate(speed, 
-                                                    firePointX, firePointY, fireDirectionX,
-                                                    fireDirectionY, bulletName);
+            FireAbilityTemplate *ability = new FireAbilityTemplate(speed, firePointX, firePointY, bulletName);
             t.addAbility(ability);
         }
 
@@ -305,7 +301,7 @@ struct GameObjectTemplateProcessor {
             string dxs = "dx" + postfix;
             directionX.push_back(stof(reader.read(dxs)));
             string dys = "dy" + postfix;
-            directionY.push_back(stof(reader.read(dys));
+            directionY.push_back(stof(reader.read(dys)));
         }
 
         int numParts = static_cast<int>(partNames.size());

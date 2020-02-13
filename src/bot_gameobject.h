@@ -14,8 +14,8 @@ enum GameObjectFlag {
 
 class GameObject: public DoubleLinkedItem {
 public:
-    static GameObject* createFromTemplate(const GameObjectTemplate* t);
-    
+    GameObject(const GameObjectTemplate* t);
+
     virtual ~GameObject();
 
     int update(float delta);
@@ -58,19 +58,19 @@ public:
         return m_template->getCoverBreathY();
     }
 
-    int getNumParts() const
+    int getNumComponents() const
     {
-        return static_cast<int>(m_parts.size());
+        return static_cast<int>(m_components.size());
     }
 
-    const Component& getPartAt(int idx) const
+    const Component& getComponent(int idx) const
     {
-        return m_parts[idx];
+        return m_components[idx];
     }
 
-    Component& getPartAt(int idx)
+    Component& getComponent(int idx)
     {
-        return m_parts[idx];
+        return m_components[idx];
     }
 
     float getCoverLeft() const
@@ -194,14 +194,11 @@ public:
     }
 
 private:
-    GameObject();
-
-private:
     const GameObjectTemplate* m_template;
     int m_coverStartRow, m_coverEndRow;
     int m_coverStartCol, m_coverEndCol;
     Component m_base;
-    std::vector<Component> m_parts;
+    std::vector<Component> m_components;
     int m_flags;
     int m_hp;
 };

@@ -55,8 +55,7 @@ protected:
 
 class FireAbilityTemplate: public AbilityTemplate {
 public:
-    FireAbilityTemplate(float speed, float fireX, float fireY, float fireDirectionX,
-                        float fireDirectionY, const std::string bulletName)
+    FireAbilityTemplate(float speed, float fireX, float fireY, const std::string bulletName)
     : AbilityTemplate(ABILITY_FIRE)
     , m_speed(speed)
     , m_bulletName(bulletName)
@@ -64,8 +63,6 @@ public:
     {
         m_firePos[0] = fireX;
         m_firePos[1] = fireY;
-        m_fireDirection[0] = fireDirectionX;
-        m_fireDirection[1] = fireDirectionY;
     }
 
     virtual ~FireAbilityTemplate()
@@ -84,21 +81,6 @@ public:
     float getFirePosY() const
     {
         return m_firePos[1];
-    }
-
-    const float *getFireDirection() const
-    {
-        return static_cast<const float *>(m_fireDirection);
-    }
-
-    float getFireDirectionX() const
-    {
-        return m_fireDirection[0];
-    }
-
-    float getFireDirectionY() const
-    {
-        return m_fireDirection[1];
     }
 
     const std::string &getBulletName() const
@@ -124,7 +106,6 @@ public:
 protected:
     float m_speed;
     float m_firePos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_fireDirection[Constants::NUM_FLOATS_PER_POSITION];
     std::string m_bulletName;
     GameObjectTemplate *m_bulletTemplate;
 };

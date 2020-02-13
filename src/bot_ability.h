@@ -13,12 +13,19 @@ class Ability: public LinkedItem {
 public:
     Ability(const AbilityTemplate* t)
         : LinkedItem()
+        , m_template(t)
     {}
 
     virtual ~Ability()
     {}
+
+    AbilityType getType() const
+    {
+        return m_template->getType();
+    }
+
 protected:
-    AbilityTemplate* m_template;
+    const AbilityTemplate* m_template;
 };
 
 class MoveAbility: public Ability {
@@ -33,21 +40,13 @@ public:
 
     float getSpeed() const
     {
-        return static_cast<MoveAbilityTemplate*>(m_template)->getSpeed();
+        return static_cast<const MoveAbilityTemplate*>(m_template)->getSpeed();
     }
 };
 
 class FireAbility: public Ability {
 public:
-    FireAbility(const FireAbilityTemplate* t, const Component& component)
-        : Ability(t)
-    {
-        m_lastFireTime = Clock::now();
-
-        m_firePos[0] = component. + t->getFirePosX();
-        m_firePos[1] = componentY + t->getFirePosY();
-        rotate(m_fireDirection[0], m_fireDirection[1], componentDirectionX, componentDirectionY);
-    }
+    FireAbility(const FireAbilityTemplate* t, float componentX, float componentY);
 
     virtual ~FireAbility()
     {}
@@ -79,43 +78,20 @@ public:
         m_firePos[1] += deltaY;
     }
 
-    const float* getFireDirection() const
-    {
-        return static_cast<const float *>(m_fireDirection);
-    }
-
-    float getFireDirectionX() const
-    {
-        return m_fireDirection[0];
-    }
-
-    float getFireDirectionY() const
-    {
-        return m_fireDirection[1];
-    }
-
-    void setFireDirection(float directionX, float directionY)
-    {
-        m_fireDirection[0] = directionX;
-        m_fireDirection[1] = directionY;
-    }
-
     float getFireSpeed() const
     {
-        return static_cast<FireAbilityTemplate*>(m_template)->getFireSpeed();
+        return static_cast<const FireAbilityTemplate*>(m_template)->getFireSpeed();
     }
 
 protected:
     Clock::time_point m_lastFireTime;
     float m_firePos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_fireDirection[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 class ExplodeAbility: public Ability {
 public:
     ExplodeAbility(const ExplodeAbilityTemplate *t)
-        : Ability(ABILITY_EXPLODE)
-        , m_template(t)
+        : Ability(t)
     {}
 
     virtual ~ExplodeAbility()
@@ -123,11 +99,8 @@ public:
 
     int getExplodePower() const
     {
-        return m_template->getExplodePower();
+        return static_cast<const ExplodeAbilityTemplate*>(m_template)->getExplodePower();
     }
-
-protected:
-    const ExplodeAbilityTemplate *m_template;
 };
 
 } // end of namespace bot

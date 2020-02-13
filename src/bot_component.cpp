@@ -12,11 +12,13 @@ Component::Component()
 {
     m_pos[0] = 0.0f;
     m_pos[1] = 0.0f;
+    m_direction[0] = 1.0f;
+    m_direction[1] = 0.0f;
 }
 
-Component::Component(const ComponentTemplate *t, float x, float y)
+Component::Component(const ComponentTemplate *t, float x, float y, float directionX, float directionY)
 {
-    init(t, x, y);
+    init(t, x, y, directionX, directionY);
 }
 
 Component::~Component()
@@ -28,11 +30,13 @@ Component::~Component()
     }
 }
 
-void Component::init(const ComponentTemplate *t, float x, float y)
+void Component::init(const ComponentTemplate *t, float x, float y, float directionX, float directionY)
 {
     m_template = t;
     m_pos[0] = x;
     m_pos[1] = y;
+    m_direction[0] = directionX;
+    m_direction[1] = directionY;
     initAbilities();
 }
 
@@ -82,12 +86,7 @@ void Component::addAbility(Ability *a)
 void Component::present()
 {
     const Rectangle& rect = m_template->getRect();
-    const float *direction = nullptr;
-    const Ability* ability = getAbility(ABILITY_MOVE);
-    if(ability) {
-        direction = static_cast<const MoveAbility*>(ability)->getDirection();
-    }
-    rect.draw(App::g_app.program(), m_pos, direction, nullptr, nullptr,
+    rect.draw(App::g_app.program(), m_pos, m_direction, nullptr, nullptr,
               m_template->getTexture().textureId(), nullptr);
 }
 
@@ -110,24 +109,8 @@ void Component::move(float deltaX, float deltaY)
 
 void Component::setDirection(float directionX, float directionY)
 {
-    for (Ability* ability = m_firstAbility; ability; ability = static_cast<Ability*>(ability->getNext())) {
-        switch (ability->getType()) {
-            case ABILITY_MOVE: {
-                MoveAbility* moveAbility = static_cast<MoveAbility*>(ability);
-                moveAbility->setDirection(directionX, directionY);
-                break;
-            }
-            case ABILITY_FIRE: {
-                FireAbility* fireAbility = static_cast<FireAbility*>(ability);
-                const FireAbilityTemplate* t = fireAbility->getTemplate();
-                float fireDirectionX = t->getFireDirectionX();
-                float fireDirectionY = t->getFireDirectionY();
-                rotate(fireDirectionX, fireDirectionY, directionX, directionY);
-                fireAbility->setFireDirection(fireDirectionX, fireDirectionY);
-                break;
-            }
-        }
-    }
+    m_direction[0] = directionX;
+    m_direction[1] = directionY;
 }
 
 } // end of namespace bot

@@ -204,11 +204,7 @@ bool GameScreen::loadPlayer(const Document& doc)
         return false;
     }
 
-    m_player = GameObject::createFromTemplate(playerTemplate);
-    if (!m_player) {
-        LOG_ERROR("Failed to create player");
-        return false;
-    }
+    m_player = new GameObject(playerTemplate);
 
     m_player->setPos(startPosX, startPosY);
     m_player->setDirection(startDirectionX, startDirectionY);
@@ -274,7 +270,7 @@ bool GameScreen::loadObjects(const rapidjson::Document& doc)
         float posX = obj[1].GetFloat();
         float posY = obj[2].GetFloat();
 
-        GameObject* gameObj = GameObject::createFromTemplate(objTemplate);
+        GameObject* gameObj = new GameObject(objTemplate);
         gameObj->setPos(posX, posY);
 
         if (objTemplate->getType() == GAMEOBJ_BOT) {
@@ -347,7 +343,6 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
     float directionY = deltaY / dist;
 
     m_player->setDirection(directionX, directionY);
-    LOG_INFO("new direction %f %f", directionX, directionY);
 
     return 0;
 }
