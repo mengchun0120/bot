@@ -108,6 +108,24 @@ private:
 
     int handleKey(const KeyEvent& e);
 
+    float getWorldX(float x) const
+    {
+        return x + m_viewportWorldX;
+    }
+
+    float getWorldY(float y) const
+    {
+        return y + m_viewportWorldY;
+    }
+
+    int updatePlayer(float delta);
+
+    int movePlayerToDest(float delta);
+
+    bool checkMoveWithinBoundary(float& newDelta, GameObject* obj, float speedX, float speedY, float delta);
+
+    bool checkMoveToDest(float& newDelta, GameObject* obj, float delta);
+
 public:
     static const float GRID_BREATH;
     static const int MIN_NUM_ROWS;

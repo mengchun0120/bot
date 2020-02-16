@@ -1,10 +1,10 @@
 name,texture,rect,can_move,speed,can_fire,attack_speed,fire_point_x,fire_point_y,bullet,can_explode,explode_power
-green_base,green_base,square60,1,10,0,,,,,0,
+green_base,green_base,square60,1,100,0,,,,,0,
 darkgreen_barrel,darkgreen_barrel,square20,0,,1,10,10,0,basic_bullet,0,
 ice_tile,ice_tile,square40,0,,0,,,,,0,
 clay_tile,clay_tile,square40,0,,0,,,,,0,
 steel_tile,steel_tile,square40,0,,0,,,,,0,
-lightgreen_bullet,lightgreen_bullet,square18,1,20,0,,,,,1,50
-player_green_base,green_base,square60,1,10,0,,,,,0,
-player_lightgreen_bullet,lightgreen_bullet,square18,1,20,0,,,,,1,50
+lightgreen_bullet,lightgreen_bullet,square18,1,300,0,,,,,1,50
+player_green_base,green_base,square60,1,100,0,,,,,0,
+player_lightgreen_bullet,lightgreen_bullet,square18,1,300,0,,,,,1,50
 player_darkgreen_barrel,darkgreen_barrel,square20,0,,1,10,10,0,basic_bullet,0,

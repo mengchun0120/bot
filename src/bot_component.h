@@ -4,11 +4,10 @@
 #include <vector>
 #include "bot_constants.h"
 #include "bot_abilitytemplate.h"
+#include "bot_ability.h"
 #include "bot_componenttemplate.h"
 
 namespace bot {
-
-class Ability;
 
 class Component {
 public:

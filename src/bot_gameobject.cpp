@@ -77,4 +77,56 @@ void GameObject::setDirection(float directionX, float directionY)
     }
 }
 
+void GameObject::setDirectionByDest(float destX, float destY)
+{
+    float directionX, directionY;
+    getDirection(directionX, directionY, m_base.getX(), m_base.getY(), destX, destY);
+    setDirection(directionX, directionY);
+}
+
+bool GameObject::setDest(float destX, float destY)
+{
+    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
+    if (!moveAbility) {
+        return false;
+    }
+
+    moveAbility->setDestX(destX);
+    moveAbility->setDestY(destY);
+
+    return true;
+}
+
+bool GameObject::setMovability(bool moving)
+{
+    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
+    if (!moveAbility) {
+        return false;
+    }
+
+    moveAbility->setMoving(moving);
+
+    return true;
+}
+
+bool GameObject::isMoving() const
+{
+    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
+    if (!moveAbility) {
+        return false;
+    }
+
+    return moveAbility->isMoving();
+}
+
+float GameObject::getSpeed() const
+{
+    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
+    if (!moveAbility) {
+        return 0.0f;
+    }
+
+    return moveAbility->getSpeed();
+}
+
 } // end of namespace bot

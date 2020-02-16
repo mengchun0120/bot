@@ -32,6 +32,9 @@ class MoveAbility: public Ability {
 public:
     MoveAbility(const MoveAbilityTemplate* t)
         : Ability(t)
+        , m_moving(false)
+        , m_destX(0.0f)
+        , m_destY(0.0f)
     {
     }
 
@@ -42,6 +45,40 @@ public:
     {
         return static_cast<const MoveAbilityTemplate*>(m_template)->getSpeed();
     }
+
+    bool isMoving() const
+    {
+        return m_moving;
+    }
+
+    void setMoving(bool moving)
+    {
+        m_moving = moving;
+    }
+
+    float getDestX() const
+    {
+        return m_destX;
+    }
+
+    void setDestX(float destX)
+    {
+        m_destX = destX;
+    }
+
+    float getDestY() const
+    {
+        return m_destY;
+    }
+
+    void setDestY(float destY)
+    {
+        m_destY = destY;
+    }
+
+protected:
+    bool m_moving;
+    float m_destX, m_destY;
 };
 
 class FireAbility: public Ability {

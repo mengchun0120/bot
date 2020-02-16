@@ -45,6 +45,8 @@ bool readJson(rapidjson::Document& doc, const char* fileName);
 
 void rotate(float& x, float& y, float directionX, float directionY);
 
+void getDirection(float& directionX, float& directionY, float srcX, float srcY, float dstX, float dstY);
+
 template <typename PROCESSOR>
 bool readAndProcessCSVFile(const std::string &file,
                            PROCESSOR processor)

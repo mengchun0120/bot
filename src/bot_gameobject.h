@@ -18,6 +18,11 @@ public:
 
     virtual ~GameObject();
 
+    GameObjectType getType() const
+    {
+        return m_template->getType();
+    }
+
     int update(float delta);
 
     void present();
@@ -37,6 +42,8 @@ public:
     void move(float deltaX, float deltaY);
 
     void setDirection(float directionX, float directionY);
+
+    void setDirectionByDest(float destX, float destY);
 
     const Component& getBase() const
     {
@@ -192,6 +199,24 @@ public:
     {
         return m_base.getY() + m_template->getCollideBreathY();
     }
+
+    bool setDest(float destX, float destY);
+
+    bool setMovability(bool moving);
+
+    bool isMoving() const;
+
+    float getDirectionX() const
+    {
+        return m_base.getDirectionX();
+    }
+
+    float getDirectionY() const
+    {
+        return m_base.getDirectionY();
+    }
+
+    float getSpeed() const;
 
 private:
     const GameObjectTemplate* m_template;

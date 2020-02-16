@@ -12,6 +12,7 @@ using namespace rapidjson;
 
 namespace bot {
 
+const float ZERO = 1.0e-6f;
 const float GameScreen::GRID_BREATH = 40.0f;
 const int GameScreen::MIN_NUM_ROWS = 20;
 const int GameScreen::MAX_NUM_ROWS = 75; 
@@ -151,8 +152,6 @@ bool GameScreen::loadMap(const char* fileName)
     updateViewport();
     LOG_INFO("loadMap finished");
 
-    int numRows = getNumRows(), numCols = getNumCols();
-
     return true;
 }
 
@@ -288,23 +287,33 @@ bool GameScreen::loadObjects(const rapidjson::Document& doc)
 
 int GameScreen::update(float delta)
 {
+    if (m_player) {
+        int rc = updatePlayer(delta);
+        if (0 != rc) {
+            return rc;
+        }
+    }
+
     return 0;
 }
 
 void GameScreen::present()
 {
+    static const std::vector<GameObjectType> PRESENT_ORDER{GAMEOBJ_TILE, GAMEOBJ_BULLET, GAMEOBJ_BOT};
     int startRow, endRow, startCol, endCol;
 
     getDisplayRegion(startRow, endRow, startCol, endCol);
     clearFlagsInRect(startRow, endRow, startCol, endCol, GOBJ_FLAG_DRAWN);
 
-    for (int r = startRow; r <= endRow; ++r) {
-        std::vector<MapItem*>& row = m_map[r];
-
-        for (int c = startCol; c <= endCol; ++c) {
-            for (MapItem* item = row[c]; item; item = static_cast<MapItem*>(item->getNext())) {
-                GameObject* obj = item->getObj();
-                if (!obj->testFlag(GOBJ_FLAG_DRAWN)) {
+    for (auto objTypeIt = PRESENT_ORDER.begin(); objTypeIt != PRESENT_ORDER.end(); objTypeIt++) {
+        for (int r = startRow; r <= endRow; ++r) {
+            std::vector<MapItem*>& row = m_map[r];
+            for (int c = startCol; c <= endCol; ++c) {
+                for (MapItem* item = row[c]; item; item = static_cast<MapItem*>(item->getNext())) {
+                    GameObject* obj = item->getObj();
+                    if (obj->getType() != *objTypeIt || obj->testFlag(GOBJ_FLAG_DRAWN)) {
+                        continue;
+                    }
                     obj->present();
                     obj->setFlag(GOBJ_FLAG_DRAWN);
                 }
@@ -334,21 +343,28 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
         return 0;
     }
 
-    float worldX = e.m_x + m_viewportWorldX;
-    float worldY = e.m_y + m_viewportWorldY;
-    float deltaX = worldX - m_player->getPosX();
-    float deltaY = worldY - m_player->getPosY();
-    float dist = sqrt(deltaX * deltaX + deltaY * deltaY);
-    float directionX = deltaX / dist;
-    float directionY = deltaY / dist;
-
-    m_player->setDirection(directionX, directionY);
+    float destX = getWorldX(e.m_x);
+    float destY = getWorldY(e.m_y);
+    m_player->setDirectionByDest(destX, destY);
 
     return 0;
 }
 
 int GameScreen::handleMouseButton(const MouseButtonEvent& e)
 {
+    if (!m_player) {
+        return 0;
+    }
+    
+    if (e.m_button == GLFW_MOUSE_BUTTON_LEFT && e.m_action == GLFW_PRESS) {
+        float destX = getWorldX(e.m_x);
+        float destY = getWorldY(e.m_y);
+        m_player->setDirectionByDest(destX, destY);
+        m_player->setDest(destX, destY);
+        m_player->setMovability(true);
+        LOG_INFO("moveto %f %f", destX, destY);
+    }
+
     return 0;
 }
 
@@ -646,6 +662,108 @@ void GameScreen::clearFlagsInRect(int startRow, int endRow, int startCol, int en
             }
         }
     }
+}
+
+int GameScreen::updatePlayer(float delta)
+{
+    if (m_player->isMoving()) {
+        int rc = movePlayerToDest(delta);
+        if (0 != rc) {
+            return rc;
+        }
+    }
+
+    return 0;
+}
+
+int GameScreen::movePlayerToDest(float delta)
+{
+    float speed = m_player->getSpeed();
+    float speedX = speed * m_player->getDirectionX();
+    float speedY = speed * m_player->getDirectionY();
+    float finalDelta;
+    bool stopMoving = false;
+
+    if (checkMoveWithinBoundary(finalDelta, m_player, speedX, speedY, delta)) {
+        stopMoving = true;
+    }
+
+    if (checkMoveToDest(finalDelta, m_player, finalDelta)) {
+        stopMoving = true;
+    }
+
+    if (stopMoving) {
+        m_player->setMovability(false);
+    }
+
+    float deltaX = speedX * finalDelta;
+    float deltaY = speedY * finalDelta;
+    m_player->move(deltaX, deltaY);
+    repositionGameObj(m_player);
+
+    updateViewport();
+
+    return 0;
+}
+
+bool GameScreen::checkMoveWithinBoundary(float& newDelta, GameObject* obj, float speedX, float speedY, float delta)
+{
+    bool touchBoundary = false;
+
+    newDelta = delta;
+
+    float absSpeedX = abs(speedX);
+    if (absSpeedX > ZERO) {
+        float dist = absSpeedX * delta;
+        float maxDist = speedX > 0.0f ? m_mapWidth - obj->getCollideRight() : obj->getCollideLeft();
+        if (maxDist < 0.0f) {
+            maxDist = 0.0f;
+        }
+
+        if (dist > maxDist) {
+            touchBoundary = true;
+            newDelta = maxDist / absSpeedX;
+        }
+    }
+
+    float absSpeedY = abs(speedY);
+    if (absSpeedY > ZERO) {
+        float dist = absSpeedY * delta;
+        float maxDist = speedY > 0.0f ? m_mapHeight - obj->getCollideTop() : obj->getCollideBottom();
+        if (maxDist < 0.0f) {
+            maxDist = 0.0f;
+        }
+
+        if (dist > maxDist) {
+            touchBoundary = true;
+            float d = maxDist / absSpeedY;
+            if (d < newDelta) {
+                newDelta = d;
+            }
+        }
+    }
+
+    return touchBoundary;
+}
+
+bool GameScreen::checkMoveToDest(float& newDelta, GameObject* obj, float delta)
+{
+    bool reach = false;
+    MoveAbility* moveAbility = static_cast<MoveAbility*>(obj->getBase().getAbility(ABILITY_MOVE));
+
+    newDelta = delta;
+    
+    float dist = moveAbility->getSpeed() * newDelta;    
+    float maxDeltaX = moveAbility->getDestX() - obj->getPosX();
+    float maxDeltaY = moveAbility->getDestY() - obj->getPosY();
+    float maxDist = sqrt(maxDeltaX * maxDeltaX + maxDeltaY * maxDeltaY);
+
+    if (dist > maxDist) {
+        reach = true;
+        newDelta = maxDist / moveAbility->getSpeed();
+    }
+
+    return reach;
 }
 
 } // end of namespace bot
