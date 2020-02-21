@@ -9,7 +9,8 @@ namespace bot {
 
 enum GameObjectFlag {
     GOBJ_FLAG_DRAWN = 0x00000001,
-    GOBJ_FLAG_UPDATED = 0x00000002
+    GOBJ_FLAG_UPDATED = 0x00000002,
+    GOBJ_FLAT_CHECKED = 0x00000004
 };
 
 class GameObject: public DoubleLinkedItem {
@@ -218,6 +219,16 @@ public:
 
     float getSpeed() const;
 
+    int getSide() const
+    {
+        return m_side;
+    }
+
+    void setSide(int side)
+    {
+        m_side = side;
+    }
+
 private:
     const GameObjectTemplate* m_template;
     int m_coverStartRow, m_coverEndRow;
@@ -226,6 +237,7 @@ private:
     std::vector<Component> m_components;
     int m_flags;
     int m_hp;
+    int m_side;
 };
 
 } // end of namespace bot

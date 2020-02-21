@@ -13,6 +13,7 @@ GameObject::GameObject(const GameObjectTemplate* t)
     , m_coverEndCol(-1)
     , m_flags(0)
     , m_hp(t->getHP())
+    , m_side(-1)
 {
     m_base.init(t->getBaseComponent(), 0.0f, 0.0f, 1.0f, 0.0f);
 
