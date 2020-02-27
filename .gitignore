@@ -8,3 +8,5 @@ test_log.*
 *.obj
 .vs
 *.exe
+x64
+test/x64

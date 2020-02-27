@@ -148,6 +148,7 @@
     <ClCompile Include="src\bot_ability.cpp" />
     <ClCompile Include="src\bot_abilitytemplate.cpp" />
     <ClCompile Include="src\bot_app.cpp" />
+    <ClCompile Include="src\bot_collide.cpp" />
     <ClCompile Include="src\bot_collisionrect.cpp" />
     <ClCompile Include="src\bot_color.cpp" />
     <ClCompile Include="src\bot_component.cpp" />
@@ -184,6 +185,7 @@
     <ClInclude Include="src\bot_ability.h" />
     <ClInclude Include="src\bot_abilitytemplate.h" />
     <ClInclude Include="src\bot_app.h" />
+    <ClInclude Include="src\bot_collide.h" />
     <ClInclude Include="src\bot_collisionrect.h" />
     <ClInclude Include="src\bot_color.h" />
     <ClInclude Include="src\bot_component.h" />

@@ -6,6 +6,7 @@
 #include "bot_app.h"
 #include "bot_utils.h"
 #include "bot_inputevent.h"
+#include "bot_collide.h"
 #include "bot_gamescreen.h"
 
 using namespace rapidjson;
@@ -99,10 +100,6 @@ bool loadMapPlayerSetting(float& startPosX, float& startPosY, float& startDirect
     return true;
 }
 
-bool checkCornerCollision(float& newDelta, float dx, float dy, float speedX, float speedY, float delta)
-{
-    return false;
-}
 
 GameScreen::GameScreen()
     : m_mapWidth(0.0f)
@@ -693,7 +690,11 @@ int GameScreen::movePlayerToDest(float delta)
         stopMoving = true;
     }
 
-    if (checkMoveToDest(finalDelta, m_player, finalDelta)) {
+    if (checkMoveThroughObjects(finalDelta, m_player, speedX, speedY, finalDelta)) {
+        stopMoving = true;
+    }
+
+    if (!stopMoving && checkMoveToDest(finalDelta, m_player, finalDelta)) {
         stopMoving = true;
     }
 
@@ -704,6 +705,7 @@ int GameScreen::movePlayerToDest(float delta)
     float deltaX = speedX * finalDelta;
     float deltaY = speedY * finalDelta;
     m_player->move(deltaX, deltaY);
+    LOG_INFO("after x=%f y=%f", m_player->getPosX(), m_player->getPosY());
     repositionGameObj(m_player);
 
     updateViewport();
@@ -753,22 +755,45 @@ bool GameScreen::checkMoveWithinBoundary(float& newDelta, GameObject* obj, float
 
 bool GameScreen::checkMoveThroughObjects(float& newDelta, GameObject* obj, float speedX, float speedY, float delta)
 {
-    newDelta = delta;
-
     int startRow, endRow, startCol, endCol;
     
     getCollisionCheckRegion(startRow, endRow, startCol, endCol, obj, speedX, speedY, delta);
-    clearFlagsInRect(startRow, endRow, startCol, endCol, GOBJ_FLAT_CHECKED);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GOBJ_FLAG_CHECKED);
+
+    bool collide = false;
+    float x1 = obj->getPosX();
+    float y1 = obj->getPosY();
+    float collideBreathX1 = obj->getCollideBreathX();
+    float collideBreathY1 = obj->getCollideBreathY();
     
+    newDelta = delta;
+    obj->setFlag(GOBJ_FLAG_CHECKED);
     for (int r = startRow; r <= endRow; ++r) {
         auto& row = m_map[r];
         for (int c = startCol; c <= endCol; ++c) {
+            for (MapItem* item = row[c]; item; item = static_cast<MapItem*>(item->getNext())) {
+                GameObject* obj2 = item->getObj();
+                if (obj2->testFlag(GOBJ_FLAG_CHECKED)) {
+                    continue;
+                }
 
+                float tmpDelta;
+
+                bool tmpCollide = checkObjCollision(tmpDelta, x1, y1, collideBreathX1, collideBreathY1, speedX, speedY,
+                    obj2->getPosX(), obj2->getPosY(), obj2->getCollideBreathX(),
+                    obj2->getCollideBreathY(), newDelta);
+
+                if (tmpCollide) {
+                    newDelta = tmpDelta;
+                    collide = true;
+                }
+
+                obj2->setFlag(GOBJ_FLAG_CHECKED);
+            }
         }
     }
 
-
-    return false;
+    return collide;
 }
 
 bool GameScreen::checkMoveToDest(float& newDelta, GameObject* obj, float delta)
@@ -820,27 +845,6 @@ void GameScreen::getCollisionCheckRegion(int& startRow, int& endRow, int& startC
     startCol = clamp(startCol, 0, getNumCols() - 1);
     endCol = getMapCoord(right);
     endCol = clamp(endCol, 0, getNumCols() - 1);
-}
-
-bool GameScreen::checkObjCollision(float& newDelta, GameObject* obj1, float speedX, float speedY, GameObject* obj2,
-                                   float delta)
-{
-    float x12 = obj1->getCollideLeft() - obj2->getCollideRight();
-    float x21 = obj2->getCollideLeft() - obj1->getCollideRight();
-    float y12 = obj1->getCollideBottom() - obj2->getCollideTop();
-    float y21 = obj2->getCollideBottom() - obj1->getCollideTop();
-
-    if ((x12 >= 0.0f && speedX >= 0.0f) ||
-        (x21 >= 0.0f && speedX <= 0.0f) ||
-        (y12 >= 0.0f && speedY >= 0.0f) ||
-        (y21 >= 0.0f && speedY <= 0.0f))
-    {
-        return false;
-    }
-    
-    
-
-    return true;
 }
 
 } // end of namespace bot

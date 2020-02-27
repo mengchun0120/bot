@@ -131,8 +131,6 @@ private:
     void getCollisionCheckRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
                                  float speedX, float speedY, float delta);
 
-    bool checkObjCollision(float& newDelta, GameObject* obj1, float speedX, float speedY, GameObject* obj2, float delta);
-
 public:
     static const float GRID_BREATH;
     static const int MIN_NUM_ROWS;

@@ -10,7 +10,7 @@ namespace bot {
 enum GameObjectFlag {
     GOBJ_FLAG_DRAWN = 0x00000001,
     GOBJ_FLAG_UPDATED = 0x00000002,
-    GOBJ_FLAT_CHECKED = 0x00000004
+    GOBJ_FLAG_CHECKED = 0x00000004
 };
 
 class GameObject: public DoubleLinkedItem {
