@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -40,220 +36,143 @@
     <Filter Include="git">
       <UniqueIdentifier>{a42341e7-e5a1-4c3d-b0b9-d36cc5835f99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\gameobj">
+      <UniqueIdentifier>{ebb3d57f-6cd1-4512-9520-586b522dc9a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gameutil">
+      <UniqueIdentifier>{4b7ed934-637b-44fb-9e6d-25e1b4975754}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opengl">
+      <UniqueIdentifier>{3b08dd27-1858-48bc-b623-69820e5f4b43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\screen">
+      <UniqueIdentifier>{11679327-0011-4b93-a803-90ee7f43f34d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure">
+      <UniqueIdentifier>{356ec079-0ca3-42ef-85f0-75643573733e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\geometry">
+      <UniqueIdentifier>{a99d328d-5322-49e7-bebd-f21584b9e237}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\misc">
+      <UniqueIdentifier>{c00fb7e3-cbc0-47fb-8144-9969a0c108e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{767cbe13-d08d-4ca8-857e-dd4de1b5541d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\app">
+      <UniqueIdentifier>{4f0cb99c-2658-46b9-ad00-0f0043aab41f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\bot_log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\bot_main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_config.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameobj\bot_ability.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_utils.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameobj\bot_abilitytemplate.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_csvreader.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameobj\bot_component.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_timedeltasmoother.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameobj\bot_componenttemplate.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_app.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameobj\bot_gamelib.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_inputmanager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameobj\bot_gameobject.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_queue.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameobj\bot_gameobjecttemplate.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_inputevent.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameutil\bot_collide.cpp">
+      <Filter>Source Files\gameutil</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_shaderprogram.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameutil\bot_collisionrect.cpp">
+      <Filter>Source Files\gameutil</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_simpleshaderprogram.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\gameutil\bot_timedeltasmoother.cpp">
+      <Filter>Source Files\gameutil</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_texture.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\opengl\bot_color.cpp">
+      <Filter>Source Files\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_vertexarray.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\opengl\bot_shaderprogram.cpp">
+      <Filter>Source Files\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_polygon.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\opengl\bot_simpleshaderprogram.cpp">
+      <Filter>Source Files\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_rectangle.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\opengl\bot_textsystem.cpp">
+      <Filter>Source Files\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_shape.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\opengl\bot_texture.cpp">
+      <Filter>Source Files\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_screen.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\opengl\bot_vertexarray.cpp">
+      <Filter>Source Files\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_startscreen.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\screen\bot_gamescreen.cpp">
+      <Filter>Source Files\screen</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_textsystem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\screen\bot_screen.cpp">
+      <Filter>Source Files\screen</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_screenmanager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\screen\bot_screenmanager.cpp">
+      <Filter>Source Files\screen</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_abilitytemplate.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\screen\bot_startscreen.cpp">
+      <Filter>Source Files\screen</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_component.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\structure\bot_linkeditem.cpp">
+      <Filter>Source Files\structure</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_componenttemplate.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\structure\bot_nameidmap.cpp">
+      <Filter>Source Files\structure</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_gamelib.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\structure\bot_objectpool.cpp">
+      <Filter>Source Files\structure</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_gameobject.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\structure\bot_queue.cpp">
+      <Filter>Source Files\structure</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_gameobjecttemplate.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\geometry\bot_polygon.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_gamescreen.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\geometry\bot_rectangle.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_linkeditem.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\geometry\bot_shape.cpp">
+      <Filter>Source Files\geometry</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_nameidmap.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\misc\bot_config.cpp">
+      <Filter>Source Files\misc</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_color.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\misc\bot_constants.cpp">
+      <Filter>Source Files\misc</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_objectpool.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\misc\bot_csvreader.cpp">
+      <Filter>Source Files\misc</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_collisionrect.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\misc\bot_log.cpp">
+      <Filter>Source Files\misc</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_ability.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\misc\bot_utils.cpp">
+      <Filter>Source Files\misc</Filter>
     </ClCompile>
-    <ClCompile Include="src\bot_collide.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\input\bot_inputevent.cpp">
+      <Filter>Source Files\input</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\bot_log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_config.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_csvreader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_timedeltasmoother.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_app.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_opengl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_inputmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_queue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_inputevent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_shaderprogram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_simpleshaderprogram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_vertexarray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_polygon.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_rectangle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_shape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_screen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_startscreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_textsystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_screenmanager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_ability.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_abilitytemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_componenttemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_gamelib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_gameobject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_gameobjecttemplate.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_gamescreen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_nameidmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_color.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_objectpool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_linkeditem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_collisionrect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\bot_collide.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="src\input\bot_inputmanager.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\bot_app.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -611,5 +530,127 @@
     <Text Include="res\map\map_01.json">
       <Filter>Resource Files\map</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\gameobj\bot_ability.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_abilitytemplate.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_action.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_bullet.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_component.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_componenttemplate.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_gamelib.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_gameobject.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_gameobjecttemplate.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_robot.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_tile.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_collide.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_collisionrect.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_timedeltasmoother.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_color.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_opengl.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_shaderprogram.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_simpleshaderprogram.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_textsystem.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_texture.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_vertexarray.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_gamescreen.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_screen.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_screenmanager.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_startscreen.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_linkeditem.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_nameidmap.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_objectpool.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_queue.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\bot_polygon.h">
+      <Filter>Source Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\bot_rectangle.h">
+      <Filter>Source Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\geometry\bot_shape.h">
+      <Filter>Source Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\bot_config.h">
+      <Filter>Source Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\bot_constants.h">
+      <Filter>Source Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\bot_csvreader.h">
+      <Filter>Source Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\bot_log.h">
+      <Filter>Source Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\bot_utils.h">
+      <Filter>Source Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\bot_inputevent.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\bot_inputmanager.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\bot_app.h">
+      <Filter>Source Files\app</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

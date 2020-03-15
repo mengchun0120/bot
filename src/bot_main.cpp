@@ -2,9 +2,9 @@
 #include <cstring>
 #include <iostream>
 #include <cstdio>
-#include "bot_log.h"
-#include "bot_config.h"
-#include "bot_app.h"
+#include "misc/bot_log.h"
+#include "misc/bot_config.h"
+#include "app/bot_app.h"
 
 void showUsageAndExit() 
 {

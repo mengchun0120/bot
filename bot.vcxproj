@@ -77,7 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)\dependencies\x64\include;$(ProjectDir)\src;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)\dependencies\x64\lib;D:\workspace\bot\dependencies\x64\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\dependencies\x64\lib;$(LibraryPath)</LibraryPath>
     <SourcePath>D:\workspace\bot\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,78 +145,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\bot_ability.cpp" />
-    <ClCompile Include="src\bot_abilitytemplate.cpp" />
-    <ClCompile Include="src\bot_app.cpp" />
-    <ClCompile Include="src\bot_collide.cpp" />
-    <ClCompile Include="src\bot_collisionrect.cpp" />
-    <ClCompile Include="src\bot_color.cpp" />
-    <ClCompile Include="src\bot_component.cpp" />
-    <ClCompile Include="src\bot_componenttemplate.cpp" />
-    <ClCompile Include="src\bot_config.cpp" />
-    <ClCompile Include="src\bot_csvreader.cpp" />
-    <ClCompile Include="src\bot_gamelib.cpp" />
-    <ClCompile Include="src\bot_gameobject.cpp" />
-    <ClCompile Include="src\bot_gameobjecttemplate.cpp" />
-    <ClCompile Include="src\bot_gamescreen.cpp" />
-    <ClCompile Include="src\bot_inputevent.cpp" />
-    <ClCompile Include="src\bot_inputmanager.cpp" />
-    <ClCompile Include="src\bot_linkeditem.cpp" />
-    <ClCompile Include="src\bot_log.cpp" />
+    <ClCompile Include="src\app\bot_app.cpp" />
     <ClCompile Include="src\bot_main.cpp" />
-    <ClCompile Include="src\bot_nameidmap.cpp" />
-    <ClCompile Include="src\bot_objectpool.cpp" />
-    <ClCompile Include="src\bot_polygon.cpp" />
-    <ClCompile Include="src\bot_queue.cpp" />
-    <ClCompile Include="src\bot_rectangle.cpp" />
-    <ClCompile Include="src\bot_screen.cpp" />
-    <ClCompile Include="src\bot_screenmanager.cpp" />
-    <ClCompile Include="src\bot_shaderprogram.cpp" />
-    <ClCompile Include="src\bot_shape.cpp" />
-    <ClCompile Include="src\bot_simpleshaderprogram.cpp" />
-    <ClCompile Include="src\bot_startscreen.cpp" />
-    <ClCompile Include="src\bot_textsystem.cpp" />
-    <ClCompile Include="src\bot_texture.cpp" />
-    <ClCompile Include="src\bot_timedeltasmoother.cpp" />
-    <ClCompile Include="src\bot_utils.cpp" />
-    <ClCompile Include="src\bot_vertexarray.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\bot_ability.h" />
-    <ClInclude Include="src\bot_abilitytemplate.h" />
-    <ClInclude Include="src\bot_app.h" />
-    <ClInclude Include="src\bot_collide.h" />
-    <ClInclude Include="src\bot_collisionrect.h" />
-    <ClInclude Include="src\bot_color.h" />
-    <ClInclude Include="src\bot_component.h" />
-    <ClInclude Include="src\bot_componenttemplate.h" />
-    <ClInclude Include="src\bot_config.h" />
-    <ClInclude Include="src\bot_csvreader.h" />
-    <ClInclude Include="src\bot_gamelib.h" />
-    <ClInclude Include="src\bot_gameobject.h" />
-    <ClInclude Include="src\bot_gameobjecttemplate.h" />
-    <ClInclude Include="src\bot_gamescreen.h" />
-    <ClInclude Include="src\bot_inputevent.h" />
-    <ClInclude Include="src\bot_inputmanager.h" />
-    <ClInclude Include="src\bot_linkeditem.h" />
-    <ClInclude Include="src\bot_log.h" />
-    <ClInclude Include="src\bot_nameidmap.h" />
-    <ClInclude Include="src\bot_objectpool.h" />
-    <ClInclude Include="src\bot_opengl.h" />
-    <ClInclude Include="src\bot_polygon.h" />
-    <ClInclude Include="src\bot_queue.h" />
-    <ClInclude Include="src\bot_rectangle.h" />
-    <ClInclude Include="src\bot_screen.h" />
-    <ClInclude Include="src\bot_screenmanager.h" />
-    <ClInclude Include="src\bot_shaderprogram.h" />
-    <ClInclude Include="src\bot_shape.h" />
-    <ClInclude Include="src\bot_simpleshaderprogram.h" />
-    <ClInclude Include="src\bot_startscreen.h" />
-    <ClInclude Include="src\bot_textsystem.h" />
-    <ClInclude Include="src\bot_texture.h" />
-    <ClInclude Include="src\bot_timedeltasmoother.h" />
-    <ClInclude Include="src\bot_utils.h" />
-    <ClInclude Include="src\bot_vertexarray.h" />
+    <ClCompile Include="src\gameobj\bot_ability.cpp" />
+    <ClCompile Include="src\gameobj\bot_abilitytemplate.cpp" />
+    <ClCompile Include="src\gameobj\bot_component.cpp" />
+    <ClCompile Include="src\gameobj\bot_componenttemplate.cpp" />
+    <ClCompile Include="src\gameobj\bot_gamelib.cpp" />
+    <ClCompile Include="src\gameobj\bot_gameobject.cpp" />
+    <ClCompile Include="src\gameobj\bot_gameobjecttemplate.cpp" />
+    <ClCompile Include="src\gameutil\bot_collide.cpp" />
+    <ClCompile Include="src\gameutil\bot_collisionrect.cpp" />
+    <ClCompile Include="src\gameutil\bot_timedeltasmoother.cpp" />
+    <ClCompile Include="src\geometry\bot_polygon.cpp" />
+    <ClCompile Include="src\geometry\bot_rectangle.cpp" />
+    <ClCompile Include="src\geometry\bot_shape.cpp" />
+    <ClCompile Include="src\input\bot_inputevent.cpp" />
+    <ClCompile Include="src\input\bot_inputmanager.cpp" />
+    <ClCompile Include="src\misc\bot_config.cpp" />
+    <ClCompile Include="src\misc\bot_constants.cpp" />
+    <ClCompile Include="src\misc\bot_csvreader.cpp" />
+    <ClCompile Include="src\misc\bot_log.cpp" />
+    <ClCompile Include="src\misc\bot_utils.cpp" />
+    <ClCompile Include="src\opengl\bot_color.cpp" />
+    <ClCompile Include="src\opengl\bot_shaderprogram.cpp" />
+    <ClCompile Include="src\opengl\bot_simpleshaderprogram.cpp" />
+    <ClCompile Include="src\opengl\bot_textsystem.cpp" />
+    <ClCompile Include="src\opengl\bot_texture.cpp" />
+    <ClCompile Include="src\opengl\bot_vertexarray.cpp" />
+    <ClCompile Include="src\screen\bot_gamescreen.cpp" />
+    <ClCompile Include="src\screen\bot_screen.cpp" />
+    <ClCompile Include="src\screen\bot_screenmanager.cpp" />
+    <ClCompile Include="src\screen\bot_startscreen.cpp" />
+    <ClCompile Include="src\structure\bot_linkeditem.cpp" />
+    <ClCompile Include="src\structure\bot_nameidmap.cpp" />
+    <ClCompile Include="src\structure\bot_objectpool.cpp" />
+    <ClCompile Include="src\structure\bot_queue.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -340,6 +304,48 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\map\map_01.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\app\bot_app.h" />
+    <ClInclude Include="src\gameobj\bot_ability.h" />
+    <ClInclude Include="src\gameobj\bot_abilitytemplate.h" />
+    <ClInclude Include="src\gameobj\bot_action.h" />
+    <ClInclude Include="src\gameobj\bot_bullet.h" />
+    <ClInclude Include="src\gameobj\bot_component.h" />
+    <ClInclude Include="src\gameobj\bot_componenttemplate.h" />
+    <ClInclude Include="src\gameobj\bot_gamelib.h" />
+    <ClInclude Include="src\gameobj\bot_gameobject.h" />
+    <ClInclude Include="src\gameobj\bot_gameobjecttemplate.h" />
+    <ClInclude Include="src\gameobj\bot_robot.h" />
+    <ClInclude Include="src\gameobj\bot_tile.h" />
+    <ClInclude Include="src\gameutil\bot_collide.h" />
+    <ClInclude Include="src\gameutil\bot_collisionrect.h" />
+    <ClInclude Include="src\gameutil\bot_timedeltasmoother.h" />
+    <ClInclude Include="src\geometry\bot_polygon.h" />
+    <ClInclude Include="src\geometry\bot_rectangle.h" />
+    <ClInclude Include="src\geometry\bot_shape.h" />
+    <ClInclude Include="src\input\bot_inputevent.h" />
+    <ClInclude Include="src\input\bot_inputmanager.h" />
+    <ClInclude Include="src\misc\bot_config.h" />
+    <ClInclude Include="src\misc\bot_constants.h" />
+    <ClInclude Include="src\misc\bot_csvreader.h" />
+    <ClInclude Include="src\misc\bot_log.h" />
+    <ClInclude Include="src\misc\bot_utils.h" />
+    <ClInclude Include="src\opengl\bot_color.h" />
+    <ClInclude Include="src\opengl\bot_opengl.h" />
+    <ClInclude Include="src\opengl\bot_shaderprogram.h" />
+    <ClInclude Include="src\opengl\bot_simpleshaderprogram.h" />
+    <ClInclude Include="src\opengl\bot_textsystem.h" />
+    <ClInclude Include="src\opengl\bot_texture.h" />
+    <ClInclude Include="src\opengl\bot_vertexarray.h" />
+    <ClInclude Include="src\screen\bot_gamescreen.h" />
+    <ClInclude Include="src\screen\bot_screen.h" />
+    <ClInclude Include="src\screen\bot_screenmanager.h" />
+    <ClInclude Include="src\screen\bot_startscreen.h" />
+    <ClInclude Include="src\structure\bot_linkeditem.h" />
+    <ClInclude Include="src\structure\bot_nameidmap.h" />
+    <ClInclude Include="src\structure\bot_objectpool.h" />
+    <ClInclude Include="src\structure\bot_queue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
