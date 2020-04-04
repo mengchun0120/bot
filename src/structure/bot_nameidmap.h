@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_NAMEIDMAP
 
 #include <string>
+#include <vector>
 
 namespace bot {
 
@@ -45,6 +46,13 @@ private:
 
     Node *m_root;
 };
+
+template <typename T>
+const T* getObjectByName(const std::vector<T>& lib, const NameIdMap& idMap, const char* name)
+{
+    int idx = idMap.search(name);
+    return (idx >= 0) ? &lib[idx] : nullptr;
+}
 
 } // end of namespace bot
 

@@ -14,6 +14,8 @@ public:
         LEVEL_ERROR
     };
 
+    static const LogLevel DEFAULT_LOG_LEVEL;
+
     static Logger g_logger;
 
     static const char* levelString(LogLevel level);
@@ -22,7 +24,7 @@ public:
 
     ~Logger();
 
-    bool init(const char* logFile, LogLevel minLevel);
+    bool init(const char* logFile, LogLevel minLevel=DEFAULT_LOG_LEVEL);
 
     void write(const char *format, ...);
 

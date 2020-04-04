@@ -11,6 +11,8 @@ namespace bot {
 
 Logger Logger::g_logger;
 
+const Logger::LogLevel Logger::DEFAULT_LOG_LEVEL = Logger::LEVEL_INFO;
+
 const char* Logger::levelString(LogLevel level)
 {
     switch(level) {
@@ -27,14 +29,15 @@ const char* Logger::levelString(LogLevel level)
 }
 
 Logger::Logger()
-: m_fp(nullptr)
-, m_minLevel(LEVEL_INFO)
+    : m_fp(nullptr)
+    , m_minLevel(LEVEL_INFO)
 {
 }
 
 Logger::~Logger()
 {
-    if(m_fp) {
+    if(m_fp != stdout) 
+    {
         fclose(m_fp);
     }
 }
@@ -43,10 +46,18 @@ bool Logger::init(const char* logFile, LogLevel minLevel)
 {
     m_minLevel = minLevel;
 
-    m_fp = fopen(logFile, "w");
-    if(!m_fp) {
-        fprintf(stderr, "Failed to open %s", logFile);
-        return false;
+    if (logFile)
+    {
+        m_fp = fopen(logFile, "w");
+        if (!m_fp) 
+        {
+            fprintf(stderr, "Failed to open %s", logFile);
+            return false;
+        }
+    }
+    else
+    {
+        m_fp = stdout;
     }
 
     return true;
@@ -69,12 +80,14 @@ void Logger::logTime()
           t.wYear, t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond, t.wMilliseconds);
 #elif __linux__
     struct timespec tp;
-    if (clock_gettime(CLOCK_REALTIME, &tp) == -1) {
+    if (clock_gettime(CLOCK_REALTIME, &tp) == -1) 
+    {
         return;
     }
 
     struct tm t;
-    if (localtime_r(&tp.tv_sec, &t) == NULL) {
+    if (localtime_r(&tp.tv_sec, &t) == NULL) 
+    {
         return;
     }
 

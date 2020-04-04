@@ -1,6 +1,6 @@
 #include <cmath>
 #include "misc/bot_constants.h"
-#include "misc/bot_utils.h"
+#include "misc/bot_mathutils.h"
 #include "gameutil/bot_collide.h"
 
 namespace bot {
@@ -17,21 +17,26 @@ bool checkCornerCollision(float& newDelta, float nearDistX, float nearDistY, flo
     float movDistX = absSpeedX * delta;
     float movDistY = absSpeedY * delta;
 
-    if (movDistX < nearDistX || movDistY < nearDistY) {
+    if (movDistX < nearDistX || movDistY < nearDistY) 
+    {
         return false;
     }
 
     float distYSpeedX = nearDistY * absSpeedX;
     float distXSpeedY = nearDistX * absSpeedY;
-    if (distYSpeedX <= distXSpeedY) {
-        if (distXSpeedY > farDistY* absSpeedX) {
+    if (distYSpeedX <= distXSpeedY) 
+    {
+        if (distXSpeedY > farDistY* absSpeedX) 
+        {
             return false;
         }
 
         newDelta = safeDivide(convetionFloat(nearDistX), absSpeedX);
     }
-    else {
-        if (distYSpeedX > farDistX* absSpeedY) {
+    else 
+    {
+        if (distYSpeedX > farDistX* absSpeedY) 
+        {
             return false;
         }
 

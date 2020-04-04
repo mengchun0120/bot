@@ -1,7 +1,0 @@
-name,type,cover_breath_x,cover_breath_y,hp,collide_breath_x,collide_breath_y,base_component,component1,x1,y1,dx1,dy1,component2,x2,y2,dx2,dy2,component3,x3,y3,dx3,dy3,component4,x4,y4,dx4,dy4
-ice_tile,tile,20,20,10,20,20,ice_tile,,,,,,,,,,,,,,,,,,,,
-clay_tile,tile,20,20,100,20,20,clay_tile,,,,,,,,,,,,,,,,,,,,
-steel_tile,tile,20,20,-1,20,20,steel_tile,,,,,,,,,,,,,,,,,,,,
-simple_bot,bot,48.28,48.28,100,21.2,21.2,green_base,darkgreen_barrel,38.28,0,1,0,,,,,,,,,,,,,,,
-basic_bullet,bullet,9,9,-1,6.4,6.4,lightgreen_bullet,,,,,,,,,,,,,,,,,,,,
-player,bot,48.28,48.28,200,21.2,21.2,player_green_base,player_darkgreen_barrel,38.28,0,1,0,,,,,,,,,,,,,,,

@@ -1,8 +1,5 @@
 #include "misc/bot_log.h"
-#include "misc/bot_config.h"
 #include "misc/bot_constants.h"
-#include "misc/bot_utils.h"
-#include "app/bot_app.h"
 #include "opengl/bot_vertexarray.h"
 #include "opengl/bot_simpleshaderprogram.h"
 
@@ -31,13 +28,10 @@ SimpleShaderProgram::~SimpleShaderProgram()
 {
 }
 
-bool SimpleShaderProgram::init()
+bool SimpleShaderProgram::init(const std::string& vertexShaderFile, const std::string& fragShaderFile)
 {
-    const std::string& resDir = App::g_app.getResourceDir();
-    std::string vertexShaderFile = constructPath({ resDir, "glsl", "simple_vertex_shader.glsl"});
-    std::string fragShaderFile = constructPath({ resDir, "glsl", "simple_frag_shader.glsl" });
-
-    if(!ShaderProgram::init(vertexShaderFile, fragShaderFile)) {
+    if (!ShaderProgram::init(vertexShaderFile, fragShaderFile)) 
+    {
         return false;
     }
 
@@ -79,7 +73,8 @@ void SimpleShaderProgram::setPosition(const VertexArray& vertexArray)
                           GL_FLOAT, GL_FALSE, vertexArray.stride(), (void *)0);
     glEnableVertexAttribArray(m_positionLocation);
 
-    if(vertexArray.hasTexCoord()) {
+    if (vertexArray.hasTexCoord()) 
+    {
         glVertexAttribPointer(m_texPosLocation, Constants::NUM_FLOATS_PER_TEXCOORD,
                               GL_FLOAT, GL_FALSE, vertexArray.stride(),
                               (void *)(Constants::POSITION_SIZE));

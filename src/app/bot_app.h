@@ -2,35 +2,26 @@
 #define INCLUDE_BOT_APP
 
 #include <string>
-#include "bot_timedeltasmoother.h"
-#include "bot_screenmanager.h"
-#include "bot_simpleshaderprogram.h"
-#include "bot_textsystem.h"
-#include "bot_gamelib.h"
+#include <rapidjson/document.h>
+#include "input/bot_inputmanager.h"
+#include "opengl/bot_simpleshaderprogram.h"
+#include "opengl/bot_textsystem.h"
+#include "gameutil/bot_timedeltasmoother.h"
+#include "gametemplate/bot_gametemplatelib.h"
+
+struct GLFWwindow;
 
 namespace bot {
 
 class App {
 public:
-    static App g_app;
-
     App();
 
     ~App();
 
+    bool init(const std::string& appDir, const std::string& cfgFile);
+
     bool run();
-
-    bool init(const char *appDir);
-
-    SimpleShaderProgram& program()
-    {
-        return m_program;
-    }
-
-    TextSystem& textSystem()
-    {
-        return m_textSystem;
-    }
 
     float viewportWidth() const
     {
@@ -42,53 +33,36 @@ public:
         return m_viewportHeight;
     }
 
-    const std::string& getAppDir() const
-    {
-        return m_appDir;
-    }
-
-    const std::string& getResourceDir() const
-    {
-        return m_resourceDir;
-    }
-
-    const std::string& getSaveDir() const
-    {
-        return m_saveDir;
-    }
-
-    ScreenManager& screenMgr()
-    {
-        return m_screenMgr;
-    }
-
-    GameLib& gameLib()
-    {
-        return m_gameLib;
-    }
-
 private:
+    bool initWindow(const rapidjson::Value& cfg);
 
-    bool initWindow();
+    bool initInputManager(const rapidjson::Value& cfg);
 
-    bool initOpenGL();
+    bool initOpenGL(const rapidjson::Value& cfg);
 
     void updateViewport();
 
-    bool initGame();
+    bool initGame(const rapidjson::Value& cfg);
+
+    bool initTimeDeltaSmoother(const rapidjson::Value& cfg);
+
+    bool initTextSystem(const rapidjson::Value& cfg);
+
+    bool initGameTemplateLib(const rapidjson::Value& cfg);
 
 private:
     GLFWwindow* m_window;
+    int m_timeDeltaHistoryLen;
+    int m_eventQueueSize;
+    std::string m_appDir;
+    std::string m_resDir;
     float m_viewportWidth;
     float m_viewportHeight;
-    std::string m_appDir;
-    std::string m_resourceDir;
-    std::string m_saveDir;
-    TimeDeltaSmoother m_deltaSmoother;
-    ScreenManager m_screenMgr;
+    InputManager m_inputMgr;
     SimpleShaderProgram m_program;
+    TimeDeltaSmoother m_timeDeltaSmoother;
     TextSystem m_textSystem;
-    GameLib m_gameLib;
+    GameTemplateLib m_gameTemplateLib;
 };
 
 } // end of namespace bot

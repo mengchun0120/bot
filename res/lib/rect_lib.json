@@ -1,0 +1,22 @@
+[
+  {
+    "name": "square60",
+    "width": 60.0,
+    "height": 60.0
+  },
+  {
+    "name": "square40",
+    "width": 40.0,
+    "height": 40.0
+  },
+  {
+    "name": "square20",
+    "width": 20.0,
+    "height": 20.0
+  },
+  {
+    "name": "square18",
+    "width": 18.0,
+    "height": 18.0
+  }
+]

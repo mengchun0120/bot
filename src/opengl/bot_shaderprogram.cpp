@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <GL/glew.h>
-#include "misc/bot_utils.h"
 #include "misc/bot_log.h"
+#include "misc/bot_fileutils.h"
 #include "opengl/bot_shaderprogram.h"
 
 namespace bot {
@@ -9,10 +9,10 @@ namespace bot {
 const char* shaderName(GLenum type)
 {
     switch(type) {
-    case GL_VERTEX_SHADER:
-        return "vertex shader";
-    case GL_FRAGMENT_SHADER:
-        return "fragment shader";
+        case GL_VERTEX_SHADER:
+            return "vertex shader";
+        case GL_FRAGMENT_SHADER:
+            return "fragment shader";
     }
 
     return "invalid shader";
@@ -22,7 +22,8 @@ GLuint compileShader(GLenum type, const std::string& fileName)
 {
     std::string source;
 
-    if(!readText(source, fileName)) {
+    if (!readText(source, fileName)) 
+    {
         return 0;
     }
 
@@ -31,7 +32,8 @@ GLuint compileShader(GLenum type, const std::string& fileName)
     LOG_INFO("Comiple %s using source:\n%s", shaderName(type), cSource);
 
     GLuint shader = glCreateShader(type);
-    if(shader == 0) {
+    if (shader == 0) 
+    {
         LOG_ERROR("Failed to create shader %d", type);
         return 0;
     }
@@ -44,7 +46,8 @@ GLuint compileShader(GLenum type, const std::string& fileName)
     GLint compileStatus;
 
     glGetShaderiv(shader, GL_COMPILE_STATUS, &compileStatus);
-    if(compileStatus == 0) {
+    if (compileStatus == 0) 
+    {
         GLint infoLen;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
         char* info = new char[infoLen + 1];
@@ -57,7 +60,9 @@ GLuint compileShader(GLenum type, const std::string& fileName)
         LOG_ERROR("Compilation failed");
         glDeleteShader(shader);
         shader = 0;
-    } else {
+    } 
+    else 
+    {
         LOG_INFO("Compilation is successful");
     }
 
@@ -67,7 +72,8 @@ GLuint compileShader(GLenum type, const std::string& fileName)
 GLuint linkProgram(GLuint vertex_shader, GLuint frag_shader)
 {
     GLuint program = glCreateProgram();
-    if(program == 0) {
+    if (program == 0) 
+    {
         LOG_ERROR("Failed to create program");
         return 0;
     }
@@ -79,7 +85,8 @@ GLuint linkProgram(GLuint vertex_shader, GLuint frag_shader)
     GLint linkStatus;
 
     glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
-    if(linkStatus == 0) {
+    if (linkStatus == 0) 
+    {
         GLint infoLen;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLen);
         char* info = new char[infoLen + 1];
@@ -91,7 +98,9 @@ GLuint linkProgram(GLuint vertex_shader, GLuint frag_shader)
 
         LOG_ERROR("Linking failed");
         return 0;
-    } else {
+    } 
+    else
+    {
         LOG_INFO("Linking is successful");
     }
 
@@ -99,35 +108,41 @@ GLuint linkProgram(GLuint vertex_shader, GLuint frag_shader)
 }
 
 ShaderProgram::ShaderProgram()
-: m_vertexShader(0)
-, m_fragShader(0)
-, m_program(0)
+    : m_vertexShader(0)
+    , m_fragShader(0)
+    , m_program(0)
 {
 }
 
 ShaderProgram::~ShaderProgram()
 {
-    if(m_program != 0) {
-        if(m_vertexShader != 0) {
+    if (m_program != 0) 
+    {
+        if(m_vertexShader != 0) 
+        {
             glDetachShader(m_program, m_vertexShader);
         }
 
-        if(m_fragShader != 0) {
+        if(m_fragShader != 0) 
+        {
             glDetachShader(m_program, m_fragShader);
         }
     }
 
-    if(m_vertexShader != 0) {
+    if (m_vertexShader != 0) 
+    {
         glDeleteShader(m_vertexShader);
         m_vertexShader = 0;
     }
 
-    if(m_fragShader != 0) {
+    if (m_fragShader != 0) 
+    {
         glDeleteShader(m_fragShader);
         m_fragShader = 0;
     }
 
-    if(m_program != 0) {
+    if (m_program != 0) 
+    {
         glDeleteProgram(m_program);
         m_program = 0;
     }
@@ -137,12 +152,14 @@ bool ShaderProgram::init(const std::string& vertexShaderFile,
                           const std::string& fragShaderFile)
 {
     m_vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderFile);
-    if(m_vertexShader == 0) {
+    if (m_vertexShader == 0) 
+    {
         return false;
     }
 
     m_fragShader = compileShader(GL_FRAGMENT_SHADER, fragShaderFile);
-    if(m_fragShader == 0) {
+    if (m_fragShader == 0) 
+    {
         return false;
     }
 

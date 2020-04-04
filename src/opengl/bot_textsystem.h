@@ -18,6 +18,7 @@ public:
         SMALL,
         SIZE_COUNT
     };
+
     static const int MIN_CHAR = 32;
     static const int MAX_CHAR = 126;
     static const int CHAR_COUNT = MAX_CHAR - MIN_CHAR + 1;
@@ -26,20 +27,20 @@ public:
 
     virtual ~TextSystem();
 
-    bool init();
+    bool init(const std::string& fontFolder);
 
     Texture& getTexture(char ch)
     {
         return m_textures[static_cast<int>(ch) - MIN_CHAR];
     }
 
-    Rectangle& getRect(Size sz, char ch)
+    const Rectangle& getRect(Size sz, char ch)
     {
         return *(m_rectMap[sz][static_cast<int>(ch) - MIN_CHAR]);
     }
 
     void drawString(SimpleShaderProgram& program, const std::string& str,
-                    Size size, const float *pos, const float *color);
+                    Size size, const float *pos, const float *color) const;
 
     void getStringSize(float &width, float &height, Size sz, const std::string& str);
 

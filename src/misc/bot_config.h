@@ -7,8 +7,6 @@ namespace bot {
 
 class Config {
 public:
-    static Config g_cfg;
-
     Config();
 
     ~Config();
@@ -21,6 +19,10 @@ public:
     std::string m_title;
     int m_timeDeltaHistoryLen;
     int m_eventQueueSize;
+    std::string m_resourceFolder;
+    std::string m_textureFolder;
+    std::string m_animationFolder;
+    std::string m_templateLibFolder;
 };
 
 } // end of namespace bot

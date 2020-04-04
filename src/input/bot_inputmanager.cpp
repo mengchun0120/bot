@@ -5,27 +5,38 @@
 
 namespace bot {
 
-InputManager InputManager::g_inputMgr;
+InputManager* k_inputMgr = nullptr;
 
 void handleMouseMove(GLFWwindow *window, double x, double y)
 {
-    InputManager::g_inputMgr.addMouseMoveEvent(static_cast<float>(x), static_cast<float>(y));
+    if (k_inputMgr) 
+    {
+        k_inputMgr->addMouseMoveEvent(static_cast<float>(x), static_cast<float>(y));
+    }
 }
 
 void handleMouseButton(GLFWwindow *window, int button, int action, int mods)
 {
-    double x, y;
-    glfwGetCursorPos(window, &x, &y);
-    InputManager::g_inputMgr.addMouseButtonEvent(static_cast<float>(x), static_cast<float>(y),
-                                   button, action);
+    if (k_inputMgr)
+    {
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        k_inputMgr->addMouseButtonEvent(static_cast<float>(x), static_cast<float>(y),
+            button, action);
+    }
 }
 
 void handleKey(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    InputManager::g_inputMgr.addKeyEvent(key, action);
+    if (k_inputMgr)
+    {
+        k_inputMgr->addKeyEvent(key, action);
+    }
 }
 
 InputManager::InputManager()
+    : m_window(nullptr)
+    , m_viewportHeight(0.0f)
 {
 }
 
@@ -33,10 +44,12 @@ InputManager::~InputManager()
 {
 }
 
-void InputManager::init(GLFWwindow *window)
+void InputManager::init(GLFWwindow* window, int eventQueueSize, float viewportHeight)
 {
     m_window = window;
-    m_inputEvents.init(Config::g_cfg.m_eventQueueSize);
+    m_inputEvents.init(eventQueueSize);
+    m_viewportHeight = viewportHeight;
+    k_inputMgr = this;
 }
 
 void InputManager::start()
@@ -60,7 +73,8 @@ void InputManager::clear()
 
 void InputManager::addMouseButtonEvent(float x, float y, int button, int action)
 {
-    if(m_inputEvents.full()) {
+    if (m_inputEvents.full()) 
+    {
         LOG_WARN("Input events queue is full");
         return;
     }
@@ -68,7 +82,7 @@ void InputManager::addMouseButtonEvent(float x, float y, int button, int action)
     InputEvent e;
     e.m_type = InputEvent::ET_MOUSE_BUTTON;
     e.m_mouseButtonEvent.m_x = x;
-    e.m_mouseButtonEvent.m_y = App::g_app.viewportHeight() - y;
+    e.m_mouseButtonEvent.m_y = m_viewportHeight - y;
     e.m_mouseButtonEvent.m_button = button;
     e.m_mouseButtonEvent.m_action = action;
     m_inputEvents.enqueue(e);
@@ -76,7 +90,8 @@ void InputManager::addMouseButtonEvent(float x, float y, int button, int action)
 
 void InputManager::addMouseMoveEvent(float x, float y)
 {
-    if(m_inputEvents.full()) {
+    if (m_inputEvents.full()) 
+    {
         LOG_WARN("Input events queue is full");
         return;
     }
@@ -84,13 +99,14 @@ void InputManager::addMouseMoveEvent(float x, float y)
     InputEvent e;
     e.m_type = InputEvent::ET_MOUSE_MOVE;
     e.m_mouseMoveEvent.m_x = x;
-    e.m_mouseMoveEvent.m_y = App::g_app.viewportHeight() - y;
+    e.m_mouseMoveEvent.m_y = m_viewportHeight - y;
     m_inputEvents.enqueue(e);
 }
 
 void InputManager::addKeyEvent(int key, int action)
 {
-    if(m_inputEvents.full()) {
+    if (m_inputEvents.full()) 
+    {
         LOG_WARN("Input events queue is full");
         return;
     }
@@ -105,10 +121,12 @@ void InputManager::addKeyEvent(int key, int action)
 bool InputManager::processInput(InputProcessor &processor)
 {
     InputEvent e;
-    while(!m_inputEvents.empty()) {
+    while (!m_inputEvents.empty()) 
+    {
         m_inputEvents.dequeue(e);
         int ret = processor(e);
-        if(ret != 0) {
+        if (ret != 0)
+        {
             m_inputEvents.clear();
             return ret == 2 ? false : true;
         }

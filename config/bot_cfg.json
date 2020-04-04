@@ -1,7 +1,22 @@
 {
+	"resDir": "res",
 	"width": 1000,
 	"height": 700,
 	"title": "Battle Bot",
+	"glslDir": "glsl",
+	"vertexShaderFile": "simple_vertex_shader.glsl",
+	"fragShaderFile": "simple_frag_shader.glsl",
+	"eventQueueSize": 20,
 	"timeDeltaHistoryLen": 5,
-	"eventQueueSize": 20
+	"fontDir": "fonts",
+	"textureDir": "texture",
+	"libDir": "lib",
+	"animationDir": "animation",
+	"textureLib": "texture_lib.json",
+	"colorLib": "color_lib.json",
+	"rectLib": "rect_lib.json",
+	"tileTemplateLib": "tile_template_lib.json",
+	"animationTemplateLib": "animation_template_lib.json",
+	"missileTemplateLib": "missile_template_lib.json",
+	"robotTemplateLib": "robot_template_lib.json"
 }

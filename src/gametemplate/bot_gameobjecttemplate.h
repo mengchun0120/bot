@@ -1,6 +1,8 @@
 #ifndef INCLUDE_BOT_GAMEOBJECTTEMPLATE
 #define INCLUDE_BOT_GAMEOBJECTTEMPLATE
 
+#include "gameobj/bot_gameobjectflag.h"
+
 namespace bot {
 
 class GameObjectTemplate {
@@ -61,6 +63,21 @@ public:
     void setCollideBreathY(float collideBreathY)
     {
         m_collideBreathY = collideBreathY;
+    }
+
+    int getFlags() const
+    {
+        return m_flags;
+    }
+
+    void clearFlag(GameObjectFlag flag)
+    {
+        m_flags &= ~(static_cast<int>(flag));
+    }
+
+    void setFlag(GameObjectFlag flag)
+    {
+        m_flags |= static_cast<int>(flag);
     }
 
 protected:

@@ -1,0 +1,30 @@
+[
+  {
+    "name": "blue_bullet",
+    "texture": "bullet",
+    "rect": "square18",
+    "color": "blue",
+    "coverBreathX": 9.0,
+    "coverBreathY": 9.0,
+    "collideBreathX": 6.4,
+    "collideBreathY": 6.4,
+    "speed": 200.0,
+    "explosionPower": 20,
+    "explosionBreath": 20.0,
+    "explosionAnimation": ""
+  },
+  {
+    "name": "red_bullet",
+    "texture": "bullet",
+    "rect": "square18",
+    "color": "red",
+    "coverBreathX": 9.0,
+    "coverBreathY": 9.0,
+    "collideBreathX": 6.4,
+    "collideBreathY": 6.4,
+    "speed": 200.0,
+    "explosionPower": 20,
+    "explosionBreath": 20.0,
+    "explosionAnimation": ""
+  }
+]

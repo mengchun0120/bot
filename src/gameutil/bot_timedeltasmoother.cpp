@@ -4,6 +4,9 @@
 namespace bot {
 
 TimeDeltaSmoother::TimeDeltaSmoother()
+    : m_sumTimeDelta(0.0f)
+    , m_totalSlots(0)
+    , m_lastSlot(0)
 {
 }
 
@@ -12,9 +15,9 @@ TimeDeltaSmoother::~TimeDeltaSmoother()
 {
 }
 
-void TimeDeltaSmoother::init()
+void TimeDeltaSmoother::init(int timeDeltaHistoryLen)
 {
-    m_timeDeltaHistory.resize(Config::g_cfg.m_timeDeltaHistoryLen);
+    m_timeDeltaHistory.resize(timeDeltaHistoryLen);
 }
 
 void TimeDeltaSmoother::start()
@@ -24,7 +27,8 @@ void TimeDeltaSmoother::start()
     m_prevTime = high_resolution_clock::now();
 
     unsigned int histSize = m_timeDeltaHistory.size();
-    for(unsigned int i = 0; i < histSize; ++i) {
+    for (unsigned int i = 0; i < histSize; ++i) 
+    {
         m_timeDeltaHistory[i] = 0.0f;
     }
 
@@ -43,9 +47,12 @@ float TimeDeltaSmoother::getTimeDelta()
 
     unsigned int histSize = m_timeDeltaHistory.size();
 
-    if(m_totalSlots == m_timeDeltaHistory.size()) {
+    if (m_totalSlots == m_timeDeltaHistory.size()) 
+    {
         m_sumTimeDelta += timeDelta - m_timeDeltaHistory[m_lastSlot];
-    } else {
+    } 
+    else
+    {
         m_sumTimeDelta += timeDelta;
         m_totalSlots++;
     }

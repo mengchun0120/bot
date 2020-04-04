@@ -1,35 +1,71 @@
 #ifndef INCLUDE_BOT_COLOR
 #define INCLUDE_BOT_COLOR
 
-#include "bot_constants.h"
+#include "misc/bot_constants.h"
 
 namespace bot {
 
 class Color {
 public:
-    Color()
+    static bool validateElem(int elem)
     {
-        m_color[0] = 0.0f;
-        m_color[1] = 0.0f;
-        m_color[2] = 0.0f;
-        m_color[3] = 0.0f;
+        return elem >= 0 && elem <= 255;
     }
+
+    static bool validateElem(float elem)
+    {
+        return elem >= 0.0f && elem <= 1.0f;
+    }
+
+    static bool validateColor(int red, int green, int blue, int alpha);
+
+    Color();
 
     ~Color()
     {}
 
-    void set(int red, int green, int blue, int alpha)
-    {
-        m_color[0] = red / 255.0f;
-        m_color[1] = green / 255.0f;
-        m_color[2] = blue / 255.0f;
-        m_color[3] = alpha / 255.0f;
-    }
+    bool setColor(int red, int green, int blue, int alpha);
 
-    float *color()
+    const float *getColor() const
     {
         return m_color;
     }
+
+    float getRed() const
+    {
+        return m_color[0];
+    }
+
+    bool setRed(int red);
+
+    bool setRed(float red);
+
+    float getGreen() const
+    {
+        return m_color[1];
+    }
+
+    bool setGreen(int green);
+
+    bool setGreen(float green);
+
+    float getBlue() const
+    {
+        return m_color[2];
+    }
+
+    bool setBlue(int blue);
+
+    bool setBlue(float blue);
+
+    float getAlpha() const
+    {
+        return m_color[3];
+    }
+
+    bool setAlpha(int alpha);
+
+    bool setAlpha(float alpha);
 
 private:
     float m_color[Constants::NUM_FLOATS_COLOR];

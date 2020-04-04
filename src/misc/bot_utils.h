@@ -14,45 +14,6 @@ namespace bot {
 
 using Clock = std::chrono::high_resolution_clock;
 
-template <typename T>
-T clamp(const T& t, const T& min, const T& max)
-{
-    if (t < min) {
-        return min;
-    }
-    else if (t > max) {
-        return max;
-    }
-
-    return t;
-}
-
-inline float safeDivide(float x, float y)
-{
-    return (y > Constants::FLOAT_ZERO || y < -Constants::FLOAT_ZERO) ? (x / y) : (x / Constants::FLOAT_ZERO);
-}
-
-bool readText(std::string& text, const std::string& fileName);
-
-std::string trim(const std::string &s);
-
-std::string getFileSeparator();
-
-std::string constructPath(std::initializer_list<std::string> s);
-
-void fillColor(float *color, int r, int g, int b, int alpha);
-
-bool isBlank(const std::string &s);
-
-void tokenize(std::vector<std::string> &tokens, const std::string &s, 
-              char delimiter, bool trimSpace=true);
-
-bool readJson(rapidjson::Document& doc, const char* fileName);
-
-void rotate(float& x, float& y, float directionX, float directionY);
-
-void getDirection(float& directionX, float& directionY, float srcX, float srcY, float dstX, float dstY);
-
 template <typename PROCESSOR>
 bool readAndProcessCSVFile(const std::string &file,
                            PROCESSOR processor)

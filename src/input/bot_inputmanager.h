@@ -17,13 +17,11 @@ typedef std::function<int(const InputEvent&)> InputProcessor;
 
 class InputManager {
 public:
-    static InputManager g_inputMgr;
-
     InputManager();
 
     virtual ~InputManager();
 
-    void init(GLFWwindow *window);
+    void init(GLFWwindow* window, int eventQueueSize, float viewPortHeight);
 
     void start();
 
@@ -38,14 +36,14 @@ public:
     void addKeyEvent(int key, int action);
 
     // Returns true if app should continue; false if app should exit
-    bool processInput(InputProcessor &processor);
+    bool processInput(InputProcessor& processor);
 
 protected:
     GLFWwindow *m_window;
     Queue<InputEvent> m_inputEvents;
+    float m_viewportHeight;
 };
 
 } // end of namespace bot
 
 #endif
-

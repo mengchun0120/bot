@@ -14,7 +14,7 @@ public:
 
     virtual ~TimeDeltaSmoother();
 
-    void init();
+    void init(int timeDeltaHistoryLen);
 
     void start();
 
