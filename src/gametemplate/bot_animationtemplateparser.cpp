@@ -10,7 +10,6 @@ bool AnimationTemplateParser::parse(AnimationTemplate* animationTemplate, const 
 {
 	float coverBreathX = 0.0f, coverBreathY = 0.0f;
 	float collideBreathX = 0.0f, collideBreathY = 0.0f;
-	int hp = 0;
 	bool collidable = false;
 	std::string rectName;
 	float interval = 0.0f;
@@ -37,7 +36,6 @@ bool AnimationTemplateParser::parse(AnimationTemplate* animationTemplate, const 
 	animationTemplate->setCoverBreathY(coverBreathY);
 	animationTemplate->setCollideBreathX(collideBreathX);
 	animationTemplate->setCollideBreathY(collideBreathY);
-	animationTemplate->setHP(hp);
 	animationTemplate->setFrameInterval(interval);
 	animationTemplate->setFlag(GAME_OBJ_FLAG_INDESTRUCTABLE);
 

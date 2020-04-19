@@ -11,7 +11,7 @@ bool RectangleParser::parse(Rectangle* rect, const rapidjson::Value& elem)
 	std::vector<JsonParseParam> params = 
 	{
 		{&width, "width", JSONTYPE_FLOAT},
-		{&width, "height", JSONTYPE_FLOAT}
+		{&height, "height", JSONTYPE_FLOAT}
 	};
 
 	if (!parseJson(params, elem)) 

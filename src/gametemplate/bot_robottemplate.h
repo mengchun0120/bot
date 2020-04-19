@@ -133,6 +133,16 @@ public:
 		m_attachComponents[ABILITY_SHOOT] = &m_components[componentIdx];
 	}
 
+	int getHP() const
+	{
+		return m_hp;
+	}
+
+	void setHP(int hp)
+	{
+		m_hp = hp;
+	}
+
 protected:
 	void initComponents();
 
@@ -140,6 +150,7 @@ protected:
 
 protected:
 	std::vector<Component> m_components;
+	int m_hp;
 	AbilityTemplate* m_abilityTemplates[NUM_ABILITY_TYPES];
 	Component* m_attachComponents[NUM_ABILITY_TYPES];
 };

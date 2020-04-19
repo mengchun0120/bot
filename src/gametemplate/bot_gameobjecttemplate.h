@@ -10,7 +10,7 @@ public:
     GameObjectTemplate();
 
     GameObjectTemplate(float coverBreathX, float coverBreathY, float collideBreathX, float collideBreathY,
-                       int hp, int flags);
+                       int flags);
 
     virtual ~GameObjectTemplate()
     {}
@@ -28,16 +28,6 @@ public:
     float getCoverBreathY() const
     {
         return m_coverBreathY;
-    }
-
-    int getHP() const
-    {
-        return m_hp;
-    }
-
-    void setHP(int hp)
-    {
-        m_hp = hp;
     }
 
     void setCoverBreathY(float breathY)
@@ -85,7 +75,6 @@ protected:
     float m_coverBreathY;
     float m_collideBreathX;
     float m_collideBreathY;
-    int m_hp;
     int m_flags;
 };
 

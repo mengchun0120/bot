@@ -209,6 +209,36 @@
     <ClCompile Include="src\gameobj\bot_gameobjectflag.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
+    <ClCompile Include="src\screen\bot_screen.cpp">
+      <Filter>Source Files\screen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\screen\bot_screenmanager.cpp">
+      <Filter>Source Files\screen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\screen\bot_startscreen.cpp">
+      <Filter>Source Files\screen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_gameobject.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_tile.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_mapitem.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_gamemap.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_gameobjectmanager.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\structure\bot_linkedlist.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -216,21 +246,6 @@
     </None>
     <None Include="res\glsl\simple_vertex_shader.glsl">
       <Filter>Resource Files\glsl</Filter>
-    </None>
-    <None Include="res\lib\color_lib.csv">
-      <Filter>Resource Files\lib</Filter>
-    </None>
-    <None Include="res\lib\component_template_lib.csv">
-      <Filter>Resource Files\lib</Filter>
-    </None>
-    <None Include="res\lib\game_obj_template_lib.csv">
-      <Filter>Resource Files\lib</Filter>
-    </None>
-    <None Include="res\lib\rect_lib.csv">
-      <Filter>Resource Files\lib</Filter>
-    </None>
-    <None Include="res\lib\texture_lib.csv">
-      <Filter>Resource Files\lib</Filter>
     </None>
     <None Include="config\bot_cfg.json">
       <Filter>config</Filter>
@@ -558,9 +573,6 @@
     <Image Include="res\fonts\ascii_126.png">
       <Filter>Resource Files\font</Filter>
     </Image>
-    <Image Include="res\texture\blue_button.png">
-      <Filter>Resource Files\texture</Filter>
-    </Image>
     <Image Include="res\texture\clay_tile.png">
       <Filter>Resource Files\texture</Filter>
     </Image>
@@ -577,6 +589,9 @@
       <Filter>Resource Files\texture</Filter>
     </Image>
     <Image Include="res\texture\steel_tile.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\button.png">
       <Filter>Resource Files\texture</Filter>
     </Image>
   </ItemGroup>
@@ -726,6 +741,36 @@
     </ClInclude>
     <ClInclude Include="src\gametemplate\bot_colorparser.h">
       <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_screen.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_screenmanager.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_startscreen.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_gameobject.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_tile.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_gamemap.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_mapitem.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_gameobjectmanager.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_linkedlist.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_doublelinkedlist.h">
+      <Filter>Source Files\structure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

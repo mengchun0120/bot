@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
             }
 
             verbosity = static_cast<bot::Logger::LogLevel>(level);
+            i += 2;
         }
         else
         {

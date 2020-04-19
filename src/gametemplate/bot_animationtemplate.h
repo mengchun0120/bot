@@ -13,11 +13,8 @@ class AnimationTemplate : public GameObjectTemplate {
 public:
 	AnimationTemplate();
 
-	AnimationTemplate(const Rectangle* rect, float coverBreathX, float coverBreathY, 
-		              float collideBreathX, float collideBreathY,
-		              int flags, int numFrames, float frameInterval);
-
-	virtual ~AnimationTemplate();
+	virtual ~AnimationTemplate()
+	{}
 
 	int getNumFrames() const
 	{

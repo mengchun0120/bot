@@ -2,12 +2,14 @@
 #define INCLUDE_BOT_STARTSCREEN
 
 #include "misc/bot_constants.h"
-#include "opengl/bot_texture.h"
-#include "geometry/bot_rectangle.h"
 #include "screen/bot_screen.h"
 
 namespace bot {
 
+class Texture;
+class Rectangle;
+class Color;
+class App;
 struct MouseMoveEvent;
 struct MouseButtonEvent;
 struct KeyEvent;
@@ -18,7 +20,7 @@ public:
 
     virtual ~StartScreen();
 
-    virtual bool init();
+    virtual bool init(App* app);
 
     virtual int update(float delta);
 
@@ -49,14 +51,16 @@ private:
         BUTTON_EXIT,
         NUM_BUTTONS
     };
+
+    App* m_app;
+    const Texture* m_button;
+    const Rectangle* m_rect;
+    const Color* m_normalTextColor;
+    const Color* m_hoverTextColor;
+    const Color* m_pressedTextColor;
     std::string m_texts[NUM_BUTTONS];
-    Texture m_button;
-    Rectangle m_rect;
     float m_buttonPos[NUM_BUTTONS][Constants::NUM_FLOATS_PER_POSITION];
     float m_textPos[NUM_BUTTONS][Constants::NUM_FLOATS_PER_POSITION];
-    float m_normalTextColor[Constants::NUM_FLOATS_COLOR];
-    float m_hoverTextColor[Constants::NUM_FLOATS_COLOR];
-    float m_pressedTextColor[Constants::NUM_FLOATS_COLOR];
     int m_hoverButtonIdx;
     int m_pressedButtonIdx;
 };

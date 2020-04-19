@@ -1,4 +1,5 @@
 #include "opengl/bot_simpleshaderprogram.h"
+#include "opengl/bot_color.h"
 #include "geometry/bot_polygon.h"
 
 namespace bot {
@@ -18,50 +19,63 @@ bool Polygon::init(const float *vertices, unsigned int numVertices, bool hasTexC
 }
 
 void Polygon::draw(SimpleShaderProgram& program,
-                   const float *pos, const float *direction,
-                   const float *fillColor, const float *borderColor,
-                   unsigned int textureId, const float *texColor) const
+                   const float* pos, const float* direction,
+                   const Color* fillColor, const Color* borderColor,
+                   const unsigned int textureId, const Color* texColor) const
 {
-    if(pos) {
+    if (pos) 
+    {
         program.setUseObjRef(true);
         program.setObjRef(pos);
-    } else {
+    }
+    else
+    {
         program.setUseObjRef(false);
     }
 
     program.setPosition(m_vertexArray);
     program.setUseColor(textureId == 0);
 
-    if(direction) {
+    if (direction)
+    {
         program.setUseDirection(true);
         program.setDirection(direction);
-    } else {
+    }
+    else
+    {
         program.setUseDirection(false);
     }
 
-    if(textureId == 0) {
-        if(fillColor) {
-            program.setColor(fillColor);
+    if (textureId == 0) 
+    {
+        if (fillColor)
+        {
+            program.setColor(fillColor->getColor());
             glDrawArrays(GL_TRIANGLE_FAN, 0, m_vertexArray.numVertices());
         }
 
-        if(borderColor) {
-            program.setColor(borderColor);
+        if (borderColor)
+        {
+            program.setColor(borderColor->getColor());
             glDrawArrays(GL_LINE_LOOP, 1, m_vertexArray.numVertices()-2);
         }
-    } else {
+    } 
+    else
+    {
         program.setTexture(textureId);
 
-        if(texColor) {
+        if(texColor)
+        {
             program.setUseTexColor(true);
-            program.setTexColor(texColor);
-        } else {
+            program.setTexColor(texColor->getColor());
+        } 
+        else
+        {
             program.setUseTexColor(false);
         }
 
         glDrawArrays(GL_TRIANGLE_FAN, 0, m_vertexArray.numVertices());
     }
 }
-
 
 } // end of namespace bot

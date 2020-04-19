@@ -6,7 +6,7 @@ namespace bot {
 class LinkedItem {
 public:
     LinkedItem()
-    : m_next(nullptr)
+        : m_next(nullptr)
     {}
 
     virtual ~LinkedItem()

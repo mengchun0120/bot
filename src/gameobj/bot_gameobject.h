@@ -8,11 +8,18 @@
 namespace bot {
 
 class GameScreen;
+class SimpleShaderProgram;
 
 class GameObject: public DoubleLinkedItem {
 public:
     GameObject(GameObjectType type)
-        : m_type(type)
+        : DoubleLinkedItem()
+        , m_type(type)
+        , m_coverStartRow(0)
+        , m_coverEndRow(0)
+        , m_coverStartCol(0)
+        , m_coverEndCol(0)
+        , m_flags(0)
     {}
 
     virtual ~GameObject()
@@ -23,7 +30,7 @@ public:
         return m_type;
     }
 
-    virtual void present() = 0;
+    virtual void present(SimpleShaderProgram& program) = 0;
 
     virtual bool update(float delta, GameScreen& screen) = 0;
 
@@ -33,13 +40,9 @@ public:
     
     virtual void setPos(float x, float y) = 0;
 
-    virtual void setDirection(float directionX, float directionY) = 0;
-
     virtual float getCoverBreathX() const = 0;
 
     virtual float getCoverBreathY() const = 0;
-
-    virtual bool isCollidable() const = 0;
 
     virtual float getCollideBreathX() const = 0;
 
@@ -125,6 +128,14 @@ public:
         m_coverEndCol = endCol;
     }
 
+    void setCoverRect(int startRow, int endRow, int startCol, int endCol)
+    {
+        m_coverStartRow = startRow;
+        m_coverEndRow = endRow;
+        m_coverStartCol = startCol;
+        m_coverEndCol = endCol;
+    }
+
     void clearFlag(GameObjectFlag flag)
     {
         m_flags &= (~static_cast<int>(flag));
@@ -145,33 +156,11 @@ public:
         return m_flags;
     }
 
-    int getHP() const
-    {
-        return m_hp;
-    }
-
-    void setHP(int hp)
-    {
-        m_hp = hp;
-    }
-
-    int getSide() const
-    {
-        return m_side;
-    }
-
-    void setSide(int side)
-    {
-        m_side = side;
-    }
-
 protected:
     GameObjectType m_type;
     int m_coverStartRow, m_coverEndRow;
     int m_coverStartCol, m_coverEndCol;
     int m_flags;
-    int m_hp;
-    int m_side;
 };
 
 } // end of namespace bot

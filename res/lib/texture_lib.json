@@ -1,18 +1,22 @@
 [
   {
     "name": "base",
-    "file": "green_base.png"
+    "file": "base.png"
   },
   {
     "name": "barrel",
-    "file": "darkgreen_barrel.png"
+    "file": "barrel.png"
   },
   {
     "name": "tile",
-    "file": "clay_tile.png"
+    "file": "tile.png"
   },
   {
     "name": "bullet",
-    "file": "lightgreen_bullet.png"
+    "file": "bullet.png"
+  },
+  {
+    "name": "button",
+    "file": "button.png"
   }
 ]

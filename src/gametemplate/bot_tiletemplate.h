@@ -13,11 +13,6 @@ class TileTemplate: public GameObjectTemplate {
 public:
 	TileTemplate();
 
-	TileTemplate(const Texture* texture, const Rectangle* rect, const Color* color, 
-				 float coverBreathX, float coverBreathY,
-				 float collideBreathX, float collideBreathY,
-				 int hp, int flags);
-
 	virtual ~TileTemplate()
 	{}
 
@@ -51,10 +46,21 @@ public:
 		m_color = color;
 	}
 
+	int getHP() const
+	{
+		return m_hp;
+	}
+
+	void setHP(int hp)
+	{
+		m_hp = hp;
+	}
+
 protected:
 	const Texture* m_texture;
 	const Rectangle* m_rect;
 	const Color* m_color;
+	int m_hp;
 };
 
 } // end of namespace bot

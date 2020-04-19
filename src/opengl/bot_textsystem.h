@@ -29,12 +29,12 @@ public:
 
     bool init(const std::string& fontFolder);
 
-    Texture& getTexture(char ch)
+    const Texture& getTexture(char ch) const
     {
         return m_textures[static_cast<int>(ch) - MIN_CHAR];
     }
 
-    const Rectangle& getRect(Size sz, char ch)
+    const Rectangle& getRect(Size sz, char ch) const
     {
         return *(m_rectMap[sz][static_cast<int>(ch) - MIN_CHAR]);
     }
@@ -42,7 +42,7 @@ public:
     void drawString(SimpleShaderProgram& program, const std::string& str,
                     Size size, const float *pos, const float *color) const;
 
-    void getStringSize(float &width, float &height, Size sz, const std::string& str);
+    void getStringSize(float &width, float &height, Size sz, const std::string& str) const;
 
 protected:
     std::unordered_map<int, Rectangle> m_rects[SIZE_COUNT];

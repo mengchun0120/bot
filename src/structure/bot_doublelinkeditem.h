@@ -1,36 +1,50 @@
 #ifndef INCLUDE_BOT_DOUBLELINKITEM
 #define INCLUDE_BOT_DOUBLELINKITEM
 
-#include "structure/bot_linkeditem.h"
-
 namespace bot {
 
-class DoubleLinkedItem : public LinkedItem {
+class DoubleLinkedItem {
 public:
     DoubleLinkedItem()
         : m_prev(nullptr)
+        , m_next(nullptr)
     {}
 
     virtual ~DoubleLinkedItem()
     {}
 
-    const LinkedItem* getPrev() const
+    const DoubleLinkedItem* getPrev() const
     {
         return m_prev;
     }
 
-    LinkedItem* getPrev()
+    DoubleLinkedItem* getPrev()
     {
         return m_prev;
     }
 
-    void setPrev(LinkedItem* prev)
+    void setPrev(DoubleLinkedItem* prev)
     {
         m_prev = prev;
     }
 
+    const DoubleLinkedItem* getNext() const
+    {
+        return m_next;
+    }
+
+    DoubleLinkedItem* getNext()
+    {
+        return m_next;
+    }
+
+    void setNext(DoubleLinkedItem* next)
+    {
+        m_next = next;
+    }
+
 protected:
-    LinkedItem* m_prev;
+    DoubleLinkedItem* m_prev, *m_next;
 };
 
 } // end of namespace bot

@@ -6,7 +6,7 @@
     <LocalDebuggerCommandArguments>-l log.txt -c config\bot.cfg -r res</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerCommandArguments>-l log.txt -c config/bot_cfg.json -r .</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>-l log.txt -c config/bot_cfg.json -r . -v 0</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

@@ -14,9 +14,9 @@ public:
     bool init(const float *vertices, unsigned int numVertices, bool hasTexCoord);
 
     virtual void draw(SimpleShaderProgram& program,
-                      const float *pos, const float *direction,
-                      const float *fillColor, const float *borderColor,
-                      unsigned int textureId, const float *texColor) const;
+                      const float* pos, const float* direction,
+                      const Color* fillColor, const Color* borderColor,
+                      const unsigned int textureId, const Color* texColor) const;
 };
 
 } // end of namespace bot

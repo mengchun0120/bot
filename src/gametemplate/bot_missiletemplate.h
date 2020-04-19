@@ -14,12 +14,8 @@ class MissileTemplate : public GameObjectTemplate {
 public:
 	MissileTemplate();
 
-	MissileTemplate(float coverBreathX, float coverBreathY, float collideBreathX, float collideBreathY,
-		            int hp, float flags, float speed, int explosionPower, float explosionBreath,
-					const Texture* texture, const Rectangle* rect,
-		            const AnimationTemplate* explosionTemplate);
-
-	virtual ~MissileTemplate();
+	virtual ~MissileTemplate()
+	{}
 
 	float getSpeed() const
 	{

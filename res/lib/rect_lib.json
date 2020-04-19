@@ -18,5 +18,10 @@
     "name": "square18",
     "width": 18.0,
     "height": 18.0
+  },
+  {
+    "name": "button",
+    "width": 320.0,
+    "height": 60.0
   }
 ]

@@ -4,20 +4,22 @@
 namespace bot {
 
 class Screen;
+class App;
 struct InputEvent;
 
 class ScreenManager {
 public:
     enum ScreenType {
         SCREEN_START,
-        SCREEN_GAME
+        SCREEN_GAME,
+        SCREEN_NONE
     };
 
     ScreenManager();
 
     ~ScreenManager();
 
-    void init();
+    void init(App* app);
 
     int update(float delta);
 
@@ -28,9 +30,10 @@ public:
     void switchScreen(ScreenType type);
 
 private:
+    App* m_app;
     ScreenType m_curScreenType;
-    Screen *m_prevScreen;
-    Screen *m_curScreen;
+    Screen* m_prevScreen;
+    Screen* m_curScreen;
 };
 
 } // end of namespace bot

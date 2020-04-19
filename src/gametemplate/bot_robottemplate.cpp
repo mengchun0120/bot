@@ -10,7 +10,8 @@ RobotTemplate::RobotTemplate()
 
 RobotTemplate::RobotTemplate(float coverBreathX, float coverBreathY, float collideBreathX, float collideBreathY,
 	                         int hp, int flags, int numComponents)
-	: GameObjectTemplate(coverBreathX, coverBreathY, collideBreathX, collideBreathY, hp, flags)
+	: GameObjectTemplate(coverBreathX, coverBreathY, collideBreathX, collideBreathY, flags)
+	, m_hp(hp)
 {
 	setNumComponents(numComponents);
 	initAbilityTemplates();

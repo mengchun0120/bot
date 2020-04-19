@@ -54,5 +54,26 @@
     "green": 0,
     "blue": 0,
     "alpha": 255
+  },
+  {
+    "name": "normal_text_color",
+    "red": 0,
+    "green": 0,
+    "blue": 135,
+    "alpha": 255
+  },
+  {
+    "name": "hover_text_color",
+    "red": 0,
+    "green": 255,
+    "blue": 0,
+    "alpha": 255
+  },
+  {
+    "name": "pressed_text_color",
+    "red": 255,
+    "green": 128,
+    "blue": 0,
+    "alpha": 255
   }
 ]

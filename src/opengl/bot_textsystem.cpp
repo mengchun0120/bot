@@ -132,7 +132,7 @@ void TextSystem::drawString(SimpleShaderProgram& program, const std::string& str
     }
 }
 
-void TextSystem::getStringSize(float& width, float& height, Size sz, const std::string& str)
+void TextSystem::getStringSize(float& width, float& height, Size sz, const std::string& str) const
 {
     const Rectangle& rect = getRect(sz, str[0]);
     float w = rect.width();

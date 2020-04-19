@@ -77,23 +77,23 @@ bool App::init(const std::string& appDir, const std::string& cfgFile)
 
 bool App::run()
 {
-    /*float delta;
+    float delta;
     int ret;
     InputProcessor processor = std::bind(&ScreenManager::processInput,
-        &m_screenMgr,
-        std::placeholders::_1);
+                                         &m_screenMgr,
+                                         std::placeholders::_1);
 
-    m_deltaSmoother.start();    
-    inputMgr.start();*/
+    m_timeDeltaSmoother.start();    
+    m_inputMgr.start();
 
     while(glfwWindowShouldClose(m_window) == 0) {
         glClear(GL_COLOR_BUFFER_BIT);
-        /*
-        if (!inputMgr.processInput(processor)) {
+        
+        if (!m_inputMgr.processInput(processor)) {
             break;
         }
 
-        delta = m_deltaSmoother.getTimeDelta();
+        delta = m_timeDeltaSmoother.getTimeDelta();
         ret = m_screenMgr.update(delta);
         if (ret == 2) {
             // the app should exit
@@ -101,11 +101,11 @@ bool App::run()
         }
         else if (ret == 1) {
             // switched to another screen, clear input
-            inputMgr.clear();
+            m_inputMgr.clear();
         }
 
         m_screenMgr.present();
-        */
+
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
@@ -244,6 +244,8 @@ void App::updateViewport()
     float viewportSize[] = { m_viewportWidth, m_viewportHeight };
 
     m_program.setViewportSize(viewportSize);
+
+    LOG_INFO("viewportWidth=%f viewportHeight=%f", m_viewportWidth, m_viewportHeight);
 }
 
 bool App::initGame(const rapidjson::Value& cfg)
@@ -367,6 +369,8 @@ bool App::initGameTemplateLib(const rapidjson::Value& cfg)
     {
         return false;
     }
+
+    m_screenMgr.init(this);
 
     LOG_INFO("Done initializing game template libraries");
 
