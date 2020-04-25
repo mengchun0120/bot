@@ -1,107 +1,45 @@
 #ifndef INCLUDE_BOT_GAMESCREEN
 #define INCLUDE_BOT_GAMESCREEN
 
-#include <vector>
-#include <cmath>
-#include <rapidjson/document.h>
-#include "structure/bot_objectpool.h"
-#include "gameobj/bot_gameobject.h"
 #include "screen/bot_screen.h"
+#include "gameutil/bot_gamemap.h"
+#include "gameutil/bot_gameobjectmanager.h"
 
 namespace bot {
 
 class MouseMoveEvent;
 class MouseButtonEvent;
 class KeyEvent;
-
-class MapItem : public LinkedItem {
-public:
-    MapItem()
-        : LinkedItem()
-        , m_obj(nullptr)
-    {}
-
-    virtual ~MapItem()
-    {}
-
-    GameObject* getObj() const
-    {
-        return m_obj;
-    }
-
-    void setObj(GameObject* obj)
-    {
-        m_obj = obj;
-    }
-
-protected:
-    GameObject* m_obj;
-};
+class App;
 
 class GameScreen: public Screen {
 public:
-    GameScreen();
+    GameScreen(App* app);
 
     virtual ~GameScreen();
 
     virtual bool init();
 
-    bool loadMap(const char* fileName);
+    bool loadMap(const std::string& fileName);
 
     virtual int update(float delta);
 
     virtual void present();
 
     virtual int processInput(const InputEvent &e);
-
-    // Add a GameObject to the map. Returns true if the GameObject is added in the map; or false if
-    // the GameObject lies outside the map.
-    bool addGameObj(GameObject* obj);
-
+    /*
     bool checkOutsideMap(float x, float y);
 
     bool testCollision(float collideLeft, float collideBottom, float collideRight, float collideTop,
                        int excludeSide, GameObjectType excludeType);
 
-    static int getMapCoord(float z)
-    {
-        return z / GRID_BREATH;
-    }
-
-    int getRow(float y) const
-    {
-        return clamp(getMapCoord(y), 0, m_maxRowIdx);
-    }
-
-    int getCol(float x) const
-    {
-        return clamp(getMapCoord(x), 0, m_maxColIdx);
-    }
-
-    int getNumRows() const
-    {
-        return static_cast<int>(m_map.size());
-    }
-
-    int getNumCols() const
-    {
-        return static_cast<int>(m_map[0].size());
-    }
-
-    float getMapWidth() const
-    {
-        return m_mapWidth;
-    }
-
-    float getMapHeight() const
-    {
-        return m_mapHeight;
-    }
-
     bool checkMoveThroughObjects(float& newDelta, GameObject* obj, float speedX, float speedY, 
                                  int excludeSide, GameObjectType excludeType, float delta);
-
+*/
 private:
+    void updateViewport();
+
+    /*
     bool initMap(const rapidjson::Document& doc);
 
     bool loadObjects(const rapidjson::Document& doc);
@@ -129,7 +67,7 @@ private:
 
     void clearMap();
 
-    void updateViewport();
+
 
     void getDisplayRegion(int& startRow, int& endRow, int& startCol, int& endCol);
 
@@ -165,24 +103,22 @@ private:
 
     void getCollisionCheckRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
                                  float speedX, float speedY, float delta);
-
-public:
-    static const float GRID_BREATH;
-    static const int MIN_NUM_ROWS;
-    static const int MAX_NUM_ROWS;
-    static const int MIN_NUM_COLS;
-    static const int MAX_NUM_COLS;
-
+    
+    */
 private:
-    ObjectPool<MapItem> m_pool;
-    std::vector<std::vector<MapItem*>> m_map;
-    float m_mapWidth, m_mapHeight;
-    GameObject* m_player;
-    GameObject* m_firstObj;
+    App* m_app;
+    GameMap m_map;
+    GameObjectManager m_gameObjManager;
     float m_minViewportX, m_minViewportY, m_maxViewportX, m_maxViewportY;
     float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
+    /*
+
+    GameObject* m_player;
+    GameObject* m_firstObj;
+    
+
     float m_viewportWorldX, m_viewportWorldY;
-    int m_maxRowIdx, m_maxColIdx;
+    int m_maxRowIdx, m_maxColIdx;*/
 };
 
 } // end of namespace bot

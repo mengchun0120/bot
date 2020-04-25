@@ -1,4 +1,4 @@
-#include "gameobj/bot_mapitem.h"
+#include "gameobj/bot_moveability.h"
 
 namespace bot {
 

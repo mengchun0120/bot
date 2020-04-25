@@ -15,11 +15,12 @@ class Color;
 
 class RobotTemplate: public GameObjectTemplate {
 public:
-	struct Component {
+	struct ComponentTemplate {
 		const Texture* m_texture;
 		const Rectangle* m_rect;
 		const Color* m_color;
 		float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+		int m_index;
 	};
 
 	static const int MAX_COMPONENTS = 4;
@@ -38,7 +39,7 @@ public:
 
 	void setNumComponents(int numComponents);
 
-	const Component& getComponent(int componentIdx) const
+	const ComponentTemplate& getComponent(int componentIdx) const
 	{
 		return m_components[componentIdx];
 	}
@@ -113,7 +114,7 @@ public:
 	void setShootAbilityTemplate(float shootInterval, float shootPosX, float shootPosY, 
 		                         const MissileTemplate* missileTemplate);
 
-	const Component* getComponentForMoveAbility() const
+	const ComponentTemplate* getComponentForMoveAbility() const
 	{
 		return m_attachComponents[ABILITY_MOVE];
 	}
@@ -123,7 +124,7 @@ public:
 		m_attachComponents[ABILITY_MOVE] = &m_components[componentIdx];
 	}
 
-	const Component* getComponentForShootAbility() const
+	const ComponentTemplate* getComponentForShootAbility() const
 	{
 		return m_attachComponents[ABILITY_SHOOT];
 	}
@@ -149,10 +150,10 @@ protected:
 	void initAbilityTemplates();
 
 protected:
-	std::vector<Component> m_components;
+	std::vector<ComponentTemplate> m_components;
 	int m_hp;
 	AbilityTemplate* m_abilityTemplates[NUM_ABILITY_TYPES];
-	Component* m_attachComponents[NUM_ABILITY_TYPES];
+	ComponentTemplate* m_attachComponents[NUM_ABILITY_TYPES];
 };
 
 } // end of namespace bot

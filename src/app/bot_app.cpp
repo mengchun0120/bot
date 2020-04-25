@@ -10,6 +10,7 @@ App::App()
     : m_window(nullptr)
     , m_viewportWidth(0.0f)
     , m_viewportHeight(0.0f)
+    , m_mapPoolFactor(1.0f)
 {
 }
 
@@ -270,6 +271,12 @@ bool App::initGame(const rapidjson::Value& cfg)
         return false;
     }
 
+    if (!initMapConfig(cfg))
+    {
+        LOG_ERROR("Failed to initialize map config");
+        return false;
+    }
+
     LOG_INFO("Done initializing game");
 
     return true;
@@ -373,6 +380,35 @@ bool App::initGameTemplateLib(const rapidjson::Value& cfg)
     m_screenMgr.init(this);
 
     LOG_INFO("Done initializing game template libraries");
+
+    return true;
+}
+
+bool App::initMapConfig(const rapidjson::Value& cfg)
+{
+    LOG_INFO("Initialize map config");
+
+    std::string mapRelativeDir, mapBaseFile;
+
+    if (!parseJson(mapRelativeDir, cfg, "mapDir"))
+    {
+        return false;
+    }
+
+    if (!parseJson(mapBaseFile, cfg, "mapFile"))
+    {
+        return false;
+    }
+
+    m_mapDir = constructPath({ m_resDir, mapRelativeDir });
+    m_mapFile = constructPath({ m_mapDir, mapBaseFile });
+
+    if (!parseJson(m_mapPoolFactor, cfg, "mapPoolFactor"))
+    {
+        return false;
+    }
+
+    LOG_INFO("Done initializing map config");
 
     return true;
 }

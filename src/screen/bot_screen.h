@@ -1,12 +1,9 @@
 #ifndef INCLUDE_BOT_SCREEN
 #define INCLUDE_BOT_SCREEN
 
-#include <string>
-
 namespace bot {
 
 struct InputEvent;
-class App;
 
 class Screen {
 public:
@@ -16,7 +13,7 @@ public:
     virtual ~Screen()
     {}
 
-    virtual bool init(App* app) = 0;
+    virtual bool init() = 0;
 
     // Returns 0 when the screen has been updated;
     // 1 when switched to another screen;

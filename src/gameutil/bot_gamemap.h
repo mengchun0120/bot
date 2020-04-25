@@ -4,19 +4,22 @@
 #include <vector>
 #include "structure/bot_objectpool.h"
 #include "structure/bot_linkedlist.h"
-#include "gameobj/bot_mapitem.h"
+#include "gameutil/bot_mapitem.h"
+#include "gameobj/bot_gameobjectflag.h"
 
 namespace bot {
 
 class GameMap {
-	
-	typedef LinkedList<MapItem> MapCell;
-
 public:
+	typedef LinkedList<MapItem> MapCell;
+	
 	static int getMapCoord(float z)
 	{
-		return z / GRID_BREATH;
+		return static_cast<int>(z / GRID_BREATH);
 	}
+
+	static void getRectCoord(int& startRow, int& endRow, int& startCol, int& endCol,
+						     float left, float bottom, float right, float top);
 
 	GameMap();
 
@@ -36,13 +39,38 @@ public:
 		return static_cast<int>(m_map[0].size());
 	}
 
+	float getMapWidth() const
+	{
+		return m_mapWidth;
+	}
+
+	float getMapHeight() const
+	{
+		return m_mapHeight;
+	}
+
+	MapCell& getMapCell(int row, int col)
+	{
+		return m_map[row][col];
+	}
+
+	const MapCell& getMapCell(int row, int col) const
+	{
+		return m_map[row][col];
+	}
+
 	bool getMapPosForGameObj(int& startRow, int& endRow, int& startCol, int& endCol, GameObject* obj) const;
+
+	void getRectCoords(int& startRow, int& endRow, int& startCol, int& endCol,
+		               float left, float bottom, float right, float top);
 
 	bool addObject(GameObject* obj);
 
 	void removeObject(GameObject* obj);
 
 	bool repositionObject(GameObject* obj);
+
+	void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag);
 
 public:
 	static const float GRID_BREATH;
@@ -57,6 +85,7 @@ protected:
 protected:
 	ObjectPool<MapItem> m_mapItemPool;
 	std::vector<std::vector<MapCell>> m_map;
+	float m_mapWidth, m_mapHeight;
 };
 
 } // end of namespace bot

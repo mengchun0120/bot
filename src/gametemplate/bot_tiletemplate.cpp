@@ -3,7 +3,7 @@
 namespace bot {
 
 TileTemplate::TileTemplate()
-	: GameObjectTemplate()
+	: GameObjectTemplate(GAME_OBJ_TYPE_TILE)
 	, m_texture(nullptr)
 	, m_rect(nullptr)
 	, m_color(nullptr)

@@ -224,20 +224,35 @@
     <ClCompile Include="src\gameobj\bot_tile.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\gameobj\bot_mapitem.cpp">
-      <Filter>Source Files\gameobj</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gameobj\bot_gamemap.cpp">
-      <Filter>Source Files\gameobj</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gameobj\Source.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gameobj\bot_gameobjectmanager.cpp">
-      <Filter>Source Files\gameobj</Filter>
-    </ClCompile>
     <ClCompile Include="src\structure\bot_linkedlist.cpp">
       <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\screen\bot_gamescreen.cpp">
+      <Filter>Source Files\screen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_gamemap.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_gameobjectmanager.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_mapitem.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_gamemaploader.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_robot.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_ability.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_moveability.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_shootability.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -757,20 +772,38 @@
     <ClInclude Include="src\gameobj\bot_tile.h">
       <Filter>Source Files\gameobj</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameobj\bot_gamemap.h">
-      <Filter>Source Files\gameobj</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gameobj\bot_mapitem.h">
-      <Filter>Source Files\gameobj</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gameobj\bot_gameobjectmanager.h">
-      <Filter>Source Files\gameobj</Filter>
-    </ClInclude>
     <ClInclude Include="src\structure\bot_linkedlist.h">
       <Filter>Source Files\structure</Filter>
     </ClInclude>
     <ClInclude Include="src\structure\bot_doublelinkedlist.h">
       <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_gamescreen.h">
+      <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_gamemap.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_gameobjectmanager.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_mapitem.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_gamemaploader.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_robot.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_ability.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_moveability.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_shootability.h">
+      <Filter>Source Files\gameobj</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

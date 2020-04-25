@@ -1,7 +1,7 @@
 #include "gameobj/bot_ability.h"
 
 namespace bot {
-
+/*
 FireAbility::FireAbility(const FireAbilityTemplate* t, float componentX, float componentY)
     : Ability(t)
     , m_firing(false)
@@ -39,5 +39,5 @@ bool FireAbility::shouldFire(const Clock::time_point& t) const
     float dur = static_cast<float>(duration_cast<milliseconds>(t - m_lastFireTime).count());
     return dur <= getFireSpeed();
 }
-
+*/
 } // end of namespace bot

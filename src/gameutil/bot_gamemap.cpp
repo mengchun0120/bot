@@ -1,12 +1,15 @@
 #include <algorithm>
+#include "misc/bot_log.h"
 #include "gameobj/bot_gameobject.h"
-#include "gameobj/bot_gamemap.h"
+#include "gameutil/bot_gamemap.h"
 
 namespace bot {
 
 const float GameMap::GRID_BREATH = 40.0f;
 
 GameMap::GameMap()
+    : m_mapWidth(0.0f)
+    , m_mapHeight(0.0f)
 {
 }
 
@@ -24,6 +27,9 @@ void GameMap::initMap(int numRows, int numCols, int poolSize)
 	{
 		m_map[r].resize(numCols);
 	}
+
+    m_mapWidth = numCols * GRID_BREATH;
+    m_mapHeight = numRows * GRID_BREATH;
 }
 
 void GameMap::clear()
@@ -99,6 +105,31 @@ bool GameMap::getMapPosForGameObj(int& startRow, int& endRow, int& startCol, int
     return true;
 }
 
+void GameMap::getRectCoords(int& startRow, int& endRow, int& startCol, int& endCol,
+                            float left, float bottom, float right, float top)
+{
+    startCol = getMapCoord(left);
+    if (startCol < 0) {
+        startCol = 0;
+    }
+
+    endCol = getMapCoord(right);
+    if (endCol >= getNumCols()) {
+        endCol = getNumCols() - 1;
+    }
+
+    startRow = getMapCoord(bottom);
+    if (startRow < 0) {
+        startRow = 0;
+    }
+
+    endRow = getMapCoord(top);
+    if (endRow >= getNumRows()) {
+        endRow = getNumRows() - 1;
+    }
+}
+
+
 bool GameMap::addObject(GameObject* obj)
 {
     int startRow, endRow, startCol, endCol;
@@ -111,6 +142,7 @@ bool GameMap::addObject(GameObject* obj)
 
     addObjectToRect(obj, startRow, endRow, startCol, endCol);
     obj->setCoverRect(startRow, endRow, startCol, endCol);
+    LOG_INFO("addObject %d %d %d %d", startRow, endRow, startCol, endCol);
 
     return true;
 }
@@ -240,6 +272,21 @@ void GameMap::removeObjectFromRect(GameObject* obj, int startRow, int endRow, in
         for (int c = startCol; c <= endCol; ++c) 
         {
             removeObjectAt(obj, r, c);
+        }
+    }
+}
+
+void GameMap::clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag)
+{
+    for (int r = startRow; r <= endRow; ++r) 
+    {
+        std::vector<MapCell>& row = m_map[r];
+        for (int c = startCol; c <= endCol; ++c) 
+        {
+            for (MapItem* item = m_map[r][c].getFirst(); item; item = static_cast<MapItem*>(item->getNext())) 
+            {
+                item->getObj()->clearFlag(flag);
+            }
         }
     }
 }

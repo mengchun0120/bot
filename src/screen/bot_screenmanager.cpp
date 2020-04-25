@@ -1,5 +1,6 @@
+#include "misc/bot_log.h"
 #include "screen/bot_startscreen.h"
-//#include "screen/bot_gamescreen.h"
+#include "screen/bot_gamescreen.h"
 #include "screen/bot_screenmanager.h"
 
 namespace bot {
@@ -28,20 +29,21 @@ ScreenManager::~ScreenManager()
 
 void ScreenManager::init(App* app)
 {
-    m_curScreen = new StartScreen();
-    m_curScreen->init(app);
+    m_app = app;
+    m_curScreen = new StartScreen(app);
+    m_curScreen->init();
     m_curScreenType = SCREEN_START;
 }
 
 int ScreenManager::update(float delta)
 {
     int ret = m_curScreen->update(delta);
-    /*if (ret == 1) 
+    if (ret == 1) 
     {
         // switched to another screen
         delete m_prevScreen;
         m_prevScreen = nullptr;
-    }*/
+    }
     return ret;
 }
 
@@ -53,18 +55,19 @@ void ScreenManager::present()
 int ScreenManager::processInput(const InputEvent& e)
 {
     int ret = m_curScreen->processInput(e);
-    /*if (ret == 1) 
+    if (ret == 1) 
     {
         // switched to another screen
         delete m_prevScreen;
         m_prevScreen = nullptr;
-    }*/
+    }
     return ret;
 }
 
 void ScreenManager::switchScreen(ScreenType type)
 {
-    /*
+    LOG_INFO("Switching screen from %d to %d", static_cast<int>(m_curScreenType), static_cast<int>(type));
+
     if (m_curScreenType == type) 
     {
         return;
@@ -74,16 +77,18 @@ void ScreenManager::switchScreen(ScreenType type)
     switch (type) 
     {
         case SCREEN_START:
-            screen = new StartScreen();
+            screen = new StartScreen(m_app);
             break;
         case SCREEN_GAME:
-            //screen = new GameScreen();
+            screen = new GameScreen(m_app);
             break;
     }
 
     m_prevScreen = m_curScreen;
     m_curScreen = screen;
-    m_curScreen->init();*/
+    m_curScreen->init();
+
+    LOG_INFO("Done switching screen");
 }
 
 } // end of namespace bot

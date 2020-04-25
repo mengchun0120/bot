@@ -44,6 +44,16 @@ public:
         return m_resDir;
     }
 
+    const std::string& getMapDir() const
+    {
+        return m_mapDir;
+    }
+
+    const std::string& getMapFile() const
+    {
+        return m_mapFile;
+    }
+
     SimpleShaderProgram& getSimpleShaderProgram()
     {
         return m_program;
@@ -64,6 +74,11 @@ public:
         return m_screenMgr;
     }
 
+    float getMapPoolFactor() const
+    {
+        return m_mapPoolFactor;
+    }
+
 private:
     bool initWindow(const rapidjson::Value& cfg);
 
@@ -81,10 +96,14 @@ private:
 
     bool initGameTemplateLib(const rapidjson::Value& cfg);
 
+    bool initMapConfig(const rapidjson::Value& cfg);
+
 private:
     GLFWwindow* m_window;
     std::string m_appDir;
     std::string m_resDir;
+    std::string m_mapDir;
+    std::string m_mapFile;
     float m_viewportWidth;
     float m_viewportHeight;
     InputManager m_inputMgr;
@@ -93,6 +112,7 @@ private:
     TextSystem m_textSystem;
     GameTemplateLib m_gameTemplateLib;
     ScreenManager m_screenMgr;
+    float m_mapPoolFactor;
 };
 
 } // end of namespace bot

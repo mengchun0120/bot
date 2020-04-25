@@ -1,19 +1,25 @@
 #ifndef INCLUDE_BOT_GAMEOBJECTTEMPLATE
 #define INCLUDE_BOT_GAMEOBJECTTEMPLATE
 
+#include "gameobj/bot_gameobjecttype.h"
 #include "gameobj/bot_gameobjectflag.h"
 
 namespace bot {
 
 class GameObjectTemplate {
 public:
-    GameObjectTemplate();
+    GameObjectTemplate(GameObjectType type);
 
-    GameObjectTemplate(float coverBreathX, float coverBreathY, float collideBreathX, float collideBreathY,
-                       int flags);
+    GameObjectTemplate(GameObjectType type, float coverBreathX, float coverBreathY, 
+                       float collideBreathX, float collideBreathY, int flags);
 
     virtual ~GameObjectTemplate()
     {}
+
+    GameObjectType getType() const
+    {
+        return m_type;
+    }
 
     float getCoverBreathX() const
     {
@@ -71,6 +77,7 @@ public:
     }
 
 protected:
+    GameObjectType m_type;
     float m_coverBreathX;
     float m_coverBreathY;
     float m_collideBreathX;

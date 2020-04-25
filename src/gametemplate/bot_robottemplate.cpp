@@ -3,14 +3,14 @@
 namespace bot {
 
 RobotTemplate::RobotTemplate()
-	: GameObjectTemplate()
+	: GameObjectTemplate(GAME_OBJ_TYPE_BOT)
 {
 	initAbilityTemplates();
 }
 
 RobotTemplate::RobotTemplate(float coverBreathX, float coverBreathY, float collideBreathX, float collideBreathY,
 	                         int hp, int flags, int numComponents)
-	: GameObjectTemplate(coverBreathX, coverBreathY, collideBreathX, collideBreathY, flags)
+	: GameObjectTemplate(GAME_OBJ_TYPE_BOT, coverBreathX, coverBreathY, collideBreathX, collideBreathY, flags)
 	, m_hp(hp)
 {
 	setNumComponents(numComponents);
@@ -39,6 +39,7 @@ void RobotTemplate::initComponents()
 	int numComponents = getNumComponents();
 
 	for (int i = 0; i < numComponents; ++i) {
+		m_components[i].m_index = i;
 		m_components[i].m_texture = nullptr;
 		m_components[i].m_pos[0] = 0.0f;
 		m_components[i].m_pos[1] = 0.0f;

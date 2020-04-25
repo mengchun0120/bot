@@ -3,7 +3,7 @@
 namespace bot {
 
 MissileTemplate::MissileTemplate()
-	: GameObjectTemplate()
+	: GameObjectTemplate(GAME_OBJ_TYPE_MISSILE)
 	, m_speed(0.0f)
 	, m_explosionPower(0)
 	, m_explosionBreath(0.0f)

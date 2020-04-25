@@ -22,9 +22,9 @@
   },
   {
     "name": "yellow",
-    "red": 0,
+    "red": 255,
     "green": 255,
-    "blue": 255,
+    "blue": 0,
     "alpha": 255
   },
   {

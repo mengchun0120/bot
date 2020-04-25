@@ -1,45 +1,191 @@
+#include "misc/bot_mathutils.h"
+#include "misc/bot_log.h"
+#include "geometry/bot_rectangle.h"
+#include "opengl/bot_texture.h"
 #include "gameobj/bot_robot.h"
 
 namespace bot {
 
-GameObject::GameObject(const GameObjectTemplate* t)
-    : m_template(t)
-    , m_coverStartRow(-1)
-    , m_coverEndRow(-1)
-    , m_coverStartCol(-1)
-    , m_coverEndCol(-1)
-    , m_flags(0)
+Robot::Robot(const RobotTemplate* t)
+    : GameObject(t)
     , m_hp(t->getHP())
     , m_side(-1)
 {
-    m_base.init(t->getBaseComponent(), 0.0f, 0.0f, 1.0f, 0.0f);
+    m_direction[0] = 1.0f;
+    m_direction[1] = 0.0f;
 
-    int numParts = t->numParts();
+    initComponents();
+    initAbilities();
+}
 
-    m_components.resize(numParts);
-    for (int i = 0; i < numParts; ++i) {
-        const GameObjectTemplate::Part& p = t->getPart(i);
-        m_components[i].init(p.m_component, p.m_pos[0], p.m_pos[1], p.m_direction[0], p.m_direction[1]);
+Robot::~Robot()
+{
+    for (int i = 0; i < NUM_ABILITY_TYPES; ++i)
+    {
+        if (!m_abilities[i])
+        {
+            delete m_abilities[i];
+        }
     }
 }
 
-void GameObject::present()
+void Robot::initComponents()
 {
-    m_base.present();
+    const RobotTemplate* t = getTemplate();
+    int numComponents = t->getNumComponents();
+    
+    m_components.resize(numComponents);
+    for (int i = 0; i < numComponents; ++i)
+    {
+        Component& c = m_components[i];
+        c.m_pos[0] = m_pos[0] + t->getComponentPosX(i);
+        c.m_pos[1] = m_pos[1] + t->getComponentPosY(i);
+    }
+}
 
+void Robot::initAbilities()
+{
+    for (int i = 0; i < NUM_ABILITY_TYPES; ++i)
+    {
+        m_abilities[i] = nullptr;
+    }
+
+    const RobotTemplate* t = getTemplate();
+
+    const MoveAbilityTemplate* moveTemplate = t->getMoveAbilityTemplate();
+    if (moveTemplate)
+    {
+        MoveAbility* moveAbility = new MoveAbility(moveTemplate);
+        m_abilities[ABILITY_MOVE] = moveAbility;
+    }
+
+    const ShootAbilityTemplate* shootTemplate = t->getShootAbilityTemplate();
+    if (shootTemplate)
+    {
+        ShootAbility* shootAbility = new ShootAbility(shootTemplate);
+        m_abilities[ABILITY_SHOOT] = shootAbility;
+        resetShootPos();
+    }
+}
+
+void Robot::present(SimpleShaderProgram& program)
+{
+    const RobotTemplate* t = getTemplate();
     int count = static_cast<int>(m_components.size());
+
     for (int i = 0; i < count; ++i) {
-        m_components[i].present();
+        LOG_INFO("Draw component %d", i);
+        const RobotTemplate::ComponentTemplate& ct = t->getComponent(i);
+        ct.m_rect->draw(program, m_components[i].m_pos, m_direction, nullptr, nullptr, 
+                        ct.m_texture->textureId(), ct.m_color);
     }
 }
 
-void GameObject::setPos(float x, float y)
+bool Robot::update(float delta, GameScreen& screen)
 {
-    float deltaX = x - m_base.getX();
-    float deltaY = y - m_base.getY();
-    move(deltaX, deltaY);
+    return true;
 }
 
+void Robot::setPos(float x, float y)
+{
+    float deltaX = x - m_pos[0];
+    float deltaY = y - m_pos[1];
+
+    m_pos[0] = x;
+    m_pos[1] = y;
+
+    int numComponents = static_cast<int>(m_components.size());
+    for (int i = 0; i < numComponents; ++i)
+    {
+        m_components[i].m_pos[0] += deltaX;
+        m_components[i].m_pos[1] += deltaY;
+    }
+
+    ShootAbility* shootAbility = getShootAbility();
+    if (shootAbility)
+    {
+        shootAbility->shiftShootPos(deltaX, deltaY);
+    }
+}
+
+void Robot::setDirection(float directionX, float directionY)
+{
+    m_direction[0] = directionX;
+    m_direction[1] = directionY;
+
+    const RobotTemplate* t = getTemplate();
+    int numComponents = static_cast<int>(m_components.size());
+
+    for (int i = 0; i < numComponents; ++i)
+    {
+        const RobotTemplate::ComponentTemplate& ct = t->getComponent(i);
+        float x = ct.m_pos[0], y = ct.m_pos[1];
+
+        rotate(x, y, directionX, directionY);
+        m_components[i].m_pos[0] = m_pos[0] + x;
+        m_components[i].m_pos[1] = m_pos[1] + y;
+    }
+
+    ShootAbility* shootAbility = getShootAbility();
+    if (shootAbility)
+    {
+        Component* c = getComponentForShootAbility();
+        shootAbility->setShootPosDirection(c->m_pos[0], c->m_pos[1], directionX, directionY);
+    }
+}
+
+bool Robot::addHP(int deltaHP)
+{
+    if (testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
+    {
+        return true;
+    }
+
+    if (testFlag(GAME_OBJ_FLAG_DEAD))
+    {
+        return false;
+    }
+
+    m_hp = clamp(m_hp + deltaHP, 0, getTemplate()->getHP());
+
+    return m_hp > 0;
+}
+
+Robot::Component* Robot::getComponentForMoveAbility()
+{
+    const RobotTemplate::ComponentTemplate* t = getTemplate()->getComponentForMoveAbility();
+    if (!t)
+    {
+        return nullptr;
+    }
+    return &m_components[t->m_index];
+}
+
+bool Robot::resetShootPos()
+{
+    ShootAbility* shootAbility = getShootAbility();
+    if (!shootAbility)
+    {
+        return false;
+    }
+    
+    Component* c = getComponentForShootAbility();
+    shootAbility->setShootPosDirection(c->m_pos[0], c->m_pos[1], m_direction[0], m_direction[1]);
+
+    return true;
+}
+
+Robot::Component* Robot::getComponentForShootAbility()
+{
+    const RobotTemplate::ComponentTemplate* t = getTemplate()->getComponentForShootAbility();
+    if (!t)
+    {
+        return nullptr;
+    }
+    return &m_components[t->m_index];
+}
+
+/*
 void GameObject::move(float deltaX, float deltaY)
 {
     m_base.move(deltaX, deltaY);
@@ -156,12 +302,6 @@ bool GameObject::endFiring()
     return false;
 }
 
-bool GameObject::update(float delta, GameScreen& screen)
-{
-
-
-    return false;
-}
 
 void GameObject::updateFireAbility(float delta, const Clock::time_point& t, GameScreen& screen)
 {
@@ -236,5 +376,5 @@ int GameObject::updateMoveAbility(float delta, GameScreen& screen)
 
 
 }
-
+*/
 } // end of namespace bot

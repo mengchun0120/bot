@@ -2,45 +2,87 @@
 #define INCLUDE_BOT_ROBOT
 
 #include "gameobj/bot_gameobject.h"
+#include "gameobj/bot_moveability.h"
+#include "gameobj/bot_shootability.h"
+#include "gametemplate/bot_robottemplate.h"
 
 namespace bot {
 
+class RobotTemplate;
+class Ability;
+
 class Robot : public GameObject {
+	struct Component {
+		float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+	};
+
 public:
-	Robot();
+	Robot(const RobotTemplate* t);
 
 	virtual ~Robot();
 
-    virtual void present();
+    virtual void present(SimpleShaderProgram& program);
 
     virtual bool update(float delta, GameScreen& screen);
 
-    virtual float getPosX() const;
+	void setPos(float x, float y);
 
-    virtual float getPosY() const;
+	const float* getDirection() const
+	{
+		return m_direction;
+	}
 
-    virtual void setPos(float x, float y);
+	float getDirectionX() const
+	{
+		return m_direction[0];
+	}
 
-    virtual void setDirection(float directionX, float directionY);
+	float getDirectionY() const
+	{
+		return m_direction[1];
+	}
 
-    virtual float getCoverBreathX() const;
+	void setDirection(float directionX, float directionY);
 
-    virtual float getCoverBreathY() const;
+	int getHP() const
+	{
+		return m_hp;
+	}
 
-    virtual bool isCollidable() const;
+	bool addHP(int deltaHP);
 
-    virtual float getCollideBreathX() const;
+	const RobotTemplate* getTemplate() const
+	{
+		return static_cast<const RobotTemplate*>(m_template);
+	}
 
-    virtual float getCollideBreathY() const;
+	MoveAbility* getMoveAbility()
+	{
+		return static_cast<MoveAbility*>(m_abilities[ABILITY_MOVE]);
+	}
+
+	Component* getComponentForMoveAbility();
+
+	ShootAbility* getShootAbility()
+	{
+		return static_cast<ShootAbility*>(m_abilities[ABILITY_SHOOT]);
+	}
+
+	bool resetShootPos();
+
+	Component* getComponentForShootAbility();
+
+private:
+	void initComponents();
+
+	void initAbilities();
 
 protected:
-    FireAbility* getFireAbility() const;
-
-    void updateFireAbility(float delta, const Clock::time_point& t, GameScreen& screen);
-
-    void updateFireAbilityComponent(Component& component, float delta, const Clock::time_point& t, GameScreen& screen);
-
-    int updateMoveAbility(float delta, GameScreen& screen);
+	int m_hp;
+	int m_side;
+	float m_direction[Constants::NUM_FLOATS_PER_POSITION];
+	Ability* m_abilities[NUM_ABILITY_TYPES];
+	std::vector<Component> m_components;
 };
 
 } // end of namespace bot

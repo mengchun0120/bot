@@ -147,14 +147,14 @@
   <ItemGroup>
     <ClCompile Include="src\app\bot_app.cpp" />
     <ClCompile Include="src\bot_main.cpp" />
-    <ClCompile Include="src\gameobj\bot_gamemap.cpp" />
+    <ClCompile Include="src\gameobj\bot_ability.cpp" />
     <ClCompile Include="src\gameobj\bot_gameobject.cpp" />
     <ClCompile Include="src\gameobj\bot_gameobjectflag.cpp" />
-    <ClCompile Include="src\gameobj\bot_gameobjectmanager.cpp" />
     <ClCompile Include="src\gameobj\bot_gameobjecttype.cpp" />
-    <ClCompile Include="src\gameobj\bot_mapitem.cpp" />
+    <ClCompile Include="src\gameobj\bot_moveability.cpp" />
+    <ClCompile Include="src\gameobj\bot_robot.cpp" />
+    <ClCompile Include="src\gameobj\bot_shootability.cpp" />
     <ClCompile Include="src\gameobj\bot_tile.cpp" />
-    <ClCompile Include="src\gameobj\Source.cpp" />
     <ClCompile Include="src\gametemplate\bot_abilitytemplate.cpp" />
     <ClCompile Include="src\gametemplate\bot_abilitytype.cpp" />
     <ClCompile Include="src\gametemplate\bot_animationtemplate.cpp" />
@@ -173,6 +173,10 @@
     <ClCompile Include="src\gametemplate\bot_tiletemplate.cpp" />
     <ClCompile Include="src\gametemplate\bot_tiletemplateparser.cpp" />
     <ClCompile Include="src\gameutil\bot_collide.cpp" />
+    <ClCompile Include="src\gameutil\bot_gamemap.cpp" />
+    <ClCompile Include="src\gameutil\bot_gamemaploader.cpp" />
+    <ClCompile Include="src\gameutil\bot_gameobjectmanager.cpp" />
+    <ClCompile Include="src\gameutil\bot_mapitem.cpp" />
     <ClCompile Include="src\gameutil\bot_timedeltasmoother.cpp" />
     <ClCompile Include="src\geometry\bot_polygon.cpp" />
     <ClCompile Include="src\geometry\bot_rectangle.cpp" />
@@ -192,6 +196,7 @@
     <ClCompile Include="src\opengl\bot_textsystem.cpp" />
     <ClCompile Include="src\opengl\bot_texture.cpp" />
     <ClCompile Include="src\opengl\bot_vertexarray.cpp" />
+    <ClCompile Include="src\screen\bot_gamescreen.cpp" />
     <ClCompile Include="src\screen\bot_screen.cpp" />
     <ClCompile Include="src\screen\bot_screenmanager.cpp" />
     <ClCompile Include="src\screen\bot_startscreen.cpp" />
@@ -329,12 +334,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\bot_app.h" />
-    <ClInclude Include="src\gameobj\bot_gamemap.h" />
+    <ClInclude Include="src\gameobj\bot_ability.h" />
     <ClInclude Include="src\gameobj\bot_gameobject.h" />
     <ClInclude Include="src\gameobj\bot_gameobjectflag.h" />
-    <ClInclude Include="src\gameobj\bot_gameobjectmanager.h" />
     <ClInclude Include="src\gameobj\bot_gameobjecttype.h" />
-    <ClInclude Include="src\gameobj\bot_mapitem.h" />
+    <ClInclude Include="src\gameobj\bot_moveability.h" />
+    <ClInclude Include="src\gameobj\bot_robot.h" />
+    <ClInclude Include="src\gameobj\bot_shootability.h" />
     <ClInclude Include="src\gameobj\bot_tile.h" />
     <ClInclude Include="src\gametemplate\bot_abilitytemplate.h" />
     <ClInclude Include="src\gametemplate\bot_abilitytype.h" />
@@ -354,6 +360,10 @@
     <ClInclude Include="src\gametemplate\bot_tiletemplate.h" />
     <ClInclude Include="src\gametemplate\bot_tiletemplateparser.h" />
     <ClInclude Include="src\gameutil\bot_collide.h" />
+    <ClInclude Include="src\gameutil\bot_gamemap.h" />
+    <ClInclude Include="src\gameutil\bot_gamemaploader.h" />
+    <ClInclude Include="src\gameutil\bot_gameobjectmanager.h" />
+    <ClInclude Include="src\gameutil\bot_mapitem.h" />
     <ClInclude Include="src\gameutil\bot_timedeltasmoother.h" />
     <ClInclude Include="src\geometry\bot_polygon.h" />
     <ClInclude Include="src\geometry\bot_rectangle.h" />
@@ -374,6 +384,7 @@
     <ClInclude Include="src\opengl\bot_textsystem.h" />
     <ClInclude Include="src\opengl\bot_texture.h" />
     <ClInclude Include="src\opengl\bot_vertexarray.h" />
+    <ClInclude Include="src\screen\bot_gamescreen.h" />
     <ClInclude Include="src\screen\bot_screen.h" />
     <ClInclude Include="src\screen\bot_screenmanager.h" />
     <ClInclude Include="src\screen\bot_startscreen.h" />

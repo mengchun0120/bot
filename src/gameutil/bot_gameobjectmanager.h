@@ -8,6 +8,7 @@ namespace bot {
 class GameTemplateLib;
 class GameObject;
 class Tile;
+class Robot;
 
 class GameObjectManager {
 public:
@@ -16,6 +17,8 @@ public:
 	~GameObjectManager();
 
 	Tile* createTile(const std::string& tileName);
+
+	Robot* createRobot(const std::string& robotName);
 
 	void sendObjectToDeath(GameObject* obj);
 

@@ -1,9 +1,11 @@
 #ifndef INCLUDE_BOT_GAMEOBJECT
 #define INCLUDE_BOT_GAMEOBJECT
 
+#include "misc/bot_constants.h"
 #include "structure/bot_doublelinkeditem.h"
 #include "gameobj/bot_gameobjecttype.h"
 #include "gameobj/bot_gameobjectflag.h"
+#include "gametemplate/bot_gameobjecttemplate.h"
 
 namespace bot {
 
@@ -12,80 +14,88 @@ class SimpleShaderProgram;
 
 class GameObject: public DoubleLinkedItem {
 public:
-    GameObject(GameObjectType type)
-        : DoubleLinkedItem()
-        , m_type(type)
-        , m_coverStartRow(0)
-        , m_coverEndRow(0)
-        , m_coverStartCol(0)
-        , m_coverEndCol(0)
-        , m_flags(0)
-    {}
+    GameObject(const GameObjectTemplate* t);
 
     virtual ~GameObject()
     {}
 
     GameObjectType getType() const
     {
-        return m_type;
+        return m_template->getType();
     }
 
     virtual void present(SimpleShaderProgram& program) = 0;
 
     virtual bool update(float delta, GameScreen& screen) = 0;
 
-    virtual float getPosX() const = 0;
+    float getPosX() const
+    {
+        return m_pos[0];
+    }
 
-    virtual float getPosY() const = 0;
+    float getPosY() const
+    {
+        return m_pos[1];
+    }
     
-    virtual void setPos(float x, float y) = 0;
+    float getCoverBreathX() const
+    {
+        return m_template->getCoverBreathX();
+    }
 
-    virtual float getCoverBreathX() const = 0;
+    float getCoverBreathY() const
+    {
+        return m_template->getCoverBreathY();
+    }
 
-    virtual float getCoverBreathY() const = 0;
+    float getCollideBreathX() const
+    {
+        return m_template->getCollideBreathX();
+    }
 
-    virtual float getCollideBreathX() const = 0;
-
-    virtual float getCollideBreathY() const = 0;
+    float getCollideBreathY() const
+    {
+        return m_template->getCollideBreathY();
+    }
 
     float getCoverLeft() const
     {
-        return getPosX() - getCoverBreathX();
+        return m_pos[0] - m_template->getCoverBreathX();
     }
 
     float getCoverBottom() const
     {
-        return getPosY() - getCoverBreathY();
+        return m_pos[1] - m_template->getCoverBreathY();
     }
 
     float getCoverRight() const
     {
-        return getPosX() + getCoverBreathX();
+        return m_pos[0] + m_template->getCoverBreathX();
     }
 
     float getCoverTop() const
     {
-        return getPosY() + getCoverBreathY();
+        return m_pos[1] + m_template->getCoverBreathY();
     }
 
     float getCollideLeft() const
     {
-        return getPosX() - getCollideBreathX();
+        return m_pos[0] - m_template->getCollideBreathX();
     }
 
     float getCollideBottom() const
     {
-        return getPosY() - getCollideBreathY();
+        return m_pos[1] - m_template->getCollideBreathY();
     }
 
     float getCollideRight() const
     {
-        return getPosX() + getCollideBreathX();
+        return m_pos[0] + m_template->getCollideBreathX();
     }
 
     float getCollideTop() const
     {
-        return getPosY() + getCollideBreathY();
+        return m_pos[1] + m_template->getCollideBreathY();
     }
 
     int getCoverStartRow() const
@@ -136,19 +146,19 @@ public:
         m_coverEndCol = endCol;
     }
 
-    void clearFlag(GameObjectFlag flag)
+    void clearFlag(int flag)
     {
-        m_flags &= (~static_cast<int>(flag));
+        m_flags &= ~flag;
     }
 
-    void setFlag(GameObjectFlag flag)
+    void setFlag(int flag)
     {
-        m_flags |= static_cast<int>(flag);
+        m_flags |= flag;
     }
 
-    bool testFlag(GameObjectFlag flag) const
+    bool testFlag(int flag) const
     {
-        return (m_flags & static_cast<int>(flag)) != 0;
+        return (m_flags & flag) != 0;
     }
 
     int getFlags() const
@@ -157,10 +167,11 @@ public:
     }
 
 protected:
-    GameObjectType m_type;
+    const GameObjectTemplate* m_template;
     int m_coverStartRow, m_coverEndRow;
     int m_coverStartCol, m_coverEndCol;
     int m_flags;
+    float m_pos[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 } // end of namespace bot

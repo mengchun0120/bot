@@ -1,0 +1,155 @@
+#include "misc/bot_log.h"
+#include "misc/bot_jsonutils.h"
+#include "gameobj/bot_tile.h"
+#include "gameobj/bot_robot.h"
+#include "gameutil/bot_gamemaploader.h"
+
+namespace bot {
+
+bool GameMapLoader::load(const std::string& file)
+{
+	rapidjson::Document doc;
+	if (!readJson(doc, file.c_str()))
+	{
+		LOG_ERROR("Failed to open %s", file.c_str());
+		return false;
+	}
+
+	if (!doc.IsObject())
+	{
+		LOG_ERROR("Invalid format %s", file.c_str());
+		return false;
+	}
+
+	rapidjson::Value mapJson = doc.GetObject();
+	
+	if (!initMap(mapJson))
+	{
+		LOG_ERROR("Failed to get map dimension");
+		return false;
+	}
+
+	if (!loadTiles(mapJson))
+	{
+		LOG_ERROR("Failed to load tiles");
+		return false;
+	}
+
+	if (!loadRobots(mapJson))
+	{
+		LOG_ERROR("Failed to load robots");
+		return false;
+	}
+
+	return true;
+}
+
+bool GameMapLoader::initMap(const rapidjson::Value& mapJson)
+{
+	int numRows, numCols;
+
+	if (!parseJson(numRows, mapJson, "numRows"))
+	{
+		return false;
+	}
+
+	if (!parseJson(numCols, mapJson, "numCols"))
+	{
+		return false;
+	}
+
+	int mapPoolSize = static_cast<int>(numRows * numCols * m_mapPoolFactor);
+
+	m_map.initMap(numRows, numCols, mapPoolSize);
+
+	return true;
+}
+
+bool GameMapLoader::loadTiles(const rapidjson::Value& mapJson)
+{
+	std::string name;
+	float x, y;
+	std::vector<JsonParseParam> params = {
+		{&name, "name", JSONTYPE_STRING},
+		{&x,    "x",    JSONTYPE_FLOAT},
+		{&y,    "y",    JSONTYPE_FLOAT}
+	};
+
+	auto parser = [&](const rapidjson::Value& item)->bool
+	{
+		if (!parseJson(params, item))
+		{
+			return false;
+		}
+
+		return addTile(name, x, y);
+	};
+
+	if (!parseJsonArray(mapJson, parser, "tiles"))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GameMapLoader::addTile(const std::string& name, float x, float y)
+{
+	Tile* tile = m_gameObjManager.createTile(name);
+	if (!tile)
+	{
+		return false;
+	}
+	tile->setPos(x, y);
+
+	m_map.addObject(tile);
+
+	return true;
+}
+
+bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
+{
+	std::string name;
+	float x, y, directionX, directionY;
+	std::vector<JsonParseParam> params = {
+		{&name,       "name",       JSONTYPE_STRING},
+		{&x,	      "x",          JSONTYPE_FLOAT},
+		{&y,	      "y",          JSONTYPE_FLOAT},
+		{&directionX, "directionX", JSONTYPE_FLOAT},
+		{&directionY, "directionY", JSONTYPE_FLOAT}
+	};
+
+	auto parser = [&](const rapidjson::Value& item)->bool
+	{
+		if (!parseJson(params, item))
+		{
+			return false;
+		}
+
+		return addRobot(name, x, y, directionX, directionY);
+	};
+
+	if (!parseJsonArray(mapJson, parser, "robots"))
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool GameMapLoader::addRobot(const std::string& name, float x, float y, float directionX, float directionY)
+{
+	Robot* robot = m_gameObjManager.createRobot(name);
+	if (!robot)
+	{
+		return false;
+	}
+
+	robot->setPos(x, y);
+	robot->setDirection(directionX, directionY);
+	m_map.addObject(robot);
+
+	return true;
+}
+
+} // end of namespace bot

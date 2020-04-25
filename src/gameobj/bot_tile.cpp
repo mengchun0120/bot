@@ -8,8 +8,8 @@
 namespace bot {
 
 Tile::Tile(const TileTemplate* tileTemplate)
-	: GameObject(GAME_OBJ_TYPE_TILE)
-	, m_tileTemplate(tileTemplate)
+	: GameObject(tileTemplate)
+	, m_hp(tileTemplate->getHP())
 {
 	m_pos[0] = 0.0f;
 	m_pos[1] = 0.0f;
@@ -20,9 +20,10 @@ Tile::~Tile()
 
 void Tile::present(SimpleShaderProgram& program)
 {
-	const Rectangle* rect = m_tileTemplate->getRect();
-	const Texture* texture = m_tileTemplate->getTexture();
-	const Color* color = m_tileTemplate->getColor();
+	const TileTemplate* t = static_cast<const TileTemplate*>(m_template);
+	const Rectangle* rect = t->getRect();
+	const Texture* texture = t->getTexture();
+	const Color* color = t->getColor();
 
 	rect->draw(program, m_pos, nullptr, nullptr, nullptr, texture->textureId(), color);
 }
@@ -32,24 +33,35 @@ bool Tile::update(float delta, GameScreen& screen)
 	return true;
 }
 
-float Tile::getCoverBreathX() const
+bool Tile::descreaseHP(int deltaHP)
 {
-	return m_tileTemplate->getCoverBreathX();
+    if (testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
+    {
+        return true;
+    }
+
+	if (testFlag(GAME_OBJ_FLAG_DEAD))
+	{
+		return false;
+	}
+
+    if (m_hp > 0)
+    {
+        m_hp -= deltaHP;
+    }
+
+	if (m_hp <= 0)
+	{
+		setFlag(GAME_OBJ_FLAG_DEAD);
+	}
+
+    return m_hp > 0;
 }
 
-float Tile::getCoverBreathY() const
+void Tile::setPos(float x, float y)
 {
-	return m_tileTemplate->getCoverBreathY();
-}
-
-float Tile::getCollideBreathX() const
-{
-	return m_tileTemplate->getCollideBreathX();
-}
-
-float Tile::getCollideBreathY() const
-{
-	return m_tileTemplate->getCollideBreathY();
+	m_pos[0] = x;
+	m_pos[1] = y;
 }
 
 } // end of namespace bot

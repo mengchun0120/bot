@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_STARTSCREEN
 #define INCLUDE_BOT_STARTSCREEN
 
+#include <string>
 #include "misc/bot_constants.h"
 #include "screen/bot_screen.h"
 
@@ -16,11 +17,11 @@ struct KeyEvent;
 
 class StartScreen: public Screen {
 public:
-    StartScreen();
+    StartScreen(App* app);
 
     virtual ~StartScreen();
 
-    virtual bool init(App* app);
+    virtual bool init();
 
     virtual int update(float delta);
 

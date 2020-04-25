@@ -3,7 +3,7 @@
 namespace bot {
 
 AnimationTemplate::AnimationTemplate()
-	: GameObjectTemplate()
+	: GameObjectTemplate(GAME_OBJ_TYPE_ANIMATION)
 	, m_frameInterval(0.0f)
 	, m_rect(nullptr)
 {

@@ -8,10 +8,6 @@ namespace bot {
 
 template <typename T>
 class DoubleLinkedList {
-
-	static_assert(std::is_base_of<DoubleLinkedItem, T>::value,
-				  "T must be derived from DoubleLinkedItem");
-
 public:
 	DoubleLinkedList()
 		: m_first(nullptr)

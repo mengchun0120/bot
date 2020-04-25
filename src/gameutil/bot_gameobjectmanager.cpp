@@ -1,7 +1,8 @@
 #include "misc/bot_log.h"
 #include "gametemplate/bot_gametemplatelib.h"
 #include "gameobj/bot_tile.h"
-#include "gameobj/bot_gameobjectmanager.h"
+#include "gameobj/bot_robot.h"
+#include "gameutil/bot_gameobjectmanager.h"
 
 namespace bot {
 
@@ -29,6 +30,21 @@ Tile* GameObjectManager::createTile(const std::string& tileName)
 	m_activeObjects.add(tile);
 
 	return tile;
+}
+
+Robot* GameObjectManager::createRobot(const std::string& robotName)
+{
+	const RobotTemplate* robotTemplate = m_gameLib.getRobotTemplateByName(robotName);
+	if (!robotTemplate)
+	{
+		LOG_ERROR("Failed to find robot template %s", robotName.c_str());
+		return nullptr;
+	}
+
+	Robot* robot = new Robot(robotTemplate);
+	m_activeObjects.add(robot);
+
+	return robot;
 }
 
 void GameObjectManager::sendObjectToDeath(GameObject* obj)

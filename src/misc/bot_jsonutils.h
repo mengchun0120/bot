@@ -40,6 +40,32 @@ bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const
 
 bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value);
 
+template <typename PROCESSOR>
+bool parseJsonArray(const rapidjson::Value& value, PROCESSOR& processor, const char* name)
+{
+	if (!value.HasMember(name))
+	{
+		return false;
+	}
+
+	const rapidjson::Value& arr = value[name];
+	if (!arr.IsArray())
+	{
+		return false;
+	}
+
+	int len = arr.Capacity();
+	for (int i = 0; i < len; ++i)
+	{
+		if (!processor(arr[i]))
+		{
+			return false;
+		}
+	}
+
+	return true;
+}
+
 } // end of namespace bot
 
 #endif

@@ -18,33 +18,17 @@ public:
 
     virtual bool update(float delta, GameScreen& screen);
 
-    virtual float getPosX() const
+    void setPos(float x, float y);
+
+    int getHP() const
     {
-        return m_pos[0];
+        return m_hp;
     }
 
-    virtual float getPosY() const
-    {
-        return m_pos[1];
-    }
-
-    virtual void setPos(float x, float y)
-    {
-        m_pos[0] = x;
-        m_pos[1] = y;
-    }
-
-    virtual float getCoverBreathX() const;
-
-    virtual float getCoverBreathY() const;
-
-    virtual float getCollideBreathX() const;
-
-    virtual float getCollideBreathY() const;
+    bool descreaseHP(int deltaHP);
 
 protected:
-    const TileTemplate* m_tileTemplate;
-    float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+    int m_hp;
 };
 
 } // end of namespace bot

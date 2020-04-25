@@ -6,8 +6,8 @@
 
 namespace bot {
 
-StartScreen::StartScreen()
-    : m_app(nullptr)
+StartScreen::StartScreen(App* app)
+    : m_app(app)
     , m_button(nullptr)
     , m_rect(nullptr)
     , m_normalTextColor(nullptr)
@@ -26,11 +26,9 @@ StartScreen::~StartScreen()
 {
 }
 
-bool StartScreen::init(App* app)
+bool StartScreen::init()
 {
-    m_app = app;
-
-    const GameTemplateLib& gameLib = app->getGameTemplateLib();
+    const GameTemplateLib& gameLib = m_app->getGameTemplateLib();
     
     m_button = gameLib.getTextureByName("button");
     if (!m_button)
@@ -181,7 +179,7 @@ int StartScreen::processMouseButtonEvent(const MouseButtonEvent &e)
         m_hoverButtonIdx = -1;
         if(m_pressedButtonIdx == BUTTON_START_GAME) 
         {
-            /*App::g_app.screenMgr().switchScreen(ScreenManager::SCREEN_GAME);*/
+            m_app->getScreenManager().switchScreen(ScreenManager::SCREEN_GAME);
             return 1;
         } 
         else if(m_pressedButtonIdx == BUTTON_EXIT) 
