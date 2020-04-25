@@ -6,6 +6,7 @@
 #include "gametemplate/bot_missiletemplateparser.h"
 #include "gametemplate/bot_robottemplateparser.h"
 #include "gametemplate/bot_animationtemplateparser.h"
+#include "gametemplate/bot_playertemplateparser.h"
 #include "gametemplate/bot_gametemplatelib.h"
 
 namespace bot {
@@ -22,7 +23,7 @@ bool GameTemplateLib::load(const std::string& textureFolder, const std::string& 
 	                       const std::string& rectLibFile, const std::string& colorLibFile,
 	                       const std::string& tileTemplateLibFile, const std::string& animationFolder,
 	                       const std::string& animationTemplateLibFile, const std::string& missileTemplateLibFile,
-	                       const std::string& robotTemplateLibFile)
+	                       const std::string& robotTemplateLibFile, const std::string& playerTemplateFile)
 {
 	TextureParser textureParser(textureFolder);
 	if (!readNamedLibFromJson(m_textureLib, textureLibFile.c_str(), textureParser))
@@ -85,7 +86,44 @@ bool GameTemplateLib::load(const std::string& textureFolder, const std::string& 
 	}
 
 	LOG_INFO("Done loading robot template library from %s", robotTemplateLibFile.c_str());
+
+	if (!loadPlayerTemplate(playerTemplateFile))
+	{
+		LOG_ERROR("Failed to read player template from %s", playerTemplateFile.c_str());
+		return false;
+	}
+
+
 	
+	return true;
+}
+
+bool GameTemplateLib::loadPlayerTemplate(const std::string& playerTemplateFile)
+{
+	LOG_INFO("Loading player template from %s", playerTemplateFile.c_str());
+
+	rapidjson::Document doc;
+	if (!readJson(doc, playerTemplateFile.c_str()))
+	{
+		return false;
+	}
+
+	if (!doc.IsObject())
+	{
+		LOG_ERROR("Invalid format in %s", playerTemplateFile.c_str());
+		return false;
+	}
+
+	const rapidjson::Value& playerJson = doc.GetObject();
+	PlayerTemplateParser parser(m_textureLib, m_rectLib, m_colorLib, m_missileTemplateLib);
+
+	if (!parser.parse(&m_playerTemplate, playerJson))
+	{
+		return false;
+	}
+
+	LOG_INFO("Done loading player template from %s", playerTemplateFile.c_str());
+
 	return true;
 }
 

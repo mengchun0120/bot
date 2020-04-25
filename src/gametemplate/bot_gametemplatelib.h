@@ -9,6 +9,7 @@
 #include "gametemplate/bot_missiletemplate.h"
 #include "gametemplate/bot_robottemplate.h"
 #include "gametemplate/bot_animationtemplate.h"
+#include "gametemplate/bot_playertemplate.h"
 
 namespace bot {
 
@@ -22,7 +23,7 @@ public:
 		      const std::string& rectLibFile, const std::string& colorLibFile,
 		      const std::string& tileTemplateLibFile, const std::string& animationFolder,
 			  const std::string& animationTemplateLibFile, const std::string& missileTemplateLibFile, 
-		      const std::string& robotTemplateLibFile);
+		      const std::string& robotTemplateLibFile, const std::string& playerTemplateFile);
 
 	const NamedLib<Texture>& getTextureLib() const
 	{
@@ -174,6 +175,19 @@ public:
 		return m_animationTemplateLib.getObjectByName(name.c_str());
 	}
 
+	const PlayerTemplate* getPlayerTemplate() const
+	{
+		return &m_playerTemplate;
+	}
+
+	PlayerTemplate* getPlayerTemplate()
+	{
+		return &m_playerTemplate;
+	}
+
+private:
+	bool loadPlayerTemplate(const std::string& playerTemplateFile);
+
 private:
 	NamedLib<Texture> m_textureLib;
 	NamedLib<Rectangle> m_rectLib;
@@ -182,6 +196,7 @@ private:
 	NamedLib<MissileTemplate> m_missileTemplateLib;
 	NamedLib<RobotTemplate> m_robotTemplateLib;
 	NamedLib<AnimationTemplate> m_animationTemplateLib;
+	PlayerTemplate m_playerTemplate;
 };
 
 } // end of namespace bot

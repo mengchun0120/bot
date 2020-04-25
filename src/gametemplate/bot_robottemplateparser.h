@@ -24,7 +24,7 @@ public:
 		, m_missileTemplateLib(missileTemplateLib)
 	{}
 
-	~RobotTemplateParser()
+	virtual ~RobotTemplateParser()
 	{}
 
 	bool parse(RobotTemplate* robotTemplate, const rapidjson::Value& elem);
@@ -38,7 +38,7 @@ private:
 
 	bool parseShootAbility(RobotTemplate* robotTemplate, const rapidjson::Value& elem);
 
-private:
+protected:
 	const NamedLib<Texture>& m_textureLib;
 	const NamedLib<Rectangle>& m_rectLib;
 	const NamedLib<Color>& m_colorLib;

@@ -2,6 +2,7 @@
 #include "gametemplate/bot_gametemplatelib.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_robot.h"
+#include "gameobj/bot_player.h"
 #include "gameutil/bot_gameobjectmanager.h"
 
 namespace bot {
@@ -45,6 +46,13 @@ Robot* GameObjectManager::createRobot(const std::string& robotName)
 	m_activeObjects.add(robot);
 
 	return robot;
+}
+
+Player* GameObjectManager::createPlayer()
+{
+	Player* player = new Player(m_gameLib.getPlayerTemplate());
+	m_activeObjects.add(player);
+	return player;
 }
 
 void GameObjectManager::sendObjectToDeath(GameObject* obj)

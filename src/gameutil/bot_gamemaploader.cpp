@@ -2,6 +2,7 @@
 #include "misc/bot_jsonutils.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_robot.h"
+#include "gameobj/bot_player.h"
 #include "gameutil/bot_gamemaploader.h"
 
 namespace bot {
@@ -148,6 +149,43 @@ bool GameMapLoader::addRobot(const std::string& name, float x, float y, float di
 	robot->setPos(x, y);
 	robot->setDirection(directionX, directionY);
 	m_map.addObject(robot);
+
+	return true;
+}
+
+bool GameMapLoader::loadPlayer(const rapidjson::Value& mapJson)
+{
+	if (!mapJson.HasMember("player"))
+	{
+		LOG_ERROR("Config for player doesn't exist");
+		return false;
+	}
+
+	const rapidjson::Value& playerJson = mapJson["player"];
+	if (!playerJson.IsObject())
+	{
+		LOG_ERROR("Invalid format for player config");
+		return false;
+	}
+	
+	float x, y, directionX, directionY;
+	std::vector<JsonParseParam> params = {
+		{&x,	      "x",          JSONTYPE_FLOAT},
+		{&y,	      "y",          JSONTYPE_FLOAT},
+		{&directionX, "directionX", JSONTYPE_FLOAT},
+		{&directionY, "directionY", JSONTYPE_FLOAT}
+	};
+
+	if (!parseJson(params, playerJson))
+	{
+		LOG_ERROR("Failed to parse player");
+		return false;
+	}
+
+	Player* player = m_gameObjManager.createPlayer();
+	player->setPos(x, y);
+	player->setDirection(directionX, directionY);
+	m_map.addObject(player);
 
 	return true;
 }

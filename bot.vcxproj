@@ -152,6 +152,7 @@
     <ClCompile Include="src\gameobj\bot_gameobjectflag.cpp" />
     <ClCompile Include="src\gameobj\bot_gameobjecttype.cpp" />
     <ClCompile Include="src\gameobj\bot_moveability.cpp" />
+    <ClCompile Include="src\gameobj\bot_player.cpp" />
     <ClCompile Include="src\gameobj\bot_robot.cpp" />
     <ClCompile Include="src\gameobj\bot_shootability.cpp" />
     <ClCompile Include="src\gameobj\bot_tile.cpp" />
@@ -165,6 +166,8 @@
     <ClCompile Include="src\gametemplate\bot_missiletemplate.cpp" />
     <ClCompile Include="src\gametemplate\bot_missiletemplateparser.cpp" />
     <ClCompile Include="src\gametemplate\bot_moveabilitytemplate.cpp" />
+    <ClCompile Include="src\gametemplate\bot_playertemplate.cpp" />
+    <ClCompile Include="src\gametemplate\bot_playertemplateparser.cpp" />
     <ClCompile Include="src\gametemplate\bot_rectangleparser.cpp" />
     <ClCompile Include="src\gametemplate\bot_robottemplate.cpp" />
     <ClCompile Include="src\gametemplate\bot_robottemplateparser.cpp" />
@@ -215,6 +218,7 @@
     <None Include="res\glsl\simple_vertex_shader.glsl" />
     <None Include="res\lib\color_lib.json" />
     <None Include="res\lib\missile_template_lib.json" />
+    <None Include="res\lib\player_lib.json" />
     <None Include="res\lib\rect_lib.json" />
     <None Include="res\lib\robot_template_lib.json" />
     <None Include="res\lib\texture_lib.json" />
@@ -339,6 +343,7 @@
     <ClInclude Include="src\gameobj\bot_gameobjectflag.h" />
     <ClInclude Include="src\gameobj\bot_gameobjecttype.h" />
     <ClInclude Include="src\gameobj\bot_moveability.h" />
+    <ClInclude Include="src\gameobj\bot_player.h" />
     <ClInclude Include="src\gameobj\bot_robot.h" />
     <ClInclude Include="src\gameobj\bot_shootability.h" />
     <ClInclude Include="src\gameobj\bot_tile.h" />
@@ -352,6 +357,8 @@
     <ClInclude Include="src\gametemplate\bot_missiletemplate.h" />
     <ClInclude Include="src\gametemplate\bot_missiletemplateparser.h" />
     <ClInclude Include="src\gametemplate\bot_moveabilitytemplate.h" />
+    <ClInclude Include="src\gametemplate\bot_playertemplate.h" />
+    <ClInclude Include="src\gametemplate\bot_playertemplateparser.h" />
     <ClInclude Include="src\gametemplate\bot_rectangleparser.h" />
     <ClInclude Include="src\gametemplate\bot_robottemplate.h" />
     <ClInclude Include="src\gametemplate\bot_robottemplateparser.h" />

@@ -254,6 +254,15 @@
     <ClCompile Include="src\gameobj\bot_shootability.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
+    <ClCompile Include="src\gametemplate\bot_playertemplate.cpp">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gametemplate\bot_playertemplateparser.cpp">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_player.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -299,6 +308,9 @@
       <Filter>Resource Files\lib</Filter>
     </None>
     <None Include="res\lib\robot_template_lib.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\player_lib.json">
       <Filter>Resource Files\lib</Filter>
     </None>
   </ItemGroup>
@@ -803,6 +815,15 @@
       <Filter>Source Files\gameobj</Filter>
     </ClInclude>
     <ClInclude Include="src\gameobj\bot_shootability.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gametemplate\bot_playertemplate.h">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gametemplate\bot_playertemplateparser.h">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_player.h">
       <Filter>Source Files\gameobj</Filter>
     </ClInclude>
   </ItemGroup>

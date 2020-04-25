@@ -32,6 +32,8 @@ private:
 
 	bool addRobot(const std::string& name, float x, float y, float directionX, float directionY);
 
+	bool loadPlayer(const rapidjson::Value& mapJson);
+
 private:
 	GameMap& m_map;
 	GameObjectManager& m_gameObjManager;

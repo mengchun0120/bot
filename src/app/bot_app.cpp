@@ -337,6 +337,7 @@ bool App::initGameTemplateLib(const rapidjson::Value& cfg)
     std::string animationTemplateLibFile;
     std::string missileTemplateLibFile;
     std::string robotTemplateLibFile;
+    std::string playerTemplateLibFile;
 
     std::vector<JsonParseParam> params =
     {
@@ -349,7 +350,8 @@ bool App::initGameTemplateLib(const rapidjson::Value& cfg)
         {&tileTemplateLibFile,      "tileTemplateLib",      JSONTYPE_STRING},
         {&animationTemplateLibFile, "animationTemplateLib", JSONTYPE_STRING},
         {&missileTemplateLibFile,   "missileTemplateLib",   JSONTYPE_STRING},
-        {&robotTemplateLibFile,     "robotTemplateLib",     JSONTYPE_STRING}
+        {&robotTemplateLibFile,     "robotTemplateLib",     JSONTYPE_STRING},
+        {&playerTemplateLibFile,    "playerTemplateLib",    JSONTYPE_STRING}
     };
 
     if (!parseJson(params, cfg))
@@ -367,10 +369,11 @@ bool App::initGameTemplateLib(const rapidjson::Value& cfg)
     std::string animationTemplateLibPath = constructPath({ libDir, animationTemplateLibFile });
     std::string missileTemplateLibPath = constructPath({ libDir, missileTemplateLibFile });
     std::string robotTemplateLibPath = constructPath({ libDir, robotTemplateLibFile });
+    std::string playerTemplateLibPath = constructPath({ libDir, playerTemplateLibFile });
 
     bool success = m_gameTemplateLib.load(textureDir, textureLibPath, rectLibPath, colorLibPath,
                                           tileTemplateLibPath, animationDir, animationTemplateLibPath,
-                                          missileTemplateLibPath, robotTemplateLibPath);
+                                          missileTemplateLibPath, robotTemplateLibPath, playerTemplateLibFile);
 
     if (!success)
     {

@@ -9,6 +9,8 @@
 
 namespace bot {
 
+class Robot;
+
 class GameMap {
 public:
 	typedef LinkedList<MapItem> MapCell;
@@ -72,6 +74,21 @@ public:
 
 	void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag);
 
+	void setPlayer(Robot* player)
+	{
+		m_player = player;
+	}
+
+	Robot* getPlayer()
+	{
+		return m_player;
+	}
+
+	const Robot* getPlayer() const
+	{
+		return m_player;
+	}
+
 public:
 	static const float GRID_BREATH;
 
@@ -86,6 +103,7 @@ protected:
 	ObjectPool<MapItem> m_mapItemPool;
 	std::vector<std::vector<MapCell>> m_map;
 	float m_mapWidth, m_mapHeight;
+	Robot* m_player;
 };
 
 } // end of namespace bot

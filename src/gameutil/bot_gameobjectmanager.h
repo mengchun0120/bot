@@ -9,6 +9,7 @@ class GameTemplateLib;
 class GameObject;
 class Tile;
 class Robot;
+class Player;
 
 class GameObjectManager {
 public:
@@ -19,6 +20,8 @@ public:
 	Tile* createTile(const std::string& tileName);
 
 	Robot* createRobot(const std::string& robotName);
+
+	Player* createPlayer();
 
 	void sendObjectToDeath(GameObject* obj);
 

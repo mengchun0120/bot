@@ -1,6 +1,12 @@
 {
 	"numRows": 20,
 	"numCols": 30,
+	"player": {
+		"x": 60.0,
+		"y": 60.0,
+		"directionX": 0.0,
+		"directionY": 1.0
+	},
 	"tiles": [
 		{
 			"name": "steel_tile",
