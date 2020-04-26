@@ -40,19 +40,16 @@ public:
         return m_destX;
     }
 
-    void setDestX(float destX)
+    void setDest(float destX, float destY)
     {
         m_destX = destX;
+        m_destY = destY;
+        m_hasDest = true;
     }
 
     float getDestY() const
     {
         return m_destY;
-    }
-
-    void setDestY(float destY)
-    {
-        m_destY = destY;
     }
 
     bool hasDest() const
@@ -64,6 +61,8 @@ public:
     {
         m_hasDest = hasDest;
     }
+
+    void checkDest(float x, float y);
 
 protected:
     bool m_moving;

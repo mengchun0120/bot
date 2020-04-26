@@ -1,6 +1,7 @@
 #include <algorithm>
 #include "misc/bot_log.h"
 #include "gameobj/bot_gameobject.h"
+#include "gameobj/bot_player.h"
 #include "gameutil/bot_gamemap.h"
 
 namespace bot {
@@ -291,6 +292,12 @@ void GameMap::clearFlagsInRect(int startRow, int endRow, int startCol, int endCo
             }
         }
     }
+}
+
+void GameMap::setPlayer(Player* player)
+{
+    m_player = player;
+    addObject(player);
 }
 
 } // end of namespace bot

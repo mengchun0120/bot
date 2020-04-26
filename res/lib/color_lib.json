@@ -28,9 +28,9 @@
     "alpha": 255
   },
   {
-    "name": "darkgreen",
+    "name": "playergreen",
     "red": 0,
-    "green": 100,
+    "green": 179,
     "blue": 0,
     "alpha": 255
   },

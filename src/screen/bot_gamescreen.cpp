@@ -1,10 +1,12 @@
 #include "misc/bot_log.h"
 #include "misc/bot_fileutils.h"
-#include "app/bot_app.h"
+#include "misc/bot_mathutils.h"
 #include "input/bot_inputevent.h"
 #include "gameobj/bot_gameobjecttype.h"
 #include "gameobj/bot_tile.h"
+#include "gameobj/bot_player.h"
 #include "gameutil/bot_gamemaploader.h"
+#include "app/bot_app.h"
 #include "screen/bot_gamescreen.h"
 
 using namespace rapidjson;
@@ -14,6 +16,12 @@ namespace bot {
 GameScreen::GameScreen(App* app)
     : m_app(app)
     , m_gameObjManager(app->getGameTemplateLib())
+    , m_minViewportX(0.0f)
+    , m_minViewportY(0.0f)
+    , m_maxViewportX(0.0f)
+    , m_maxViewportY(0.0f)
+    , m_viewportWorldX(0.0f)
+    , m_viewportWorldY(0.0f)
 {
 }
 
@@ -54,8 +62,6 @@ bool GameScreen::loadMap(const std::string& fileName)
     m_minViewportY = windowBreathY;
     m_maxViewportY = m_map.getMapHeight() - windowBreathY;
 
-    LOG_INFO("%f %f", m_minViewportX, m_minViewportY);
-
     LOG_INFO("Done loading map");
 
     return true;
@@ -63,6 +69,16 @@ bool GameScreen::loadMap(const std::string& fileName)
 
 int GameScreen::update(float delta)
 {
+    Player* player = m_map.getPlayer();
+    if (player)
+    {
+        if (!player->update(delta, *this)) {
+            LOG_INFO("player is DEAD");
+        }
+    }
+
+    updateViewport();
+
     return 0;
 }
 
@@ -112,52 +128,81 @@ void GameScreen::present()
 
 int GameScreen::processInput(const InputEvent& e)
 {
+    switch (e.m_type) {
+    case InputEvent::ET_MOUSE_MOVE:
+        return handleMouseMove(e.m_mouseMoveEvent);
+    case InputEvent::ET_MOUSE_BUTTON:
+        return handleMouseButton(e.m_mouseButtonEvent);
+    case InputEvent::ET_KEY:
+        return handleKey(e.m_keyEvent);
+    default:
+        LOG_WARN("Unknown input type %d", static_cast<int>(e.m_type));
+    }
     return 0;
 }
 
 
 void GameScreen::updateViewport()
 {
-    m_viewportPos[0] = m_minViewportX;
-    m_viewportPos[1] = m_minViewportY;
+    const Player* player = m_map.getPlayer();
+
+    m_viewportPos[0] = clamp(player->getPosX(), m_minViewportX, m_maxViewportX);
+    m_viewportPos[1] = clamp(player->getPosY(), m_minViewportY, m_maxViewportY);
+    m_viewportWorldX = m_viewportPos[0] - m_app->getViewportWidth() / 2.0f;
+    m_viewportWorldY = m_viewportPos[1] - m_app->getViewportHeight() / 2.0f;
     m_app->getSimpleShaderProgram().setViewportOrigin(m_viewportPos);
-    //m_viewportPos[0] = clamp(m_player->getPosX(), m_minViewportX, m_maxViewportX);
-    //m_viewportPos[1] = clamp(m_player->getPosY(), m_minViewportY, m_maxViewportY);
-    //m_viewportWorldX = m_viewportPos[0] - App::g_app.viewportWidth() / 2.0f;
-    //m_viewportWorldY = m_viewportPos[1] - App::g_app.viewportHeight() / 2.0f;
-    //App::g_app.program().setViewportOrigin(m_viewportPos);
 }
+
+int GameScreen::handleMouseMove(const MouseMoveEvent& e)
+{
+    Player* player = m_map.getPlayer();
+    if (!player) 
+    {
+        return 0;
+    }
+
+    float destX = getWorldX(e.m_x);
+    float destY = getWorldY(e.m_y);
+    player->setDestAndDirection(destX, destY);
+    return 0;
+}
+
+int GameScreen::handleMouseButton(const MouseButtonEvent& e)
+{
+    Player* player = m_map.getPlayer();
+    if (!player) 
+    {
+        return 0;
+    }
+
+    if (e.m_button == GLFW_MOUSE_BUTTON_LEFT && e.m_action == GLFW_PRESS) 
+    {
+        float destX = getWorldX(e.m_x);
+        float destY = getWorldY(e.m_y);
+        player->setDestAndDirection(destX, destY);
+        player->setMovingEnabled(true);
+    }
+    
+    return 0;
+}
+
+int GameScreen::handleKey(const KeyEvent& e)
+{
+    /*
+    if (!m_player) {
+        return 0;
+    }
+
+    switch (e.m_key) {
+    case GLFW_KEY_F:
+        return handleFireKey(e.m_action);
+    }
+    */
+    return 0;
+}
+
 
 /*
-
-bool GameScreen::loadPlayer(const Document& doc)
-{
-    LOG_INFO("Loading player");
-
-    float startPosX = 0.0f, startPosY = 0.0f, startDirectionX = 1.0f, startDirectionY = 0.0f;
-    if (!loadMapPlayerSetting(startPosX, startPosY, startDirectionX, startDirectionY, doc)) {
-        return false;
-    }
-
-    const GameLib& lib = App::g_app.gameLib();
-    const GameObjectTemplate* playerTemplate = lib.getGameObjectTemplate("player");
-    if (!playerTemplate) {
-        LOG_ERROR("Failed to find player template");
-        return false;
-    }
-
-    m_player = new GameObject(playerTemplate);
-
-    m_player->setPos(startPosX, startPosY);
-    m_player->setDirection(startDirectionX, startDirectionY);
-
-    addGameObj(m_player);
-    
-    LOG_INFO("Finished loading player");
-
-    return true;
-}
-
 
 int GameScreen::update(float delta)
 {
@@ -195,89 +240,11 @@ int GameScreen::update(float delta)
     return 0;
 }
 
-void GameScreen::present()
-{
-    static const std::vector<GameObjectType> PRESENT_ORDER{GAMEOBJ_TILE, GAMEOBJ_BULLET, GAMEOBJ_BOT};
-    int startRow, endRow, startCol, endCol;
-
-    getDisplayRegion(startRow, endRow, startCol, endCol);
-    clearFlagsInRect(startRow, endRow, startCol, endCol, GOBJ_FLAG_DRAWN);
-
-    for (auto objTypeIt = PRESENT_ORDER.begin(); objTypeIt != PRESENT_ORDER.end(); objTypeIt++) {
-        for (int r = startRow; r <= endRow; ++r) {
-            std::vector<MapItem*>& row = m_map[r];
-            for (int c = startCol; c <= endCol; ++c) {
-                for (MapItem* item = row[c]; item; item = static_cast<MapItem*>(item->getNext())) {
-                    GameObject* obj = item->getObj();
-                    if (obj->getType() != *objTypeIt || obj->testFlag(GOBJ_FLAG_DRAWN)) {
-                        continue;
-                    }
-                    obj->present();
-                    obj->setFlag(GOBJ_FLAG_DRAWN);
-                }
-            }
-        }
-    }
-}
-
 int GameScreen::processInput(const InputEvent &e)
 {
-    switch (e.m_type) {
-    case InputEvent::ET_MOUSE_MOVE:
-        return handleMouseMove(e.m_mouseMoveEvent);
-    case InputEvent::ET_MOUSE_BUTTON:
-        return handleMouseButton(e.m_mouseButtonEvent);
-    case InputEvent::ET_KEY:
-        return handleKey(e.m_keyEvent);
-    default:
-        LOG_WARN("Unknown input type %d", static_cast<int>(e.m_type));
-    }
-    return 0;
+
 }
 
-int GameScreen::handleMouseMove(const MouseMoveEvent& e)
-{
-    if (!m_player) {
-        return 0;
-    }
-
-    float destX = getWorldX(e.m_x);
-    float destY = getWorldY(e.m_y);
-    m_player->setDirectionByDest(destX, destY);
-
-    return 0;
-}
-
-int GameScreen::handleMouseButton(const MouseButtonEvent& e)
-{
-    if (!m_player) {
-        return 0;
-    }
-    
-    if (e.m_button == GLFW_MOUSE_BUTTON_LEFT && e.m_action == GLFW_PRESS) {
-        float destX = getWorldX(e.m_x);
-        float destY = getWorldY(e.m_y);
-        m_player->setDirectionByDest(destX, destY);
-        m_player->setDest(destX, destY);
-        m_player->setMovability(true);
-    }
-
-    return 0;
-}
-
-int GameScreen::handleKey(const KeyEvent& e)
-{
-    if (!m_player) {
-        return 0;
-    }
-
-    switch (e.m_key) {
-    case GLFW_KEY_F:
-        return handleFireKey(e.m_action);
-    }
-
-    return 0;
-}
 
 int GameScreen::handleFireKey(int action) 
 {
@@ -333,34 +300,6 @@ bool GameScreen::testCollision(float collideLeft, float collideBottom, float col
     }
 
     return false;
-}
-
-
-void GameScreen::getDisplayRegion(int& startRow, int& endRow, int& startCol, int& endCol)
-{
-    float windowBreathX = App::g_app.viewportWidth() / 2.0f;
-    float windowBreathY = App::g_app.viewportWidth() / 2.0f;
-
-    startCol = getMapCoord(m_viewportPos[0] - windowBreathX);
-    if (startCol < 0) {
-        startCol = 0;
-    }
-
-    endCol = getMapCoord(m_viewportPos[0] + windowBreathX);
-    if (endCol >= getNumCols()) {
-        endCol = getNumCols() - 1;
-    }
-    
-    
-    startRow = getMapCoord(m_viewportPos[1] - windowBreathY);
-    if (startRow < 0) {
-        startRow = 0;
-    }
-
-    endRow = getMapCoord(m_viewportPos[1] + windowBreathY);
-    if (endRow >= getNumRows()) {
-        endRow = getNumRows() - 1;
-    }
 }
 
 void GameScreen::clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag)

@@ -373,7 +373,7 @@ bool App::initGameTemplateLib(const rapidjson::Value& cfg)
 
     bool success = m_gameTemplateLib.load(textureDir, textureLibPath, rectLibPath, colorLibPath,
                                           tileTemplateLibPath, animationDir, animationTemplateLibPath,
-                                          missileTemplateLibPath, robotTemplateLibPath, playerTemplateLibFile);
+                                          missileTemplateLibPath, robotTemplateLibPath, playerTemplateLibPath);
 
     if (!success)
     {

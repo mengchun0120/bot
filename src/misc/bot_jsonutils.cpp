@@ -248,8 +248,6 @@ bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const
 
 bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value)
 {
-	LOG_DEBUG("size of params=%d", params.size());
-
 	for (auto it = params.begin(); it != params.end(); ++it) 
 	{
 		switch (it->m_type)

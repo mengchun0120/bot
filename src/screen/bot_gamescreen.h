@@ -27,6 +27,17 @@ public:
     virtual void present();
 
     virtual int processInput(const InputEvent &e);
+
+    GameMap& getMap()
+    {
+        return m_map;
+    }
+
+    const GameMap& getMap() const
+    {
+        return m_map;
+    }
+
     /*
     bool checkOutsideMap(float x, float y);
 
@@ -38,6 +49,22 @@ public:
 */
 private:
     void updateViewport();
+
+    int handleMouseMove(const MouseMoveEvent& e);
+
+    int handleMouseButton(const MouseButtonEvent& e);
+
+    int handleKey(const KeyEvent& e);
+
+    float getWorldX(float x) const
+    {
+        return x + m_viewportWorldX;
+    }
+
+    float getWorldY(float y) const
+    {
+        return y + m_viewportWorldY;
+    }
 
     /*
     bool initMap(const rapidjson::Document& doc);
@@ -73,23 +100,11 @@ private:
 
     void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag);
 
-    int handleMouseMove(const MouseMoveEvent& e);
 
-    int handleMouseButton(const MouseButtonEvent& e);
-
-    int handleKey(const KeyEvent& e);
 
     int handleFireKey(int action);
 
-    float getWorldX(float x) const
-    {
-        return x + m_viewportWorldX;
-    }
 
-    float getWorldY(float y) const
-    {
-        return y + m_viewportWorldY;
-    }
 
     int updatePlayer(float delta);
 
@@ -110,6 +125,7 @@ private:
     GameMap m_map;
     GameObjectManager m_gameObjManager;
     float m_minViewportX, m_minViewportY, m_maxViewportX, m_maxViewportY;
+    float m_viewportWorldX, m_viewportWorldY;
     float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
     /*
 
@@ -117,7 +133,7 @@ private:
     GameObject* m_firstObj;
     
 
-    float m_viewportWorldX, m_viewportWorldY;
+    
     int m_maxRowIdx, m_maxColIdx;*/
 };
 

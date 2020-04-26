@@ -9,7 +9,7 @@
 
 namespace bot {
 
-class Robot;
+class Player;
 
 class GameMap {
 public:
@@ -74,17 +74,14 @@ public:
 
 	void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag);
 
-	void setPlayer(Robot* player)
-	{
-		m_player = player;
-	}
+	void setPlayer(Player* player);
 
-	Robot* getPlayer()
+	Player* getPlayer()
 	{
 		return m_player;
 	}
 
-	const Robot* getPlayer() const
+	const Player* getPlayer() const
 	{
 		return m_player;
 	}
@@ -103,7 +100,7 @@ protected:
 	ObjectPool<MapItem> m_mapItemPool;
 	std::vector<std::vector<MapCell>> m_map;
 	float m_mapWidth, m_mapHeight;
-	Robot* m_player;
+	Player* m_player;
 };
 
 } // end of namespace bot

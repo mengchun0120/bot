@@ -1,3 +1,5 @@
+#include "misc/bot_log.h"
+#include "misc/bot_mathutils.h"
 #include "gameobj/bot_player.h"
 
 namespace bot {
@@ -20,6 +22,11 @@ void Player::present(SimpleShaderProgram& program)
 
 bool Player::update(float delta, GameScreen& screen)
 {
+	if (!Robot::update(delta, screen))
+	{
+		return false;
+	}
+
 	return true;
 }
 

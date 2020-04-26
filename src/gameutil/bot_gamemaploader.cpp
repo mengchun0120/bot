@@ -42,6 +42,12 @@ bool GameMapLoader::load(const std::string& file)
 		return false;
 	}
 
+	if (!loadPlayer(mapJson))
+	{
+		LOG_ERROR("Failed to load player");
+		return false;
+	}
+
 	return true;
 }
 
@@ -185,7 +191,7 @@ bool GameMapLoader::loadPlayer(const rapidjson::Value& mapJson)
 	Player* player = m_gameObjManager.createPlayer();
 	player->setPos(x, y);
 	player->setDirection(directionX, directionY);
-	m_map.addObject(player);
+	m_map.setPlayer(player);
 
 	return true;
 }

@@ -38,9 +38,6 @@ bool Texture::load(const std::string& imageFile)
 
     if(data) 
     {
-        LOG_DEBUG("Image info: width=%d height=%d numChannels=%d",
-                 m_width, m_height, m_numChannels);
-
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0,
                      GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);

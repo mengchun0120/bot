@@ -27,7 +27,9 @@ void fillColor(float* color, int r, int g, int b, int alpha);
 
 void rotate(float& x, float& y, float directionX, float directionY);
 
-void getDirection(float& directionX, float& directionY, float srcX, float srcY, float dstX, float dstY);
+void calculateDirection(float& directionX, float& directionY, float srcX, float srcY, float dstX, float dstY);
+
+float dist(float x1, float y1, float x2, float y2);
 
 } // end of namespace bot
 

@@ -61,6 +61,11 @@ public:
 		return static_cast<MoveAbility*>(m_abilities[ABILITY_MOVE]);
 	}
 
+	const MoveAbility* getMoveAbility() const
+	{
+		return static_cast<const MoveAbility*>(m_abilities[ABILITY_MOVE]);
+	}
+
 	Component* getComponentForMoveAbility();
 
 	ShootAbility* getShootAbility()
@@ -68,14 +73,27 @@ public:
 		return static_cast<ShootAbility*>(m_abilities[ABILITY_SHOOT]);
 	}
 
+	const ShootAbility* getShootAbility() const
+	{
+		return static_cast<const ShootAbility*>(m_abilities[ABILITY_SHOOT]);
+	}
+
 	bool resetShootPos();
 
 	Component* getComponentForShootAbility();
+
+	bool setDestAndDirection(float destX, float destY);
+
+	bool setMovingEnabled(bool enabled);
+
+	bool isMoving() const;
 
 private:
 	void initComponents();
 
 	void initAbilities();
+
+	virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
 
 protected:
 	int m_hp;

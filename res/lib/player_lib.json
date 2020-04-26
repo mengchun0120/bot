@@ -9,7 +9,7 @@
     {
       "texture": "base",
       "rect": "square60",
-      "color": "darkgreen",
+      "color": "playergreen",
       "componentX": 0.0,
       "componentY": 0.0
     },

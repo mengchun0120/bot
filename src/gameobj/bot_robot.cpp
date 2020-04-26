@@ -2,6 +2,7 @@
 #include "misc/bot_log.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
+#include "screen/bot_gamescreen.h"
 #include "gameobj/bot_robot.h"
 
 namespace bot {
@@ -74,7 +75,6 @@ void Robot::present(SimpleShaderProgram& program)
     int count = static_cast<int>(m_components.size());
 
     for (int i = 0; i < count; ++i) {
-        LOG_INFO("Draw component %d", i);
         const RobotTemplate::ComponentTemplate& ct = t->getComponent(i);
         ct.m_rect->draw(program, m_components[i].m_pos, m_direction, nullptr, nullptr, 
                         ct.m_texture->textureId(), ct.m_color);
@@ -83,6 +83,11 @@ void Robot::present(SimpleShaderProgram& program)
 
 bool Robot::update(float delta, GameScreen& screen)
 {
+    if (!updateMoveAbility(delta, screen))
+    {
+        return false;
+    }
+
     return true;
 }
 
@@ -99,6 +104,12 @@ void Robot::setPos(float x, float y)
     {
         m_components[i].m_pos[0] += deltaX;
         m_components[i].m_pos[1] += deltaY;
+    }
+
+    MoveAbility* moveAbility = getMoveAbility();
+    if (moveAbility)
+    {
+        moveAbility->checkDest(m_pos[0], m_pos[1]);
     }
 
     ShootAbility* shootAbility = getShootAbility();
@@ -185,65 +196,90 @@ Robot::Component* Robot::getComponentForShootAbility()
     return &m_components[t->m_index];
 }
 
-/*
-void GameObject::move(float deltaX, float deltaY)
-{
-    m_base.move(deltaX, deltaY);
-    int count = static_cast<int>(m_components.size());
-    for (int i = 0; i < count; ++i) {
-        m_components[i].move(deltaX, deltaY);
-    }
-}
-
-void GameObject::setDirection(float directionX, float directionY)
-{
-    m_base.setDirection(directionX, directionY);
-
-    int count = static_cast<int>(m_components.size());
-    for (int i = 0; i < count; ++i) {
-        const GameObjectTemplate::Part& part = m_template->getPart(i);
-        float x = part.m_pos[0];
-        float y = part.m_pos[1];
-        rotate(x, y, directionX, directionY);
-        x += m_base.getX();
-        y += m_base.getY();
-        m_components[i].setPos(x, y);
-        m_components[i].setDirection(directionX, directionY);
-    }
-}
-
-void GameObject::setDirectionByDest(float destX, float destY)
+bool Robot::setDestAndDirection(float destX, float destY)
 {
     float directionX, directionY;
-    getDirection(directionX, directionY, m_base.getX(), m_base.getY(), destX, destY);
+
+    calculateDirection(directionX, directionY, m_pos[0], m_pos[1], destX, destY);
     setDirection(directionX, directionY);
-}
 
-bool GameObject::setDest(float destX, float destY)
-{
-    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
-    if (!moveAbility) {
+    MoveAbility* moveAbility = getMoveAbility();
+    if (!moveAbility) 
+    {
         return false;
     }
 
-    moveAbility->setDestX(destX);
-    moveAbility->setDestY(destY);
+    moveAbility->setDest(destX, destY);
 
     return true;
 }
 
-bool GameObject::setMovability(bool moving)
+bool Robot::setMovingEnabled(bool enabled)
 {
-    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
-    if (!moveAbility) {
+    MoveAbility* moveAbility = getMoveAbility();
+    if (!moveAbility) 
+    {
         return false;
     }
 
-    moveAbility->setMoving(moving);
+    moveAbility->setMoving(enabled);
 
     return true;
 }
 
+bool Robot::isMoving() const
+{
+    const MoveAbility* moveAbility = getMoveAbility();
+    if (!moveAbility) 
+    {
+        return false;
+    }
+
+    return moveAbility->isMoving();
+}
+
+bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
+{
+    MoveAbility* moveAbility = getMoveAbility();
+    if (!moveAbility || !moveAbility->isMoving())
+    {
+        return true;
+    }
+
+    float dist = moveAbility->getSpeed() * delta;
+    float distX = dist * m_direction[0];
+    float distY = dist * m_direction[1];
+    float newCollideLeft = getCollideLeft() + distX;
+    float newCollideRight = getCollideRight() + distX;
+    float newCollideTop = getCollideTop() + distY;
+    float newCollideBottom = getCollideBottom() + distY;
+    GameMap& map = gameScreen.getMap();
+
+    if (newCollideLeft < 0.0f)
+    {
+        distX -= newCollideLeft;
+    }
+    else if (newCollideRight > map.getMapWidth())
+    {
+        distX -= newCollideRight - map.getMapWidth();
+    }
+
+    if (newCollideBottom < 0.0f)
+    {
+        distY -= newCollideBottom;
+    }
+    else if (newCollideTop > map.getMapHeight())
+    {
+        distY -= newCollideTop - map.getMapHeight();
+    }
+
+    setPos(m_pos[0] + distX, m_pos[1] + distY);
+    map.repositionObject(this);
+
+    return true;
+}
+
+/*
 bool GameObject::isMoving() const
 {
     MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
