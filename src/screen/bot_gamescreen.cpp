@@ -155,6 +155,7 @@ void GameScreen::updateViewport()
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)
 {
+    /*
     Player* player = m_map.getPlayer();
     if (!player) 
     {
@@ -164,6 +165,7 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
     float destX = getWorldX(e.m_x);
     float destY = getWorldY(e.m_y);
     player->setDestAndDirection(destX, destY);
+    */
     return 0;
 }
 
@@ -240,12 +242,6 @@ int GameScreen::update(float delta)
     return 0;
 }
 
-int GameScreen::processInput(const InputEvent &e)
-{
-
-}
-
-
 int GameScreen::handleFireKey(int action) 
 {
     if (action == GLFW_PRESS) {
@@ -256,11 +252,6 @@ int GameScreen::handleFireKey(int action)
     }
 
     return 0;
-}
-
-void GameScreen::updateObject(GameObject* obj, float delta)
-{
-    
 }
 
 bool GameScreen::checkOutsideMap(float x, float y)

@@ -25,6 +25,8 @@ public:
 
     virtual bool update(float delta, GameScreen& screen);
 
+	void shiftPos(float deltaX, float deltaY);
+
 	void setPos(float x, float y);
 
 	const float* getDirection() const
@@ -94,6 +96,8 @@ private:
 	void initAbilities();
 
 	virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
+
+	bool checkCollisionWithObjects(float& newDelta, float speedX, float speedY, float delta, GameScreen& gameScreen);
 
 protected:
 	int m_hp;

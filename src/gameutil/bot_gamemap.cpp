@@ -1,7 +1,9 @@
 #include <algorithm>
 #include "misc/bot_log.h"
+#include "misc/bot_mathutils.h"
 #include "gameobj/bot_gameobject.h"
 #include "gameobj/bot_player.h"
+#include "gameutil/bot_collide.h"
 #include "gameutil/bot_gamemap.h"
 
 namespace bot {
@@ -38,17 +40,13 @@ void GameMap::clear()
 {
 	int numRows = getNumRows();
 	int numCols = getNumCols();
-    auto deallocator = [this](MapItem* item)
-    {
-        m_mapItemPool.free(item);
-    };
 
 	for (int r = 0; r < numRows; ++r)
 	{
 		std::vector<MapCell>& row = m_map[r];
 		for (int c = 0; c < numCols; ++c)
 		{
-            row[c].clear(deallocator);
+            freeMapCell(row[c]);
 		}
 	}
 }
@@ -298,6 +296,162 @@ void GameMap::setPlayer(Player* player)
 {
     m_player = player;
     addObject(player);
+}
+
+void GameMap::getMoveToRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
+                              float speedX, float speedY, float delta)
+{
+    float left = obj->getCollideLeft();
+    float right = obj->getCollideRight();
+    if (speedX < 0.0f) 
+    {
+        left += speedX * delta;
+    }
+    else if (speedX > 0.0f) 
+    {
+        right += speedX * delta;
+    }
+
+    float bottom = obj->getCollideBottom();
+    float top = obj->getCollideTop();
+    if (speedY < 0.0f) 
+    {
+        bottom += speedY * delta;
+    }
+    else if (speedY > 0.0f) 
+    {
+        top += speedY * delta;
+    }
+
+    startRow = getMapCoord(bottom);
+    startRow = clamp(startRow, 0, getNumRows() - 1);
+    endRow = getMapCoord(top);
+    endRow = clamp(endRow, 0, getNumRows() - 1);
+    startCol = getMapCoord(left);
+    startCol = clamp(startCol, 0, getNumCols() - 1);
+    endCol = getMapCoord(right);
+    endCol = clamp(endCol, 0, getNumCols() - 1);
+}
+
+bool GameMap::checkCollisionWithObjects(float& newDelta, MapCell& collideObjs, const GameObject* obj, 
+                                        float speedX, float speedY, float delta)
+{
+    bool collide = checkCollisionNonPassthroughObjs(newDelta, obj, speedX, speedY, delta);
+    checkCollisionPassthroughObjs(collideObjs, obj, speedX, speedY, newDelta);
+    return collide;
+}
+
+bool GameMap::checkCollisionNonPassthroughObjs(float& newDelta, const GameObject* obj,
+                                               float speedX, float speedY, float delta)
+{
+    int startRow, endRow, startCol, endCol;
+    bool collide = false;
+
+    newDelta = delta;
+    getMoveToRegion(startRow, endRow, startCol, endCol, obj, speedX, speedY, delta);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
+
+    for (int r = startRow; r <= endRow; ++r)
+    {
+        std::vector<MapCell>& row = m_map[r];
+        for (int c = startCol; c <= endCol; ++c)
+        {
+            for (MapItem* item = row[c].getFirst(); item; item = static_cast<MapItem*>(item->getNext()))
+            {
+                GameObject* o = item->getObj();
+                if (o == obj || o->testFlag(GAME_OBJ_FLAG_CHECKED))
+                {
+                    continue;
+                }
+
+                if (o->getType() != GAME_OBJ_TYPE_BOT && o->getType() != GAME_OBJ_TYPE_TILE)
+                {
+                    continue;
+                }
+
+                float newDelta1;
+                bool collide1 = checkObjCollision(newDelta1, obj->getPosX(), obj->getPosY(),
+                                                  obj->getCollideBreathX(), obj->getCollideBreathY(),
+                                                  speedX, speedY, o->getPosX(), o->getPosY(),
+                                                  o->getCollideBreathX(), o->getCollideBreathY(), newDelta);
+
+                if (collide1)
+                {
+                    collide = true;
+                    if (newDelta1 < newDelta)
+                    {
+                        newDelta = newDelta1;
+                    }
+                }
+
+                o->setFlag(GAME_OBJ_FLAG_CHECKED);
+            }
+        }
+    }
+
+    return collide;
+}
+
+void GameMap::checkCollisionPassthroughObjs(MapCell& collideObjs, const GameObject* obj,
+                                            float speedX, float speedY, float delta)
+{
+    int startRow, endRow, startCol, endCol;
+    float left, bottom, right, top;
+    float deltaX, deltaY;
+
+    deltaX = speedX * delta;
+    deltaY = speedY * delta;
+    left = obj->getCollideLeft() + deltaX;
+    right = obj->getCollideRight() + deltaX;
+    bottom = obj->getCollideBottom() + deltaY;
+    top = obj->getCollideTop() + deltaY;
+
+    getMoveToRegion(startRow, endRow, startCol, endCol, obj, speedX, speedY, delta);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
+
+    for (int r = startRow; r <= endRow; ++r)
+    {
+        std::vector<MapCell>& row = m_map[r];
+        for (int c = startCol; c <= endCol; ++c)
+        {
+            for (MapItem* item = row[c].getFirst(); item; item = static_cast<MapItem*>(item->getNext()))
+            {
+                GameObject* o = item->getObj();
+                if (o == obj || o->testFlag(GAME_OBJ_FLAG_CHECKED)) 
+                {
+                    continue;
+                }
+                
+                if (o->getType() != GAME_OBJ_TYPE_ANIMATION && o->getType() != GAME_OBJ_TYPE_MISSILE)
+                {
+                    continue;
+                }
+
+                bool collide = checkRectOverlapp(left, bottom, right, top,
+                                                  o->getCollideLeft(), o->getCollideBottom(),
+                                                  o->getCollideRight(), o->getCollideTop());
+
+                if (collide)
+                {
+                    MapItem* item = m_mapItemPool.alloc();
+                    item->setObj(o);
+                    collideObjs.add(item);
+                }
+
+                o->setFlag(GAME_OBJ_FLAG_CHECKED);
+            }
+        }
+    }
+}
+
+void GameMap::freeMapCell(MapCell& cell)
+{
+    MapItem* next, * cur;
+    for (cur = cell.getFirst(); cur; cur = next)
+    {
+        next = static_cast<MapItem*>(cur->getNext());
+        m_mapItemPool.free(cur);
+    }
 }
 
 } // end of namespace bot

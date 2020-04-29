@@ -2,6 +2,7 @@
 #include "misc/bot_log.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
+#include "gameutil/bot_collide.h"
 #include "screen/bot_gamescreen.h"
 #include "gameobj/bot_robot.h"
 
@@ -91,13 +92,10 @@ bool Robot::update(float delta, GameScreen& screen)
     return true;
 }
 
-void Robot::setPos(float x, float y)
+void Robot::shiftPos(float deltaX, float deltaY)
 {
-    float deltaX = x - m_pos[0];
-    float deltaY = y - m_pos[1];
-
-    m_pos[0] = x;
-    m_pos[1] = y;
+    m_pos[0] += deltaX;
+    m_pos[1] += deltaY;
 
     int numComponents = static_cast<int>(m_components.size());
     for (int i = 0; i < numComponents; ++i)
@@ -106,17 +104,16 @@ void Robot::setPos(float x, float y)
         m_components[i].m_pos[1] += deltaY;
     }
 
-    MoveAbility* moveAbility = getMoveAbility();
-    if (moveAbility)
-    {
-        moveAbility->checkDest(m_pos[0], m_pos[1]);
-    }
-
     ShootAbility* shootAbility = getShootAbility();
     if (shootAbility)
     {
         shootAbility->shiftShootPos(deltaX, deltaY);
     }
+}
+
+void Robot::setPos(float x, float y)
+{
+    shiftPos(x - m_pos[0], y - m_pos[1]);
 }
 
 void Robot::setDirection(float directionX, float directionY)
@@ -246,77 +243,40 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
         return true;
     }
 
-    float dist = moveAbility->getSpeed() * delta;
-    float distX = dist * m_direction[0];
-    float distY = dist * m_direction[1];
-    float newCollideLeft = getCollideLeft() + distX;
-    float newCollideRight = getCollideRight() + distX;
-    float newCollideTop = getCollideTop() + distY;
-    float newCollideBottom = getCollideBottom() + distY;
+    float speedX = moveAbility->getSpeed() * m_direction[0];
+    float speedY = moveAbility->getSpeed() * m_direction[1];
+    float newDelta;
+    GameMap::MapCell collideObjs;
     GameMap& map = gameScreen.getMap();
 
-    if (newCollideLeft < 0.0f)
+    bool touch1 = checkTouchBoundary(newDelta, map.getMapWidth(), map.getMapHeight(), m_pos[0], m_pos[1],
+                                    getCollideBreathX(), getCollideBreathY(), speedX, speedY, delta);
+
+    bool touch2 = map.checkCollisionWithObjects(newDelta, collideObjs, this, speedX, speedY, delta);
+    
+    if (!collideObjs.isEmpty())
     {
-        distX -= newCollideLeft;
-    }
-    else if (newCollideRight > map.getMapWidth())
-    {
-        distX -= newCollideRight - map.getMapWidth();
+        // process objects collided with this object
+        map.freeMapCell(collideObjs);
     }
 
-    if (newCollideBottom < 0.0f)
+    setPos(m_pos[0] + speedX * newDelta, m_pos[1] + speedY * newDelta);
+    if (moveAbility->hasDest())
     {
-        distY -= newCollideBottom;
-    }
-    else if (newCollideTop > map.getMapHeight())
-    {
-        distY -= newCollideTop - map.getMapHeight();
+        moveAbility->checkDest(m_pos[0], m_pos[1]);
     }
 
-    setPos(m_pos[0] + distX, m_pos[1] + distY);
+    if (touch1 || touch2) {
+        moveAbility->setMoving(false);
+        moveAbility->setHasDest(false);
+    }
+    
     map.repositionObject(this);
 
     return true;
 }
 
 /*
-bool GameObject::isMoving() const
-{
-    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
-    if (!moveAbility) {
-        return false;
-    }
-
-    return moveAbility->isMoving();
-}
-
-float GameObject::getSpeed() const
-{
-    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
-    if (!moveAbility) {
-        return 0.0f;
-    }
-
-    return moveAbility->getSpeed();
-}
-
-FireAbility* GameObject::getFireAbility() const
-{
-    FireAbility* fireAbility = static_cast<FireAbility*>(m_base.getAbility(ABILITY_FIRE));
-    if (fireAbility) {
-        return fireAbility;
-    }
-
-    int numComponents = getNumComponents();
-    for (int i = 0; i < numComponents; ++i) {
-        FireAbility* fireAbility = static_cast<FireAbility*>(m_components[i].getAbility(ABILITY_FIRE));
-        if (fireAbility) {
-            return fireAbility;
-        }
-    }
-
-    return nullptr;
-}
 
 bool GameObject::startFiring()
 {

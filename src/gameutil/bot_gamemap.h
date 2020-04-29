@@ -86,6 +86,14 @@ public:
 		return m_player;
 	}
 
+	void getMoveToRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
+						 float speedX, float speedY, float delta);
+
+	bool checkCollisionWithObjects(float& newDelta, MapCell& collideObjs, const GameObject* obj, 
+								   float speedX, float speedY, float delta);
+
+	void freeMapCell(MapCell& cell);
+
 public:
 	static const float GRID_BREATH;
 
@@ -95,6 +103,12 @@ protected:
 	bool removeObjectAt(GameObject* obj, int row, int col);
 
 	void removeObjectFromRect(GameObject* obj, int startRow, int endRow, int startCol, int endCol);
+
+	bool checkCollisionNonPassthroughObjs(float& newDelta, const GameObject* obj, 
+		                                  float speedX, float speedY, float delta);
+
+	void checkCollisionPassthroughObjs(MapCell& collideObjs, const GameObject* obj,
+									   float speedX, float speedY, float delta);
 
 protected:
 	ObjectPool<MapItem> m_mapItemPool;
