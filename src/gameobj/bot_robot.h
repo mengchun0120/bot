@@ -84,8 +84,6 @@ public:
 
 	Component* getComponentForShootAbility();
 
-	bool setDestAndDirection(float destX, float destY);
-
 	bool setMovingEnabled(bool enabled);
 
 	bool isMoving() const;

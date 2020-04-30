@@ -333,12 +333,14 @@ void GameMap::getMoveToRegion(int& startRow, int& endRow, int& startCol, int& en
     endCol = clamp(endCol, 0, getNumCols() - 1);
 }
 
-bool GameMap::checkCollisionWithObjects(float& newDelta, MapCell& collideObjs, const GameObject* obj, 
-                                        float speedX, float speedY, float delta)
+bool GameMap::checkCollision(float& newDelta, MapCell& collideObjs, const GameObject* obj,
+                             float speedX, float speedY, float delta)
 {
-    bool collide = checkCollisionNonPassthroughObjs(newDelta, obj, speedX, speedY, delta);
+    bool touch = checkTouchBoundary(newDelta, m_mapWidth, m_mapHeight, obj->getPosX(), obj->getPosY(),
+                                     obj->getCollideBreathX(), obj->getCollideBreathY(), speedX, speedY, delta);
+    bool collide = checkCollisionNonPassthroughObjs(newDelta, obj, speedX, speedY, newDelta);
     checkCollisionPassthroughObjs(collideObjs, obj, speedX, speedY, newDelta);
-    return collide;
+    return touch || collide;
 }
 
 bool GameMap::checkCollisionNonPassthroughObjs(float& newDelta, const GameObject* obj,

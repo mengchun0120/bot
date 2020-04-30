@@ -20,9 +20,6 @@ public:
 		return static_cast<int>(z / GRID_BREATH);
 	}
 
-	static void getRectCoord(int& startRow, int& endRow, int& startCol, int& endCol,
-						     float left, float bottom, float right, float top);
-
 	GameMap();
 
 	virtual ~GameMap();
@@ -89,8 +86,8 @@ public:
 	void getMoveToRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
 						 float speedX, float speedY, float delta);
 
-	bool checkCollisionWithObjects(float& newDelta, MapCell& collideObjs, const GameObject* obj, 
-								   float speedX, float speedY, float delta);
+	bool checkCollision(float& newDelta, MapCell& collideObjs, const GameObject* obj,
+					    float speedX, float speedY, float delta);
 
 	void freeMapCell(MapCell& cell);
 

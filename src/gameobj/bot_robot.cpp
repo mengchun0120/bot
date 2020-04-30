@@ -193,24 +193,6 @@ Robot::Component* Robot::getComponentForShootAbility()
     return &m_components[t->m_index];
 }
 
-bool Robot::setDestAndDirection(float destX, float destY)
-{
-    float directionX, directionY;
-
-    calculateDirection(directionX, directionY, m_pos[0], m_pos[1], destX, destY);
-    setDirection(directionX, directionY);
-
-    MoveAbility* moveAbility = getMoveAbility();
-    if (!moveAbility) 
-    {
-        return false;
-    }
-
-    moveAbility->setDest(destX, destY);
-
-    return true;
-}
-
 bool Robot::setMovingEnabled(bool enabled)
 {
     MoveAbility* moveAbility = getMoveAbility();
@@ -249,11 +231,8 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     GameMap::MapCell collideObjs;
     GameMap& map = gameScreen.getMap();
 
-    bool touch1 = checkTouchBoundary(newDelta, map.getMapWidth(), map.getMapHeight(), m_pos[0], m_pos[1],
-                                    getCollideBreathX(), getCollideBreathY(), speedX, speedY, delta);
+    bool collide = map.checkCollision(newDelta, collideObjs, this, speedX, speedY, delta);
 
-    bool touch2 = map.checkCollisionWithObjects(newDelta, collideObjs, this, speedX, speedY, delta);
-    
     if (!collideObjs.isEmpty())
     {
         // process objects collided with this object
@@ -261,14 +240,9 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     }
 
     shiftPos(speedX * newDelta, speedY * newDelta);
-    /*if (moveAbility->hasDest())
-    {
-        moveAbility->checkDest(m_pos[0], m_pos[1]);
-    }*/
 
-    if (touch1 || touch2) {
+    if (collide) {
         moveAbility->setMoving(false);
-        //moveAbility->setHasDest(false);
     }
     
     map.repositionObject(this);
@@ -348,29 +322,6 @@ void GameObject::updateFireAbilityComponent(Component& component, float delta, c
         bullet->setMovability(true);
         screen.addGameObj(bullet);
     }
-}
-
-int GameObject::updateMoveAbility(float delta, GameScreen& screen)
-{
-    MoveAbility* moveAbility = static_cast<MoveAbility*>(m_base.getAbility(ABILITY_MOVE));
-    if (!moveAbility || !moveAbility->isMoving()) {
-        return 0;
-    }
-
-    float speed = moveAbility->getSpeed();
-    float speedX = speed * getDirectionX();
-    float speedY = speed * getDirectionY();
-    float finalDelta;
-    bool stopMoving = false;
-
-    bool touchBoundary = checkTouchBoundary(finalDelta, screen.getMapWidth(), screen.getMapHeight(),
-        getPosX(), getPosY(), getCollideBreathX(), getCollideBreathY(),
-        speedX, speedY, delta);
-    if (touchBoundary) {
-        stopMoving = true;
-    }
-
-
 }
 */
 } // end of namespace bot
