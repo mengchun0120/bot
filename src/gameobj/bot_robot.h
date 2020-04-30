@@ -97,8 +97,6 @@ private:
 
 	virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
 
-	bool checkCollisionWithObjects(float& newDelta, float speedX, float speedY, float delta, GameScreen& gameScreen);
-
 protected:
 	int m_hp;
 	int m_side;

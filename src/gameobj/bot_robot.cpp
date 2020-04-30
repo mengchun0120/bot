@@ -260,15 +260,15 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
         map.freeMapCell(collideObjs);
     }
 
-    setPos(m_pos[0] + speedX * newDelta, m_pos[1] + speedY * newDelta);
-    if (moveAbility->hasDest())
+    shiftPos(speedX * newDelta, speedY * newDelta);
+    /*if (moveAbility->hasDest())
     {
         moveAbility->checkDest(m_pos[0], m_pos[1]);
-    }
+    }*/
 
     if (touch1 || touch2) {
         moveAbility->setMoving(false);
-        moveAbility->setHasDest(false);
+        //moveAbility->setHasDest(false);
     }
     
     map.repositionObject(this);

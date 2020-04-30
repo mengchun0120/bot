@@ -21,8 +21,7 @@ void handleMouseButton(GLFWwindow *window, int button, int action, int mods)
     {
         double x, y;
         glfwGetCursorPos(window, &x, &y);
-        k_inputMgr->addMouseButtonEvent(static_cast<float>(x), static_cast<float>(y),
-            button, action);
+        k_inputMgr->addMouseButtonEvent(static_cast<float>(x), static_cast<float>(y), button, action);
     }
 }
 

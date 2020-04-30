@@ -3,6 +3,7 @@
 
 #include "gametemplate/bot_moveabilitytemplate.h"
 #include "gameobj/bot_ability.h"
+#include "misc/bot_log.h"
 
 namespace bot {
 
@@ -32,6 +33,7 @@ public:
 
     void setMoving(bool moving)
     {
+        LOG_INFO("Move %d", (moving ? 1 : 0));
         m_moving = moving;
     }
 

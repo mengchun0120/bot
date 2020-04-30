@@ -155,7 +155,6 @@ void GameScreen::updateViewport()
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)
 {
-    /*
     Player* player = m_map.getPlayer();
     if (!player) 
     {
@@ -164,42 +163,48 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
 
     float destX = getWorldX(e.m_x);
     float destY = getWorldY(e.m_y);
-    player->setDestAndDirection(destX, destY);
-    */
+    float directionX, directionY;
+    calculateDirection(directionX, directionY, player->getPosX(), player->getPosY(), destX, destY);
+    player->setDirection(directionX, directionY);
     return 0;
 }
 
 int GameScreen::handleMouseButton(const MouseButtonEvent& e)
 {
-    Player* player = m_map.getPlayer();
+    /*Player* player = m_map.getPlayer();
     if (!player) 
     {
         return 0;
     }
 
-    if (e.m_button == GLFW_MOUSE_BUTTON_LEFT && e.m_action == GLFW_PRESS) 
+    if (e.m_button == GLFW_MOUSE_BUTTON_LEFT && e.m_action == GLFW_RELEASE) 
     {
-        float destX = getWorldX(e.m_x);
-        float destY = getWorldY(e.m_y);
-        player->setDestAndDirection(destX, destY);
-        player->setMovingEnabled(true);
-    }
-    
+        bool enabled = player->isMoving();
+        player->setMovingEnabled(!enabled);
+    }*/
+
     return 0;
 }
 
 int GameScreen::handleKey(const KeyEvent& e)
 {
-    /*
-    if (!m_player) {
+    Player* player = m_map.getPlayer();
+    if (!player) {
         return 0;
     }
 
-    switch (e.m_key) {
-    case GLFW_KEY_F:
-        return handleFireKey(e.m_action);
+    switch (e.m_key) 
+    {
+        /*case GLFW_KEY_F:
+            return handleFireKey(e.m_action);*/
+        case GLFW_KEY_W:
+            player->setMovingEnabled(true);
+            break;
+        case GLFW_KEY_S:
+            player->setMovingEnabled(false);
+            break;
     }
-    */
+    
     return 0;
 }
 
