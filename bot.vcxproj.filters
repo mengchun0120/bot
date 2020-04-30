@@ -313,6 +313,9 @@
     <None Include="res\lib\player_lib.json">
       <Filter>Resource Files\lib</Filter>
     </None>
+    <None Include="tools\CreateTransientCircle.java">
+      <Filter>tools</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\fonts\ascii_32.png">

@@ -226,6 +226,7 @@
     <None Include="tools\CreateCharImage.java" />
     <None Include="tools\CreateOval.java" />
     <None Include="tools\CreateRectangle.java" />
+    <None Include="tools\CreateTransientCircle.java" />
     <None Include="tools\GetWidths.java" />
     <None Include="tools\utils\Tokenizer.java" />
   </ItemGroup>
