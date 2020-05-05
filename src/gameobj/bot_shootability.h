@@ -56,7 +56,7 @@ public:
         return getTemplate()->getMissileTemplate();
     }
 
-    bool shouldFire() const;
+    bool canShoot() const;
 
     void shiftShootPos(float deltaX, float deltaY);
 

@@ -19,10 +19,10 @@ public:
 	~GameMapLoader()
 	{}
 
-	bool load(const std::string& file);
+	bool load(const std::string& file, float viewportWidth, float viewportHeight);
 
 private:
-	bool initMap(const rapidjson::Value& mapJson);
+	bool initMap(const rapidjson::Value& mapJson, float viewportWidth, float viewportHeight);
 
 	bool loadTiles(const rapidjson::Value& mapJson);
 

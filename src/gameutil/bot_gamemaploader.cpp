@@ -7,7 +7,7 @@
 
 namespace bot {
 
-bool GameMapLoader::load(const std::string& file)
+bool GameMapLoader::load(const std::string& file, float viewportWidth, float viewportHeight)
 {
 	rapidjson::Document doc;
 	if (!readJson(doc, file.c_str()))
@@ -24,7 +24,7 @@ bool GameMapLoader::load(const std::string& file)
 
 	rapidjson::Value mapJson = doc.GetObject();
 	
-	if (!initMap(mapJson))
+	if (!initMap(mapJson, viewportWidth, viewportHeight))
 	{
 		LOG_ERROR("Failed to get map dimension");
 		return false;
@@ -51,7 +51,7 @@ bool GameMapLoader::load(const std::string& file)
 	return true;
 }
 
-bool GameMapLoader::initMap(const rapidjson::Value& mapJson)
+bool GameMapLoader::initMap(const rapidjson::Value& mapJson, float viewportWidth, float viewportHeight)
 {
 	int numRows, numCols;
 
@@ -67,7 +67,7 @@ bool GameMapLoader::initMap(const rapidjson::Value& mapJson)
 
 	int mapPoolSize = static_cast<int>(numRows * numCols * m_mapPoolFactor);
 
-	m_map.initMap(numRows, numCols, mapPoolSize);
+	m_map.initMap(numRows, numCols, mapPoolSize, viewportWidth, viewportHeight);
 
 	return true;
 }

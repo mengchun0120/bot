@@ -66,7 +66,8 @@ void Queue<T>::enqueue(const T& t)
 {
     m_last = (m_last + 1) % static_cast<int>(m_q.size());
     m_q[m_last] = t;
-    if(m_first == -1) {
+    if (m_first == -1) 
+    {
         m_first = 0;
     }
 }
@@ -75,9 +76,12 @@ template <typename T>
 void Queue<T>::dequeue(T& t)
 {
     t = m_q[m_first];
-    if(m_first != m_last) {
+    if (m_first != m_last) 
+    {
         m_first = (m_first + 1) % static_cast<int>(m_q.size());
-    } else {
+    } 
+    else
+    {
         m_first = -1;
         m_last = -1;
     }

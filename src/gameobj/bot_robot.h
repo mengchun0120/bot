@@ -4,6 +4,7 @@
 #include "gameobj/bot_gameobject.h"
 #include "gameobj/bot_moveability.h"
 #include "gameobj/bot_shootability.h"
+#include "gameobj/bot_side.h"
 #include "gametemplate/bot_robottemplate.h"
 
 namespace bot {
@@ -88,6 +89,20 @@ public:
 
 	bool isMoving() const;
 
+	bool setShootingEnabled(bool enabled);
+
+	bool isShooting() const;
+
+	Side getSide() const
+	{
+		return m_side;
+	}
+
+	void setSide(Side side)
+	{
+		m_side = side;
+	}
+
 private:
 	void initComponents();
 
@@ -95,9 +110,13 @@ private:
 
 	virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
 
+	virtual bool updateShootAbility(float delta, GameScreen& gameScreen);
+
+
+
 protected:
 	int m_hp;
-	int m_side;
+	Side m_side;
 	float m_direction[Constants::NUM_FLOATS_PER_POSITION];
 	Ability* m_abilities[NUM_ABILITY_TYPES];
 	std::vector<Component> m_components;

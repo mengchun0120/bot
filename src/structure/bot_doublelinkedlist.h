@@ -1,9 +1,6 @@
 #ifndef INCLUDE_DOUBLELINKEDLIST
 #define INCLUDE_DOUBLELINKEDLIST
 
-#include <type_traits>
-#include <structure/bot_doublelinkeditem.h>
-
 namespace bot {
 
 template <typename T>

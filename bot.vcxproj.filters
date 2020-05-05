@@ -236,9 +236,6 @@
     <ClCompile Include="src\gameutil\bot_gameobjectmanager.cpp">
       <Filter>Source Files\gameutil</Filter>
     </ClCompile>
-    <ClCompile Include="src\gameutil\bot_mapitem.cpp">
-      <Filter>Source Files\gameutil</Filter>
-    </ClCompile>
     <ClCompile Include="src\gameutil\bot_gamemaploader.cpp">
       <Filter>Source Files\gameutil</Filter>
     </ClCompile>
@@ -262,6 +259,18 @@
     </ClCompile>
     <ClCompile Include="src\gameobj\bot_player.cpp">
       <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_missile.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_side.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\structure\bot_doublelinkedlist.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_gameobjectitem.cpp">
+      <Filter>Source Files\gameutil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -802,9 +811,6 @@
     <ClInclude Include="src\gameutil\bot_gameobjectmanager.h">
       <Filter>Source Files\gameutil</Filter>
     </ClInclude>
-    <ClInclude Include="src\gameutil\bot_mapitem.h">
-      <Filter>Source Files\gameutil</Filter>
-    </ClInclude>
     <ClInclude Include="src\gameutil\bot_gamemaploader.h">
       <Filter>Source Files\gameutil</Filter>
     </ClInclude>
@@ -828,6 +834,15 @@
     </ClInclude>
     <ClInclude Include="src\gameobj\bot_player.h">
       <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_missile.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_side.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_gameobjectitem.h">
+      <Filter>Source Files\gameutil</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

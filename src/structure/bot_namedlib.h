@@ -28,19 +28,19 @@ public:
 		m_lib.resize(size);
 	}
 
-	const T* getObjectByIdx(int idx) const
+	const T* getObject(int idx) const
 	{
 		return &m_lib[idx];
 	}
 
-	T* getObjectByIdx(int idx)
+	T* getObject(int idx)
 	{
 		return &m_lib[idx];
 	}
 
-	const T* getObjectByName(const char* name) const;
+	const T* getObject(const char* name) const;
 
-	T* getObjectByName(const char* name);
+	T* getObject(const char* name);
 
 	bool addNameIdxMapping(const char* name, int idx);
 
@@ -50,14 +50,14 @@ protected:
 };
 
 template <typename T>
-const T* NamedLib<T>::getObjectByName(const char* name) const
+const T* NamedLib<T>::getObject(const char* name) const
 {
 	int idx = m_nameIdxMap.search(name);
 	return idx >= 0 ? &m_lib[idx] : nullptr;
 }
 
 template <typename T>
-T* NamedLib<T>::getObjectByName(const char* name)
+T* NamedLib<T>::getObject(const char* name)
 {
 	int idx = m_nameIdxMap.search(name);
 	return idx >= 0 ? &m_lib[idx] : nullptr;

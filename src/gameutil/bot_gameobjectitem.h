@@ -1,5 +1,5 @@
-#ifndef INCLUDE_BOT_MAPITEM
-#define INCLUDE_BOT_MAPITEM
+#ifndef INCLUDE_BOT_GAMEOBJECTITEM
+#define INCLUDE_BOT_GAMEOBJECTITEM
 
 #include "structure/bot_linkeditem.h"
 
@@ -7,14 +7,14 @@ namespace bot {
 
 class GameObject;
 
-class MapItem : public LinkedItem {
+class GameObjectItem : public LinkedItem {
 public:
-    MapItem()
+    GameObjectItem()
         : LinkedItem()
         , m_obj(nullptr)
     {}
 
-    virtual ~MapItem()
+    virtual ~GameObjectItem()
     {}
 
     GameObject* getObj()

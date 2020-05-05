@@ -4,17 +4,17 @@
 #include <vector>
 #include "structure/bot_objectpool.h"
 #include "structure/bot_linkedlist.h"
-#include "gameutil/bot_mapitem.h"
+#include "gameutil/bot_gameobjectitem.h"
 #include "gameobj/bot_gameobjectflag.h"
 
 namespace bot {
 
 class Player;
+class Robot;
+class Missile;
 
 class GameMap {
 public:
-	typedef LinkedList<MapItem> MapCell;
-	
 	static int getMapCoord(float z)
 	{
 		return static_cast<int>(z / GRID_BREATH);
@@ -24,7 +24,7 @@ public:
 
 	virtual ~GameMap();
 
-	void initMap(int numRows, int numCols, int poolSize);
+	void initMap(int numRows, int numCols, int gameObjPoolSize, float viewportWidth, float viewportHeight);
 
 	void clear();
 
@@ -48,12 +48,12 @@ public:
 		return m_mapHeight;
 	}
 
-	MapCell& getMapCell(int row, int col)
+	LinkedList<GameObjectItem>& getMapCell(int row, int col)
 	{
 		return m_map[row][col];
 	}
 
-	const MapCell& getMapCell(int row, int col) const
+	const LinkedList<GameObjectItem>& getMapCell(int row, int col) const
 	{
 		return m_map[row][col];
 	}
@@ -61,13 +61,15 @@ public:
 	bool getMapPosForGameObj(int& startRow, int& endRow, int& startCol, int& endCol, GameObject* obj) const;
 
 	void getRectCoords(int& startRow, int& endRow, int& startCol, int& endCol,
-		               float left, float bottom, float right, float top);
+		               float left, float bottom, float right, float top) const;
 
 	bool addObject(GameObject* obj);
 
 	void removeObject(GameObject* obj);
 
 	bool repositionObject(GameObject* obj);
+
+	void getViewportRegion(int& startRow, int& endRow, int& startCol, int& endCol) const;
 
 	void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag);
 
@@ -83,13 +85,53 @@ public:
 		return m_player;
 	}
 
-	void getMoveToRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
-						 float speedX, float speedY, float delta);
-
-	bool checkCollision(float& newDelta, MapCell& collideObjs, const GameObject* obj,
+	bool checkCollision(float& newDelta, LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
 					    float speedX, float speedY, float delta);
 
-	void freeMapCell(MapCell& cell);
+	bool checkCollision(LinkedList<GameObjectItem>& collideObjs, const Missile* missile);
+
+	void freeGameObjList(LinkedList<GameObjectItem>& objs);
+
+	bool isOutsideScreen(const GameObject* obj) const;
+
+	bool isOutsideViewport(const GameObject* obj) const;
+
+	void updateViewport();
+
+	const float* getViewportPos() const
+	{
+		return m_viewportPos;
+	}
+
+	float getViewportLeft() const
+	{
+		return m_viewportPos[0] - m_viewportBreathX;
+	}
+
+	float getViewportRight() const
+	{
+		return m_viewportPos[0] + m_viewportBreathX;
+	}
+
+	float getViewportBottom() const
+	{
+		return m_viewportPos[1] - m_viewportBreathY;
+	}
+
+	float getViewportTop() const
+	{
+		return m_viewportPos[1] + m_viewportBreathY;
+	}
+
+	float getWorldX(float x) const
+	{
+		return x + m_viewportWorldX;
+	}
+
+	float getWorldY(float y) const
+	{
+		return y + m_viewportWorldY;
+	}
 
 public:
 	static const float GRID_BREATH;
@@ -101,17 +143,25 @@ protected:
 
 	void removeObjectFromRect(GameObject* obj, int startRow, int endRow, int startCol, int endCol);
 
-	bool checkCollisionNonPassthroughObjs(float& newDelta, const GameObject* obj, 
-		                                  float speedX, float speedY, float delta);
+	bool checkCollideNonPassthrough(float& newDelta, const Robot* robot, 
+		                            float speedX, float speedY, float delta);
 
-	void checkCollisionPassthroughObjs(MapCell& collideObjs, const GameObject* obj,
-									   float speedX, float speedY, float delta);
+	void checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
+								 float speedX, float speedY, float delta);
+
+
+	void getCollideRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
+						  float speedX, float speedY, float delta);
 
 protected:
-	ObjectPool<MapItem> m_mapItemPool;
-	std::vector<std::vector<MapCell>> m_map;
+	ObjectPool<GameObjectItem> m_gameObjItemPool;
+	std::vector<std::vector<LinkedList<GameObjectItem>>> m_map;
 	float m_mapWidth, m_mapHeight;
 	Player* m_player;
+	float m_viewportBreathX, m_viewportBreathY;
+	float m_maxViewportX, m_maxViewportY;
+	float m_viewportWorldX, m_viewportWorldY;
+	float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 } // end of namespace bot

@@ -1,4 +1,4 @@
-#include "gameutil/bot_mapitem.h"
+#include "gameutil/bot_gameobjectitem.h"
 
 namespace bot {
 

@@ -3,15 +3,11 @@
 
 #include <vector>
 #include <type_traits>
-#include "structure/bot_linkeditem.h"
 
 namespace bot {
 
 template <typename T>
 class ObjectPool {
-
-    static_assert(std::is_base_of<LinkedItem, T>::value,
-                  "T must be derived from LinkedItem");
 
 public:
     ObjectPool()

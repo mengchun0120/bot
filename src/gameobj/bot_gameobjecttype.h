@@ -4,7 +4,7 @@
 namespace bot {
 
 enum GameObjectType {
-    GAME_OBJ_TYPE_BOT,
+    GAME_OBJ_TYPE_ROBOT,
     GAME_OBJ_TYPE_TILE,
     GAME_OBJ_TYPE_MISSILE,
     GAME_OBJ_TYPE_ANIMATION,

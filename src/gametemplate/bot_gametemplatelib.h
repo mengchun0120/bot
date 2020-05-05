@@ -35,14 +35,14 @@ public:
 		return m_textureLib.getLibSize();
 	}
 
-	const Texture* getTextureByIdx(int idx) const
+	const Texture* getTexture(int idx) const
 	{
-		return m_textureLib.getObjectByIdx(idx);
+		return m_textureLib.getObject(idx);
 	}
 
-	const Texture* getTextureByName(const std::string& name) const
+	const Texture* getTexture(const std::string& name) const
 	{
-		return m_textureLib.getObjectByName(name.c_str());
+		return m_textureLib.getObject(name.c_str());
 	}
 
 	const NamedLib<Rectangle>& getRectLib() const
@@ -55,14 +55,14 @@ public:
 		return m_rectLib.getLibSize();
 	}
 
-	const Rectangle* getRectByIdx(int idx) const
+	const Rectangle* getRect(int idx) const
 	{
-		return m_rectLib.getObjectByIdx(idx);
+		return m_rectLib.getObject(idx);
 	}
 
-	const Rectangle* getRectByName(const std::string& name) const
+	const Rectangle* getRect(const std::string& name) const
 	{
-		return m_rectLib.getObjectByName(name.c_str());
+		return m_rectLib.getObject(name.c_str());
 	}
 
 	const NamedLib<Color>& getColorLib() const
@@ -75,14 +75,14 @@ public:
 		return m_colorLib.getLibSize();
 	}
 
-	const Color* getColorByIdx(int idx) const
+	const Color* getColor(int idx) const
 	{
-		return m_colorLib.getObjectByIdx(idx);
+		return m_colorLib.getObject(idx);
 	}
 
-	const Color* getColorByName(const std::string& name) const
+	const Color* getColor(const std::string& name) const
 	{
-		return m_colorLib.getObjectByName(name.c_str());
+		return m_colorLib.getObject(name.c_str());
 	}
 
 	NamedLib<TileTemplate>& getTileTemplateLib()
@@ -100,22 +100,22 @@ public:
 		return m_tileTemplateLib.getLibSize();
 	}
 
-	const TileTemplate* getTileTemplateByIdx(int idx) const
+	const TileTemplate* getTileTemplate(int idx) const
 	{
-		return m_tileTemplateLib.getObjectByIdx(idx);
+		return m_tileTemplateLib.getObject(idx);
 	}
 
-	const TileTemplate* getTileTemplateByName(const std::string& name) const
+	const TileTemplate* getTileTemplate(const std::string& name) const
 	{
-		return m_tileTemplateLib.getObjectByName(name.c_str());
+		return m_tileTemplateLib.getObject(name.c_str());
 	}
 
-	NamedLib<MissileTemplate>& getMissileTemplate()
+	NamedLib<MissileTemplate>& getMissileTemplateLib()
 	{
 		return m_missileTemplateLib;
 	}
 
-	const NamedLib<MissileTemplate>& getMissileTemplate() const
+	const NamedLib<MissileTemplate>& getMissileTemplateLib() const
 	{
 		return m_missileTemplateLib;
 	}
@@ -125,14 +125,14 @@ public:
 		return m_missileTemplateLib.getLibSize();
 	}
 
-	const MissileTemplate* getMissileTemplateByIdx(int idx) const
+	const MissileTemplate* getMissileTemplate(int idx) const
 	{
-		return m_missileTemplateLib.getObjectByIdx(idx);
+		return m_missileTemplateLib.getObject(idx);
 	}
 
-	const MissileTemplate* getMissileTemplateByName(const std::string& name) const
+	const MissileTemplate* getMissileTemplate(const std::string& name) const
 	{
-		return m_missileTemplateLib.getObjectByName(name.c_str());
+		return m_missileTemplateLib.getObject(name.c_str());
 	}
 
 	const NamedLib<RobotTemplate>& getRobotTemplateLib() const
@@ -145,14 +145,14 @@ public:
 		return m_robotTemplateLib.getLibSize();
 	}
 
-	const RobotTemplate* getRobotTemplateByIdx(int idx) const
+	const RobotTemplate* getRobotTemplate(int idx) const
 	{
-		return m_robotTemplateLib.getObjectByIdx(idx);
+		return m_robotTemplateLib.getObject(idx);
 	}
 
-	const RobotTemplate* getRobotTemplateByName(const std::string& name) const
+	const RobotTemplate* getRobotTemplate(const std::string& name) const
 	{
-		return m_robotTemplateLib.getObjectByName(name.c_str());
+		return m_robotTemplateLib.getObject(name.c_str());
 	}
 
 	const NamedLib<AnimationTemplate>& getAnimationTemplateLib() const
@@ -165,14 +165,14 @@ public:
 		return m_animationTemplateLib.getLibSize();
 	}
 
-	const AnimationTemplate* getAnimationTemplateByIdx(int idx) const
+	const AnimationTemplate* getAnimationTemplate(int idx) const
 	{
-		return m_animationTemplateLib.getObjectByIdx(idx);
+		return m_animationTemplateLib.getObject(idx);
 	}
 
-	const AnimationTemplate* getAnimatinTemplateByName(const std::string& name) const
+	const AnimationTemplate* getAnimatinTemplate(const std::string& name) const
 	{
-		return m_animationTemplateLib.getObjectByName(name.c_str());
+		return m_animationTemplateLib.getObject(name.c_str());
 	}
 
 	const PlayerTemplate* getPlayerTemplate() const

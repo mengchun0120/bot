@@ -11,6 +11,7 @@ App::App()
     , m_viewportWidth(0.0f)
     , m_viewportHeight(0.0f)
     , m_mapPoolFactor(1.0f)
+    , m_missilePoolSize(0)
 {
 }
 
@@ -407,6 +408,11 @@ bool App::initMapConfig(const rapidjson::Value& cfg)
     m_mapFile = constructPath({ m_mapDir, mapBaseFile });
 
     if (!parseJson(m_mapPoolFactor, cfg, "mapPoolFactor"))
+    {
+        return false;
+    }
+
+    if (!parseJson(m_missilePoolSize, cfg, "missilePoolSize"))
     {
         return false;
     }

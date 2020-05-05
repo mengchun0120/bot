@@ -19,8 +19,13 @@ void ShootAbility::setShootTime()
 	m_lastShootTime = ShootClock::now();
 }
 
-bool ShootAbility::shouldFire() const
+bool ShootAbility::canShoot() const
 {
+	if (!m_shootingEnabled)
+	{
+		return false;
+	}
+
 	ShootTime curTime = ShootClock::now();
 	std::chrono::duration<float> dur = curTime - m_lastShootTime;
 	float timeDelta = dur.count();

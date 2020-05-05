@@ -4,6 +4,7 @@
 #include "opengl/bot_texture.h"
 #include "gameutil/bot_collide.h"
 #include "screen/bot_gamescreen.h"
+#include "gameobj/bot_missile.h"
 #include "gameobj/bot_robot.h"
 
 namespace bot {
@@ -11,7 +12,7 @@ namespace bot {
 Robot::Robot(const RobotTemplate* t)
     : GameObject(t)
     , m_hp(t->getHP())
-    , m_side(-1)
+    , m_side(SIDE_UNKNOWN)
 {
     m_direction[0] = 1.0f;
     m_direction[1] = 0.0f;
@@ -85,6 +86,11 @@ void Robot::present(SimpleShaderProgram& program)
 bool Robot::update(float delta, GameScreen& screen)
 {
     if (!updateMoveAbility(delta, screen))
+    {
+        return false;
+    }
+
+    if (!updateShootAbility(delta, screen))
     {
         return false;
     }
@@ -217,6 +223,30 @@ bool Robot::isMoving() const
     return moveAbility->isMoving();
 }
 
+bool Robot::setShootingEnabled(bool enabled)
+{
+    ShootAbility* shootAbility = getShootAbility();
+    if (!shootAbility)
+    {
+        return false;
+    }
+
+    shootAbility->enableShooting(enabled);
+
+    return true;
+}
+
+bool Robot::isShooting() const
+{
+    const ShootAbility* shootAbility = getShootAbility();
+    if (!shootAbility)
+    {
+        return false;
+    }
+
+    return shootAbility->isShootingEnabled();
+}
+
 bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
 {
     MoveAbility* moveAbility = getMoveAbility();
@@ -228,7 +258,7 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     float speedX = moveAbility->getSpeed() * m_direction[0];
     float speedY = moveAbility->getSpeed() * m_direction[1];
     float newDelta;
-    GameMap::MapCell collideObjs;
+    LinkedList<GameObjectItem> collideObjs;
     GameMap& map = gameScreen.getMap();
 
     bool collide = map.checkCollision(newDelta, collideObjs, this, speedX, speedY, delta);
@@ -236,7 +266,7 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     if (!collideObjs.isEmpty())
     {
         // process objects collided with this object
-        map.freeMapCell(collideObjs);
+        map.freeGameObjList(collideObjs);
     }
 
     shiftPos(speedX * newDelta, speedY * newDelta);
@@ -250,78 +280,42 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     return true;
 }
 
-/*
-
-bool GameObject::startFiring()
+bool Robot::updateShootAbility(float delta, GameScreen& gameScreen)
 {
-    FireAbility* fireAbility = getFireAbility();
-    if (fireAbility) {
-        fireAbility->startFiring();
+    ShootAbility* shootAbility = getShootAbility();
+    if (!shootAbility || !shootAbility->canShoot())
+    {
         return true;
     }
-    return false;
-}
 
-bool GameObject::endFiring()
-{
-    FireAbility* fireAbility = getFireAbility();
-    if (fireAbility) {
-        fireAbility->stopFiring();
+    GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
+
+    Missile* missile = gameObjManager.createMissile(shootAbility->getMissileTemplate());
+    missile->setPos(shootAbility->getShootPosX(), shootAbility->getShootPosY());
+    missile->setDirection(m_direction[0], m_direction[1]);
+
+    GameMap& map = gameScreen.getMap();
+    LinkedList<GameObjectItem> collideObjs;
+
+    bool outOfSight = map.checkCollision(collideObjs, missile);
+
+    if (outOfSight || !collideObjs.isEmpty())
+    {
+        gameObjManager.free(missile);
         return true;
     }
-    return false;
+
+    if (!collideObjs.isEmpty())
+    {
+        // explode
+        gameObjManager.free(missile);
+        map.freeGameObjList(collideObjs);
+        return true;
+    }
+
+    map.addObject(missile);
+
+    return true;
 }
 
-
-void GameObject::updateFireAbility(float delta, const Clock::time_point& t, GameScreen& screen)
-{
-    updateFireAbilityComponent(m_base, delta, t, screen);
-
-    int numComponents = getNumComponents();
-    for (int c = 0; c < numComponents; ++c) {
-        updateFireAbilityComponent(m_components[c], delta, t, screen);
-    }
-}
-
-void GameObject::updateFireAbilityComponent(Component& component, float delta, const Clock::time_point& t,
-    GameScreen& screen)
-{
-    FireAbility* fireAbility = static_cast<FireAbility*>(component.getAbility(ABILITY_FIRE));
-    if (!fireAbility || !fireAbility->shouldFire(t)) {
-        return;
-    }
-
-    bool explodeOnCreation = false;
-    float x = fireAbility->getFirePosX();
-    float y = fireAbility->getFirePosY();
-    const GameObjectTemplate& bulletTemplate = fireAbility->getBulletTemplate();
-
-    if (screen.checkOutsideMap(x, y)) {
-        explodeOnCreation = true;
-    }
-    else {
-        float collideLeft = x - bulletTemplate.getCollideBreathX();
-        float collideRight = x + bulletTemplate.getCollideBreathX();
-        float collideBottom = y - bulletTemplate.getCollideBreathY();
-        float collideTop = y + bulletTemplate.getCollideBreathY();
-
-        bool collide = screen.testCollision(collideLeft, collideBottom, collideRight, collideTop,
-            m_side, GAMEOBJ_BULLET);
-        if (collide) {
-            explodeOnCreation = true;
-        }
-    }
-
-    if (explodeOnCreation) {
-        // create explosion
-    }
-    else {
-        GameObject* bullet = new GameObject(&bulletTemplate);
-        bullet->setPos(x, y);
-        bullet->setDirection(getDirectionX(), getDirectionY());
-        bullet->setMovability(true);
-        screen.addGameObj(bullet);
-    }
-}
-*/
 } // end of namespace bot

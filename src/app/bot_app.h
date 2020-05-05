@@ -79,6 +79,11 @@ public:
         return m_mapPoolFactor;
     }
 
+    int getMissilePoolSize() const
+    {
+        return m_missilePoolSize;
+    }
+
 private:
     bool initWindow(const rapidjson::Value& cfg);
 
@@ -113,6 +118,7 @@ private:
     GameTemplateLib m_gameTemplateLib;
     ScreenManager m_screenMgr;
     float m_mapPoolFactor;
+    int m_missilePoolSize;
 };
 
 } // end of namespace bot

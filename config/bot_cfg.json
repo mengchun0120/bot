@@ -22,5 +22,6 @@
 	"robotTemplateLib": "robot_template_lib.json",
 	"playerTemplateLib": "player_lib.json",
 	"mapFile": "map_01.json",
-	"mapPoolFactor": 2.0
+	"mapPoolFactor": 2.0,
+	"missilePoolSize": 200
 }
