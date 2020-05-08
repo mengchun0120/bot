@@ -1,8 +1,8 @@
 #include "geometry/bot_rectangle.h"
-#include "opengl/bot_simpleshaderprogram.h"
+#include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
-#include "gametemplate/bot_tiletemplate.h"
+#include "gametemplate/bot_tile_template.h"
 #include "gameobj/bot_tile.h"
 
 namespace bot {
@@ -33,7 +33,7 @@ bool Tile::update(float delta, GameScreen& screen)
 	return true;
 }
 
-bool Tile::descreaseHP(int deltaHP)
+bool Tile::addHP(int deltaHP)
 {
     if (testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
     {

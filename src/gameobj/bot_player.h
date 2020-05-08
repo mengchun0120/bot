@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BOT_PLAYER
 #define INCLUDE_BOT_PLAYER
 
-#include "gametemplate/bot_playertemplate.h"
+#include "gametemplate/bot_player_template.h"
 #include "gameobj/bot_robot.h"
 
 namespace bot {

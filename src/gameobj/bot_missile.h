@@ -1,9 +1,9 @@
 #ifndef INCLUDE_BOT_MISSILE
 #define INCLUDE_BOT_MISSILE
 
-#include "gametemplate/bot_missiletemplate.h"
+#include "gametemplate/bot_missile_template.h"
 #include "gameobj/bot_side.h"
-#include "gameobj/bot_gameobject.h"
+#include "gameobj/bot_game_object.h"
 
 namespace bot {
 
@@ -66,6 +66,11 @@ public:
 	{
 		m_side = side;
 	}
+
+	void explode(GameScreen& gameScreen);
+
+protected:
+	bool checkExplosion(GameObject* obj, float left, float bottom, float right, float top, int explosionPower);
 
 protected:
 	float m_direction[Constants::NUM_FLOATS_PER_POSITION];

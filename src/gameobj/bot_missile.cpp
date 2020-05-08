@@ -1,7 +1,10 @@
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
-#include "gameutil/bot_gamemap.h"
-#include "screen/bot_gamescreen.h"
+#include "gameutil/bot_game_map.h"
+#include "gameutil/bot_collide.h"
+#include "screen/bot_game_screen.h"
+#include "gameobj/bot_robot.h"
+#include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
 
 namespace bot {
@@ -44,21 +47,18 @@ bool Missile::update(float delta, GameScreen& screen)
 	shiftPos(deltaX, deltaY);
 
 	LinkedList<GameObjectItem> collideObjs;
-	bool outOfSight = map.checkCollision(collideObjs, this);
+	ReturnCode rc = map.checkCollision(this);
 
-	if (outOfSight)
+	if (RetCode::OUT_OF_SIGHT == rc)
 	{
 		setFlag(GAME_OBJ_FLAG_DEAD);
-		gameObjManager.sendObjectToDeath(this);
+		gameObjManager.sendToDeathQueue(this);
 		return false;
 	}
 
-	if (!collideObjs.isEmpty())
+	if (RETCODE_COLLIDE == rc)
 	{
-		// explode
-		map.freeGameObjList(collideObjs);
-		setFlag(GAME_OBJ_FLAG_DEAD);
-		gameObjManager.sendObjectToDeath(this);
+		explode(screen);
 		return false;
 	}
 
@@ -83,6 +83,88 @@ void Missile::setDirection(float directionX, float directionY)
 {
 	m_direction[0] = directionX;
 	m_direction[1] = directionY;
+}
+
+void Missile::explode(GameScreen& gameScreen)
+{
+	const MissileTemplate* t = getTemplate();
+	int startRow, endRow, startCol, endCol;
+	float left = m_pos[0] - t->getExplosionBreath();
+	float right = m_pos[0] + t->getExplosionBreath();
+	float bottom = m_pos[1] - t->getExplosionBreath();
+	float top = m_pos[1] + t->getExplosionBreath();
+	GameMap& map = gameScreen.getMap();
+	GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
+
+	map.getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top);
+	map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_EXPLODE_CHECKED);
+
+	for (int r = startRow; r <= endRow; ++r)
+	{
+		for (int c = startCol; c <= endCol; ++c)
+		{
+			LinkedList<GameObjectItem>& cell = map.getMapCell(r, c);
+			for (GameObjectItem* item = cell.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+			{
+				GameObject* obj = item->getObj();
+				
+				if (!checkExplosion(obj, left, bottom, right, top, t->getExplosionPower()))
+				{
+					obj->setFlag(GAME_OBJ_FLAG_DEAD);
+					gameObjManager.sendToDeathQueue(obj);
+				}
+
+				obj->setFlag(GAME_OBJ_FLAG_EXPLODE_CHECKED);
+			}
+		}
+	}
+
+	setFlag(GAME_OBJ_FLAG_DEAD);
+	gameObjManager.sendToDeathQueue(this);
+}
+
+bool Missile::checkExplosion(GameObject* obj, float left, float bottom, float right, float top, int explosionPower)
+{
+	static const int UNAFFECTED_FLAGS = GAME_OBJ_FLAG_EXPLODE_CHECKED |
+										GAME_OBJ_FLAG_INDESTRUCTABLE |
+										GAME_OBJ_FLAG_DEAD;
+
+	bool dontCheck = obj == static_cast<GameObject*>(this) ||
+					 obj->testFlag(UNAFFECTED_FLAGS) ||
+					 (obj->getType() != GAME_OBJ_TYPE_ROBOT &&
+				      obj->getType() != GAME_OBJ_TYPE_TILE);
+	if (dontCheck)
+	{
+		return true;
+	}
+
+	bool touch = checkRectOverlapp(left, bottom, right, top,
+		                           obj->getCollideLeft(), obj->getCollideBottom(),
+		                           obj->getCollideRight(), obj->getCollideTop());
+	if (!touch)
+	{
+		return true;
+	}
+
+	bool active = true;
+
+	if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
+	{
+		Robot* robot = static_cast<Robot*>(obj);
+		if (robot->getSide() == m_side)
+		{
+			return true;
+		}
+
+		active = robot->addHP(-explosionPower);
+	}
+	else
+	{
+		Tile* tile = static_cast<Tile*>(obj);
+		active = tile->addHP(-explosionPower);
+	}
+
+	return active;
 }
 
 } // end of namespace bot

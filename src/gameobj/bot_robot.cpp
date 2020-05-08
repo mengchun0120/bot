@@ -1,9 +1,9 @@
-#include "misc/bot_mathutils.h"
+#include "misc/bot_math_utils.h"
 #include "misc/bot_log.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
 #include "gameutil/bot_collide.h"
-#include "screen/bot_gamescreen.h"
+#include "screen/bot_game_screen.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_robot.h"
 
@@ -12,7 +12,7 @@ namespace bot {
 Robot::Robot(const RobotTemplate* t)
     : GameObject(t)
     , m_hp(t->getHP())
-    , m_side(SIDE_UNKNOWN)
+    , m_side(Side::UNKNOWN)
 {
     m_direction[0] = 1.0f;
     m_direction[1] = 0.0f;
@@ -59,14 +59,14 @@ void Robot::initAbilities()
     if (moveTemplate)
     {
         MoveAbility* moveAbility = new MoveAbility(moveTemplate);
-        m_abilities[ABILITY_MOVE] = moveAbility;
+        m_abilities[AbilityType::MOVE] = moveAbility;
     }
 
     const ShootAbilityTemplate* shootTemplate = t->getShootAbilityTemplate();
     if (shootTemplate)
     {
         ShootAbility* shootAbility = new ShootAbility(shootTemplate);
-        m_abilities[ABILITY_SHOOT] = shootAbility;
+        m_abilities[AbilityType::SHOOT] = shootAbility;
         resetShootPos();
     }
 }
@@ -90,7 +90,7 @@ bool Robot::update(float delta, GameScreen& screen)
         return false;
     }
 
-    if (!updateShootAbility(delta, screen))
+    if (!updateShootAbility(screen))
     {
         return false;
     }
@@ -150,12 +150,12 @@ void Robot::setDirection(float directionX, float directionY)
 
 bool Robot::addHP(int deltaHP)
 {
-    if (testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
+    if (testFlag(static_cast<int>(GameObjectFlag::INDESTRUCTABLE)))
     {
         return true;
     }
 
-    if (testFlag(GAME_OBJ_FLAG_DEAD))
+    if (testFlag(static_cast<int>(GameObjectFlag::DEAD)))
     {
         return false;
     }
@@ -280,7 +280,7 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     return true;
 }
 
-bool Robot::updateShootAbility(float delta, GameScreen& gameScreen)
+bool Robot::updateShootAbility(GameScreen& gameScreen)
 {
     ShootAbility* shootAbility = getShootAbility();
     if (!shootAbility || !shootAbility->canShoot())
@@ -289,33 +289,43 @@ bool Robot::updateShootAbility(float delta, GameScreen& gameScreen)
     }
 
     GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
-
-    Missile* missile = gameObjManager.createMissile(shootAbility->getMissileTemplate());
-    missile->setPos(shootAbility->getShootPosX(), shootAbility->getShootPosY());
-    missile->setDirection(m_direction[0], m_direction[1]);
+    Missile* missile = gameObjManager.createMissile(shootAbility->getMissileTemplate(), this, 
+                                                    shootAbility->getShootPosX(), shootAbility->getShootPosY(),
+                                                    m_direction[0], m_direction[1], m_side);
 
     GameMap& map = gameScreen.getMap();
-    LinkedList<GameObjectItem> collideObjs;
+    ReturnCode rc = map.checkCollision(missile);
 
-    bool outOfSight = map.checkCollision(collideObjs, missile);
-
-    if (outOfSight || !collideObjs.isEmpty())
+    if (rc == ReturnCode::OUT_OF_SIGHT)
     {
-        gameObjManager.free(missile);
+        gameObjManager.sendToDeathQueue(missile);
         return true;
     }
 
-    if (!collideObjs.isEmpty())
+    if (rc == ReturnCode::COLLIDE)
     {
-        // explode
-        gameObjManager.free(missile);
-        map.freeGameObjList(collideObjs);
+        
         return true;
     }
 
     map.addObject(missile);
 
     return true;
+}
+
+bool Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen)
+{
+    for (GameObjectItem* item = collideObjs.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+    {
+        if (item->getObj()->getType() != GAME_OBJ_TYPE_MISSILE)
+        {
+            LOG_WARN("Collide obj is not missile");
+            continue;
+        }
+
+        Missile* missile = static_cast<Missile*>(item->getObj());
+        missile->explode(gameScreen);
+    }
 }
 
 } // end of namespace bot

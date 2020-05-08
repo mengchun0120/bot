@@ -1,11 +1,13 @@
 #ifndef INCLUDE_BOT_ROBOT
 #define INCLUDE_BOT_ROBOT
 
-#include "gameobj/bot_gameobject.h"
-#include "gameobj/bot_moveability.h"
-#include "gameobj/bot_shootability.h"
+#include "structure/bot_linked_list.h"
+#include "gameobj/bot_game_object.h"
+#include "gameobj/bot_move_ability.h"
+#include "gameobj/bot_shoot_ability.h"
 #include "gameobj/bot_side.h"
-#include "gametemplate/bot_robottemplate.h"
+#include "gameutil/bot_game_object_item.h"
+#include "gametemplate/bot_robot_template.h"
 
 namespace bot {
 
@@ -110,9 +112,9 @@ private:
 
 	virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
 
-	virtual bool updateShootAbility(float delta, GameScreen& gameScreen);
+	virtual bool updateShootAbility(GameScreen& gameScreen);
 
-
+	bool processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
 
 protected:
 	int m_hp;

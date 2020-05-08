@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_TILE
 
 #include "misc/bot_constants.h"
-#include "gameobj/bot_gameobject.h"
+#include "gameobj/bot_game_object.h"
 
 namespace bot {
 
@@ -25,7 +25,7 @@ public:
         return m_hp;
     }
 
-    bool descreaseHP(int deltaHP);
+    bool addHP(int deltaHP);
 
 protected:
     int m_hp;

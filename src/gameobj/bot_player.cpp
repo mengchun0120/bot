@@ -1,5 +1,4 @@
 #include "misc/bot_log.h"
-#include "misc/bot_mathutils.h"
 #include "gameobj/bot_player.h"
 
 namespace bot {

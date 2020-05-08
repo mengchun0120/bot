@@ -3,12 +3,12 @@
 
 #include <string>
 #include <rapidjson/document.h>
-#include "input/bot_inputmanager.h"
-#include "opengl/bot_simpleshaderprogram.h"
-#include "opengl/bot_textsystem.h"
-#include "gameutil/bot_timedeltasmoother.h"
-#include "gametemplate/bot_gametemplatelib.h"
-#include "screen/bot_screenmanager.h"
+#include "input/bot_input_manager.h"
+#include "opengl/bot_simple_shader_program.h"
+#include "opengl/bot_text_system.h"
+#include "gameutil/bot_time_delta_smoother.h"
+#include "gametemplate/bot_game_template_lib.h"
+#include "screen/bot_screen_manager.h"
 
 struct GLFWwindow;
 

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BOT_ABILITY
 #define INCLUDE_BOT_ABILITY
 
-#include "gametemplate/bot_abilitytemplate.h"
+#include "gametemplate/bot_ability_template.h"
 
 namespace bot {
 

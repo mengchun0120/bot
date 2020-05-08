@@ -1,6 +1,6 @@
 #include "misc/bot_log.h"
-#include "misc/bot_jsonutils.h"
-#include "misc/bot_fileutils.h"
+#include "misc/bot_json_utils.h"
+#include "misc/bot_file_utils.h"
 #include "opengl/bot_opengl.h"
 #include "app/bot_app.h"
 
