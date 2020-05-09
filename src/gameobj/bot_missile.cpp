@@ -49,14 +49,13 @@ bool Missile::update(float delta, GameScreen& screen)
 	LinkedList<GameObjectItem> collideObjs;
 	ReturnCode rc = map.checkCollision(this);
 
-	if (RetCode::OUT_OF_SIGHT == rc)
+	if (RET_CODE_OUT_OF_SIGHT == rc)
 	{
-		setFlag(GAME_OBJ_FLAG_DEAD);
 		gameObjManager.sendToDeathQueue(this);
 		return false;
 	}
 
-	if (RETCODE_COLLIDE == rc)
+	if (RET_CODE_COLLIDE == rc)
 	{
 		explode(screen);
 		return false;
@@ -88,15 +87,20 @@ void Missile::setDirection(float directionX, float directionY)
 void Missile::explode(GameScreen& gameScreen)
 {
 	const MissileTemplate* t = getTemplate();
+	GameMap& map = gameScreen.getMap();
+	GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
+
 	int startRow, endRow, startCol, endCol;
 	float left = m_pos[0] - t->getExplosionBreath();
 	float right = m_pos[0] + t->getExplosionBreath();
 	float bottom = m_pos[1] - t->getExplosionBreath();
 	float top = m_pos[1] + t->getExplosionBreath();
-	GameMap& map = gameScreen.getMap();
-	GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
 
-	map.getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top);
+	if (!map.getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top))
+	{
+		return;
+	}
+	
 	map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_EXPLODE_CHECKED);
 
 	for (int r = startRow; r <= endRow; ++r)
@@ -110,7 +114,6 @@ void Missile::explode(GameScreen& gameScreen)
 				
 				if (!checkExplosion(obj, left, bottom, right, top, t->getExplosionPower()))
 				{
-					obj->setFlag(GAME_OBJ_FLAG_DEAD);
 					gameObjManager.sendToDeathQueue(obj);
 				}
 
@@ -119,7 +122,6 @@ void Missile::explode(GameScreen& gameScreen)
 		}
 	}
 
-	setFlag(GAME_OBJ_FLAG_DEAD);
 	gameObjManager.sendToDeathQueue(this);
 }
 

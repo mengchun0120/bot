@@ -1,7 +1,7 @@
-#ifndef INLCUDE_BOT_MOVEABILITYTEMPLATE
-#define INLCUDE_BOT_MOVEABILITYTEMPLATE
+#ifndef INLCUDE_BOT_MOVE_ABILITY_TEMPLATE
+#define INLCUDE_BOT_MOVE_ABILITY_TEMPLATE
 
-#include "gametemplate/bot_abilitytemplate.h"
+#include "gametemplate/bot_ability_template.h"
 
 namespace bot {
 

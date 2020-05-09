@@ -3,9 +3,9 @@
 
 namespace bot {
 
-enum class AbilityType {
-    MOVE,
-    SHOOT,
+enum AbilityType {
+    ABILITY_MOVE,
+    ABILITY_SHOOT,
     NUM_OF_ABILITIES
 };
 

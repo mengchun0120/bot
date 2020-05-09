@@ -1,7 +1,8 @@
 #include <string>
 #include "misc/bot_log.h"
-#include "gametemplate/bot_missiletemplate.h"
-#include "gametemplate/bot_missiletemplateparser.h"
+#include "misc/bot_json_utils.h"
+#include "gametemplate/bot_missile_template.h"
+#include "gametemplate/bot_missile_template_parser.h"
 
 namespace bot {
 
@@ -47,7 +48,7 @@ bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidj
 	missileTemplate->setExplosionPower(explosionPower);
 	missileTemplate->setExplosionBreath(explosionBreath);
 	
-	const Texture* texture = m_textureLib.getObjectByName(textureName.c_str());
+	const Texture* texture = m_textureLib.getObject(textureName.c_str());
 	
 	if (!texture)
 	{
@@ -57,7 +58,7 @@ bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidj
 
 	missileTemplate->setTexture(texture);
 
-	const Rectangle* rect = m_rectLib.getObjectByName(rectName.c_str());
+	const Rectangle* rect = m_rectLib.getObject(rectName.c_str());
 
 	if (!rect)
 	{
@@ -67,7 +68,7 @@ bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidj
 
 	missileTemplate->setRect(rect);
 
-	const Color* color = m_colorLib.getObjectByName(colorName.c_str());
+	const Color* color = m_colorLib.getObject(colorName.c_str());
 
 	if (!color)
 	{

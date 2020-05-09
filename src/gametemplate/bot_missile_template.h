@@ -1,7 +1,7 @@
-#ifndef INCLUDE_BOT_MISSILETEMPLATE
-#define INCLUDE_BOT_MISSILETEMPLATE
+#ifndef INCLUDE_BOT_MISSILE_TEMPLATE
+#define INCLUDE_BOT_MISSILE_TEMPLATE
 
-#include "gametemplate/bot_gameobjecttemplate.h"
+#include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
 

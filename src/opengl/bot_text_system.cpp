@@ -1,7 +1,9 @@
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
-#include "opengl/bot_text_system.h"
+#include "geometry/bot_rectangle.h"
 #include "opengl/bot_simple_shader_program.h"
+#include "opengl/bot_text_system.h"
+
 
 namespace bot {
 

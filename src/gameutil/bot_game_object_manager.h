@@ -50,7 +50,8 @@ public:
 		return m_activeRobots.getFirst();
 	}
 
-	Missile* createMissile(const std::string& missileName);
+	Missile* createMissile(const std::string& missileName, Robot* shooter, float x, float y,
+		                   float directionX, float directionY, Side side);
 
 	Missile* createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float x, float y,
 		                   float directionX, float directionY, Side side);

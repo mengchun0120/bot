@@ -5,22 +5,26 @@ namespace bot {
 
 bool Color::validateColor(int red, int green, int blue, int alpha)
 {
-    if (!validateElem(red)) {
+    if (!validateElem(red)) 
+    {
         LOG_ERROR("Invalid red value %d", red);
         return false;
     }
 
-    if (!validateElem(green)) {
+    if (!validateElem(green)) 
+    {
         LOG_ERROR("Invalid green value %d", green);
         return false;
     }
 
-    if (!validateElem(blue)) {
+    if (!validateElem(blue)) 
+    {
         LOG_ERROR("Invalid blue value %d", blue);
         return false;
     }
 
-    if (!validateElem(alpha)) {
+    if (!validateElem(alpha)) 
+    {
         LOG_ERROR("Invalid alpha value %d", alpha);
         return false;
     }
@@ -38,7 +42,8 @@ Color::Color()
 
 bool Color::setColor(int red, int green, int blue, int alpha)
 {
-    if (!validateColor(red, green, blue, alpha)) {
+    if (!validateColor(red, green, blue, alpha)) 
+    {
         return false;
     }
 
@@ -52,7 +57,8 @@ bool Color::setColor(int red, int green, int blue, int alpha)
 
 bool Color::setRed(int red)
 {
-    if (!validateElem(red)) {
+    if (!validateElem(red)) 
+    {
         LOG_ERROR("Invalid red value %d", red);
         return false;
     }
@@ -64,7 +70,8 @@ bool Color::setRed(int red)
 
 bool Color::setRed(float red)
 {
-    if (!validateElem(red)) {
+    if (!validateElem(red)) 
+    {
         LOG_ERROR("Invalid red value %f", red);
         return false;
     }
@@ -76,7 +83,8 @@ bool Color::setRed(float red)
 
 bool Color::setGreen(int green)
 {
-    if (!validateElem(green)) {
+    if (!validateElem(green)) 
+    {
         LOG_ERROR("Invalid green value %d", green);
         return false;
     }
@@ -88,7 +96,8 @@ bool Color::setGreen(int green)
 
 bool Color::setGreen(float green)
 {
-    if (!validateElem(green)) {
+    if (!validateElem(green)) 
+    {
         LOG_ERROR("Invalid green value %f", green);
         return false;
     }
@@ -100,7 +109,8 @@ bool Color::setGreen(float green)
 
 bool Color::setBlue(int blue)
 {
-    if (!validateElem(blue)) {
+    if (!validateElem(blue)) 
+    {
         LOG_ERROR("Invalid blue value %d", blue);
         return false;
     }
@@ -112,7 +122,8 @@ bool Color::setBlue(int blue)
 
 bool Color::setBlue(float blue)
 {
-    if (!validateElem(blue)) {
+    if (!validateElem(blue)) 
+    {
         LOG_ERROR("Invalid blue value %f", blue);
         return false;
     }
@@ -124,7 +135,8 @@ bool Color::setBlue(float blue)
 
 bool Color::setAlpha(int alpha)
 {
-    if (!validateElem(alpha)) {
+    if (!validateElem(alpha)) 
+    {
         LOG_ERROR("Invalid alpha value %d", alpha);
         return false;
     }
@@ -136,7 +148,8 @@ bool Color::setAlpha(int alpha)
 
 bool Color::setAlpha(float alpha)
 {
-    if (!validateElem(alpha)) {
+    if (!validateElem(alpha)) 
+    {
         LOG_ERROR("Invalid alpha value %f", alpha);
         return false;
     }

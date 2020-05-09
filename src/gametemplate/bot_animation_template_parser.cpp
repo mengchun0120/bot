@@ -48,7 +48,7 @@ bool AnimationTemplateParser::parse(AnimationTemplate* animationTemplate, const 
 		animationTemplate->clearFlag(GAME_OBJ_FLAG_COLLIDABLE);
 	}
 
-	const Rectangle* rect = m_rectLib.getObjectByName(rectName.c_str());
+	const Rectangle* rect = m_rectLib.getObject(rectName.c_str());
 
 	if (!rect)
 	{

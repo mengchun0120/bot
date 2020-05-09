@@ -12,7 +12,7 @@ namespace bot {
 Robot::Robot(const RobotTemplate* t)
     : GameObject(t)
     , m_hp(t->getHP())
-    , m_side(Side::UNKNOWN)
+    , m_side(SIDE_UNKNOWN)
 {
     m_direction[0] = 1.0f;
     m_direction[1] = 0.0f;
@@ -23,7 +23,7 @@ Robot::Robot(const RobotTemplate* t)
 
 Robot::~Robot()
 {
-    for (int i = 0; i < NUM_ABILITY_TYPES; ++i)
+    for (int i = 0; i < static_cast<int>(AbilityType::NUM_OF_ABILITIES); ++i)
     {
         if (!m_abilities[i])
         {
@@ -48,7 +48,7 @@ void Robot::initComponents()
 
 void Robot::initAbilities()
 {
-    for (int i = 0; i < NUM_ABILITY_TYPES; ++i)
+    for (int i = 0; i < static_cast<int>(AbilityType::NUM_OF_ABILITIES); ++i)
     {
         m_abilities[i] = nullptr;
     }
@@ -59,14 +59,14 @@ void Robot::initAbilities()
     if (moveTemplate)
     {
         MoveAbility* moveAbility = new MoveAbility(moveTemplate);
-        m_abilities[AbilityType::MOVE] = moveAbility;
+        m_abilities[ABILITY_MOVE] = moveAbility;
     }
 
     const ShootAbilityTemplate* shootTemplate = t->getShootAbilityTemplate();
     if (shootTemplate)
     {
         ShootAbility* shootAbility = new ShootAbility(shootTemplate);
-        m_abilities[AbilityType::SHOOT] = shootAbility;
+        m_abilities[ABILITY_SHOOT] = shootAbility;
         resetShootPos();
     }
 }
@@ -85,13 +85,12 @@ void Robot::present(SimpleShaderProgram& program)
 
 bool Robot::update(float delta, GameScreen& screen)
 {
-    if (!updateMoveAbility(delta, screen))
-    {
-        return false;
-    }
+    updateMoveAbility(delta, screen);
+    updateShootAbility(screen);
 
-    if (!updateShootAbility(screen))
+    if (m_hp <= 0)
     {
+        screen.getGameObjManager().sendToDeathQueue(this);
         return false;
     }
 
@@ -150,12 +149,12 @@ void Robot::setDirection(float directionX, float directionY)
 
 bool Robot::addHP(int deltaHP)
 {
-    if (testFlag(static_cast<int>(GameObjectFlag::INDESTRUCTABLE)))
+    if (testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
     {
         return true;
     }
 
-    if (testFlag(static_cast<int>(GameObjectFlag::DEAD)))
+    if (testFlag(GAME_OBJ_FLAG_DEAD))
     {
         return false;
     }
@@ -247,12 +246,12 @@ bool Robot::isShooting() const
     return shootAbility->isShootingEnabled();
 }
 
-bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
+void Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
 {
     MoveAbility* moveAbility = getMoveAbility();
     if (!moveAbility || !moveAbility->isMoving())
     {
-        return true;
+        return;
     }
 
     float speedX = moveAbility->getSpeed() * m_direction[0];
@@ -265,7 +264,7 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
 
     if (!collideObjs.isEmpty())
     {
-        // process objects collided with this object
+        processCollisions(collideObjs, gameScreen);
         map.freeGameObjList(collideObjs);
     }
 
@@ -276,16 +275,14 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     }
     
     map.repositionObject(this);
-
-    return true;
 }
 
-bool Robot::updateShootAbility(GameScreen& gameScreen)
+void Robot::updateShootAbility(GameScreen& gameScreen)
 {
     ShootAbility* shootAbility = getShootAbility();
     if (!shootAbility || !shootAbility->canShoot())
     {
-        return true;
+        return;
     }
 
     GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
@@ -296,24 +293,22 @@ bool Robot::updateShootAbility(GameScreen& gameScreen)
     GameMap& map = gameScreen.getMap();
     ReturnCode rc = map.checkCollision(missile);
 
-    if (rc == ReturnCode::OUT_OF_SIGHT)
+    if (rc == RET_CODE_OUT_OF_SIGHT)
     {
         gameObjManager.sendToDeathQueue(missile);
-        return true;
+        return;
     }
 
-    if (rc == ReturnCode::COLLIDE)
+    if (rc == RET_CODE_COLLIDE)
     {
-        
-        return true;
+        missile->explode(gameScreen);
+        return;
     }
 
     map.addObject(missile);
-
-    return true;
 }
 
-bool Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen)
+void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen)
 {
     for (GameObjectItem* item = collideObjs.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
     {

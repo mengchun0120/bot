@@ -1,6 +1,6 @@
 #include <cmath>
 #include "misc/bot_constants.h"
-#include "misc/bot_mathutils.h"
+#include "misc/bot_math_utils.h"
 #include "gameutil/bot_collide.h"
 
 namespace bot {

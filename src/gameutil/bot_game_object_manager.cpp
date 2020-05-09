@@ -60,7 +60,8 @@ Robot* GameObjectManager::createRobot(const RobotTemplate* robotTemplate)
 	return robot;
 }
 
-Missile* GameObjectManager::createMissile(const std::string& missileName)
+Missile* GameObjectManager::createMissile(const std::string& missileName, Robot* shooter, float x, float y,
+								          float directionX, float directionY, Side side)
 {
 	const MissileTemplate* missileTemplate = m_gameLib.getMissileTemplate(missileName);
 	if (!missileTemplate)
@@ -69,7 +70,7 @@ Missile* GameObjectManager::createMissile(const std::string& missileName)
 		return nullptr;
 	}
 
-	return createMissile(missileTemplate);
+	return createMissile(missileTemplate, shooter, x, y, directionX, directionY, side);
 }
 
 Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float x, float y,
@@ -96,27 +97,28 @@ Player* GameObjectManager::createPlayer()
 
 void GameObjectManager::sendToDeathQueue(GameObject* obj)
 {
+	obj->setFlag(static_cast<int>(GameObjectFlag::DEAD));
 	switch (obj->getType())
 	{
-		case GAME_OBJ_TYPE_TILE: 
+		case GameObjectType::TILE: 
 		{
 			Tile* tile = static_cast<Tile*>(obj);
 			m_activeTiles.unlink(tile);
 			break;
 		}
-		case GAME_OBJ_TYPE_ROBOT: 
+		case GameObjectType::ROBOT: 
 		{
 			Robot* robot = static_cast<Robot*>(obj);
 			m_activeRobots.unlink(robot);
 			break;
 		}
-		case GAME_OBJ_TYPE_MISSILE: 
+		case GameObjectType::MISSILE: 
 		{
 			Missile* missile = static_cast<Missile*>(obj);
 			m_activeMissiles.unlink(missile);
 			break;
 		}
-		case GAME_OBJ_TYPE_ANIMATION: 
+		case GameObjectType::ANIMATION: 
 		{
 			break;
 		}

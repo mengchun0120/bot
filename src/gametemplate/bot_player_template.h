@@ -1,5 +1,5 @@
-#ifndef INCLUDE_BOT_PLAYERTEMPLATE
-#define INCLUDE_BOT_PLAYERTEMPLATE
+#ifndef INCLUDE_BOT_PLAYER_TEMPLATE
+#define INCLUDE_BOT_PLAYER_TEMPLATE
 
 #include "gametemplate/bot_robot_template.h"
 

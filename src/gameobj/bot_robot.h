@@ -110,17 +110,17 @@ private:
 
 	void initAbilities();
 
-	virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
+	virtual void updateMoveAbility(float delta, GameScreen& gameScreen);
 
-	virtual bool updateShootAbility(GameScreen& gameScreen);
+	virtual void updateShootAbility(GameScreen& gameScreen);
 
-	bool processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
+	void processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
 
 protected:
 	int m_hp;
 	Side m_side;
 	float m_direction[Constants::NUM_FLOATS_PER_POSITION];
-	Ability* m_abilities[NUM_ABILITY_TYPES];
+	Ability* m_abilities[NUM_OF_ABILITIES];
 	std::vector<Component> m_components;
 };
 

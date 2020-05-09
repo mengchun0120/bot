@@ -3,10 +3,10 @@
 
 namespace bot {
 
-enum class Side {
-	AI,
-	PLAYER,
-	UNKNOWN
+enum Side {
+	SIDE_AI,
+	SIDE_PLAYER,
+	SIDE_UNKNOWN
 };
 
 } // end of namespace bot

@@ -3,12 +3,12 @@
 
 namespace bot {
 
-enum class GameObjectType {
-    ROBOT,
-    TILE,
-    MISSILE,
-    ANIMATION,
-    UNKNONWN
+enum GameObjectType {
+    GAME_OBJ_TYPE_ROBOT,
+    GAME_OBJ_TYPE_TILE,
+    GAME_OBJ_TYPE_MISSILE,
+    GAME_OBJ_TYPE_ANIMATION,
+    GAME_OBJ_TYPE_UNKNONWN
 };
 
 } // end of namespace bot

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BOT_SHAPE
 #define INCLUDE_BOT_SHAPE
 
-#include "opengl/bot_vertexarray.h"
+#include "opengl/bot_vertex_array.h"
 
 namespace bot {
 

@@ -1,4 +1,4 @@
-#include "gametemplate/bot_missiletemplate.h"
+#include "gametemplate/bot_missile_template.h"
 
 namespace bot {
 

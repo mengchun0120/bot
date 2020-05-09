@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <GL/glew.h>
 #include "misc/bot_log.h"
-#include "misc/bot_fileutils.h"
-#include "opengl/bot_shaderprogram.h"
+#include "misc/bot_file_utils.h"
+#include "opengl/bot_shader_program.h"
 
 namespace bot {
 

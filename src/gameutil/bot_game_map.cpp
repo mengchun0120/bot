@@ -352,14 +352,13 @@ bool GameMap::checkCollision(float& newDelta, LinkedList<GameObjectItem>& collid
 bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
                                          float speedX, float speedY, float delta)
 {
-    const int DONT_CHECK_FLAG = static_cast<int>(GameObjectFlag::CHECKED) | 
-                                static_cast<int>(GameObjectFlag::DEAD);
+    const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
     int startRow, endRow, startCol, endCol;
     bool collide = false;
 
     newDelta = delta;
     getCollideRegion(startRow, endRow, startCol, endCol, robot, speedX, speedY, delta);
-    clearFlagsInRect(startRow, endRow, startCol, endCol, GameObjectFlag::CHECKED);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
 
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -371,7 +370,7 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
                 GameObject* o = item->getObj();
                 bool dontCheck = o == static_cast<const GameObject*>(robot) ||
                                  o->testFlag(DONT_CHECK_FLAG) ||
-                                 (o->getType() != GameObjectType::ROBOT && o->getType() != GameObjectType::TILE);
+                                 (o->getType() != GAME_OBJ_TYPE_ROBOT && o->getType() != GAME_OBJ_TYPE_TILE);
 
                 if (dontCheck)
                 {
@@ -393,7 +392,7 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
                     }
                 }
 
-                o->setFlag(static_cast<int>(GameObjectFlag::CHECKED));
+                o->setFlag(GAME_OBJ_FLAG_CHECKED);
             }
         }
     }
@@ -404,8 +403,7 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
 void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
                                       float speedX, float speedY, float delta)
 {
-    const int DONT_CHECK_FLAG = static_cast<int>(GameObjectFlag::CHECKED) |
-                                static_cast<int>(GameObjectFlag::DEAD);
+    const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
     int startRow, endRow, startCol, endCol;
     float deltaX = speedX * delta;
     float deltaY = speedY * delta;
@@ -415,7 +413,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, c
     float top = robot->getCollideTop() + deltaY;
 
     getCollideRegion(startRow, endRow, startCol, endCol, robot, speedX, speedY, delta);
-    clearFlagsInRect(startRow, endRow, startCol, endCol, GameObjectFlag::CHECKED);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
 
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -427,7 +425,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, c
                 GameObject* o = item->getObj();
                 bool dontCheck = o == static_cast<const GameObject*>(robot) ||
                                  o->testFlag(DONT_CHECK_FLAG) ||
-                                 o->getType() != GameObjectType::MISSILE;
+                                 o->getType() != GAME_OBJ_TYPE_MISSILE;
 
                 if (dontCheck) 
                 {
@@ -445,7 +443,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, c
                     collideObjs.add(item);
                 }
 
-                o->setFlag(static_cast<int>(GameObjectFlag::CHECKED));
+                o->setFlag(GAME_OBJ_FLAG_CHECKED);
             }
         }
     }
@@ -455,11 +453,10 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
 {
     if (isOutsideViewport(missile))
     {
-        return ReturnCode::OUT_OF_SIGHT;
+        return RET_CODE_OUT_OF_SIGHT;
     }
 
-    const int DONT_CHECK_FLAG = static_cast<int>(GameObjectFlag::CHECKED) ||
-                                static_cast<int>(GameObjectFlag::DEAD);
+    const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
     int startRow, endRow, startCol, endCol;
     float left = missile->getCollideLeft();
     float bottom = missile->getCollideBottom();
@@ -467,7 +464,7 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
     float top = missile->getCollideTop();
 
     getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top);
-    clearFlagsInRect(startRow, endRow, startCol, endCol, GameObjectFlag::CHECKED);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
 
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -480,8 +477,7 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
                 bool dontCheck = o == static_cast<const GameObject*>(missile) ||
                                  o == static_cast<const GameObject*>(missile->getShooter()) ||
                                  o->testFlag(DONT_CHECK_FLAG) ||
-                                 (o->getType() != GameObjectType::ROBOT &&
-                                  o->getType() == GameObjectType::TILE);
+                                 (o->getType() != GAME_OBJ_TYPE_ROBOT && o->getType() == GAME_OBJ_TYPE_TILE);
 
                 if (dontCheck)
                 {
@@ -494,15 +490,15 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
 
                 if (collide)
                 {
-                    return ReturnCode::COLLIDE;
+                    return RET_CODE_COLLIDE;
                 }
 
-                o->setFlag(static_cast<int>(GameObjectFlag::CHECKED));
+                o->setFlag(static_cast<int>(GAME_OBJ_FLAG_CHECKED);
             }
         }
     }
 
-    return ReturnCode::OK;
+    return RET_CODE_OK;
 }
 
 void GameMap::freeGameObjList(LinkedList<GameObjectItem>& objs)

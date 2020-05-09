@@ -89,7 +89,7 @@ public:
 	bool checkCollision(float& newDelta, LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
 					    float speedX, float speedY, float delta);
 	
-	// Returns RETCODE_OUT_OF_SIGHT, RETCODE_COLLIDE and RETCODE_OK
+	// Returns RET_CODE_OUT_OF_SIGHT, RET_CODE_COLLIDE and RETCODE_OK
 	ReturnCode checkCollision(const Missile* missile);
 
 	void freeGameObjList(LinkedList<GameObjectItem>& objs);
