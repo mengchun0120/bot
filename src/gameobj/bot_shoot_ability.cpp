@@ -1,3 +1,4 @@
+#include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
 #include "gameobj/bot_shoot_ability.h"
 
@@ -21,15 +22,20 @@ void ShootAbility::setShootTime()
 
 bool ShootAbility::canShoot() const
 {
+	using namespace std::chrono;
+
 	if (!m_shootingEnabled)
 	{
 		return false;
 	}
 
 	ShootTime curTime = ShootClock::now();
-	std::chrono::duration<float> dur = curTime - m_lastShootTime;
-	float timeDelta = dur.count();
-	return timeDelta >= getTemplate()->getShootInterval();
+	milliseconds dur = duration_cast<milliseconds>(curTime - m_lastShootTime);
+	if (static_cast<float>(dur.count()) >= getTemplate()->getShootInterval())
+	{
+		return true;
+	}
+	return false;
 }
 
 void ShootAbility::shiftShootPos(float deltaX, float deltaY)

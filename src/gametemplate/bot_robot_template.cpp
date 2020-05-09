@@ -1,16 +1,16 @@
-#include "gametemplate/bot_robottemplate.h"
+#include "gametemplate/bot_robot_template.h"
 
 namespace bot {
 
 RobotTemplate::RobotTemplate()
-	: GameObjectTemplate(GAME_OBJ_TYPE_BOT)
+	: GameObjectTemplate(GAME_OBJ_TYPE_ROBOT)
 {
 	initAbilityTemplates();
 }
 
 RobotTemplate::RobotTemplate(float coverBreathX, float coverBreathY, float collideBreathX, float collideBreathY,
 	                         int hp, int flags, int numComponents)
-	: GameObjectTemplate(GAME_OBJ_TYPE_BOT, coverBreathX, coverBreathY, collideBreathX, collideBreathY, flags)
+	: GameObjectTemplate(GAME_OBJ_TYPE_ROBOT, coverBreathX, coverBreathY, collideBreathX, collideBreathY, flags)
 	, m_hp(hp)
 {
 	setNumComponents(numComponents);
@@ -19,7 +19,7 @@ RobotTemplate::RobotTemplate(float coverBreathX, float coverBreathY, float colli
 
 RobotTemplate::~RobotTemplate()
 {
-	for (int i = 0; i < NUM_ABILITY_TYPES; ++i)
+	for (int i = 0; i < NUM_OF_ABILITIES; ++i)
 	{
 		if (!m_abilityTemplates[i])
 		{
@@ -48,7 +48,7 @@ void RobotTemplate::initComponents()
 
 void RobotTemplate::initAbilityTemplates()
 {
-	for (int i = 0; i < NUM_ABILITY_TYPES; ++i) {
+	for (int i = 0; i < NUM_OF_ABILITIES; ++i) {
 		m_abilityTemplates[i] = nullptr;
 		m_attachComponents[i] = nullptr;
 	}

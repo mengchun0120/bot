@@ -17,7 +17,7 @@ namespace bot {
 GameScreen::GameScreen(App* app)
     : m_app(app)
     , m_gameObjManager(app->getGameTemplateLib(), app->getMissilePoolSize())
-    , m_state(GameState::INIT)
+    , m_state(GAME_STATE_INIT)
 {
 }
 
@@ -37,7 +37,7 @@ bool GameScreen::init()
 
     updateViewport();
 
-    m_state = GameState::RUNNING;
+    m_state = GAME_STATE_RUNNING;
 
     return true;
 }
@@ -62,7 +62,7 @@ bool GameScreen::loadMap(const std::string& fileName)
 
 int GameScreen::update(float delta)
 {
-    if (m_state != GameState::RUNNING)
+    if (m_state != GAME_STATE_RUNNING)
     {
         return 0;
     }
@@ -72,12 +72,13 @@ int GameScreen::update(float delta)
     {
         if (!player->update(delta, *this)) {
             LOG_INFO("player is DEAD");
+            m_state = GAME_STATE_END;
         }
     }
 
     updateViewport();
-    updateRobots(delta);
     updateMissiles(delta);
+    updateRobots(delta);
     clearDeadObjects();
 
     return 0;
@@ -85,15 +86,15 @@ int GameScreen::update(float delta)
 
 void GameScreen::present()
 {
-    static const std::vector<GameObjectType> LAYER_ORDER{
-        GameObjectType::TILE, GameObjectType::MISSILE, GameObjectType::ROBOT, GameObjectType::ANIMATION
+    static const GameObjectType LAYER_ORDER[] = {
+        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT, GAME_OBJ_TYPE_ANIMATION
     };
-    static const int NUM_LAYERS = static_cast<int>(LAYER_ORDER.size());
+    static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
 
     int startRow, endRow, startCol, endCol;
 
     m_map.getViewportRegion(startRow, endRow, startCol, endCol);
-    m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GameObjectFlag::DRAWN);
+    m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_DRAWN);
 
     for (int i = 0; i < NUM_LAYERS; ++i)
     {
@@ -102,21 +103,19 @@ void GameScreen::present()
             for (int c = startCol; c <= endCol; ++c)
             {
                 LinkedList<GameObjectItem>& cell = m_map.getMapCell(r, c);
-                for (GameObjectItem* item = cell.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+                GameObjectItem* item, * next;
+                for (item = cell.getFirst(); item; item = next)
                 {
-                    GameObject* obj = item->getObj();
-                    if (obj->getType() != LAYER_ORDER[i])
-                    {
-                        continue;
-                    }
+                    next = static_cast<GameObjectItem*>(item->getNext());
 
-                    if (obj->testFlag(static_cast<int>(GameObjectFlag::DRAWN)))
+                    GameObject* obj = item->getObj();
+                    if (obj->getType() != LAYER_ORDER[i] || obj->testFlag(GAME_OBJ_FLAG_DRAWN))
                     {
                         continue;
                     }
 
                     obj->present(m_app->getSimpleShaderProgram());
-                    obj->setFlag(static_cast<int>(GameObjectFlag::DRAWN));
+                    obj->setFlag(GAME_OBJ_FLAG_DRAWN);
                 }
             }
         }
@@ -138,7 +137,6 @@ int GameScreen::processInput(const InputEvent& e)
     return 0;
 }
 
-
 void GameScreen::updateViewport()
 {
     m_map.updateViewport();
@@ -147,11 +145,11 @@ void GameScreen::updateViewport()
 
 bool GameScreen::updateRobots(float delta)
 {
-    const int DONT_UPDATE_FLAG = static_cast<int>(GameObjectFlag::UPDATED) | static_cast<int>(GameObjectFlag::DEAD);
+    const int DONT_UPDATE_FLAG = GAME_OBJ_FLAG_UPDATED | GAME_OBJ_FLAG_DEAD;
     int startRow, endRow, startCol, endCol;
 
     m_map.getViewportRegion(startRow, endRow, startCol, endCol);
-    m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GameObjectFlag::UPDATED);
+    m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_UPDATED);
 
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -164,7 +162,7 @@ bool GameScreen::updateRobots(float delta)
                 next = static_cast<GameObjectItem*>(item->getNext());
                 GameObject* obj = item->getObj();
 
-                bool dontUpdate = obj->getType() != GameObjectType::ROBOT ||
+                bool dontUpdate = obj->getType() != GAME_OBJ_TYPE_ROBOT ||
                                   obj->testFlag(DONT_UPDATE_FLAG) ||
                                   obj == static_cast<GameObject*>(m_map.getPlayer());
                 if (dontUpdate)
@@ -173,12 +171,7 @@ bool GameScreen::updateRobots(float delta)
                 }
 
                 Robot* robot = static_cast<Robot*>(obj);
-                if (!robot->update(delta, *this))
-                {
-                    robot->setFlag(GameDEAD);
-                    m_gameObjManager.sendObjectToDeath(robot);
-                }
-
+                robot->update(delta, *this);
                 robot->setFlag(GAME_OBJ_FLAG_UPDATED);
             }
         }
@@ -193,12 +186,7 @@ bool GameScreen::updateMissiles(float delta)
     for (Missile* missile = m_gameObjManager.getFirstActiveMissile(); missile; missile = next)
     {
         next = static_cast<Missile*>(missile->getNext());
-
-        if (!missile->update(delta, *this))
-        {
-            missile->setFlag(GAME_OBJ_FLAG_DEAD);
-            m_gameObjManager.sendObjectToDeath(missile);
-        }
+        missile->update(delta, *this);
     }
 
     return true;
@@ -260,13 +248,10 @@ int GameScreen::handleKey(const KeyEvent& e)
 
 void GameScreen::clearDeadObjects()
 {
-    GameObject* next = nullptr;
-    for (GameObject* obj = m_gameObjManager.getFirstDeadObject(); obj; obj = next)
+    for (GameObject* obj = m_gameObjManager.getFirstDeadObject(); obj; obj = static_cast<GameObject*>(obj->getNext()))
     {
-        next = static_cast<GameObject*>(obj->getNext());
         m_map.removeObject(obj);
     }
-
     m_gameObjManager.clearDeadObjects();
 }
 

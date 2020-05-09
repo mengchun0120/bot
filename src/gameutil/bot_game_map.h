@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "misc/bot_return_code.h"
+#include "misc/bot_constants.h"
 #include "structure/bot_object_pool.h"
 #include "structure/bot_linked_list.h"
 #include "gameutil/bot_game_object_item.h"

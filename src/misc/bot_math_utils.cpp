@@ -1,5 +1,5 @@
 #include <cmath>
-#include "misc/bot_mathutils.h"
+#include "misc/bot_math_utils.h"
 
 namespace bot {
 

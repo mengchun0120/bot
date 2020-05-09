@@ -152,8 +152,8 @@ protected:
 protected:
 	std::vector<ComponentTemplate> m_components;
 	int m_hp;
-	AbilityTemplate* m_abilityTemplates[NUM_ABILITY_TYPES];
-	ComponentTemplate* m_attachComponents[NUM_ABILITY_TYPES];
+	AbilityTemplate* m_abilityTemplates[NUM_OF_ABILITIES];
+	ComponentTemplate* m_attachComponents[NUM_OF_ABILITIES];
 };
 
 } // end of namespace bot

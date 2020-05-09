@@ -1,4 +1,4 @@
-#include "gametemplate/bot_moveabilitytemplate.h"
+#include "gametemplate/bot_move_ability_template.h"
 
 namespace bot {
 

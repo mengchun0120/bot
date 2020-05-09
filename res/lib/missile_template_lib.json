@@ -8,7 +8,7 @@
     "coverBreathY": 9.0,
     "collideBreathX": 6.4,
     "collideBreathY": 6.4,
-    "speed": 200.0,
+    "speed": 100.0,
     "explosionPower": 20,
     "explosionBreath": 20.0,
     "explosionAnimation": ""
@@ -22,7 +22,7 @@
     "coverBreathY": 9.0,
     "collideBreathX": 6.4,
     "collideBreathY": 6.4,
-    "speed": 200.0,
+    "speed": 100.0,
     "explosionPower": 20,
     "explosionBreath": 20.0,
     "explosionAnimation": ""
@@ -31,7 +31,7 @@
     "name": "green_bullet",
     "texture": "bullet",
     "rect": "square18",
-    "color": "red",
+    "color": "green",
     "coverBreathX": 9.0,
     "coverBreathY": 9.0,
     "collideBreathX": 6.4,

@@ -1,7 +1,7 @@
 #include <fstream>
 #include <sstream>
 #include "misc/bot_log.h"
-#include "misc/bot_fileutils.h"
+#include "misc/bot_file_utils.h"
 
 namespace bot {
 

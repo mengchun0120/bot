@@ -2,7 +2,6 @@
 #include "gametemplate/bot_game_template_lib.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_robot.h"
-#include "gameobj/bot_missile.h"
 #include "gameobj/bot_player.h"
 #include "gameutil/bot_game_object_manager.h"
 
@@ -35,12 +34,14 @@ Tile* GameObjectManager::createTile(const std::string& tileName)
 Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate)
 {
 	Tile* tile = new Tile(tileTemplate);
+	LOG_INFO("add tile %p, %d", static_cast<GameObject*>(tile), tile->getFlags());
 	m_activeTiles.add(tile);
 
 	return tile;
 }
 
-Robot* GameObjectManager::createRobot(const std::string& robotName)
+Robot* GameObjectManager::createRobot(const std::string& robotName, float x, float y,
+						              float directionX, float directionY, Side side)
 {
 	const RobotTemplate* robotTemplate = m_gameLib.getRobotTemplate(robotName);
 	if (!robotTemplate)
@@ -49,12 +50,17 @@ Robot* GameObjectManager::createRobot(const std::string& robotName)
 		return nullptr;
 	}
 
-	return createRobot(robotTemplate);
+	return createRobot(robotTemplate, x, y, directionX, directionY, side);
 }
 
-Robot* GameObjectManager::createRobot(const RobotTemplate* robotTemplate)
+Robot* GameObjectManager::createRobot(const RobotTemplate* robotTemplate, float x, float y,
+								      float directionX, float directionY, Side side)
 {
 	Robot* robot = new Robot(robotTemplate);
+	robot->setPos(x, y);
+	robot->setDirection(directionX, directionY);
+	robot->setSide(side);
+
 	m_activeRobots.add(robot);
 
 	return robot;
@@ -78,54 +84,57 @@ Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate
 {
 	Missile* missile = m_missilePool.alloc();
 	missile->setTemplate(missileTemplate);
-	m_activeMissiles.add(missile);
-
 	missile->setShooter(shooter);
 	missile->setPos(x, y);
 	missile->setDirection(directionX, directionY);
 	missile->setSide(side);
 
+	m_activeMissiles.add(missile);
+
 	return missile;
 }
 
-Player* GameObjectManager::createPlayer()
+Player* GameObjectManager::createPlayer(float x, float y, float directionX, float directionY)
 {
 	Player* player = new Player(m_gameLib.getPlayerTemplate());
+	player->setPos(x, y);
+	player->setDirection(directionX, directionY);
+	player->setSide(SIDE_PLAYER);
 	m_activeRobots.add(player);
 	return player;
 }
 
 void GameObjectManager::sendToDeathQueue(GameObject* obj)
 {
-	obj->setFlag(static_cast<int>(GameObjectFlag::DEAD));
+	obj->setFlag(GAME_OBJ_FLAG_DEAD);
 	switch (obj->getType())
 	{
-		case GameObjectType::TILE: 
+		case GAME_OBJ_TYPE_TILE: 
 		{
 			Tile* tile = static_cast<Tile*>(obj);
 			m_activeTiles.unlink(tile);
 			break;
 		}
-		case GameObjectType::ROBOT: 
+		case GAME_OBJ_TYPE_ROBOT:
 		{
 			Robot* robot = static_cast<Robot*>(obj);
 			m_activeRobots.unlink(robot);
 			break;
 		}
-		case GameObjectType::MISSILE: 
+		case GAME_OBJ_TYPE_MISSILE:
 		{
 			Missile* missile = static_cast<Missile*>(obj);
 			m_activeMissiles.unlink(missile);
 			break;
 		}
-		case GameObjectType::ANIMATION: 
+		case GAME_OBJ_TYPE_ANIMATION:
 		{
 			break;
 		}
 		default: 
 		{
 			LOG_ERROR("Invalid game obj type %d", static_cast<int>(obj->getType()));
-			break;
+			return;
 		}
 	}
 	m_deadObjects.add(obj);

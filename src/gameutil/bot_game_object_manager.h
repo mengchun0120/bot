@@ -1,8 +1,10 @@
 #ifndef INCLUDE_BOT_GAME_OBJECT_MANAGER
 #define INCLUDE_BOT_GAME_OBJECT_MANAGER
 
-#include <structure/bot_double_linked_list.h>
-#include <structure/bot_object_pool.h>
+#include "structure/bot_double_linked_list.h"
+#include "structure/bot_object_pool.h"
+#include "gameobj/bot_missile.h"
+#include "gameobj/bot_side.h"
 
 namespace bot {
 
@@ -10,7 +12,6 @@ class GameTemplateLib;
 class GameObject;
 class Tile;
 class Robot;
-class Missile;
 class Player;
 class TileTemplate;
 class MissileTemplate;
@@ -36,9 +37,11 @@ public:
 		return m_activeTiles.getFirst();
 	}
 
-	Robot* createRobot(const std::string& robotName);
+	Robot* createRobot(const std::string& robotName, float x, float y, 
+		               float directionX, float directionY, Side side);
 
-	Robot* createRobot(const RobotTemplate* robotTemplate);
+	Robot* createRobot(const RobotTemplate* robotTemplate, float x, float y, 
+		               float directionX, float directionY, Side side);
 
 	Robot* getFirstActiveRobot()
 	{
@@ -76,7 +79,7 @@ public:
 		return m_deadObjects.getFirst();
 	}
 
-	Player* createPlayer();
+	Player* createPlayer(float x, float y, float directionX, float directionY);
 
 	void sendToDeathQueue(GameObject* obj);
 

@@ -95,21 +95,21 @@ bool RobotTemplateParser::parseComponents(RobotTemplate* robotTemplate, const ra
 			return false;
 		}
 
-		const Texture* texture = m_textureLib.getObjectByName(textureName.c_str());
+		const Texture* texture = m_textureLib.getObject(textureName.c_str());
 		if (!texture)
 		{
 			LOG_ERROR("Failed to find texture %s", textureName.c_str());
 			return false;
 		}
 
-		const Rectangle* rect = m_rectLib.getObjectByName(rectName.c_str());
+		const Rectangle* rect = m_rectLib.getObject(rectName.c_str());
 		if (!rect)
 		{
 			LOG_ERROR("Failed to find rect %s", rectName.c_str());
 			return false;
 		}
 
-		const Color* color = m_colorLib.getObjectByName(colorName.c_str());
+		const Color* color = m_colorLib.getObject(colorName.c_str());
 		if (!color)
 		{
 			LOG_ERROR("Failed to find color %s", colorName.c_str());
@@ -194,7 +194,7 @@ bool RobotTemplateParser::parseShootAbility(RobotTemplate* robotTemplate, const 
 		return false;
 	}
 
-	const MissileTemplate* missile = m_missileTemplateLib.getObjectByName(missileName.c_str());
+	const MissileTemplate* missile = m_missileTemplateLib.getObject(missileName.c_str());
 	if (!missile)
 	{
 		LOG_ERROR("Couldn't find missile %s", missileName.c_str());

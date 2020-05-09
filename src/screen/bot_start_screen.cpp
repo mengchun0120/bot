@@ -30,35 +30,35 @@ bool StartScreen::init()
 {
     const GameTemplateLib& gameLib = m_app->getGameTemplateLib();
     
-    m_button = gameLib.getTextureByName("button");
+    m_button = gameLib.getTexture("button");
     if (!m_button)
     {
         LOG_ERROR("Failed to load texture button");
         return false;
     }
 
-    m_rect = gameLib.getRectByName("button");
+    m_rect = gameLib.getRect("button");
     if (!m_rect)
     {
         LOG_ERROR("Failed to load rectangle button");
         return false;
     }
 
-    m_normalTextColor = gameLib.getColorByName("normal_text_color");
+    m_normalTextColor = gameLib.getColor("normal_text_color");
     if (!m_normalTextColor)
     {
         LOG_ERROR("Failed to load normal_text_color");
         return false;
     }
 
-    m_hoverTextColor = gameLib.getColorByName("hover_text_color");
+    m_hoverTextColor = gameLib.getColor("hover_text_color");
     if (!m_hoverTextColor)
     {
         LOG_ERROR("Failed to load hover_text_color");
         return false;
     }
 
-    m_pressedTextColor = gameLib.getColorByName("pressed_text_color");
+    m_pressedTextColor = gameLib.getColor("pressed_text_color");
     if (!m_pressedTextColor)
     {
         LOG_ERROR("Failed to load pressed_text_color");

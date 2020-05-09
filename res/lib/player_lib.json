@@ -25,7 +25,7 @@
   "moveSpeed": 100.0,
   "moveComponentIdx": 0,
   "shootable": true,
-  "shootInterval": 0.2,
+  "shootInterval": 200.0,
   "shootPosX": 10.0,
   "shootPosY": 0.0,
   "shootComponentIdx": 1,

@@ -31,21 +31,21 @@ bool TileTemplateParser::parse(TileTemplate* tileTemplate, const rapidjson::Valu
 		return false;
 	}
 
-	const Texture* texture = m_textureLib.getObjectByName(textureName.c_str());
+	const Texture* texture = m_textureLib.getObject(textureName.c_str());
 	if (!texture) 
 	{
 		LOG_ERROR("Failed to find texture %s", textureName.c_str());
 		return false;
 	}
 
-	const Rectangle* rect = m_rectLib.getObjectByName(rectName.c_str());
+	const Rectangle* rect = m_rectLib.getObject(rectName.c_str());
 	if (!rect) 
 	{
 		LOG_ERROR("Failed to find rectangle %s", rectName.c_str());
 		return false;
 	}
 
-	const Color* color = m_colorLib.getObjectByName(colorName.c_str());
+	const Color* color = m_colorLib.getObject(colorName.c_str());
 	if (!color)
 	{
 		LOG_ERROR("Failed to find color %s", colorName.c_str());

@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_TILE
 
 #include "misc/bot_constants.h"
+#include "gametemplate/bot_tile_template.h"
 #include "gameobj/bot_game_object.h"
 
 namespace bot {
@@ -13,6 +14,11 @@ public:
     Tile(const TileTemplate* tileTemplate);
 
     virtual ~Tile();
+
+    const TileTemplate* getTemplate() const
+    {
+        return static_cast<const TileTemplate*>(m_template);
+    }
 
     virtual void present(SimpleShaderProgram& program);
 

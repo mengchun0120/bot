@@ -1,3 +1,4 @@
+#include "misc/bot_log.h"
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
 #include "gameutil/bot_game_map.h"
@@ -11,6 +12,8 @@ namespace bot {
 
 Missile::Missile()
 	: GameObject(nullptr)
+	, m_shooter(nullptr)
+	, m_side(SIDE_UNKNOWN)
 {
 	m_direction[0] = 0.0f;
 	m_direction[1] = 0.0f;
@@ -18,6 +21,8 @@ Missile::Missile()
 
 Missile::Missile(const MissileTemplate* t)
 	: GameObject(t)
+	, m_shooter(nullptr)
+	, m_side(SIDE_UNKNOWN)
 {
 	m_direction[0] = 0.0f;
 	m_direction[1] = 0.0f;
@@ -111,7 +116,7 @@ void Missile::explode(GameScreen& gameScreen)
 			for (GameObjectItem* item = cell.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
 			{
 				GameObject* obj = item->getObj();
-				
+
 				if (!checkExplosion(obj, left, bottom, right, top, t->getExplosionPower()))
 				{
 					gameObjManager.sendToDeathQueue(obj);
@@ -135,6 +140,7 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom, float ri
 					 obj->testFlag(UNAFFECTED_FLAGS) ||
 					 (obj->getType() != GAME_OBJ_TYPE_ROBOT &&
 				      obj->getType() != GAME_OBJ_TYPE_TILE);
+
 	if (dontCheck)
 	{
 		return true;

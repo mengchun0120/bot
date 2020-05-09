@@ -34,7 +34,7 @@ public:
 	int forEach(PROCESSOR& processor);
 
 	template <typename DEALLOCATOR>
-	int clear(DEALLOCATOR& deallocator);
+	void clear(DEALLOCATOR& deallocator);
 
 	void clear();
 
@@ -45,6 +45,10 @@ private:
 template <typename T>
 void DoubleLinkedList<T>::add(T* t)
 {
+	if (m_first)
+	{
+		m_first->setPrev(t);
+	}
 	t->setPrev(nullptr);
 	t->setNext(m_first);
 	m_first = t;
@@ -104,7 +108,7 @@ int DoubleLinkedList<T>::forEach(PROCESSOR& processor)
 
 template <typename T>
 template <typename DEALLOCATOR>
-int DoubleLinkedList<T>::clear(DEALLOCATOR& deallocator)
+void DoubleLinkedList<T>::clear(DEALLOCATOR& deallocator)
 {
 	T* next;
 	for (T* t = m_first; t; t = next)
@@ -112,6 +116,7 @@ int DoubleLinkedList<T>::clear(DEALLOCATOR& deallocator)
 		next = static_cast<T*>(t->getNext());
 		deallocator(t);
 	}
+	m_first = nullptr;
 }
 
 template <typename T>
@@ -123,6 +128,7 @@ void DoubleLinkedList<T>::clear()
 		next = static_cast<T*>(t->getNext());
 		delete t;
 	}
+	m_first = nullptr;
 }
 
 } // end of namespace bot

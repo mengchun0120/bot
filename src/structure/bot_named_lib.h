@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include "misc/bot_log.h"
-#include "misc/bot_jsonutils.h"
-#include "structure/bot_nameidmap.h"
+#include "misc/bot_json_utils.h"
+#include "structure/bot_name_id_map.h"
 
 namespace bot {
 
@@ -110,7 +110,7 @@ bool readNamedLibFromJson(NamedLib<T>& lib, const char* fileName, PARSER& parser
 			return false;
 		}
 
-		T* obj = lib.getObjectByIdx(i);
+		T* obj = lib.getObject(i);
 		if (!parser.parse(obj, elem))
 		{
 			LOG_ERROR("Error in the %dth object in %s: failed to parse object", i, fileName);

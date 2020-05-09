@@ -16,6 +16,7 @@ Robot::Robot(const RobotTemplate* t)
 {
     m_direction[0] = 1.0f;
     m_direction[1] = 0.0f;
+    m_flags = t->getFlags();
 
     initComponents();
     initAbilities();
@@ -86,13 +87,13 @@ void Robot::present(SimpleShaderProgram& program)
 bool Robot::update(float delta, GameScreen& screen)
 {
     updateMoveAbility(delta, screen);
-    updateShootAbility(screen);
 
-    if (m_hp <= 0)
+    if (testFlag(GAME_OBJ_FLAG_DEAD))
     {
-        screen.getGameObjManager().sendToDeathQueue(this);
         return false;
     }
+
+    updateShootAbility(screen);
 
     return true;
 }
@@ -289,18 +290,21 @@ void Robot::updateShootAbility(GameScreen& gameScreen)
     Missile* missile = gameObjManager.createMissile(shootAbility->getMissileTemplate(), this, 
                                                     shootAbility->getShootPosX(), shootAbility->getShootPosY(),
                                                     m_direction[0], m_direction[1], m_side);
+    shootAbility->setShootTime();
 
     GameMap& map = gameScreen.getMap();
     ReturnCode rc = map.checkCollision(missile);
 
     if (rc == RET_CODE_OUT_OF_SIGHT)
     {
+        LOG_INFO("missile out-of-sight");
         gameObjManager.sendToDeathQueue(missile);
         return;
     }
 
     if (rc == RET_CODE_COLLIDE)
     {
+        LOG_INFO("missile explode");
         missile->explode(gameScreen);
         return;
     }

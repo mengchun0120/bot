@@ -423,11 +423,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, c
             for (GameObjectItem* item = row[c].getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
             {
                 GameObject* o = item->getObj();
-                bool dontCheck = o == static_cast<const GameObject*>(robot) ||
-                                 o->testFlag(DONT_CHECK_FLAG) ||
-                                 o->getType() != GAME_OBJ_TYPE_MISSILE;
-
-                if (dontCheck) 
+                if (o->getType() != GAME_OBJ_TYPE_MISSILE || o->testFlag(DONT_CHECK_FLAG))
                 {
                     continue;
                 }
@@ -463,7 +459,11 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
     float right = missile->getCollideRight();
     float top = missile->getCollideTop();
 
-    getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top);
+    if (!getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top))
+    {
+        return RET_CODE_OUT_OF_SIGHT;
+    }
+
     clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
 
     for (int r = startRow; r <= endRow; ++r)
@@ -477,7 +477,7 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
                 bool dontCheck = o == static_cast<const GameObject*>(missile) ||
                                  o == static_cast<const GameObject*>(missile->getShooter()) ||
                                  o->testFlag(DONT_CHECK_FLAG) ||
-                                 (o->getType() != GAME_OBJ_TYPE_ROBOT && o->getType() == GAME_OBJ_TYPE_TILE);
+                                 (o->getType() != GAME_OBJ_TYPE_ROBOT && o->getType() != GAME_OBJ_TYPE_TILE);
 
                 if (dontCheck)
                 {
@@ -493,7 +493,7 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
                     return RET_CODE_COLLIDE;
                 }
 
-                o->setFlag(static_cast<int>(GAME_OBJ_FLAG_CHECKED);
+                o->setFlag(GAME_OBJ_FLAG_CHECKED);
             }
         }
     }

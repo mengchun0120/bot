@@ -146,14 +146,12 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
 
 bool GameMapLoader::addRobot(const std::string& name, float x, float y, float directionX, float directionY)
 {
-	Robot* robot = m_gameObjManager.createRobot(name);
+	Robot* robot = m_gameObjManager.createRobot(name, x, y, directionX, directionY, SIDE_AI);
 	if (!robot)
 	{
 		return false;
 	}
 
-	robot->setPos(x, y);
-	robot->setDirection(directionX, directionY);
 	m_map.addObject(robot);
 
 	return true;
@@ -188,9 +186,7 @@ bool GameMapLoader::loadPlayer(const rapidjson::Value& mapJson)
 		return false;
 	}
 
-	Player* player = m_gameObjManager.createPlayer();
-	player->setPos(x, y);
-	player->setDirection(directionX, directionY);
+	Player* player = m_gameObjManager.createPlayer(x, y, directionX, directionY);
 	m_map.setPlayer(player);
 
 	return true;

@@ -8,9 +8,9 @@
 
 namespace bot {
 
-class MouseMoveEvent;
-class MouseButtonEvent;
-class KeyEvent;
+struct MouseMoveEvent;
+struct MouseButtonEvent;
+struct KeyEvent;
 class App;
 
 class GameScreen: public Screen {
