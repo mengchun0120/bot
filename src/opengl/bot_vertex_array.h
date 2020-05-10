@@ -9,17 +9,12 @@ public:
 
     virtual ~VertexArray();
 
-    bool load(const float* vertices, unsigned int numVertices0,
-              bool hasTexCoord0);
+    bool load(const float* vertices, unsigned int numVertices, 
+              unsigned int vertexSize,  unsigned int stride);
 
     unsigned int numVertices() const
     {
         return m_numVertices;
-    }
-
-    bool hasTexCoord() const
-    {
-        return m_hasTexCoord;
     }
 
     unsigned int vertexSize() const
@@ -46,7 +41,6 @@ protected:
     void destroy();
 
     unsigned int m_numVertices;
-    bool m_hasTexCoord;
     unsigned int m_vertexSize;
     unsigned int m_stride;
     unsigned int m_vao;

@@ -119,7 +119,7 @@ void TextSystem::drawString(SimpleShaderProgram& program, const std::string& str
     for (int i = 0; i < len; ++i) 
     {
         program.setObjRef(realPos);
-        program.setPosition(rect->vertexArray());
+        program.setPosition(rect->vertexArray(), true);
         program.setTexture(m_textures[str[i] - MIN_CHAR].textureId());
         glDrawArrays(GL_TRIANGLE_FAN, 0, rect->vertexArray().numVertices());
 

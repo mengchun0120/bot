@@ -14,7 +14,7 @@ Player::~Player()
 
 }
 
-void Player::present(SimpleShaderProgram& program)
+void Player::present(ShaderProgram& program)
 {
 	Robot::present(program);
 }

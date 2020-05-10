@@ -1,5 +1,4 @@
 #include <GL/glew.h>
-#include "opengl/bot_simpleshaderprogram.h"
 #include "geometry/bot_rectangle.h"
 
 namespace bot {

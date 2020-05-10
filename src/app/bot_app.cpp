@@ -8,11 +8,11 @@ namespace bot {
 
 App::App()
     : m_window(nullptr)
-    , m_viewportWidth(0.0f)
-    , m_viewportHeight(0.0f)
     , m_mapPoolFactor(1.0f)
     , m_missilePoolSize(0)
 {
+    m_viewportSize[0] = 0.0f;
+    m_viewportSize[1] = 0.0f;
 }
 
 App::~App()
@@ -184,7 +184,7 @@ bool App::initInputManager(const rapidjson::Value& cfg)
         return false;
     }
 
-    m_inputMgr.init(m_window, eventQueueSize, m_viewportHeight);
+    m_inputMgr.init(m_window, eventQueueSize, getViewportHeight());
 
     LOG_INFO("Done initializing input manager");
 
@@ -195,14 +195,17 @@ bool App::initOpenGL(const rapidjson::Value& cfg)
 {
     LOG_INFO("Initializing OpenGL");
 
-    std::string vertexShaderFile, fragShaderFile;
+    std::string simpleVertexShaderFile, simpleFragShaderFile;
+    std::string particleVertexShaderFile, particleFragShaderFile;
     std::string glslDir;
 
     std::vector<JsonParseParam> params =
     {
-        {&vertexShaderFile, "vertexShaderFile", JSONTYPE_STRING},
-        {&fragShaderFile,   "fragShaderFile",   JSONTYPE_STRING},
-        {&glslDir,          "glslDir",          JSONTYPE_STRING}
+        {&simpleVertexShaderFile,   "simpleVertexShaderFile",   JSONTYPE_STRING},
+        {&simpleFragShaderFile,     "simpleFragShaderFile",     JSONTYPE_STRING},
+        {&particleVertexShaderFile, "particleVertexShaderFile", JSONTYPE_STRING},
+        {&particleFragShaderFile,   "particleFragShaderFile",   JSONTYPE_STRING},
+        {&glslDir,                  "glslDir",                  JSONTYPE_STRING}
     };
 
     if (!parseJson(params, cfg))
@@ -215,16 +218,23 @@ bool App::initOpenGL(const rapidjson::Value& cfg)
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    std::string vertexShaderPath = constructPath({ m_resDir, glslDir, vertexShaderFile });
-    std::string fragShaderPath = constructPath({ m_resDir, glslDir, fragShaderFile });
+    std::string simpleVertexShaderPath = constructPath({ m_resDir, glslDir, simpleVertexShaderFile });
+    std::string simpleFragShaderPath = constructPath({ m_resDir, glslDir, simpleFragShaderFile });
 
-    if (!m_program.init(vertexShaderPath, fragShaderPath)) 
+    if (!m_simpleShaderProgram.init(simpleVertexShaderPath, simpleFragShaderPath)) 
     {
-        LOG_ERROR("Failed to init shader program");
+        LOG_ERROR("Failed to init simple shader program");
         return false;
     }
 
-    m_program.use();
+    std::string particleVertexShaderPath = constructPath({ m_resDir, glslDir, particleVertexShaderFile });
+    std::string particleFragShaderPath = constructPath({ m_resDir, glslDir, particleFragShaderFile });
+
+    if (!m_particleShaderProgram.init(particleVertexShaderPath, particleFragShaderPath))
+    {
+        LOG_ERROR("Failed to init particle shader program");
+        return false;
+    }
 
     updateViewport();
 
@@ -240,14 +250,10 @@ void App::updateViewport()
     glfwGetFramebufferSize(m_window, &width, &height);
     glViewport(0, 0, width, height);
 
-    m_viewportWidth = static_cast<float>(width);
-    m_viewportHeight = static_cast<float>(height);
+    m_viewportSize[0] = static_cast<float>(width);
+    m_viewportSize[1] = static_cast<float>(height);
 
-    float viewportSize[] = { m_viewportWidth, m_viewportHeight };
-
-    m_program.setViewportSize(viewportSize);
-
-    LOG_INFO("viewportWidth=%f viewportHeight=%f", m_viewportWidth, m_viewportHeight);
+    LOG_INFO("viewportWidth=%f viewportHeight=%f", getViewportWidth(), getViewportHeight());
 }
 
 bool App::initGame(const rapidjson::Value& cfg)

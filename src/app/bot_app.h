@@ -5,6 +5,7 @@
 #include <rapidjson/document.h>
 #include "input/bot_input_manager.h"
 #include "opengl/bot_simple_shader_program.h"
+#include "opengl/bot_particle_shader_program.h"
 #include "opengl/bot_text_system.h"
 #include "gameutil/bot_time_delta_smoother.h"
 #include "gametemplate/bot_game_template_lib.h"
@@ -24,14 +25,21 @@ public:
 
     bool run();
 
+
+
     float getViewportWidth() const
     {
-        return m_viewportWidth;
+        return m_viewportSize[0];
     }
 
     float getViewportHeight() const
     {
-        return m_viewportHeight;
+        return m_viewportSize[1];
+    }
+    
+    const float* getViewportSize() const
+    {
+        return m_viewportSize;
     }
 
     const std::string& getAppDir() const
@@ -56,7 +64,12 @@ public:
 
     SimpleShaderProgram& getSimpleShaderProgram()
     {
-        return m_program;
+        return m_simpleShaderProgram;
+    }
+
+    ParticleShaderProgram& getParticleShaderProgram()
+    {
+        return m_particleShaderProgram;
     }
 
     const GameTemplateLib& getGameTemplateLib() const
@@ -109,10 +122,10 @@ private:
     std::string m_resDir;
     std::string m_mapDir;
     std::string m_mapFile;
-    float m_viewportWidth;
-    float m_viewportHeight;
+    float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
     InputManager m_inputMgr;
-    SimpleShaderProgram m_program;
+    SimpleShaderProgram m_simpleShaderProgram;
+    ParticleShaderProgram m_particleShaderProgram;
     TimeDeltaSmoother m_timeDeltaSmoother;
     TextSystem m_textSystem;
     GameTemplateLib m_gameTemplateLib;

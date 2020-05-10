@@ -35,8 +35,6 @@ bool GameScreen::init()
         return false;
     }
 
-    updateViewport();
-
     m_state = GAME_STATE_RUNNING;
 
     return true;
@@ -76,7 +74,7 @@ int GameScreen::update(float delta)
         }
     }
 
-    updateViewport();
+    m_map.updateViewport();
     updateMissiles(delta);
     updateRobots(delta);
     clearDeadObjects();
@@ -86,8 +84,14 @@ int GameScreen::update(float delta)
 
 void GameScreen::present()
 {
+    SimpleShaderProgram& simpleShaderProgram = m_app->getSimpleShaderProgram();
+
+    simpleShaderProgram.use();
+    simpleShaderProgram.setViewportSize(m_app->getViewportSize());
+    simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
+
     static const GameObjectType LAYER_ORDER[] = {
-        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT, GAME_OBJ_TYPE_ANIMATION
+        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
     };
     static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
 
@@ -114,7 +118,7 @@ void GameScreen::present()
                         continue;
                     }
 
-                    obj->present(m_app->getSimpleShaderProgram());
+                    obj->present(simpleShaderProgram);
                     obj->setFlag(GAME_OBJ_FLAG_DRAWN);
                 }
             }
@@ -137,12 +141,6 @@ int GameScreen::processInput(const InputEvent& e)
     return 0;
 }
 
-void GameScreen::updateViewport()
-{
-    m_map.updateViewport();
-    m_app->getSimpleShaderProgram().setViewportOrigin(m_map.getViewportPos());
-}
-
 bool GameScreen::updateRobots(float delta)
 {
     const int DONT_UPDATE_FLAG = GAME_OBJ_FLAG_UPDATED | GAME_OBJ_FLAG_DEAD;
@@ -150,6 +148,8 @@ bool GameScreen::updateRobots(float delta)
 
     m_map.getViewportRegion(startRow, endRow, startCol, endCol);
     m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_UPDATED);
+
+    LOG_INFO("sr=%d er=%d sc=%d ec=%d", startRow, endRow, startCol, endCol);
 
     for (int r = startRow; r <= endRow; ++r)
     {

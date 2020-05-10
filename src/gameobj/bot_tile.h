@@ -20,7 +20,7 @@ public:
         return static_cast<const TileTemplate*>(m_template);
     }
 
-    virtual void present(SimpleShaderProgram& program);
+    virtual void present(ShaderProgram& program);
 
     virtual bool update(float delta, GameScreen& screen);
 

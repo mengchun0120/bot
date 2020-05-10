@@ -64,7 +64,7 @@ void SimpleShaderProgram::setTexture(unsigned int textureId)
     glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
-void SimpleShaderProgram::setPosition(const VertexArray& vertexArray)
+void SimpleShaderProgram::setPosition(const VertexArray& vertexArray, bool hasTexCoord)
 {
     glBindVertexArray(vertexArray.vao());
     glBindBuffer(GL_ARRAY_BUFFER, vertexArray.vbo());
@@ -73,7 +73,7 @@ void SimpleShaderProgram::setPosition(const VertexArray& vertexArray)
                           GL_FLOAT, GL_FALSE, vertexArray.stride(), (void *)0);
     glEnableVertexAttribArray(m_positionLocation);
 
-    if (vertexArray.hasTexCoord()) 
+    if (hasTexCoord) 
     {
         glVertexAttribPointer(m_texPosLocation, Constants::NUM_FLOATS_PER_TEXCOORD,
                               GL_FLOAT, GL_FALSE, vertexArray.stride(),

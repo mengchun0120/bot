@@ -10,7 +10,7 @@
 namespace bot {
 
 class GameScreen;
-class SimpleShaderProgram;
+class ShaderProgram;
 
 class GameObject: public DoubleLinkedItem {
 public:
@@ -24,7 +24,7 @@ public:
         return m_template->getType();
     }
 
-    virtual void present(SimpleShaderProgram& program) = 0;
+    virtual void present(ShaderProgram& program) = 0;
 
     virtual bool update(float delta, GameScreen& screen) = 0;
 

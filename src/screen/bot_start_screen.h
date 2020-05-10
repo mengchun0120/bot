@@ -30,8 +30,6 @@ public:
     virtual int processInput(const InputEvent &e);
 
 private:
-    void setViewportOrigin();
-
     void getButtonPos();
 
     void getTextPos();
@@ -64,6 +62,7 @@ private:
     float m_textPos[NUM_BUTTONS][Constants::NUM_FLOATS_PER_POSITION];
     int m_hoverButtonIdx;
     int m_pressedButtonIdx;
+    float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 } // end of namespace bot

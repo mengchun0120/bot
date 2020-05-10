@@ -1,4 +1,4 @@
-#include "opengl/bot_simpleshaderprogram.h"
+#include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_color.h"
 #include "geometry/bot_polygon.h"
 
@@ -15,7 +15,14 @@ Polygon::~Polygon()
 
 bool Polygon::init(const float *vertices, unsigned int numVertices, bool hasTexCoord)
 {
-    return m_vertexArray.load(vertices, numVertices, hasTexCoord);
+    unsigned int vertexSize = Constants::POSITION_SIZE;
+    unsigned int stride = 0;
+    if (hasTexCoord)
+    {
+        vertexSize += Constants::TEXCOORD_SIZE;
+        stride += vertexSize;
+    }
+    return m_vertexArray.load(vertices, numVertices, vertexSize, stride);
 }
 
 void Polygon::draw(SimpleShaderProgram& program,
@@ -33,7 +40,7 @@ void Polygon::draw(SimpleShaderProgram& program,
         program.setUseObjRef(false);
     }
 
-    program.setPosition(m_vertexArray);
+    program.setPosition(m_vertexArray, textureId != 0);
     program.setUseColor(textureId == 0);
 
     if (direction)

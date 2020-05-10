@@ -20,6 +20,8 @@ StartScreen::StartScreen(App* app)
     m_texts[1] = "Load Game";
     m_texts[2] = "Settings";
     m_texts[3] = "Exit";
+    m_viewportOrigin[0] = m_app->getViewportWidth() / 2.0f;
+    m_viewportOrigin[1] = m_app->getViewportHeight() / 2.0f;
 }
 
 StartScreen::~StartScreen()
@@ -29,7 +31,7 @@ StartScreen::~StartScreen()
 bool StartScreen::init()
 {
     const GameTemplateLib& gameLib = m_app->getGameTemplateLib();
-    
+        
     m_button = gameLib.getTexture("button");
     if (!m_button)
     {
@@ -65,17 +67,10 @@ bool StartScreen::init()
         return false;
     }
 
-    setViewportOrigin();
     getButtonPos();
     getTextPos();
 
     return true;
-}
-
-void StartScreen::setViewportOrigin()
-{
-    float viewportOrigin[] = {m_app->getViewportWidth() / 2.0f, m_app->getViewportHeight() / 2.0f};
-    m_app->getSimpleShaderProgram().setViewportOrigin(viewportOrigin);
 }
 
 void StartScreen::getButtonPos()
@@ -116,7 +111,10 @@ int StartScreen::update(float delta)
 void StartScreen::present()
 {
     SimpleShaderProgram& program = m_app->getSimpleShaderProgram();
+
     program.use();
+    program.setViewportSize(m_app->getViewportSize());
+    program.setViewportOrigin(m_viewportOrigin);
 
     const TextSystem& textSys = m_app->getTextSystem();
     const float *color;
@@ -156,7 +154,6 @@ int StartScreen::processInput(const InputEvent& e)
         default:
             LOG_WARN("Unknown event type: %d", static_cast<int>(e.m_type));
     }
-
     return 0;
 }
 

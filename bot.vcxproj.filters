@@ -221,6 +221,9 @@
     <ClCompile Include="src\structure\bot_name_id_map.cpp">
       <Filter>Source Files\structure</Filter>
     </ClCompile>
+    <ClCompile Include="src\opengl\bot_particle_shader_program.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -273,6 +276,12 @@
     </None>
     <None Include="tools\CreateTransientCircle.java">
       <Filter>tools</Filter>
+    </None>
+    <None Include="res\glsl\particle_vertex_shader.glsl">
+      <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="res\glsl\particle_frag_shader.glsl">
+      <Filter>Resource Files\glsl</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -798,6 +807,9 @@
     </ClInclude>
     <ClInclude Include="src\structure\bot_object_pool.h">
       <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_particle_shader_program.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

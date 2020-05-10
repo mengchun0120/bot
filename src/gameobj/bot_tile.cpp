@@ -19,14 +19,15 @@ Tile::Tile(const TileTemplate* tileTemplate)
 Tile::~Tile()
 {}
 
-void Tile::present(SimpleShaderProgram& program)
+void Tile::present(ShaderProgram& program)
 {
 	const TileTemplate* t = static_cast<const TileTemplate*>(m_template);
 	const Rectangle* rect = t->getRect();
 	const Texture* texture = t->getTexture();
 	const Color* color = t->getColor();
 
-	rect->draw(program, m_pos, nullptr, nullptr, nullptr, texture->textureId(), color);
+	rect->draw(static_cast<SimpleShaderProgram&>(program), m_pos, nullptr, nullptr, 
+		       nullptr, texture->textureId(), color);
 }
 
 bool Tile::update(float delta, GameScreen& screen)

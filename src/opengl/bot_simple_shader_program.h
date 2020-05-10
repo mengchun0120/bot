@@ -36,7 +36,7 @@ public:
         glUniform2fv(m_viewportOriginLocation, 1, viewportOrigin);
     }
 
-    void setPosition(const VertexArray &vertexArray);
+    void setPosition(const VertexArray &vertexArray, bool hasTexCoord);
 
     void setColor(const float *color)
     {

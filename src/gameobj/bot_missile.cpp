@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_texture.h"
+#include "opengl/bot_simple_shader_program.h"
 #include "geometry/bot_rectangle.h"
 #include "gameutil/bot_game_map.h"
 #include "gameutil/bot_collide.h"
@@ -32,10 +33,11 @@ Missile::~Missile()
 {
 }
 
-void Missile::present(SimpleShaderProgram& program)
+void Missile::present(ShaderProgram& program)
 {
 	const MissileTemplate* t = getTemplate();
-	t->getRect()->draw(program, m_pos, m_direction, nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
+	t->getRect()->draw(static_cast<SimpleShaderProgram&>(program), m_pos, m_direction, 
+		               nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
 }
 
 bool Missile::update(float delta, GameScreen& screen)

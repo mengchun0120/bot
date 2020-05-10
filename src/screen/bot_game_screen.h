@@ -50,8 +50,6 @@ public:
     }
 
 private:
-    void updateViewport();
-
     bool updateRobots(float delta);
 
     bool updateMissiles(float delta);
@@ -69,6 +67,7 @@ private:
     GameMap m_map;
     GameObjectManager m_gameObjManager;
     GameState m_state;
+    float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 } // end of namespace bot
