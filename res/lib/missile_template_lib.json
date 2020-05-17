@@ -11,7 +11,7 @@
     "speed": 100.0,
     "explosionPower": 20,
     "explosionBreath": 20.0,
-    "explosionAnimation": ""
+    "explosionEffect": "blue_explosion"
   },
   {
     "name": "red_bullet",
@@ -25,7 +25,7 @@
     "speed": 100.0,
     "explosionPower": 20,
     "explosionBreath": 20.0,
-    "explosionAnimation": ""
+    "explosionEffect": "red_explosion"
   },
   {
     "name": "green_bullet",
@@ -39,6 +39,6 @@
     "speed": 200.0,
     "explosionPower": 40,
     "explosionBreath": 20.0,
-    "explosionAnimation": ""
+    "explosionEffect": "green_explosion"
   }
 ]

@@ -1,3 +1,4 @@
+#include "misc/bot_time_utils.h"
 #include "gameutil/bot_time_delta_smoother.h"
 
 namespace bot {
@@ -21,9 +22,7 @@ void TimeDeltaSmoother::init(int timeDeltaHistoryLen)
 
 void TimeDeltaSmoother::start()
 {
-    using namespace std::chrono;
-
-    m_prevTime = high_resolution_clock::now();
+    m_prevTime = Clock::now();
 
     unsigned int histSize = m_timeDeltaHistory.size();
     for (unsigned int i = 0; i < histSize; ++i) 
@@ -40,7 +39,7 @@ float TimeDeltaSmoother::getTimeDelta()
 {
     using namespace std::chrono;
 
-    TimePoint curTime = high_resolution_clock::now();
+    TimePoint curTime = Clock::now();
     duration<float> dur = curTime - m_prevTime;
     float timeDelta = dur.count();
 

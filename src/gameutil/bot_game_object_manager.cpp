@@ -94,6 +94,14 @@ Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate
 	return missile;
 }
 
+ParticleEffect* GameObjectManager::createParticleEffect(const ParticleEffectTemplate* t, float x, float y)
+{
+	ParticleEffect* effect = m_particleEffectPool.alloc();
+	effect->init(t, x, y);
+	m_activeParticleEffect.add(effect);
+	return effect;
+}
+
 Player* GameObjectManager::createPlayer(float x, float y, float directionX, float directionY)
 {
 	Player* player = new Player(m_gameLib.getPlayerTemplate());
@@ -127,6 +135,12 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
 			m_activeMissiles.unlink(missile);
 			break;
 		}
+		case GAME_OBJ_TYPE_PARTICLE_EFFECT:
+		{
+			ParticleEffect* effect = static_cast<ParticleEffect*>(obj);
+			m_activeParticleEffect.unlink(effect);
+			break;
+		}
 		case GAME_OBJ_TYPE_ANIMATION:
 		{
 			break;
@@ -144,13 +158,17 @@ void GameObjectManager::clearDeadObjects()
 {
 	auto deallocator = [this](GameObject* obj)
 	{
-		if (obj->getType() != GAME_OBJ_TYPE_MISSILE)
+		if (obj->getType() == GAME_OBJ_TYPE_MISSILE)
 		{
-			delete obj;
+			m_missilePool.free(static_cast<Missile*>(obj));
+		}
+		else if (obj->getType() == GAME_OBJ_TYPE_PARTICLE_EFFECT)
+		{
+			m_particleEffectPool.free(static_cast<ParticleEffect*>(obj));
 		}
 		else
 		{
-			m_missilePool.free(static_cast<Missile*>(obj));
+			delete obj;
 		}
 	};
 
@@ -162,12 +180,19 @@ void GameObjectManager::clearActiveObjects()
 	m_activeTiles.clear();
 	m_activeRobots.clear();
 	
-	auto deallocator = [this](Missile* missile)
+	auto missileDeallocator = [this](Missile* missile)
 	{
 		m_missilePool.free(missile);
 	};
 
-	m_activeMissiles.clear(deallocator);
+	m_activeMissiles.clear(missileDeallocator);
+
+	auto particleEffectDeallocator = [this](ParticleEffect* effect)
+	{
+		m_particleEffectPool.free(effect);
+	};
+
+	m_activeParticleEffect.clear(particleEffectDeallocator);
 }
 
 } // end of namespace bot

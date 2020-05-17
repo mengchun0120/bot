@@ -8,7 +8,7 @@ ShootAbility::ShootAbility(const ShootAbilityTemplate* t)
 	: Ability(t)
 	, m_shootingEnabled(false)
 {
-	m_lastShootTime = ShootClock::now();
+	m_lastShootTime = Clock::now();
 	m_shootDirection[0] = 1.0f;
 	m_shootDirection[1] = 0.0f;
 	m_shootPos[0] = 0.0f;
@@ -17,25 +17,22 @@ ShootAbility::ShootAbility(const ShootAbilityTemplate* t)
 
 void ShootAbility::setShootTime()
 {
-	m_lastShootTime = ShootClock::now();
+	m_lastShootTime = Clock::now();
 }
 
 bool ShootAbility::canShoot() const
 {
-	using namespace std::chrono;
-
 	if (!m_shootingEnabled)
 	{
 		return false;
 	}
 
-	ShootTime curTime = ShootClock::now();
-	milliseconds dur = duration_cast<milliseconds>(curTime - m_lastShootTime);
-	if (static_cast<float>(dur.count()) >= getTemplate()->getShootInterval())
+	if (elapsedTimeMs(m_lastShootTime) >= getTemplate()->getShootInterval())
 	{
 		return true;
 	}
-	return false;
+
+    return false;
 }
 
 void ShootAbility::shiftShootPos(float deltaX, float deltaY)

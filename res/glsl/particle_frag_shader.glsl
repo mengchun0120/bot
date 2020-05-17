@@ -6,16 +6,23 @@ precision mediump float;
 
 uniform bool useTex;
 uniform sampler2D texture;
+uniform vec4 color;
 
-varying vec4 vColor;
 varying float alpha;
 
 void main()
 {
-    vec4 tmpColor = vec4(vColor.rgb, vColor.a * alpha);
-	if(!useTex) {
-        gl_FragColor = tmpColor;
-    } else {
-        gl_FragColor = texture2D(texture, gl_PointCoord) * tmpColor;
+    if (alpha <= 0.0)
+    {
+        discard;
+    }
+    else
+    {
+        vec4 tmpColor = vec4(color.rgb, alpha);
+        if(!useTex) {
+            gl_FragColor = tmpColor;
+        } else {
+            gl_FragColor = texture2D(texture, gl_PointCoord) * tmpColor;
+        }
     }
 }

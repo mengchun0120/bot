@@ -28,18 +28,18 @@ GameMap::GameMap()
 
 GameMap::~GameMap()
 {
-	clear();
+    clear();
 }
 
 void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize, float viewportWidth, float viewportHeight)
 {
-	m_gameObjItemPool.init(gameObjPoolSize);
+    m_gameObjItemPool.init(gameObjPoolSize);
 
-	m_map.resize(numRows);
-	for (int r = 0; r < numRows; ++r)
-	{
-		m_map[r].resize(numCols);
-	}
+    m_map.resize(numRows);
+    for (int r = 0; r < numRows; ++r)
+    {
+        m_map[r].resize(numCols);
+    }
 
     m_mapWidth = numCols * GRID_BREATH;
     m_mapHeight = numRows * GRID_BREATH;
@@ -53,17 +53,17 @@ void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize, float viewp
 
 void GameMap::clear()
 {
-	int numRows = getNumRows();
-	int numCols = getNumCols();
+    int numRows = getNumRows();
+    int numCols = getNumCols();
 
-	for (int r = 0; r < numRows; ++r)
-	{
-		std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
-		for (int c = 0; c < numCols; ++c)
-		{
+    for (int r = 0; r < numRows; ++r)
+    {
+        std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
+        for (int c = 0; c < numCols; ++c)
+        {
             freeGameObjList(row[c]);
-		}
-	}
+        }
+    }
 }
 
 bool GameMap::getMapPosForGameObj(int& startRow, int& endRow, int& startCol, int& endCol, GameObject* obj) const

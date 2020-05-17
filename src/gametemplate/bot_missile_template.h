@@ -7,7 +7,7 @@ namespace bot {
 
 class Texture;
 class Rectangle;
-class AnimationTemplate;
+class ParticleEffectTemplate;
 class Color;
 
 class MissileTemplate : public GameObjectTemplate {
@@ -47,12 +47,12 @@ public:
 		m_explosionBreath = explosionBreath;
 	}
 
-	const AnimationTemplate* getExplosionTemplate() const
+	const ParticleEffectTemplate* getExplosionTemplate() const
 	{
 		return m_explosionTemplate;
 	}
 
-	void setExplosionTemplate(const AnimationTemplate* explosionTemplate)
+	void setExplosionTemplate(const ParticleEffectTemplate* explosionTemplate)
 	{
 		m_explosionTemplate = explosionTemplate;
 	}
@@ -94,7 +94,7 @@ protected:
 	const Texture* m_texture;
 	const Rectangle* m_rect;
 	const Color* m_color;
-	const AnimationTemplate* m_explosionTemplate;
+	const ParticleEffectTemplate* m_explosionTemplate;
 };
 
 } // end of namespace bot

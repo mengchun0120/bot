@@ -66,6 +66,9 @@
     <Filter Include="Resource Files\texture">
       <UniqueIdentifier>{9e51b017-3011-4a2d-a1c7-dad34e590b62}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\ai">
+      <UniqueIdentifier>{edadfa7f-f32b-4292-ae80-b6008408ae32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bot_main.cpp">
@@ -224,6 +227,15 @@
     <ClCompile Include="src\opengl\bot_particle_shader_program.cpp">
       <Filter>Source Files\opengl</Filter>
     </ClCompile>
+    <ClCompile Include="src\gametemplate\bot_particle_effect_template_parser.cpp">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gametemplate\bot_particle_effect_template.cpp">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_particle_effect.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -282,6 +294,15 @@
     </None>
     <None Include="res\glsl\particle_frag_shader.glsl">
       <Filter>Resource Files\glsl</Filter>
+    </None>
+    <None Include="tools\GenerateParticleEffect.java">
+      <Filter>tools</Filter>
+    </None>
+    <None Include="res\lib\particle_effect_template_lib.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="tools\gen_particle.sh">
+      <Filter>tools</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -810,6 +831,21 @@
     </ClInclude>
     <ClInclude Include="src\opengl\bot_particle_shader_program.h">
       <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gametemplate\bot_particle_effect_template_parser.h">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gametemplate\bot_particle_effect_template.h">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_particle_effect.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ai\bot_simple_ai.h">
+      <Filter>Source Files\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\bot_time_utils.h">
+      <Filter>Source Files\misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

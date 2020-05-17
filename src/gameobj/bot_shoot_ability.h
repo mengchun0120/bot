@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BOT_SHOOT_ABILITY
 #define INCLUDE_BOT_SHOOT_ABILITY
 
-#include <chrono>
+#include "misc/bot_time_utils.h"
 #include "gametemplate/bot_shoot_ability_template.h"
 #include "gameobj/bot_ability.h"
 
@@ -11,9 +11,6 @@ class MissileTemplate;
 
 class ShootAbility : public Ability {
 public:
-    typedef std::chrono::high_resolution_clock ShootClock;
-    typedef ShootClock::time_point ShootTime;
-
     ShootAbility(const ShootAbilityTemplate* t);
 
     virtual ~ShootAbility()
@@ -63,7 +60,7 @@ public:
     void setShootPosDirection(float referenceX, float referenceY, float directionX, float directionY);
 
 protected:
-    ShootTime m_lastShootTime;
+    TimePoint m_lastShootTime;
     float m_shootingEnabled;
     float m_shootDirection[Constants::NUM_FLOATS_PER_POSITION];
     float m_shootPos[Constants::NUM_FLOATS_PER_POSITION];

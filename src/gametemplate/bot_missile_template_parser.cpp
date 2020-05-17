@@ -18,7 +18,7 @@ bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidj
 	std::string textureName;
 	std::string rectName;
 	std::string colorName;
-	std::string explosionAnimation;
+	std::string explosionEffectName;
 
 	std::vector<JsonParseParam> params =
 	{
@@ -32,7 +32,7 @@ bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidj
 		{&textureName,        "texture",            JSONTYPE_STRING},
 		{&rectName,           "rect",               JSONTYPE_STRING},
 		{&colorName,          "color",              JSONTYPE_STRING},
-		{&explosionAnimation, "explosionAnimation", JSONTYPE_STRING}
+		{&explosionEffectName, "explosionEffect",   JSONTYPE_STRING}
 	};
 
 	if (!parseJson(params, elem)) 
@@ -78,17 +78,14 @@ bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidj
 
 	missileTemplate->setColor(color);
 
-	/*
-	const AnimationTemplate* explosionTemplate = m_animationTemplateLib.getObjectByName(explosionAnimation.c_str());
-
-	if (!explosionTemplate) 
+	const ParticleEffectTemplate* explosionTemplate =  m_particleEffectTemplateLib.getObject(explosionEffectName.c_str());
+	if (!explosionTemplate)
 	{
-		LOG_ERROR("Couldn't find animation %s", explosionAnimation.c_str());
+		LOG_ERROR("Couldn't find particle effect %s", explosionEffectName.c_str());
 		return false;
 	}
 
 	missileTemplate->setExplosionTemplate(explosionTemplate);
-	*/
 
 	return true;
 }

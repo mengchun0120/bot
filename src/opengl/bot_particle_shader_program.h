@@ -26,6 +26,11 @@ public:
         glUniform2fv(m_viewportOriginLocation, 1, viewportOrigin);
     }
 
+    void setRef(const float* ref)
+    {
+        glUniform2fv(m_refLocation, 1, ref);
+    }
+
     void setCurTime(float curTime)
     {
         glUniform1f(m_curTimeLocation, curTime);
@@ -46,27 +51,35 @@ public:
         glUniform1i(m_useTexLocation, useTex ? 1 : 0);
     }
 
+    void setColor(const float* color)
+    {
+        glUniform4fv(m_colorLocation, 1, color);
+    }
+
+    void setInitSpeed(float speed)
+    {
+        glUniform1f(m_initSpeedLocation, speed);
+    }
+
     void setTexture(int textureId);
 
-    void bindData(VertexArray& va);
+    void bindData(const VertexArray& va);
 
 protected:
     void loadParam();
 
     int m_viewportSizeLocation;
     int m_viewportOriginLocation;
+    int m_refLocation;
     int m_curTimeLocation;
     int m_accelerationLocation;
+    int m_initSpeedLocation;
     int m_particleSizeLocation;
     int m_useTexLocation;
     int m_textureLocation;
-    int m_positionLocation;
     int m_colorLocation;
     int m_directionLocation;
-    int m_initSpeedLocation;
-    int m_startTimeLocation;
 };
-
 
 } // end of namespace bot
 

@@ -75,7 +75,7 @@ int validateJson(const rapidjson::Value& value, const char* name, JsonDataType t
 			return 0;
 		}
 
-		ValidateFunc func2 = validateFunc[type - JSONTYPE_INT];
+		ValidateFunc func2 = validateFunc[type - JSONTYPE_INT_ARRAY];
 		int arraySize = elem.Capacity();
 
 		for (int i = 0; i < arraySize; ++i) 

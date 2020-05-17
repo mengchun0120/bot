@@ -97,6 +97,12 @@ void Missile::explode(GameScreen& gameScreen)
 	GameMap& map = gameScreen.getMap();
 	GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
 
+	ParticleEffect* explosion = gameObjManager.createParticleEffect(t->getExplosionTemplate(), getPosX(), getPosY());
+	if (!map.addObject(explosion))
+	{
+		gameObjManager.sendToDeathQueue(explosion);
+	}
+
 	int startRow, endRow, startCol, endCol;
 	float left = m_pos[0] - t->getExplosionBreath();
 	float right = m_pos[0] + t->getExplosionBreath();

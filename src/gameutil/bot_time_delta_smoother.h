@@ -2,14 +2,12 @@
 #define INCLUDE_BOT_TIME_DELTA_SMOOTHER
 
 #include <vector>
-#include <chrono>
+#include "misc/bot_time_utils.h"
 
 namespace bot {
 
 class TimeDeltaSmoother {
 public:
-    typedef std::chrono::high_resolution_clock::time_point TimePoint;
-
     TimeDeltaSmoother();
 
     virtual ~TimeDeltaSmoother();

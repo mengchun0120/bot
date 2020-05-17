@@ -6,7 +6,7 @@
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
-#include "gametemplate/bot_animation_template.h"
+#include "gametemplate/bot_particle_effect_template.h"
 
 namespace bot {
 
@@ -17,11 +17,11 @@ public:
 	MissileTemplateParser(const NamedLib<Texture>& textureLib, 
 					      const NamedLib<Rectangle>& rectLib,
 						  const NamedLib<Color>& colorLib,
-		                  const NamedLib<AnimationTemplate>& animationTemplateLib)
+		                  const NamedLib<ParticleEffectTemplate>& particleEffectTemplateLib)
 		: m_textureLib(textureLib)
 		, m_rectLib(rectLib)
 		, m_colorLib(colorLib)
-		, m_animationTemplateLib(animationTemplateLib)
+		, m_particleEffectTemplateLib(particleEffectTemplateLib)
 	{}
 
 	~MissileTemplateParser()
@@ -33,7 +33,7 @@ private:
 	const NamedLib<Texture>& m_textureLib;
 	const NamedLib<Rectangle>& m_rectLib;
 	const NamedLib<Color>& m_colorLib;
-	const NamedLib<AnimationTemplate>& m_animationTemplateLib;
+	const NamedLib<ParticleEffectTemplate>& m_particleEffectTemplateLib;
 };
 
 } // end of namespace bot

@@ -68,15 +68,22 @@ int GameScreen::update(float delta)
     Player* player = m_map.getPlayer();
     if (player)
     {
-        if (!player->update(delta, *this)) {
-            LOG_INFO("player is DEAD");
-            m_state = GAME_STATE_END;
-        }
+        player->update(delta, *this);
+        player->setFlag(GAME_OBJ_FLAG_UPDATED);
     }
 
     m_map.updateViewport();
     updateMissiles(delta);
     updateRobots(delta);
+    updateEffects(delta);
+
+    if (player && player->testFlag(GAME_OBJ_FLAG_DEAD))
+    {
+        LOG_INFO("Game end");
+        m_state = GAME_STATE_END;
+        m_map.setPlayer(nullptr);
+    }
+
     clearDeadObjects();
 
     return 0;
@@ -124,6 +131,8 @@ void GameScreen::present()
             }
         }
     }
+
+    presentEffects();
 }
 
 int GameScreen::processInput(const InputEvent& e)
@@ -148,8 +157,6 @@ bool GameScreen::updateRobots(float delta)
 
     m_map.getViewportRegion(startRow, endRow, startCol, endCol);
     m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_UPDATED);
-
-    LOG_INFO("sr=%d er=%d sc=%d ec=%d", startRow, endRow, startCol, endCol);
 
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -190,6 +197,32 @@ bool GameScreen::updateMissiles(float delta)
     }
 
     return true;
+}
+
+void GameScreen::updateEffects(float delta)
+{
+    ParticleEffect* next = nullptr, * effect;
+    for (effect = m_gameObjManager.getFirstParticleEffect(); effect; effect = next)
+    {
+        next = static_cast<ParticleEffect*>(effect->getNext());
+        effect->update(delta, *this);
+    }
+}
+
+void GameScreen::presentEffects()
+{
+    ParticleShaderProgram& program = m_app->getParticleShaderProgram();
+
+    program.use();
+    program.setViewportSize(m_app->getViewportSize());
+    program.setViewportOrigin(m_map.getViewportPos());
+
+    ParticleEffect* effect, * next;
+    for (effect = m_gameObjManager.getFirstParticleEffect(); effect; effect = next)
+    {
+        next = static_cast<ParticleEffect*>(effect->getNext());
+        effect->present(program);
+    }
 }
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)

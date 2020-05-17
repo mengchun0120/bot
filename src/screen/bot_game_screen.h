@@ -54,6 +54,10 @@ private:
 
     bool updateMissiles(float delta);
 
+    void updateEffects(float delta);
+
+    void presentEffects();
+
     void clearDeadObjects();
 
     int handleMouseMove(const MouseMoveEvent& e);

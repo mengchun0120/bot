@@ -22,6 +22,7 @@
 	"animationTemplateLib": "animation_template_lib.json",
 	"missileTemplateLib": "missile_template_lib.json",
 	"robotTemplateLib": "robot_template_lib.json",
+	"particleEffectTemplateLib": "particle_effect_template_lib.json",
 	"playerTemplateLib": "player_lib.json",
 	"mapFile": "map_01.json",
 	"mapPoolFactor": 2.0,

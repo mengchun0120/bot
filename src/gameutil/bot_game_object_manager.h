@@ -4,6 +4,7 @@
 #include "structure/bot_double_linked_list.h"
 #include "structure/bot_object_pool.h"
 #include "gameobj/bot_missile.h"
+#include "gameobj/bot_particle_effect.h"
 #include "gameobj/bot_side.h"
 
 namespace bot {
@@ -69,6 +70,18 @@ public:
 		return m_activeMissiles.getFirst();
 	}
 
+	ParticleEffect* createParticleEffect(const ParticleEffectTemplate* t, float x, float y);
+
+	ParticleEffect* getFirstParticleEffect()
+	{
+		return m_activeParticleEffect.getFirst();
+	}
+
+	const ParticleEffect* getFirstParticleEffect() const
+	{
+		return m_activeParticleEffect.getFirst();
+	}
+
 	GameObject* getFirstDeadObject()
 	{
 		return m_deadObjects.getFirst();
@@ -90,9 +103,11 @@ public:
 protected:
 	const GameTemplateLib& m_gameLib;
 	ObjectPool<Missile> m_missilePool;
+	ObjectPool<ParticleEffect> m_particleEffectPool;
 	DoubleLinkedList<Robot> m_activeRobots;
 	DoubleLinkedList<Tile> m_activeTiles;
 	DoubleLinkedList<Missile> m_activeMissiles;
+	DoubleLinkedList<ParticleEffect> m_activeParticleEffect;
 	DoubleLinkedList<GameObject> m_deadObjects;
 };
 
