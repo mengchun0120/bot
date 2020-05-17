@@ -1,0 +1,1 @@
+java GenerateParticleEffect --numParticles 10 --speed 0.06 --acceleration 1e-4 --output particles.txt
