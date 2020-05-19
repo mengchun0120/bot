@@ -1,14 +1,12 @@
 #ifndef INCLUDE_BOT_ACTION
 #define INCLUDE_BOT_ACTION
 
-#include "structure/bot_linkeditem.h"
-
 namespace bot {
 
-class Action : public LinkedItem {
-public:
-
-private:
+enum Action {
+    ACTION_CHASE,
+    ACTION_SHOOT,
+    ACTION_NONE
 };
 
 } // end of namespace bot

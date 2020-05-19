@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ai\bot_chase_shoot_ai.cpp" />
     <ClCompile Include="src\app\bot_app.cpp" />
     <ClCompile Include="src\bot_main.cpp" />
     <ClCompile Include="src\gameobj\bot_game_object.cpp" />
@@ -333,9 +334,11 @@
     <Text Include="res\map\map_01.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ai\bot_simple_ai.h" />
+    <ClInclude Include="src\ai\bot_ai.h" />
+    <ClInclude Include="src\ai\bot_chase_shoot_ai.h" />
     <ClInclude Include="src\app\bot_app.h" />
     <ClInclude Include="src\gameobj\bot_ability.h" />
+    <ClInclude Include="src\gameobj\bot_action.h" />
     <ClInclude Include="src\gameobj\bot_game_object.h" />
     <ClInclude Include="src\gameobj\bot_game_object_flag.h" />
     <ClInclude Include="src\gameobj\bot_game_object_type.h" />

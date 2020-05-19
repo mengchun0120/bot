@@ -49,6 +49,11 @@ public:
         return m_gameObjManager;
     }
 
+    GameState getGameState() const
+    {
+        return m_state;
+    }
+
 private:
     bool updateRobots(float delta);
 

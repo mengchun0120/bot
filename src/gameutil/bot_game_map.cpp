@@ -339,13 +339,16 @@ void GameMap::getCollideRegion(int& startRow, int& endRow, int& startCol, int& e
     endCol = clamp(endCol, 0, getNumCols() - 1);
 }
 
-bool GameMap::checkCollision(float& newDelta, LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
+bool GameMap::checkCollision(float& newDelta, LinkedList<GameObjectItem>* collideObjs, const Robot* robot,
                              float speedX, float speedY, float delta)
 {
     bool touch = checkTouchBoundary(newDelta, m_mapWidth, m_mapHeight, robot->getPosX(), robot->getPosY(),
                                     robot->getCollideBreathX(), robot->getCollideBreathY(), speedX, speedY, delta);
     bool collide = checkCollideNonPassthrough(newDelta, robot, speedX, speedY, newDelta);
-    checkCollidePassthrough(collideObjs, robot, speedX, speedY, newDelta);
+    if (collideObjs)
+    {
+        checkCollidePassthrough(collideObjs, robot, speedX, speedY, newDelta);
+    }
     return touch || collide;
 }
 
@@ -400,7 +403,7 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
     return collide;
 }
 
-void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
+void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs, const Robot* robot,
                                       float speedX, float speedY, float delta)
 {
     const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
@@ -436,7 +439,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, c
                 {
                     GameObjectItem* item = m_gameObjItemPool.alloc();
                     item->setObj(o);
-                    collideObjs.add(item);
+                    collideObjs->add(item);
                 }
 
                 o->setFlag(GAME_OBJ_FLAG_CHECKED);

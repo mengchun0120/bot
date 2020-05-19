@@ -87,7 +87,7 @@ public:
         return m_player;
     }
 
-    bool checkCollision(float& newDelta, LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
+    bool checkCollision(float& newDelta, LinkedList<GameObjectItem>* collideObjs, const Robot* robot,
                         float speedX, float speedY, float delta);
     
     // Returns RET_CODE_OUT_OF_SIGHT, RET_CODE_COLLIDE and RETCODE_OK
@@ -149,7 +149,7 @@ protected:
     bool checkCollideNonPassthrough(float& newDelta, const Robot* robot, 
                                     float speedX, float speedY, float delta);
 
-    void checkCollidePassthrough(LinkedList<GameObjectItem>& collideObjs, const Robot* robot,
+    void checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs, const Robot* robot,
                                  float speedX, float speedY, float delta);
 
 

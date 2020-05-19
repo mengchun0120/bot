@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_GAME_OBJECT_MANAGER
 #define INCLUDE_BOT_GAME_OBJECT_MANAGER
 
+#include <string>
 #include "structure/bot_double_linked_list.h"
 #include "structure/bot_object_pool.h"
 #include "gameobj/bot_missile.h"

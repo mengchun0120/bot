@@ -1,11 +1,14 @@
 #ifndef INCLUDE_BOT_ROBOT
 #define INCLUDE_BOT_ROBOT
 
+#include "misc/bot_time_utils.h"
 #include "structure/bot_linked_list.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_move_ability.h"
 #include "gameobj/bot_shoot_ability.h"
 #include "gameobj/bot_side.h"
+#include "gameobj/bot_action.h"
+#include "ai/bot_ai.h"
 #include "gameutil/bot_game_object_item.h"
 #include "gametemplate/bot_robot_template.h"
 
@@ -13,6 +16,7 @@ namespace bot {
 
 class RobotTemplate;
 class Ability;
+class AI;
 
 class Robot : public GameObject {
 	struct Component {
@@ -105,6 +109,31 @@ public:
 		m_side = side;
 	}
 
+    void setAI(AI* ai)
+    {
+        m_ai = ai;
+    }
+
+    const TimePoint& getLastChangeActionTime() const
+    {
+        return m_lastChangeActionTime;
+    }
+
+    void setLastThinkTime(const TimePoint& t)
+    {
+        m_lastChangeActionTime = t;
+    }
+
+    Action getCurAction() const
+    {
+        return m_curAction;
+    }
+
+    void setCurAction(Action action)
+    {
+        m_curAction = action;
+    }
+
 private:
 	void initComponents();
 
@@ -122,6 +151,9 @@ protected:
 	float m_direction[Constants::NUM_FLOATS_PER_POSITION];
 	Ability* m_abilities[NUM_OF_ABILITIES];
 	std::vector<Component> m_components;
+    TimePoint m_lastChangeActionTime;
+    Action m_curAction;
+    AI* m_ai;
 };
 
 } // end of namespace bot

@@ -263,7 +263,7 @@ void Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     LinkedList<GameObjectItem> collideObjs;
     GameMap& map = gameScreen.getMap();
 
-    bool collide = map.checkCollision(newDelta, collideObjs, this, speedX, speedY, delta);
+    bool collide = map.checkCollision(newDelta, &collideObjs, this, speedX, speedY, delta);
 
     if (!collideObjs.isEmpty())
     {

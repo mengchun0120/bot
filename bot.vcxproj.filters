@@ -236,6 +236,9 @@
     <ClCompile Include="src\gameobj\bot_particle_effect.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
+    <ClCompile Include="src\ai\bot_chase_shoot_ai.cpp">
+      <Filter>Source Files\ai</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -841,11 +844,17 @@
     <ClInclude Include="src\gameobj\bot_particle_effect.h">
       <Filter>Source Files\gameobj</Filter>
     </ClInclude>
-    <ClInclude Include="src\ai\bot_simple_ai.h">
-      <Filter>Source Files\ai</Filter>
-    </ClInclude>
     <ClInclude Include="src\misc\bot_time_utils.h">
       <Filter>Source Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ai\bot_ai.h">
+      <Filter>Source Files\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_action.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ai\bot_chase_shoot_ai.h">
+      <Filter>Source Files\ai</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
