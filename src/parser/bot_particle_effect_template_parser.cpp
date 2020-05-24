@@ -1,10 +1,10 @@
 #include "misc/bot_json_utils.h"
 #include "gametemplate/bot_particle_effect_template.h"
-#include "gametemplate/bot_particle_effect_template_parser.h"
+#include "parser/bot_particle_effect_template_parser.h"
 
 namespace bot {
 
-bool ParticleEffectTemplateParser::parse(ParticleEffectTemplate* particleEffectTemplate, const rapidjson::Value& elem)
+ParticleEffectTemplate* ParticleEffectTemplateParser::parse(const rapidjson::Value& elem)
 {
     float coverBreathX, coverBreathY;
     float acceleration, initSpeed, duration, particleSize;
@@ -26,13 +26,13 @@ bool ParticleEffectTemplateParser::parse(ParticleEffectTemplate* particleEffectT
 
     if (!parseJson(params, elem))
     {
-        return false;
+        return nullptr;
     }
 
     if (data.size() == 0)
     {
         LOG_ERROR("Particles must NOT be empty");
-        return false;
+        return nullptr;
     }
 
     const int NUM_FLOATS_PER_PARTICLE = Constants::NUM_FLOATS_PER_POSITION;
@@ -40,34 +40,37 @@ bool ParticleEffectTemplateParser::parse(ParticleEffectTemplate* particleEffectT
     if (data.size() % NUM_FLOATS_PER_PARTICLE != 0)
     {
         LOG_ERROR("Length of particles must be multiples of %d", NUM_FLOATS_PER_PARTICLE);
-        return false;
+        return nullptr;
     }
 
     int numParticles = data.size() / NUM_FLOATS_PER_PARTICLE;
 
-    const Texture* texture = m_textureLib.getObject(textureName.c_str());
+    const Texture* texture = m_textureLib.search(textureName);
     if (!texture)
     {
         LOG_ERROR("Cannot find texture %s", textureName.c_str());
-        return false;
+        return nullptr;
     }
 
-    const Color* color = m_colorLib.getObject(colorName.c_str());
+    const Color* color = m_colorLib.search(colorName);
     if (!color)
     {
         LOG_ERROR("Cannot find color %s", colorName.c_str());
-        return false;
+        return nullptr;
     }
+
+    ParticleEffectTemplate* particleEffectTemplate = new ParticleEffectTemplate();
 
     bool success = particleEffectTemplate->init(coverBreathX, coverBreathY, numParticles, acceleration, initSpeed,
                                                 duration, particleSize, data.data(), texture, color);
     if (!success)
     {
         LOG_ERROR("Failed to initilize particle effect template");
-        return false;
+        delete particleEffectTemplate;
+        return nullptr;
     }
 
-    return true;
+    return particleEffectTemplate;
 }
 
 } // end of namespace bot

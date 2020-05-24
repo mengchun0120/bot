@@ -8,14 +8,22 @@ namespace bot {
 template <typename T>
 T clamp(const T& t, const T& min, const T& max)
 {
-    if (t < min) {
+    if (t < min) 
+    {
         return min;
     }
-    else if (t > max) {
+    else if (t > max) 
+    {
         return max;
     }
 
     return t;
+}
+
+template <typename T>
+inline bool between(const T& t, const T& a, const T& b)
+{
+    return (t >= a && t <= b) || (t >= b && t <= a);
 }
 
 inline float safeDivide(float x, float y)

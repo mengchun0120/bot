@@ -1,7 +1,7 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gameobj/bot_tile.h"
-#include "gameobj/bot_robot.h"
+#include "gameobj/bot_ai_robot.h"
 #include "gameobj/bot_player.h"
 #include "gameutil/bot_game_map_loader.h"
 
@@ -146,7 +146,7 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
 
 bool GameMapLoader::addRobot(const std::string& name, float x, float y, float directionX, float directionY)
 {
-	Robot* robot = m_gameObjManager.createRobot(name, x, y, directionX, directionY, SIDE_AI);
+	AIRobot* robot = m_gameObjManager.createRobot(name, x, y, directionX, directionY, SIDE_AI);
 	if (!robot)
 	{
 		return false;

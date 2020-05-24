@@ -1,11 +1,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "geometry/bot_rectangle.h"
-#include "gametemplate/bot_rectangle_parser.h"
+#include "parser/bot_rectangle_parser.h"
 
 namespace bot {
 
-bool RectangleParser::parse(Rectangle* rect, const rapidjson::Value& elem)
+Rectangle* RectangleParser::parse(const rapidjson::Value& elem)
 {
 	float width = 0.0f, height = 0.0f;
 	std::vector<JsonParseParam> params = 
@@ -16,16 +16,19 @@ bool RectangleParser::parse(Rectangle* rect, const rapidjson::Value& elem)
 
 	if (!parseJson(params, elem)) 
 	{
-		return false;
+		return nullptr;
 	}
+
+    Rectangle* rect = new Rectangle();
 
 	if (!rect->init(width, height, true)) 
 	{
 		LOG_ERROR("Failed to initialize rectangle");
-		return false;
+        delete rect;
+		return nullptr;
 	}
 
-	return true;
+	return rect;
 }
 
 } // end of namespace bot

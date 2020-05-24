@@ -40,7 +40,7 @@ void Missile::present(ShaderProgram& program)
 		               nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
 }
 
-bool Missile::update(float delta, GameScreen& screen)
+void Missile::update(float delta, GameScreen& screen)
 {
 	const MissileTemplate* t = getTemplate();
 	GameMap& map = screen.getMap();
@@ -59,18 +59,16 @@ bool Missile::update(float delta, GameScreen& screen)
 	if (RET_CODE_OUT_OF_SIGHT == rc)
 	{
 		gameObjManager.sendToDeathQueue(this);
-		return false;
+        return;
 	}
 
 	if (RET_CODE_COLLIDE == rc)
 	{
 		explode(screen);
-		return false;
+		return;
 	}
 
 	map.repositionObject(this);
-
-	return true;
 }
 
 void Missile::shiftPos(float deltaX, float deltaY)

@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_ROBOT_TEMPLATE_PARSER
 
 #include <rapidjson/document.h>
-#include "structure/bot_named_lib.h"
+#include "structure/bot_named_map.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
@@ -14,10 +14,10 @@ class RobotTemplate;
 
 class RobotTemplateParser {
 public:
-	RobotTemplateParser(const NamedLib<Texture>& textureLib,
-						const NamedLib<Rectangle>& rectLib,
-					    const NamedLib<Color>& colorLib,
-						const NamedLib<MissileTemplate>& missileTemplateLib)
+	RobotTemplateParser(const NamedMap<Texture>& textureLib,
+						const NamedMap<Rectangle>& rectLib,
+					    const NamedMap<Color>& colorLib,
+						const NamedMap<MissileTemplate>& missileTemplateLib)
 		: m_textureLib(textureLib)
 		, m_rectLib(rectLib)
 		, m_colorLib(colorLib)
@@ -39,10 +39,10 @@ private:
 	bool parseShootAbility(RobotTemplate* robotTemplate, const rapidjson::Value& elem);
 
 protected:
-	const NamedLib<Texture>& m_textureLib;
-	const NamedLib<Rectangle>& m_rectLib;
-	const NamedLib<Color>& m_colorLib;
-	const NamedLib<MissileTemplate>& m_missileTemplateLib;
+	const NamedMap<Texture>& m_textureLib;
+	const NamedMap<Rectangle>& m_rectLib;
+	const NamedMap<Color>& m_colorLib;
+	const NamedMap<MissileTemplate>& m_missileTemplateLib;
 };
 
 } // end of namespace bot

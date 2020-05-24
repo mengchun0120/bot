@@ -49,22 +49,19 @@ void ParticleEffect::present(ShaderProgram& program)
     glDrawArrays(GL_POINTS, 0, t->getNumParticles());
 }
 
-bool ParticleEffect::update(float delta, GameScreen& screen)
+void ParticleEffect::update(float delta, GameScreen& screen)
 {
     GameObjectManager& gameObjManager = screen.getGameObjManager();
 
     if (screen.getMap().isOutsideViewport(this)) {
         gameObjManager.sendToDeathQueue(this);
-        return false;
+        return;
     }
 
     if (elapsedTimeMs(m_startTime) >= getTemplate()->getDuration())
     {
         gameObjManager.sendToDeathQueue(this);
-        return false;
     }
-
-    return true;
 }
 
 } // end of namespace bot

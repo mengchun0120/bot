@@ -4,7 +4,9 @@
 #include <string>
 #include <vector>
 #include <rapidjson/document.h>
+#include "misc/bot_log.h"
 #include "misc/bot_json_data_type.h"
+#include "structure/bot_named_map.h"
 
 namespace bot {
 
@@ -64,6 +66,49 @@ bool parseJsonArray(const rapidjson::Value& value, PROCESSOR& processor, const c
 	}
 
 	return true;
+}
+
+template <typename T, typename PARSER>
+bool parseNamedMap(NamedMap<T>& lib, const char* fileName, PARSER& parser)
+{
+    rapidjson::Document doc;
+
+    if (!readJson(doc, fileName))
+    {
+        return false;
+    }
+
+    if (!doc.IsArray())
+    {
+        LOG_ERROR("Invalid format: %s", fileName);
+        return false;
+    }
+
+    const rapidjson::Value& arr = doc.GetArray();
+    int numObjects = arr.Capacity();
+
+    for (int i = 0; i < numObjects; ++i)
+    {
+        const rapidjson::Value& elem = arr[i];
+        std::string name;
+
+        if (!parseJson(name, elem, "name"))
+        {
+            LOG_ERROR("Failed to find name in the %dth object of %s", i, fileName);
+            return false;
+        }
+
+        T* t = parser.parse(elem);
+        if (!t)
+        {
+            LOG_ERROR("Failed to parse the %dth object of %s", i, fileName);
+            return false;
+        }
+
+        lib.add(name, t);
+    }
+
+    return true;
 }
 
 } // end of namespace bot

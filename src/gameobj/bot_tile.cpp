@@ -30,9 +30,8 @@ void Tile::present(ShaderProgram& program)
 		       nullptr, texture->textureId(), color);
 }
 
-bool Tile::update(float delta, GameScreen& screen)
+void Tile::update(float delta, GameScreen& screen)
 {
-	return true;
 }
 
 bool Tile::addHP(int deltaHP)

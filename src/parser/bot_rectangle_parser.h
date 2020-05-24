@@ -15,7 +15,7 @@ public:
 	~RectangleParser()
 	{}
 
-	bool parse(Rectangle* rect, const rapidjson::Value& elem);
+    Rectangle* parse(const rapidjson::Value& elem);
 };
 
 } // end of namespace bot

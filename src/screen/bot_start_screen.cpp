@@ -30,7 +30,7 @@ StartScreen::~StartScreen()
 
 bool StartScreen::init()
 {
-    const GameTemplateLib& gameLib = m_app->getGameTemplateLib();
+    const GameLib& gameLib = m_app->getGameLib();
         
     m_button = gameLib.getTexture("button");
     if (!m_button)

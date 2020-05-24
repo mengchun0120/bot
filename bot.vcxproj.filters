@@ -69,6 +69,9 @@
     <Filter Include="Source Files\ai">
       <UniqueIdentifier>{edadfa7f-f32b-4292-ae80-b6008408ae32}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\parser">
+      <UniqueIdentifier>{0edd598c-2467-4a31-8955-b361ee26aa96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bot_main.cpp">
@@ -128,19 +131,7 @@
     <ClCompile Include="src\gameobj\bot_shoot_ability.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_animation_template_parser.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_color_parser.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_game_template_lib.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
     <ClCompile Include="src\gametemplate\bot_missile_template.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_missile_template_parser.cpp">
       <Filter>Source Files\gametemplate</Filter>
     </ClCompile>
     <ClCompile Include="src\gametemplate\bot_move_ability_template.cpp">
@@ -149,28 +140,13 @@
     <ClCompile Include="src\gametemplate\bot_player_template.cpp">
       <Filter>Source Files\gametemplate</Filter>
     </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_player_template_parser.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_rectangle_parser.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
     <ClCompile Include="src\gametemplate\bot_robot_template.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_robot_template_parser.cpp">
       <Filter>Source Files\gametemplate</Filter>
     </ClCompile>
     <ClCompile Include="src\gametemplate\bot_shoot_ability_template.cpp">
       <Filter>Source Files\gametemplate</Filter>
     </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_texture_parser.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
     <ClCompile Include="src\gametemplate\bot_tile_template.cpp">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_tile_template_parser.cpp">
       <Filter>Source Files\gametemplate</Filter>
     </ClCompile>
     <ClCompile Include="src\gameutil\bot_game_map.cpp">
@@ -221,14 +197,8 @@
     <ClCompile Include="src\screen\bot_start_screen.cpp">
       <Filter>Source Files\screen</Filter>
     </ClCompile>
-    <ClCompile Include="src\structure\bot_name_id_map.cpp">
-      <Filter>Source Files\structure</Filter>
-    </ClCompile>
     <ClCompile Include="src\opengl\bot_particle_shader_program.cpp">
       <Filter>Source Files\opengl</Filter>
-    </ClCompile>
-    <ClCompile Include="src\gametemplate\bot_particle_effect_template_parser.cpp">
-      <Filter>Source Files\gametemplate</Filter>
     </ClCompile>
     <ClCompile Include="src\gametemplate\bot_particle_effect_template.cpp">
       <Filter>Source Files\gametemplate</Filter>
@@ -238,6 +208,42 @@
     </ClCompile>
     <ClCompile Include="src\ai\bot_chase_shoot_ai.cpp">
       <Filter>Source Files\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_ai_robot.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_ai_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_ai_robot_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_color_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_missile_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_particle_effect_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_player_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_rectangle_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_robot_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_texture_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_tile_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_game_lib.cpp">
+      <Filter>Source Files\gameutil</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,9 +289,6 @@
     <None Include="res\lib\missile_template_lib.json">
       <Filter>Resource Files\lib</Filter>
     </None>
-    <None Include="res\lib\robot_template_lib.json">
-      <Filter>Resource Files\lib</Filter>
-    </None>
     <None Include="res\lib\player_lib.json">
       <Filter>Resource Files\lib</Filter>
     </None>
@@ -306,6 +309,12 @@
     </None>
     <None Include="tools\gen_particle.sh">
       <Filter>tools</Filter>
+    </None>
+    <None Include="res\lib\ai_robot_template_lib.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\ai_lib.json">
+      <Filter>Resource Files\lib</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -703,19 +712,7 @@
     <ClInclude Include="src\gameobj\bot_shoot_ability.h">
       <Filter>Source Files\gameobj</Filter>
     </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_animation_template_parser.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_color_parser.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_game_template_lib.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
     <ClInclude Include="src\gametemplate\bot_missile_template.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_missile_template_parser.h">
       <Filter>Source Files\gametemplate</Filter>
     </ClInclude>
     <ClInclude Include="src\gametemplate\bot_move_ability_template.h">
@@ -724,28 +721,13 @@
     <ClInclude Include="src\gametemplate\bot_player_template.h">
       <Filter>Source Files\gametemplate</Filter>
     </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_player_template_parser.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_rectangle_parser.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
     <ClInclude Include="src\gametemplate\bot_robot_template.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_robot_template_parser.h">
       <Filter>Source Files\gametemplate</Filter>
     </ClInclude>
     <ClInclude Include="src\gametemplate\bot_shoot_ability_template.h">
       <Filter>Source Files\gametemplate</Filter>
     </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_texture_parser.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
     <ClInclude Include="src\gametemplate\bot_tile_template.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_tile_template_parser.h">
       <Filter>Source Files\gametemplate</Filter>
     </ClInclude>
     <ClInclude Include="src\gameutil\bot_game_map.h">
@@ -823,20 +805,11 @@
     <ClInclude Include="src\structure\bot_linked_list.h">
       <Filter>Source Files\structure</Filter>
     </ClInclude>
-    <ClInclude Include="src\structure\bot_named_lib.h">
-      <Filter>Source Files\structure</Filter>
-    </ClInclude>
-    <ClInclude Include="src\structure\bot_name_id_map.h">
-      <Filter>Source Files\structure</Filter>
-    </ClInclude>
     <ClInclude Include="src\structure\bot_object_pool.h">
       <Filter>Source Files\structure</Filter>
     </ClInclude>
     <ClInclude Include="src\opengl\bot_particle_shader_program.h">
       <Filter>Source Files\opengl</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_particle_effect_template_parser.h">
-      <Filter>Source Files\gametemplate</Filter>
     </ClInclude>
     <ClInclude Include="src\gametemplate\bot_particle_effect_template.h">
       <Filter>Source Files\gametemplate</Filter>
@@ -855,6 +828,48 @@
     </ClInclude>
     <ClInclude Include="src\ai\bot_chase_shoot_ai.h">
       <Filter>Source Files\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_ai_robot.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_named_map.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gametemplate\bot_ai_robot_template.h">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_ai_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_ai_robot_template_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_color_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_missile_template_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_particle_effect_template_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_player_template_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_rectangle_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_robot_template_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_texture_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_tile_template_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_game_lib.h">
+      <Filter>Source Files\gameutil</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

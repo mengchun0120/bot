@@ -16,7 +16,7 @@ namespace bot {
 
 GameScreen::GameScreen(App* app)
     : m_app(app)
-    , m_gameObjManager(app->getGameTemplateLib(), app->getMissilePoolSize())
+    , m_gameObjManager(app->getGameLib(), app->getMissilePoolSize())
     , m_state(GAME_STATE_INIT)
 {
 }

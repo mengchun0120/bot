@@ -1,33 +1,52 @@
 #ifndef INCLUDE_BOT_CHASE_SHOOT_AI
 #define INCLUDE_BOT_CHASE_SHOOT_AI
 
+#include <utility>
+#include <random>
+#include "misc/bot_time_utils.h"
+#include "gameobj/bot_action.h"
 #include "ai/bot_ai.h"
 
 namespace bot {
 
 class ChaseShootAI : public AI {
 public:
-    ChaseShootAI(float distToChase, float changeActionIntervalMs)
-        : AI(changeActionIntervalMs)
-        , m_distToChase(distToChase)
-    {}
+    ChaseShootAI(float chaseDurationMs, float shootDurationMs, 
+                 float directionChangeIntervalMs, float chaseProb);
 
     virtual ~ChaseShootAI()
     {}
 
-    virtual void apply(Robot& robot, GameScreen& screen);
+    virtual void apply(Robot& robot, float delta, GameScreen& screen);
 
 protected:
+    bool tryChangeAction(Robot& robot);
+
     void resetAction(Robot& robot, Action action);
 
-    void tryChangeAction(Robot& robot, GameScreen& screen);
+    void applyChaseAction(Robot& robot, float delta, GameScreen& screen);
 
-    void applyChaseAction(Robot& robot, GameScreen& screen);
+    void applyShootAction(Robot& robot, float delta, GameScreen& screen);
 
-    void applyShootAction(Robot& robot, GameScreen& screen);
+    bool resetChaseDirection(Robot& robot, float delta, GameScreen& screen);
+
+    bool tryFirstDirection(Robot& robot, float& directionX, float& directionY, float delta, GameScreen& screen);
+
+    int findNewDirection(Robot& robot, float delta, float refDirectionX, float refDirectionY, GameScreen& screen);
+
+    int sortDirections(int* result, float refDirectionX, float refDirectionY);
+
+    void randomChoose(int* result, int i1, int i2);
 
 protected:
-    
+    float m_chaseDurationMs;
+    float m_directionChangeIntervalMs;
+    float m_shootDurationMs;
+    float m_chaseProb;
+    std::mt19937 m_generator;
+    std::uniform_real_distribution<float> m_distribution;
+    const std::pair<float, float> m_directions[4];
+    const int m_numDirections;
 };
 
 } // end of namespace bot

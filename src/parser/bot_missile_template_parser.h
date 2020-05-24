@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_MISSILE_TEMPLATE_PARSER
 
 #include <rapidjson/document.h>
-#include "structure/bot_named_lib.h"
+#include "structure/bot_named_map.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
@@ -14,10 +14,10 @@ class MissileTemplate;
 
 class MissileTemplateParser {
 public:
-	MissileTemplateParser(const NamedLib<Texture>& textureLib, 
-					      const NamedLib<Rectangle>& rectLib,
-						  const NamedLib<Color>& colorLib,
-		                  const NamedLib<ParticleEffectTemplate>& particleEffectTemplateLib)
+	MissileTemplateParser(const NamedMap<Texture>& textureLib, 
+					      const NamedMap<Rectangle>& rectLib,
+						  const NamedMap<Color>& colorLib,
+		                  const NamedMap<ParticleEffectTemplate>& particleEffectTemplateLib)
 		: m_textureLib(textureLib)
 		, m_rectLib(rectLib)
 		, m_colorLib(colorLib)
@@ -27,13 +27,13 @@ public:
 	~MissileTemplateParser()
 	{}
 
-	bool parse(MissileTemplate* missileTemplate, const rapidjson::Value& elem);
+    MissileTemplate* parse(const rapidjson::Value& elem);
 
 private:
-	const NamedLib<Texture>& m_textureLib;
-	const NamedLib<Rectangle>& m_rectLib;
-	const NamedLib<Color>& m_colorLib;
-	const NamedLib<ParticleEffectTemplate>& m_particleEffectTemplateLib;
+	const NamedMap<Texture>& m_textureLib;
+	const NamedMap<Rectangle>& m_rectLib;
+	const NamedMap<Color>& m_colorLib;
+	const NamedMap<ParticleEffectTemplate>& m_particleEffectTemplateLib;
 };
 
 } // end of namespace bot

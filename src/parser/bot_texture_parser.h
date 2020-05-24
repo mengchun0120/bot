@@ -17,7 +17,7 @@ public:
 	~TextureParser()
 	{}
 
-	bool parse(Texture* texture, const rapidjson::Value& elem);
+    Texture* parse(const rapidjson::Value& elem);
 
 private:
 	std::string m_textureLibDir;

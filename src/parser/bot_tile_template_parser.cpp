@@ -1,11 +1,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gametemplate/bot_tile_template.h"
-#include "gametemplate/bot_tile_template_parser.h"
+#include "parser/bot_tile_template_parser.h"
 
 namespace bot {
 
-bool TileTemplateParser::parse(TileTemplate* tileTemplate, const rapidjson::Value& elem)
+TileTemplate* TileTemplateParser::parse(const rapidjson::Value& elem)
 {
 	std::string textureName, rectName, colorName;
 	float coverBreathX = 0.0f, coverBreathY = 0.0f;
@@ -28,29 +28,31 @@ bool TileTemplateParser::parse(TileTemplate* tileTemplate, const rapidjson::Valu
 	
 	if (!parseJson(params, elem)) 
 	{
-		return false;
+		return nullptr;
 	}
 
-	const Texture* texture = m_textureLib.getObject(textureName.c_str());
+	const Texture* texture = m_textureLib.search(textureName);
 	if (!texture) 
 	{
 		LOG_ERROR("Failed to find texture %s", textureName.c_str());
-		return false;
+		return nullptr;
 	}
 
-	const Rectangle* rect = m_rectLib.getObject(rectName.c_str());
+	const Rectangle* rect = m_rectLib.search(rectName);
 	if (!rect) 
 	{
 		LOG_ERROR("Failed to find rectangle %s", rectName.c_str());
-		return false;
+		return nullptr;
 	}
 
-	const Color* color = m_colorLib.getObject(colorName.c_str());
+	const Color* color = m_colorLib.search(colorName);
 	if (!color)
 	{
 		LOG_ERROR("Failed to find color %s", colorName.c_str());
-		return false;
+		return nullptr;
 	}
+
+    TileTemplate* tileTemplate = new TileTemplate();
 
 	tileTemplate->setCoverBreathX(coverBreathX);
 	tileTemplate->setCoverBreathY(coverBreathY);
@@ -71,7 +73,7 @@ bool TileTemplateParser::parse(TileTemplate* tileTemplate, const rapidjson::Valu
 	tileTemplate->setRect(rect);
 	tileTemplate->setColor(color);
 
-	return true;
+	return tileTemplate;
 }
 
 } // end of namespace bot

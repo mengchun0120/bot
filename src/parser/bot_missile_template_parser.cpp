@@ -2,11 +2,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gametemplate/bot_missile_template.h"
-#include "gametemplate/bot_missile_template_parser.h"
+#include "parser/bot_missile_template_parser.h"
 
 namespace bot {
 
-bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidjson::Value& elem)
+MissileTemplate* MissileTemplateParser::parse(const rapidjson::Value& elem)
 {
 	float coverBreathX = 0.0f;
 	float coverBreathY = 0.0f;
@@ -37,57 +37,52 @@ bool MissileTemplateParser::parse(MissileTemplate* missileTemplate, const rapidj
 
 	if (!parseJson(params, elem)) 
 	{
-		return false;
+		return nullptr;
 	}
-
-	missileTemplate->setCoverBreathX(coverBreathX);
-	missileTemplate->setCoverBreathY(coverBreathY);
-	missileTemplate->setCollideBreathX(collideBreathX);
-	missileTemplate->setCollideBreathY(collideBreathY);
-	missileTemplate->setSpeed(speed);
-	missileTemplate->setExplosionPower(explosionPower);
-	missileTemplate->setExplosionBreath(explosionBreath);
-	
-	const Texture* texture = m_textureLib.getObject(textureName.c_str());
-	
+    	
+	const Texture* texture = m_textureLib.search(textureName);
 	if (!texture)
 	{
 		LOG_ERROR("Couldn't find texture %s", textureName.c_str());
-		return false;
+		return nullptr;
 	}
 
-	missileTemplate->setTexture(texture);
-
-	const Rectangle* rect = m_rectLib.getObject(rectName.c_str());
-
+	const Rectangle* rect = m_rectLib.search(rectName);
 	if (!rect)
 	{
 		LOG_ERROR("Couldn't find rect %s", rectName.c_str());
-		return false;
+		return nullptr;
 	}
 
-	missileTemplate->setRect(rect);
-
-	const Color* color = m_colorLib.getObject(colorName.c_str());
-
+	const Color* color = m_colorLib.search(colorName);
 	if (!color)
 	{
 		LOG_ERROR("Coundn't find color %s", colorName.c_str());
-		return false;
+		return nullptr;
 	}
 
-	missileTemplate->setColor(color);
-
-	const ParticleEffectTemplate* explosionTemplate =  m_particleEffectTemplateLib.getObject(explosionEffectName.c_str());
+	const ParticleEffectTemplate* explosionTemplate =  m_particleEffectTemplateLib.search(explosionEffectName);
 	if (!explosionTemplate)
 	{
 		LOG_ERROR("Couldn't find particle effect %s", explosionEffectName.c_str());
-		return false;
+		return nullptr;
 	}
 
+    MissileTemplate* missileTemplate = new MissileTemplate();
+
+    missileTemplate->setCoverBreathX(coverBreathX);
+    missileTemplate->setCoverBreathY(coverBreathY);
+    missileTemplate->setCollideBreathX(collideBreathX);
+    missileTemplate->setCollideBreathY(collideBreathY);
+    missileTemplate->setSpeed(speed);
+    missileTemplate->setTexture(texture);
+    missileTemplate->setColor(color);
+    missileTemplate->setRect(rect);
+    missileTemplate->setExplosionPower(explosionPower);
+    missileTemplate->setExplosionBreath(explosionBreath);
 	missileTemplate->setExplosionTemplate(explosionTemplate);
 
-	return true;
+	return missileTemplate;
 }
 
 } // end of namespace bot

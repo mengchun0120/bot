@@ -19,14 +19,16 @@ void Player::present(ShaderProgram& program)
 	Robot::present(program);
 }
 
-bool Player::update(float delta, GameScreen& screen)
+void Player::update(float delta, GameScreen& screen)
 {
-	if (!Robot::update(delta, screen))
-	{
-		return false;
-	}
+    updateMoveAbility(delta, screen);
 
-	return true;
+    if (testFlag(GAME_OBJ_FLAG_DEAD))
+    {
+        return;
+    }
+
+    updateShootAbility(screen);
 }
 
 } // end of namespace bot

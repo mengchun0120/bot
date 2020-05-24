@@ -1,11 +1,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "opengl/bot_color.h"
-#include "gametemplate/bot_color_parser.h"
+#include "parser/bot_color_parser.h"
 
 namespace bot {
 
-bool ColorParser::parse(Color* color, const rapidjson::Value& elem)
+Color* ColorParser::parse(const rapidjson::Value& elem)
 {
 	int red = 0, green = 0, blue = 0, alpha = 0;
 	std::vector<JsonParseParam> params =
@@ -18,16 +18,18 @@ bool ColorParser::parse(Color* color, const rapidjson::Value& elem)
 
 	if (!parseJson(params, elem)) 
 	{
-		return false;
+		return nullptr;
 	}
 
+    Color* color = new Color();
 	if (!color->setColor(red, green, blue, alpha)) 
 	{
 		LOG_ERROR("Failed to set color");
-		return false;
+        delete color;
+		return nullptr;
 	}
 
-	return true;
+	return color;
 }
 
 } // end of namespace bot

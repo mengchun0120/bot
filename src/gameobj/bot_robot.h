@@ -30,8 +30,6 @@ public:
 
     virtual void present(ShaderProgram& program);
 
-    virtual bool update(float delta, GameScreen& screen);
-
 	void shiftPos(float deltaX, float deltaY);
 
 	void setPos(float x, float y);
@@ -109,19 +107,14 @@ public:
 		m_side = side;
 	}
 
-    void setAI(AI* ai)
-    {
-        m_ai = ai;
-    }
-
     const TimePoint& getLastChangeActionTime() const
     {
         return m_lastChangeActionTime;
     }
 
-    void setLastThinkTime(const TimePoint& t)
+    const TimePoint& getLastChangeDirectionTime() const
     {
-        m_lastChangeActionTime = t;
+        return m_lastChangeDirectionTime;
     }
 
     Action getCurAction() const
@@ -129,21 +122,18 @@ public:
         return m_curAction;
     }
 
-    void setCurAction(Action action)
-    {
-        m_curAction = action;
-    }
+    void setCurAction(Action action);
+
+    virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
+
+    virtual void updateShootAbility(GameScreen& gameScreen);
 
 private:
 	void initComponents();
 
 	void initAbilities();
 
-	virtual void updateMoveAbility(float delta, GameScreen& gameScreen);
-
-	virtual void updateShootAbility(GameScreen& gameScreen);
-
-	void processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
+    void processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
 
 protected:
 	int m_hp;
@@ -152,8 +142,8 @@ protected:
 	Ability* m_abilities[NUM_OF_ABILITIES];
 	std::vector<Component> m_components;
     TimePoint m_lastChangeActionTime;
+    TimePoint m_lastChangeDirectionTime;
     Action m_curAction;
-    AI* m_ai;
 };
 
 } // end of namespace bot

@@ -10,18 +10,18 @@
 
 namespace bot {
 
-class GameTemplateLib;
+class GameLib;
 class GameObject;
 class Tile;
-class Robot;
 class Player;
 class TileTemplate;
 class MissileTemplate;
-class RobotTemplate;
+class AIRobotTemplate;
+class AIRobot;
 
 class GameObjectManager {
 public:
-	GameObjectManager(const GameTemplateLib& gameLib, int missilePoolSize);
+	GameObjectManager(const GameLib& gameLib, int missilePoolSize);
 
 	~GameObjectManager();
 
@@ -39,21 +39,11 @@ public:
 		return m_activeTiles.getFirst();
 	}
 
-	Robot* createRobot(const std::string& robotName, float x, float y, 
-		               float directionX, float directionY, Side side);
+	AIRobot* createRobot(const std::string& robotName, float x, float y, 
+		                 float directionX, float directionY, Side side);
 
-	Robot* createRobot(const RobotTemplate* robotTemplate, float x, float y, 
-		               float directionX, float directionY, Side side);
-
-	Robot* getFirstActiveRobot()
-	{
-		return m_activeRobots.getFirst();
-	}
-
-	const Robot* getFirstActiveRobot() const
-	{
-		return m_activeRobots.getFirst();
-	}
+	AIRobot* createRobot(const AIRobotTemplate* aiRobotTemplate, float x, float y, 
+		                 float directionX, float directionY, Side side);
 
 	Missile* createMissile(const std::string& missileName, Robot* shooter, float x, float y,
 		                   float directionX, float directionY, Side side);
@@ -102,7 +92,7 @@ public:
 	void clearActiveObjects();
 
 protected:
-	const GameTemplateLib& m_gameLib;
+	const GameLib& m_gameLib;
 	ObjectPool<Missile> m_missilePool;
 	ObjectPool<ParticleEffect> m_particleEffectPool;
 	DoubleLinkedList<Robot> m_activeRobots;

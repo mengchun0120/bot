@@ -1,7 +1,6 @@
 #ifndef INCLUDE_BOT_MOVE_ABILITY
 #define INCLUDE_BOT_MOVE_ABILITY
 
-#include "misc/bot_time_utils.h"
 #include "gametemplate/bot_move_ability_template.h"
 #include "gameobj/bot_ability.h"
 
@@ -33,19 +32,8 @@ public:
         m_moving = moving;
     }
 
-    const TimePoint& getLastDirectionChangeTime() const
-    {
-        return m_lastDirectionChangeTime;
-    }
-
-    void setLastDirectionChangeTime(const TimePoint& t)
-    {
-        m_lastDirectionChangeTime = t;
-    }
-
 protected:
     bool m_moving;
-    TimePoint m_lastDirectionChangeTime;
 };
 
 

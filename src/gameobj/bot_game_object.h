@@ -26,7 +26,7 @@ public:
 
     virtual void present(ShaderProgram& program) = 0;
 
-    virtual bool update(float delta, GameScreen& screen) = 0;
+    virtual void update(float delta, GameScreen& screen) = 0;
 
     float getPosX() const
     {

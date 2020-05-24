@@ -19,7 +19,7 @@ public:
 
 	virtual void present(ShaderProgram& program);
 
-	virtual bool update(float delta, GameScreen& screen);
+	virtual void update(float delta, GameScreen& screen);
 
 	void setTemplate(const MissileTemplate* t)
 	{

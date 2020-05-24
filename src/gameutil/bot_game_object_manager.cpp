@@ -1,13 +1,13 @@
 #include "misc/bot_log.h"
-#include "gametemplate/bot_game_template_lib.h"
+#include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_tile.h"
-#include "gameobj/bot_robot.h"
+#include "gameobj/bot_ai_robot.h"
 #include "gameobj/bot_player.h"
 #include "gameutil/bot_game_object_manager.h"
 
 namespace bot {
 
-GameObjectManager::GameObjectManager(const GameTemplateLib& gameLib, int missilePoolSize)
+GameObjectManager::GameObjectManager(const GameLib& gameLib, int missilePoolSize)
 	: m_gameLib(gameLib)
 	, m_missilePool(missilePoolSize)
 {
@@ -40,23 +40,23 @@ Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate)
 	return tile;
 }
 
-Robot* GameObjectManager::createRobot(const std::string& robotName, float x, float y,
-						              float directionX, float directionY, Side side)
+AIRobot* GameObjectManager::createRobot(const std::string& robotName, float x, float y,
+						                float directionX, float directionY, Side side)
 {
-	const RobotTemplate* robotTemplate = m_gameLib.getRobotTemplate(robotName);
-	if (!robotTemplate)
+	const AIRobotTemplate* aiRobotTemplate = m_gameLib.getAIRobotTemplate(robotName);
+	if (!aiRobotTemplate)
 	{
-		LOG_ERROR("Failed to find robot template %s", robotName.c_str());
+		LOG_ERROR("Failed to find ai-robot template %s", robotName.c_str());
 		return nullptr;
 	}
 
-	return createRobot(robotTemplate, x, y, directionX, directionY, side);
+	return createRobot(aiRobotTemplate, x, y, directionX, directionY, side);
 }
 
-Robot* GameObjectManager::createRobot(const RobotTemplate* robotTemplate, float x, float y,
-								      float directionX, float directionY, Side side)
+AIRobot* GameObjectManager::createRobot(const AIRobotTemplate* aiRobotTemplate, float x, float y,
+								        float directionX, float directionY, Side side)
 {
-	Robot* robot = new Robot(robotTemplate);
+	AIRobot* robot = new AIRobot(aiRobotTemplate);
 	robot->setPos(x, y);
 	robot->setDirection(directionX, directionY);
 	robot->setSide(side);
@@ -108,7 +108,7 @@ Player* GameObjectManager::createPlayer(float x, float y, float directionX, floa
 	player->setPos(x, y);
 	player->setDirection(directionX, directionY);
 	player->setSide(SIDE_PLAYER);
-	m_activeRobots.add(player);
+    m_activeRobots.add(player);
 	return player;
 }
 

@@ -8,17 +8,13 @@ class GameScreen;
 
 class AI {
 public:
-    AI(float changeActionIntervalMs)
-        : m_changeActionIntervalMs(changeActionIntervalMs)
+    AI()
     {}
 
     virtual ~AI()
     {}
 
-    virtual void apply(Robot& robot, GameScreen& screen) = 0;
-
-protected:
-    float m_changeActionIntervalMs;
+    virtual void apply(Robot& robot, float delta, GameScreen& screen) = 0;
 };
 
 } // end of namespace bot

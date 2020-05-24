@@ -15,7 +15,7 @@ public:
 	~ColorParser()
 	{}
 
-	bool parse(Color* color, const rapidjson::Value& elem);
+    Color* parse(const rapidjson::Value& elem);
 };
 
 } // end of namespace bot

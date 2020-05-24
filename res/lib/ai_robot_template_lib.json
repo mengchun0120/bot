@@ -30,7 +30,8 @@
     "shootPosX": 10.0,
     "shootPosY": 0.0,
     "shootComponentIdx": 1,
-    "missile": "blue_bullet"
+    "missile": "blue_bullet",
+    "ai": "steady_shooter"
   },
   {
     "name": "red_robot",
@@ -63,6 +64,7 @@
     "shootPosX": 10.0,
     "shootPosY": 0.0,
     "shootComponentIdx": 1,
-    "missile": "red_bullet"
+    "missile": "red_bullet",
+    "ai": "rush_chaser"
   }
 ]

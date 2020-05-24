@@ -1,7 +1,7 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gametemplate/bot_robot_template.h"
-#include "gametemplate/bot_robot_template_parser.h"
+#include "parser/bot_robot_template_parser.h"
 
 namespace bot {
 
@@ -95,21 +95,21 @@ bool RobotTemplateParser::parseComponents(RobotTemplate* robotTemplate, const ra
 			return false;
 		}
 
-		const Texture* texture = m_textureLib.getObject(textureName.c_str());
+		const Texture* texture = m_textureLib.search(textureName);
 		if (!texture)
 		{
 			LOG_ERROR("Failed to find texture %s", textureName.c_str());
 			return false;
 		}
 
-		const Rectangle* rect = m_rectLib.getObject(rectName.c_str());
+		const Rectangle* rect = m_rectLib.search(rectName);
 		if (!rect)
 		{
 			LOG_ERROR("Failed to find rect %s", rectName.c_str());
 			return false;
 		}
 
-		const Color* color = m_colorLib.getObject(colorName.c_str());
+		const Color* color = m_colorLib.search(colorName);
 		if (!color)
 		{
 			LOG_ERROR("Failed to find color %s", colorName.c_str());
@@ -194,7 +194,7 @@ bool RobotTemplateParser::parseShootAbility(RobotTemplate* robotTemplate, const 
 		return false;
 	}
 
-	const MissileTemplate* missile = m_missileTemplateLib.getObject(missileName.c_str());
+	const MissileTemplate* missile = m_missileTemplateLib.search(missileName);
 	if (!missile)
 	{
 		LOG_ERROR("Couldn't find missile %s", missileName.c_str());

@@ -86,20 +86,6 @@ void Robot::present(ShaderProgram& program)
     }
 }
 
-bool Robot::update(float delta, GameScreen& screen)
-{
-    updateMoveAbility(delta, screen);
-
-    if (testFlag(GAME_OBJ_FLAG_DEAD))
-    {
-        return false;
-    }
-
-    updateShootAbility(screen);
-
-    return true;
-}
-
 void Robot::shiftPos(float deltaX, float deltaY)
 {
     m_pos[0] += deltaX;
@@ -148,6 +134,8 @@ void Robot::setDirection(float directionX, float directionY)
         Component* c = getComponentForShootAbility();
         shootAbility->setShootPosDirection(c->m_pos[0], c->m_pos[1], directionX, directionY);
     }
+
+    m_lastChangeDirectionTime = Clock::now();
 }
 
 bool Robot::addHP(int deltaHP)
@@ -249,12 +237,18 @@ bool Robot::isShooting() const
     return shootAbility->isShootingEnabled();
 }
 
-void Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
+void Robot::setCurAction(Action action)
+{
+    m_curAction = action;
+    m_lastChangeActionTime = Clock::now();
+}
+
+bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
 {
     MoveAbility* moveAbility = getMoveAbility();
     if (!moveAbility || !moveAbility->isMoving())
     {
-        return;
+        return false;
     }
 
     float speedX = moveAbility->getSpeed() * m_direction[0];
@@ -273,11 +267,14 @@ void Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
 
     shiftPos(speedX * newDelta, speedY * newDelta);
 
-    if (collide) {
+    if (collide) 
+    {
         moveAbility->setMoving(false);
     }
     
     map.repositionObject(this);
+
+    return collide;
 }
 
 void Robot::updateShootAbility(GameScreen& gameScreen)

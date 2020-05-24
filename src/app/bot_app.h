@@ -8,7 +8,7 @@
 #include "opengl/bot_particle_shader_program.h"
 #include "opengl/bot_text_system.h"
 #include "gameutil/bot_time_delta_smoother.h"
-#include "gametemplate/bot_game_template_lib.h"
+#include "gameutil/bot_game_lib.h"
 #include "screen/bot_screen_manager.h"
 
 struct GLFWwindow;
@@ -24,8 +24,6 @@ public:
     bool init(const std::string& appDir, const std::string& cfgFile);
 
     bool run();
-
-
 
     float getViewportWidth() const
     {
@@ -72,9 +70,9 @@ public:
         return m_particleShaderProgram;
     }
 
-    const GameTemplateLib& getGameTemplateLib() const
+    const GameLib& getGameLib() const
     {
-        return m_gameTemplateLib;
+        return m_gameLib;
     }
 
     const TextSystem& getTextSystem() const
@@ -112,7 +110,7 @@ private:
 
     bool initTextSystem(const rapidjson::Value& cfg);
 
-    bool initGameTemplateLib(const rapidjson::Value& cfg);
+    bool initGameLib(const rapidjson::Value& cfg);
 
     bool initMapConfig(const rapidjson::Value& cfg);
 
@@ -128,7 +126,7 @@ private:
     ParticleShaderProgram m_particleShaderProgram;
     TimeDeltaSmoother m_timeDeltaSmoother;
     TextSystem m_textSystem;
-    GameTemplateLib m_gameTemplateLib;
+    GameLib m_gameLib;
     ScreenManager m_screenMgr;
     float m_mapPoolFactor;
     int m_missilePoolSize;
