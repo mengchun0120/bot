@@ -58,7 +58,8 @@ void ParticleEffect::update(float delta, GameScreen& screen)
         return;
     }
 
-    if (elapsedTimeMs(m_startTime) >= getTemplate()->getDuration())
+    m_duration = elapsedTimeMs(m_startTime);
+    if (m_duration >= getTemplate()->getDuration())
     {
         gameObjManager.sendToDeathQueue(this);
     }

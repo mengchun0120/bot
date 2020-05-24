@@ -109,6 +109,7 @@ void Missile::explode(GameScreen& gameScreen)
 
 	if (!map.getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top))
 	{
+        gameObjManager.sendToDeathQueue(this);
 		return;
 	}
 	

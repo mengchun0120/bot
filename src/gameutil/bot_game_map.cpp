@@ -139,8 +139,6 @@ bool GameMap::addObject(GameObject* obj)
     addObjectToRect(obj, startRow, endRow, startCol, endCol);
     obj->setCoverRect(startRow, endRow, startCol, endCol);
 
-    LOG_DEBUG("addObject %d %d %d %d", startRow, endRow, startCol, endCol);
-
     return true;
 }
 
