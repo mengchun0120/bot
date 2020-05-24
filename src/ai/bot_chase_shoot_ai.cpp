@@ -9,12 +9,13 @@
 
 namespace bot {
 
-ChaseShootAI::ChaseShootAI(float chaseDurationMs, float shootDurationMs,
-                           float directionChangeIntervalMs, float chaseProb)
+ChaseShootAI::ChaseShootAI(float chaseDurationMs, float shootDurationMs, float directionChangeIntervalMs, 
+                           float chaseProb, float stopChaseDist)
     : m_chaseDurationMs(chaseDurationMs)
     , m_shootDurationMs(shootDurationMs)
     , m_directionChangeIntervalMs(directionChangeIntervalMs)
     , m_chaseProb(chaseProb)
+    , m_stopChaseDist(stopChaseDist)
     , m_generator(std::random_device()())
     , m_distribution(0.0, 1.0)
     , m_directions{ {1.0f, 0.0f}, {0.0f, 1.0f}, {-1.0f, 0.0f}, {0.0f, -1.0f} }
@@ -42,7 +43,7 @@ void ChaseShootAI::apply(Robot& robot, float delta, GameScreen& screen)
         return;
     }
 
-    if (tryChangeAction(robot))
+    if (tryChangeAction(robot, screen))
     {
         return;
     }
@@ -58,29 +59,50 @@ void ChaseShootAI::apply(Robot& robot, float delta, GameScreen& screen)
     }
 }
 
-bool ChaseShootAI::tryChangeAction(Robot& robot)
+bool ChaseShootAI::tryChangeAction(Robot& robot, GameScreen& screen)
 {
-    bool changeAction = false;
-    MoveAbility* moveAbility = robot.getMoveAbility();
-    ShootAbility* shootAbility = robot.getShootAbility();
-
+    bool rollDice = false;
+    const Player* player = screen.getMap().getPlayer();
+    float d = dist(robot.getPosX(), robot.getPosY(), player->getPosX(), player->getPosY());
+    
     switch (robot.getCurAction())
     {
         case ACTION_NONE:
-            changeAction = true;
+        {
+            if (d > m_stopChaseDist)
+            {
+                rollDice = true;
+            }
+            else
+            {
+                resetAction(robot, ACTION_SHOOT);
+                return true;
+            }
             break;
+        }
         case ACTION_CHASE: 
-            changeAction = elapsedTimeMs(robot.getLastChangeActionTime()) >= m_chaseDurationMs;
+            if (d <= m_stopChaseDist)
+            {
+                resetAction(robot, ACTION_SHOOT);
+                return true;
+            }
+            else if (elapsedTimeMs(robot.getLastChangeActionTime()) >= m_chaseDurationMs)
+            {
+                rollDice = true;
+            }
             break;
         case ACTION_SHOOT:
-            changeAction = elapsedTimeMs(robot.getLastChangeActionTime()) >= m_shootDurationMs;
+            if (d > m_stopChaseDist && elapsedTimeMs(robot.getLastChangeActionTime()) >= m_shootDurationMs)
+            {
+                rollDice = true;
+            }
             break;
         default:
             LOG_WARN("Unexpected action %d", static_cast<int>(robot.getCurAction()));
             break;
     }
 
-    if (!changeAction)
+    if (!rollDice)
     {
         return false;
     }

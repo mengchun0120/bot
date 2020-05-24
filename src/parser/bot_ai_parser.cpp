@@ -25,17 +25,15 @@ AI* AIParser::parse(const rapidjson::Value& elem)
 
 ChaseShootAI* AIParser::parseChaseShootAI(const rapidjson::Value& elem)
 {
-    float chaseDurationMs;
-    float directionChangeIntervalMs;
-    float shootDurationMs;
-    float chaseProb;
+    float chaseDurationMs, directionChangeIntervalMs, shootDurationMs, chaseProb, stopChaseDist;
 
     std::vector<JsonParseParam> params =
     {
         {&chaseDurationMs,           "chaseDuration",           JSONTYPE_FLOAT},
         {&directionChangeIntervalMs, "directionChangeInterval", JSONTYPE_FLOAT},
         {&shootDurationMs,           "shootDuration",           JSONTYPE_FLOAT},
-        {&chaseProb,                 "chaseProb",               JSONTYPE_FLOAT}
+        {&chaseProb,                 "chaseProb",               JSONTYPE_FLOAT},
+        {&stopChaseDist,             "stopChaseDist",           JSONTYPE_FLOAT}
     };
 
     if (!parseJson(params, elem))
@@ -43,7 +41,8 @@ ChaseShootAI* AIParser::parseChaseShootAI(const rapidjson::Value& elem)
         return nullptr;
     }
 
-    ChaseShootAI* ai = new ChaseShootAI(chaseDurationMs, shootDurationMs, directionChangeIntervalMs, chaseProb);
+    ChaseShootAI* ai = new ChaseShootAI(chaseDurationMs, shootDurationMs, directionChangeIntervalMs, 
+                                        chaseProb, stopChaseDist);
 
     return ai;
 }

@@ -11,8 +11,8 @@ namespace bot {
 
 class ChaseShootAI : public AI {
 public:
-    ChaseShootAI(float chaseDurationMs, float shootDurationMs, 
-                 float directionChangeIntervalMs, float chaseProb);
+    ChaseShootAI(float chaseDurationMs, float shootDurationMs, float directionChangeIntervalMs,
+                 float chaseProb, float stopChaseDist);
 
     virtual ~ChaseShootAI()
     {}
@@ -20,7 +20,7 @@ public:
     virtual void apply(Robot& robot, float delta, GameScreen& screen);
 
 protected:
-    bool tryChangeAction(Robot& robot);
+    bool tryChangeAction(Robot& robot, GameScreen& screen);
 
     void resetAction(Robot& robot, Action action);
 
@@ -43,6 +43,7 @@ protected:
     float m_directionChangeIntervalMs;
     float m_shootDurationMs;
     float m_chaseProb;
+    float m_stopChaseDist;
     std::mt19937 m_generator;
     std::uniform_real_distribution<float> m_distribution;
     const std::pair<float, float> m_directions[4];
