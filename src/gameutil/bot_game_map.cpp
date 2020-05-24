@@ -298,8 +298,11 @@ void GameMap::clearFlagsInRect(int startRow, int endRow, int startCol, int endCo
 void GameMap::setPlayer(Player* player)
 {
     m_player = player;
-    addObject(player);
-    updateViewport();
+    if (m_player)
+    {
+        addObject(player);
+        updateViewport();
+    }
 }
 
 void GameMap::getCollideRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,

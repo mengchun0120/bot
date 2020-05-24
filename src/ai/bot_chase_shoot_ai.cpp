@@ -60,30 +60,24 @@ void ChaseShootAI::apply(Robot& robot, float delta, GameScreen& screen)
 
 bool ChaseShootAI::tryChangeAction(Robot& robot)
 {
+    bool changeAction = false;
     MoveAbility* moveAbility = robot.getMoveAbility();
     ShootAbility* shootAbility = robot.getShootAbility();
-    TimePoint tp = Clock::now();
-    const TimePoint& lastChangeTime = robot.getLastChangeActionTime();
-    bool changeAction = false;
 
     switch (robot.getCurAction())
     {
         case ACTION_NONE:
-        {
-            changeAction =  moveAbility || shootAbility;
-        }
-        case ACTION_CHASE:
-        {
-            changeAction = shootAbility && timeDistMs(tp, lastChangeTime) >= m_chaseDurationMs;
-        }
+            changeAction = true;
+            break;
+        case ACTION_CHASE: 
+            changeAction = elapsedTimeMs(robot.getLastChangeActionTime()) >= m_chaseDurationMs;
+            break;
         case ACTION_SHOOT:
-        {
-            changeAction = moveAbility && timeDistMs(tp, lastChangeTime) >= m_shootDurationMs;
-        }
+            changeAction = elapsedTimeMs(robot.getLastChangeActionTime()) >= m_shootDurationMs;
+            break;
         default:
-        {
             LOG_WARN("Unexpected action %d", static_cast<int>(robot.getCurAction()));
-        }
+            break;
     }
 
     if (!changeAction)
@@ -92,6 +86,7 @@ bool ChaseShootAI::tryChangeAction(Robot& robot)
     }
 
     float dice = m_distribution(m_generator);
+
     if (dice <= m_chaseProb) 
     {
         resetAction(robot, ACTION_CHASE);
@@ -145,7 +140,6 @@ void ChaseShootAI::applyChaseAction(Robot& robot, float delta, GameScreen& scree
 
     if (!resetChaseDirection(robot, delta, screen))
     {
-        TimePoint tp = Clock::now();
         if (robot.getShootAbility())
         {
             resetAction(robot, ACTION_SHOOT);

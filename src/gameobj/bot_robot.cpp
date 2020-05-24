@@ -14,6 +14,7 @@ Robot::Robot(const RobotTemplate* t)
     : GameObject(t)
     , m_hp(t->getHP())
     , m_side(SIDE_UNKNOWN)
+    , m_curAction(ACTION_NONE)
 {
     m_direction[0] = 1.0f;
     m_direction[1] = 0.0f;
@@ -266,12 +267,6 @@ bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
     }
 
     shiftPos(speedX * newDelta, speedY * newDelta);
-
-    if (collide) 
-    {
-        moveAbility->setMoving(false);
-    }
-    
     map.repositionObject(this);
 
     return collide;
