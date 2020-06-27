@@ -1,0 +1,19 @@
+#ifndef INCLUDE_BOT_GOODIE_TYPE
+#define INCLUDE_BOT_GOODIE_TYPE
+
+namespace bot {
+
+enum GoodieType {
+    GOODIE_GOLD,
+    GOODIE_HEALTH,
+    GOODIE_INDESTRUCTABLE,
+    GOODIE_DOUBLE_EXPERIENCE,
+    GOODIE_QUICK_SHOOTER,
+    GOODIE_QUICK_MOVER,
+    GOODIE_DOUBLE_DAMAGE,
+    GOODIE_UNKNOWN
+};
+
+} // end of namespace bot
+
+#endif

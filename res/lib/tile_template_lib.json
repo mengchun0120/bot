@@ -6,8 +6,8 @@
     "color": "cyan",
     "coverBreathX": 20.0,
     "coverBreathY": 20.0,
-    "collideBreathX": 20.0,
-    "collideBreathY": 20.0,
+    "collideBreathX": 15.0,
+    "collideBreathY": 15.0,
     "hp": 80,
     "indestructable": false
   },
@@ -18,8 +18,8 @@
     "color": "yellow",
     "coverBreathX": 20.0,
     "coverBreathY": 20.0,
-    "collideBreathX": 20.0,
-    "collideBreathY": 20.0,
+    "collideBreathX": 15.0,
+    "collideBreathY": 15.0,
     "hp": 80,
     "indestructable": false
   },
@@ -30,8 +30,8 @@
     "color": "blue",
     "coverBreathX": 20.0,
     "coverBreathY": 20.0,
-    "collideBreathX": 20.0,
-    "collideBreathY": 20.0,
+    "collideBreathX": 15.0,
+    "collideBreathY": 15.0,
     "hp": 0,
     "indestructable": true
   }

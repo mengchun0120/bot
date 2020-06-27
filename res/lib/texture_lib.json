@@ -22,5 +22,33 @@
     {
         "name": "spark",
         "file": "spark.png"
+    },
+    {
+        "name": "gold",
+        "file": "gold.png"
+    },
+    {
+        "name": "health",
+        "file": "health.png"
+    },
+    {
+        "name": "indestructable",
+        "file": "indestructable.png"
+    },
+    {
+        "name": "double_experience",
+        "file": "double_experience.png"
+    },
+    {
+        "name": "quick_shooter",
+        "file": "quick_shooter.png"
+    },
+    {
+        "name": "quick_mover",
+        "file": "quick_mover.png"
+    },
+    {
+        "name": "double_damage",
+        "file": "double_damage.png"
     }
 ]

@@ -245,6 +245,9 @@
     <ClCompile Include="src\gameutil\bot_game_lib.cpp">
       <Filter>Source Files\gameutil</Filter>
     </ClCompile>
+    <ClCompile Include="src\parser\bot_goodie_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -314,6 +317,9 @@
       <Filter>Resource Files\lib</Filter>
     </None>
     <None Include="res\lib\ai_lib.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\goodie_template_lib.json">
       <Filter>Resource Files\lib</Filter>
     </None>
   </ItemGroup>
@@ -870,6 +876,15 @@
     </ClInclude>
     <ClInclude Include="src\gameutil\bot_game_lib.h">
       <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gametemplate\bot_goodie_template.h">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_goodie_type.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_goodie_template_parser.h">
+      <Filter>Source Files\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

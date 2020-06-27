@@ -344,6 +344,7 @@ bool App::initGameLib(const rapidjson::Value& cfg)
     std::string tileTemplateLibFile;
     std::string particleEffectTemplateLibFile;
     std::string missileTemplateLibFile;
+    std::string goodieTemplateLibFile;
     std::string aiLibFile;
     std::string aiRobotTemplateLibFile;
     std::string playerTemplateLibFile;
@@ -357,6 +358,7 @@ bool App::initGameLib(const rapidjson::Value& cfg)
         {&rectLibFile,                   "rectLib",                   JSONTYPE_STRING},
         {&tileTemplateLibFile,           "tileTemplateLib",           JSONTYPE_STRING},
         {&missileTemplateLibFile,        "missileTemplateLib",        JSONTYPE_STRING},
+        {&goodieTemplateLibFile,         "goodieTemplateLib",         JSONTYPE_STRING},
         {&particleEffectTemplateLibFile, "particleEffectTemplateLib", JSONTYPE_STRING},
         {&aiLibFile,                     "aiLib",                     JSONTYPE_STRING},
         {&aiRobotTemplateLibFile,        "aiRobotTemplateLib",        JSONTYPE_STRING},
@@ -377,14 +379,16 @@ bool App::initGameLib(const rapidjson::Value& cfg)
     std::string tileTemplateLibPath = constructPath({ libDir, tileTemplateLibFile });
     std::string particleEffectTemplateLibPath = constructPath({ libDir, particleEffectTemplateLibFile });
     std::string missileTemplateLibPath = constructPath({ libDir, missileTemplateLibFile });
+    std::string goodieTemplateLibPath = constructPath({ libDir, goodieTemplateLibFile });
     std::string aiLibPath = constructPath({ libDir, aiLibFile });
     std::string aiRobotTemplateLibPath = constructPath({ libDir, aiRobotTemplateLibFile });
     std::string playerTemplateLibPath = constructPath({ libDir, playerTemplateLibFile });
 
     bool success = m_gameLib.load(textureDir, textureLibPath, rectLibPath, colorLibPath,
                                   tileTemplateLibPath, particleEffectTemplateLibPath,
-                                  missileTemplateLibPath, aiLibPath,
-                                  aiRobotTemplateLibPath, playerTemplateLibPath);
+                                  missileTemplateLibPath, goodieTemplateLibPath,
+                                  aiLibPath, aiRobotTemplateLibPath, 
+                                  playerTemplateLibPath);
 
     if (!success)
     {

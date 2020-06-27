@@ -111,6 +111,39 @@ bool parseNamedMap(NamedMap<T>& lib, const char* fileName, PARSER& parser)
     return true;
 }
 
+template <typename T, typename PARSER>
+bool parseVector(std::vector<T>& vec, const char* file, PARSER& parser)
+{
+    rapidjson::Document doc;
+
+    if (!readJson(doc, file))
+    {
+        return false;
+    }
+
+    if (!doc.IsArray())
+    {
+        LOG_ERROR("Invalid format: %s", file);
+        return false;
+    }
+
+    const rapidjson::Value& arr = doc.GetArray();
+    int numObjects = arr.Capacity();
+
+    vec.resize(numObjects);
+    for (int i = 0; i < numObjects; ++i)
+    {
+        const rapidjson::Value& elem = arr[i];
+        if (!parser.parse(vec[i], elem))
+        {
+            LOG_ERROR("Failed to parse the %dth object of %s", i, file);
+            return false;
+        }
+    }
+
+    return true;
+}
+
 } // end of namespace bot
 
 #endif

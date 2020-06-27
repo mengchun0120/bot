@@ -8,6 +8,7 @@
 #include "ai/bot_ai.h"
 #include "gametemplate/bot_tile_template.h"
 #include "gametemplate/bot_missile_template.h"
+#include "gametemplate/bot_goodie_template.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
@@ -24,8 +25,9 @@ public:
     bool load(const std::string& textureFolder, const std::string& textureLibFile, 
               const std::string& rectLibFile, const std::string& colorLibFile,
               const std::string& tileTemplateLibFile, const std::string& particleEffectTemplateLibFile,
-              const std::string& missileTemplateLibFile, const std::string& aiLibFile, 
-              const std::string& aiRobotTemplateLibFile, const std::string& playerTemplateFile);
+              const std::string& missileTemplateLibFile, const std::string& goodieTemplateLibFile,
+              const std::string& aiLibFile, const std::string& aiRobotTemplateLibFile,
+              const std::string& playerTemplateFile);
 
     const Texture* getTexture(const std::string& name) const
     {
@@ -72,6 +74,11 @@ public:
         return m_playerTemplate;
     }
 
+    const std::vector<GoodieTemplate>& getGoodieTemplateLib() const
+    {
+        return m_goodieTemplateLib;
+    }
+
 private:
     bool loadPlayerTemplate(const std::string& playerTemplateFile);
 
@@ -82,6 +89,7 @@ private:
     NamedMap<TileTemplate> m_tileTemplateLib;
     NamedMap<ParticleEffectTemplate> m_particleEffectTemplateLib;
     NamedMap<MissileTemplate> m_missileTemplateLib;
+    std::vector<GoodieTemplate> m_goodieTemplateLib;
     NamedMap<AI> m_aiLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     PlayerTemplate* m_playerTemplate;

@@ -1,0 +1,86 @@
+[
+    {
+        "type": "gold",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "gold",
+        "rect": "goodie_rect",
+        "liveDuration": 0.0,
+        "effectDuration": 0.0,
+        "weight": 50.0
+    },
+    {
+        "type": "health",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "health",
+        "rect": "goodie_rect",
+        "liveDuration": 0.0,
+        "effectDuration": 0.0,
+        "weight": 40.0
+    },
+    {
+        "type": "indestructable",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "indestructable",
+        "rect": "goodie_rect",
+        "liveDuration": 300.0,
+        "effectDuration": 300.0,
+        "weight": 10.0
+    },
+    {
+        "type": "double_experience",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "double_experience",
+        "rect": "goodie_rect",
+        "liveDuration": 300.0,
+        "effectDuration": 180.0,
+        "weight": 10.0
+    },
+    {
+        "type": "quick_shooter",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "quick_shooter",
+        "rect": "goodie_rect",
+        "liveDuration": 300.0,
+        "effectDuration": 120.0,
+        "weight": 10.0
+    },
+    {
+        "type": "quick_mover",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "quick_mover",
+        "rect": "goodie_rect",
+        "liveDuration": 300.0,
+        "effectDuration": 120.0,
+        "weight": 10.0
+    },
+    {
+        "type": "double_damage",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "double_damage",
+        "rect": "goodie_rect",
+        "liveDuration": 300.0,
+        "effectDuration": 120.0,
+        "weight": 10.0
+    }
+]

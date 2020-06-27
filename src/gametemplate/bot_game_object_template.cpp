@@ -11,16 +11,4 @@ GameObjectTemplate::GameObjectTemplate(GameObjectType type)
     , m_flags(0)
 {}
 
-GameObjectTemplate::GameObjectTemplate(GameObjectType type, float coverBreathX, float coverBreathY,
-                                       float collideBreathX, float collideBreathY, int flags)
-    : m_type(type)
-    , m_coverBreathX(coverBreathX)
-    , m_coverBreathY(coverBreathY)
-    , m_collideBreathX(collideBreathX)
-    , m_collideBreathY(collideBreathY)
-    , m_flags(flags)
-{
-
-}
-
 } // end of namespace bot

@@ -27,9 +27,6 @@ public:
 
 	RobotTemplate();
 
-	RobotTemplate(float coverBreathX, float coverBreathY, float collideBreathX, float collideBreathY,
-		          int hp, int flags, int numComponents);
-
 	virtual ~RobotTemplate();
 
 	int getNumComponents() const

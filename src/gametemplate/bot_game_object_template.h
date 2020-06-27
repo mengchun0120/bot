@@ -10,9 +10,6 @@ class GameObjectTemplate {
 public:
     GameObjectTemplate(GameObjectType type);
 
-    GameObjectTemplate(GameObjectType type, float coverBreathX, float coverBreathY, 
-                       float collideBreathX, float collideBreathY, int flags);
-
     virtual ~GameObjectTemplate()
     {}
 

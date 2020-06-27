@@ -191,6 +191,7 @@
     <ClCompile Include="src\parser\bot_ai_parser.cpp" />
     <ClCompile Include="src\parser\bot_ai_robot_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_color_parser.cpp" />
+    <ClCompile Include="src\parser\bot_goodie_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_missile_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_particle_effect_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_player_template_parser.cpp" />
@@ -212,6 +213,7 @@
     <None Include="res\glsl\simple_vertex_shader.glsl" />
     <None Include="res\lib\ai_lib.json" />
     <None Include="res\lib\color_lib.json" />
+    <None Include="res\lib\goodie_template_lib.json" />
     <None Include="res\lib\missile_template_lib.json" />
     <None Include="res\lib\particle_effect_template_lib.json" />
     <None Include="res\lib\player_lib.json" />
@@ -345,6 +347,7 @@
     <ClInclude Include="src\gameobj\bot_game_object.h" />
     <ClInclude Include="src\gameobj\bot_game_object_flag.h" />
     <ClInclude Include="src\gameobj\bot_game_object_type.h" />
+    <ClInclude Include="src\gameobj\bot_goodie_type.h" />
     <ClInclude Include="src\gameobj\bot_missile.h" />
     <ClInclude Include="src\gameobj\bot_move_ability.h" />
     <ClInclude Include="src\gameobj\bot_particle_effect.h" />
@@ -358,6 +361,7 @@
     <ClInclude Include="src\gametemplate\bot_ai_robot_template.h" />
     <ClInclude Include="src\gametemplate\bot_animation_template.h" />
     <ClInclude Include="src\gametemplate\bot_game_object_template.h" />
+    <ClInclude Include="src\gametemplate\bot_goodie_template.h" />
     <ClInclude Include="src\gametemplate\bot_missile_template.h" />
     <ClInclude Include="src\gametemplate\bot_move_ability_template.h" />
     <ClInclude Include="src\gametemplate\bot_particle_effect_template.h" />
@@ -398,6 +402,7 @@
     <ClInclude Include="src\parser\bot_ai_parser.h" />
     <ClInclude Include="src\parser\bot_ai_robot_template_parser.h" />
     <ClInclude Include="src\parser\bot_color_parser.h" />
+    <ClInclude Include="src\parser\bot_goodie_template_parser.h" />
     <ClInclude Include="src\parser\bot_missile_template_parser.h" />
     <ClInclude Include="src\parser\bot_particle_effect_template_parser.h" />
     <ClInclude Include="src\parser\bot_player_template_parser.h" />
