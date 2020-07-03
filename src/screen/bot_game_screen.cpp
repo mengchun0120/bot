@@ -16,7 +16,7 @@ namespace bot {
 
 GameScreen::GameScreen(App* app)
     : m_app(app)
-    , m_gameObjManager(app->getGameLib(), app->getMissilePoolSize())
+    , m_gameObjManager(app->getGameLib(), m_map, app->getMissilePoolSize())
     , m_state(GAME_STATE_INIT)
 {
 }
@@ -66,18 +66,21 @@ int GameScreen::update(float delta)
     }
 
     Player* player = m_map.getPlayer();
-    if (player)
+    if (!player)
     {
-        player->update(delta, *this);
-        player->setFlag(GAME_OBJ_FLAG_UPDATED);
+        return 0;
     }
+
+    player->update(delta, *this);
+    player->setFlag(GAME_OBJ_FLAG_UPDATED);
 
     m_map.updateViewport();
     updateMissiles(delta);
     updateRobots(delta);
     updateEffects(delta);
+    updateGoodies(delta);
 
-    if (player && player->testFlag(GAME_OBJ_FLAG_DEAD))
+    if (player->testFlag(GAME_OBJ_FLAG_DEAD))
     {
         LOG_INFO("Game end");
         m_state = GAME_STATE_END;
@@ -98,7 +101,7 @@ void GameScreen::present()
     simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
 
     static const GameObjectType LAYER_ORDER[] = {
-        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
+        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_GOODIE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
     };
     static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
 
@@ -209,6 +212,16 @@ void GameScreen::updateEffects(float delta)
     }
 }
 
+void GameScreen::updateGoodies(float delta)
+{
+    Goodie* next = nullptr, * goodie;
+    for (goodie = m_gameObjManager.getFirstActiveGoodie(); goodie; goodie = next)
+    {
+        next = static_cast<Goodie*>(goodie->getNext());
+        goodie->update(delta, *this);
+    }
+}
+
 void GameScreen::presentEffects()
 {
     ParticleShaderProgram& program = m_app->getParticleShaderProgram();
@@ -285,6 +298,7 @@ void GameScreen::clearDeadObjects()
     {
         m_map.removeObject(obj);
     }
+   
     m_gameObjManager.clearDeadObjects();
 }
 

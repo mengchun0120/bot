@@ -11,8 +11,15 @@ enum GoodieType {
     GOODIE_QUICK_SHOOTER,
     GOODIE_QUICK_MOVER,
     GOODIE_DOUBLE_DAMAGE,
-    GOODIE_UNKNOWN
+    GOODIE_UNKNOWN,
+    GOODIE_COUNT = GOODIE_UNKNOWN - GOODIE_GOLD,
+    GOODIE_EFFECT_COUNT = GOODIE_UNKNOWN - GOODIE_INDESTRUCTABLE
 };
+
+inline bool isInstantaneousGoodie(GoodieType type)
+{
+    return type == GOODIE_GOLD || type == GOODIE_HEALTH;
+}
 
 } // end of namespace bot
 

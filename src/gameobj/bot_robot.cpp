@@ -6,7 +6,7 @@
 #include "gameutil/bot_collide.h"
 #include "screen/bot_game_screen.h"
 #include "gameobj/bot_missile.h"
-#include "gameobj/bot_robot.h"
+#include "gameobj/bot_player.h"
 
 namespace bot {
 
@@ -283,7 +283,8 @@ void Robot::updateShootAbility(GameScreen& gameScreen)
     GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
     Missile* missile = gameObjManager.createMissile(shootAbility->getMissileTemplate(), this, 
                                                     shootAbility->getShootPosX(), shootAbility->getShootPosY(),
-                                                    m_direction[0], m_direction[1], m_side);
+                                                    m_direction[0], m_direction[1], m_side, 
+                                                    shootAbility->getDamageMultiplier());
     shootAbility->setShootTime();
 
     GameMap& map = gameScreen.getMap();
@@ -308,16 +309,41 @@ void Robot::updateShootAbility(GameScreen& gameScreen)
 
 void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen)
 {
+    LOG_INFO("process collide");
     for (GameObjectItem* item = collideObjs.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
     {
-        if (item->getObj()->getType() != GAME_OBJ_TYPE_MISSILE)
+        if (item->getObj()->getType() == GAME_OBJ_TYPE_GOODIE)
         {
-            LOG_WARN("Collide obj is not missile");
-            continue;
+            Goodie* g = static_cast<Goodie*>(item->getObj());
+            LOG_INFO("process collide goodie %p %p", g, g->getTemplate());
         }
+    }
 
-        Missile* missile = static_cast<Missile*>(item->getObj());
-        missile->explode(gameScreen);
+    for (GameObjectItem* item = collideObjs.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+    {
+        switch (item->getObj()->getType())
+        {
+            case GAME_OBJ_TYPE_MISSILE:
+            {
+                Missile* missile = static_cast<Missile*>(item->getObj());
+                missile->explode(gameScreen);
+                break;
+            }
+            case GAME_OBJ_TYPE_GOODIE:
+            {
+                if (m_side == SIDE_PLAYER)
+                {
+                    Player* player = static_cast<Player*>(this);
+                    Goodie* goodie = static_cast<Goodie*>(item->getObj());
+                    player->consumeGoodie(goodie, gameScreen);
+                }
+                break;
+            }
+            default:
+            {
+                LOG_WARN("Unexcepted game object type %d for collision", static_cast<int>(item->getObj()->getType()));
+            }
+        }
     }
 }
 

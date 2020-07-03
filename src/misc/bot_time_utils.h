@@ -20,6 +20,18 @@ inline float elapsedTimeMs(const TimePoint& startTime)
     return timeDistMs(startTime, Clock::now());
 }
 
+inline float timeDistS(const TimePoint& startTime, const TimePoint& endTime)
+{
+    using namespace std::chrono;
+    seconds dur = duration_cast<seconds>(endTime - startTime);
+    return static_cast<float>(dur.count());
+}
+
+inline float elapsedTimeS(const TimePoint& startTime)
+{
+    return timeDistS(startTime, Clock::now());
+}
+
 } // end of namespace bot
 
 #endif

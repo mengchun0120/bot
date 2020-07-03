@@ -79,6 +79,11 @@ public:
         return m_goodieTemplateLib;
     }
 
+    const GoodieTemplate* getGoodieTemplate(int goodieIdx) const
+    {
+        return &m_goodieTemplateLib[goodieIdx];
+    }
+
 private:
     bool loadPlayerTemplate(const std::string& playerTemplateFile);
 

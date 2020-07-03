@@ -15,6 +15,7 @@ Missile::Missile()
 	: GameObject(nullptr)
 	, m_shooter(nullptr)
 	, m_side(SIDE_UNKNOWN)
+    , m_damageMultiplier(1.0f)
 {
 	m_direction[0] = 0.0f;
 	m_direction[1] = 0.0f;
@@ -106,6 +107,7 @@ void Missile::explode(GameScreen& gameScreen)
 	float right = m_pos[0] + t->getExplosionBreath();
 	float bottom = m_pos[1] - t->getExplosionBreath();
 	float top = m_pos[1] + t->getExplosionBreath();
+    int explosionPower = getExplosionPower();
 
 	if (!map.getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top))
 	{
@@ -124,7 +126,7 @@ void Missile::explode(GameScreen& gameScreen)
 			{
 				GameObject* obj = item->getObj();
 
-				if (!checkExplosion(obj, left, bottom, right, top, t->getExplosionPower()))
+				if (!checkExplosion(obj, left, bottom, right, top, explosionPower))
 				{
 					gameObjManager.sendToDeathQueue(obj);
 				}

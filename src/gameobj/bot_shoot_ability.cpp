@@ -7,6 +7,8 @@ namespace bot {
 ShootAbility::ShootAbility(const ShootAbilityTemplate* t)
 	: Ability(t)
 	, m_shootingEnabled(false)
+    , m_shootSpeedMultiplier(1.0f)
+    , m_damageMultiplier(1.0f)
 {
 	m_lastShootTime = Clock::now();
 	m_shootDirection[0] = 1.0f;
@@ -27,7 +29,7 @@ bool ShootAbility::canShoot() const
 		return false;
 	}
 
-	if (elapsedTimeMs(m_lastShootTime) >= getTemplate()->getShootInterval())
+	if (elapsedTimeMs(m_lastShootTime) >= getShootInterval())
 	{
 		return true;
 	}

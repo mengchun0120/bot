@@ -61,6 +61,8 @@ private:
 
     void updateEffects(float delta);
 
+    void updateGoodies(float delta);
+
     void presentEffects();
 
     void clearDeadObjects();

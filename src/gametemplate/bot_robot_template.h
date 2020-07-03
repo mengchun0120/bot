@@ -141,6 +141,16 @@ public:
 		m_hp = hp;
 	}
 
+    float getGoodieSpawnProb() const
+    {
+        return m_goodieSpawnProb;
+    }
+
+    void setGoodieSpawnProb(float goodieSpawnProb)
+    {
+        m_goodieSpawnProb = goodieSpawnProb;
+    }
+
 protected:
 	void initComponents();
 
@@ -151,6 +161,7 @@ protected:
 	int m_hp;
 	AbilityTemplate* m_abilityTemplates[NUM_OF_ABILITIES];
 	ComponentTemplate* m_attachComponents[NUM_OF_ABILITIES];
+    float m_goodieSpawnProb;
 };
 
 } // end of namespace bot

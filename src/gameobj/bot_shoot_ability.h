@@ -59,11 +59,38 @@ public:
 
     void setShootPosDirection(float referenceX, float referenceY, float directionX, float directionY);
 
+    float getShootInterval() const
+    {
+        return getTemplate()->getShootInterval() * m_shootSpeedMultiplier;
+    }
+
+    float getShootSpeedMultiplier() const
+    {
+        return m_shootSpeedMultiplier;
+    }
+
+    void setShootSpeedMultiplier(float multiplier)
+    {
+        m_shootSpeedMultiplier = multiplier;
+    }
+
+    float getDamageMultiplier() const
+    {
+        return m_damageMultiplier;
+    }
+
+    void setDamageMultiplier(float multiplier)
+    {
+        m_damageMultiplier = multiplier;
+    }
+
 protected:
     TimePoint m_lastShootTime;
     float m_shootingEnabled;
     float m_shootDirection[Constants::NUM_FLOATS_PER_POSITION];
     float m_shootPos[Constants::NUM_FLOATS_PER_POSITION];
+    float m_shootSpeedMultiplier;
+    float m_damageMultiplier;
 };
 
 } // end of namespace bot

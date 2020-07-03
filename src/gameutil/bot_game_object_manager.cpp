@@ -3,12 +3,15 @@
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_ai_robot.h"
 #include "gameobj/bot_player.h"
+#include "gameutil/bot_game_map.h"
 #include "gameutil/bot_game_object_manager.h"
 
 namespace bot {
 
-GameObjectManager::GameObjectManager(const GameLib& gameLib, int missilePoolSize)
+GameObjectManager::GameObjectManager(const GameLib& gameLib, GameMap& map, int missilePoolSize)
 	: m_gameLib(gameLib)
+    , m_map(map)
+    , m_goodieGenerator(gameLib.getGoodieTemplateLib())
 	, m_missilePool(missilePoolSize)
 {
 }
@@ -67,7 +70,7 @@ AIRobot* GameObjectManager::createRobot(const AIRobotTemplate* aiRobotTemplate, 
 }
 
 Missile* GameObjectManager::createMissile(const std::string& missileName, Robot* shooter, float x, float y,
-								          float directionX, float directionY, Side side)
+								          float directionX, float directionY, Side side, float damageMultiplier)
 {
 	const MissileTemplate* missileTemplate = m_gameLib.getMissileTemplate(missileName);
 	if (!missileTemplate)
@@ -76,11 +79,11 @@ Missile* GameObjectManager::createMissile(const std::string& missileName, Robot*
 		return nullptr;
 	}
 
-	return createMissile(missileTemplate, shooter, x, y, directionX, directionY, side);
+	return createMissile(missileTemplate, shooter, x, y, directionX, directionY, side, damageMultiplier);
 }
 
 Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float x, float y,
-								          float directionX, float directionY, Side side)
+								          float directionX, float directionY, Side side, float damageMultiplier)
 {
 	Missile* missile = m_missilePool.alloc();
 	missile->setTemplate(missileTemplate);
@@ -88,6 +91,7 @@ Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate
 	missile->setPos(x, y);
 	missile->setDirection(directionX, directionY);
 	missile->setSide(side);
+    missile->setDamageMultiplier(damageMultiplier);
 
 	m_activeMissiles.add(missile);
 
@@ -112,6 +116,22 @@ Player* GameObjectManager::createPlayer(float x, float y, float directionX, floa
 	return player;
 }
 
+Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
+{
+    int goodieIdx = m_goodieGenerator.generate(prob);
+    if (goodieIdx < 0)
+    {
+        return nullptr;
+    }
+
+    const GoodieTemplate* t = m_gameLib.getGoodieTemplate(goodieIdx);
+    Goodie* goodie = new Goodie(t, x, y);
+    LOG_INFO("create-goodie %p %p", goodie, t);
+    m_activeGoodies.add(goodie);
+
+    return goodie;
+}
+
 void GameObjectManager::sendToDeathQueue(GameObject* obj)
 {
 	obj->setFlag(GAME_OBJ_FLAG_DEAD);
@@ -127,6 +147,10 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
 		{
 			Robot* robot = static_cast<Robot*>(obj);
 			m_activeRobots.unlink(robot);
+            if (robot->getSide() == SIDE_AI)
+            {
+                onRobotDeath(robot);
+            }
 			break;
 		}
 		case GAME_OBJ_TYPE_MISSILE:
@@ -145,6 +169,12 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
 		{
 			break;
 		}
+        case GAME_OBJ_TYPE_GOODIE:
+        {
+            Goodie* goodie = static_cast<Goodie*>(obj);
+            m_activeGoodies.unlink(goodie);
+            break;
+        }
 		default: 
 		{
 			LOG_ERROR("Invalid game obj type %d", static_cast<int>(obj->getType()));
@@ -179,6 +209,7 @@ void GameObjectManager::clearActiveObjects()
 {
 	m_activeTiles.clear();
 	m_activeRobots.clear();
+    m_activeGoodies.clear();
 	
 	auto missileDeallocator = [this](Missile* missile)
 	{
@@ -193,6 +224,15 @@ void GameObjectManager::clearActiveObjects()
 	};
 
 	m_activeParticleEffect.clear(particleEffectDeallocator);
+}
+
+void GameObjectManager::onRobotDeath(Robot* robot)
+{
+    Goodie* goodie = createGoodie(robot->getGoodieSpawnProb(), robot->getPosX(), robot->getPosY());
+    if (goodie)
+    {
+        m_map.addObject(goodie);
+    }
 }
 
 } // end of namespace bot

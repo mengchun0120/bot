@@ -34,6 +34,7 @@ bool RobotTemplateParser::parseBaseAttributes(RobotTemplate* robotTemplate, cons
 {
 	float coverBreathX = 0.0f, coverBreathY = 0.0f;
 	float collideBreathX = 0.0f, collideBreathY = 0.0f;
+    float goodieSpawnProb = 0.0f;
 	int hp = 0;
 
 	std::vector<JsonParseParam> robotParams =
@@ -42,7 +43,8 @@ bool RobotTemplateParser::parseBaseAttributes(RobotTemplate* robotTemplate, cons
 		{&coverBreathY,       "coverBreathY",       JSONTYPE_FLOAT},
 		{&collideBreathX,     "collideBreathX",     JSONTYPE_FLOAT},
 		{&collideBreathY,     "collideBreathY",     JSONTYPE_FLOAT},
-		{&hp,                 "hp",                 JSONTYPE_INT}
+		{&hp,                 "hp",                 JSONTYPE_INT},
+        {&goodieSpawnProb,    "goodieSpawnProb",    JSONTYPE_FLOAT}
 	};
 
 	if (!parseJson(robotParams, elem))
@@ -55,6 +57,7 @@ bool RobotTemplateParser::parseBaseAttributes(RobotTemplate* robotTemplate, cons
 	robotTemplate->setCollideBreathX(collideBreathX);
 	robotTemplate->setCollideBreathY(collideBreathY);
 	robotTemplate->setHP(hp);
+    robotTemplate->setGoodieSpawnProb(goodieSpawnProb);
 
 	return true;
 }

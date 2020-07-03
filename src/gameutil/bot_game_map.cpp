@@ -427,7 +427,11 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs, c
             for (GameObjectItem* item = row[c].getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
             {
                 GameObject* o = item->getObj();
-                if (o->getType() != GAME_OBJ_TYPE_MISSILE || o->testFlag(DONT_CHECK_FLAG))
+                bool check = (o->getType() == GAME_OBJ_TYPE_MISSILE ||
+                              (robot->getSide() == SIDE_PLAYER && o->getType() == GAME_OBJ_TYPE_GOODIE)) &&
+                             !o->testFlag(DONT_CHECK_FLAG);
+                             
+                if (!check)
                 {
                     continue;
                 }

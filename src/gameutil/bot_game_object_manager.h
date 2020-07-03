@@ -6,6 +6,8 @@
 #include "structure/bot_object_pool.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_particle_effect.h"
+#include "gameobj/bot_goodie.h"
+#include "gameutil/bot_goodie_generator.h"
 #include "gameobj/bot_side.h"
 
 namespace bot {
@@ -18,10 +20,11 @@ class TileTemplate;
 class MissileTemplate;
 class AIRobotTemplate;
 class AIRobot;
+class GameMap;
 
 class GameObjectManager {
 public:
-	GameObjectManager(const GameLib& gameLib, int missilePoolSize);
+	GameObjectManager(const GameLib& gameLib, GameMap& map, int missilePoolSize);
 
 	~GameObjectManager();
 
@@ -46,12 +49,14 @@ public:
 		                 float directionX, float directionY, Side side);
 
 	Missile* createMissile(const std::string& missileName, Robot* shooter, float x, float y,
-		                   float directionX, float directionY, Side side);
+		                   float directionX, float directionY, Side side, float damageMultiplier);
 
 	Missile* createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float x, float y,
-		                   float directionX, float directionY, Side side);
+		                   float directionX, float directionY, Side side, float damageMultiplier);
 
-	Missile* getFirstActiveMissile()
+    Goodie* createGoodie(float prob, float x, float y);
+    
+    Missile* getFirstActiveMissile()
 	{
 		return m_activeMissiles.getFirst();
 	}
@@ -73,6 +78,16 @@ public:
 		return m_activeParticleEffect.getFirst();
 	}
 
+    Goodie* getFirstActiveGoodie()
+    {
+        return m_activeGoodies.getFirst();
+    }
+
+    const Goodie* getFirstActiveGoodie() const
+    {
+        return m_activeGoodies.getFirst();
+    }
+
 	GameObject* getFirstDeadObject()
 	{
 		return m_deadObjects.getFirst();
@@ -91,14 +106,20 @@ public:
 
 	void clearActiveObjects();
 
+private:
+    void onRobotDeath(Robot* robot);
+
 protected:
 	const GameLib& m_gameLib;
+    GameMap& m_map;
+    GoodieGenerator m_goodieGenerator;
 	ObjectPool<Missile> m_missilePool;
 	ObjectPool<ParticleEffect> m_particleEffectPool;
 	DoubleLinkedList<Robot> m_activeRobots;
 	DoubleLinkedList<Tile> m_activeTiles;
 	DoubleLinkedList<Missile> m_activeMissiles;
 	DoubleLinkedList<ParticleEffect> m_activeParticleEffect;
+    DoubleLinkedList<Goodie> m_activeGoodies;
 	DoubleLinkedList<GameObject> m_deadObjects;
 };
 

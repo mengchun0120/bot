@@ -11,6 +11,7 @@ public:
     MoveAbility(const MoveAbilityTemplate* t)
         : Ability(t)
         , m_moving(false)
+        , m_speedMultiplier(1.0f)
     {
     }
 
@@ -19,7 +20,7 @@ public:
 
     float getSpeed() const
     {
-        return static_cast<const MoveAbilityTemplate*>(m_template)->getSpeed();
+        return static_cast<const MoveAbilityTemplate*>(m_template)->getSpeed() * m_speedMultiplier;
     }
 
     bool isMoving() const
@@ -32,10 +33,20 @@ public:
         m_moving = moving;
     }
 
+    float getSpeedMultiplier() const
+    {
+        return m_speedMultiplier;
+    }
+
+    void setSpeedMultiplier(float multiplier)
+    {
+        m_speedMultiplier = multiplier;
+    }
+
 protected:
     bool m_moving;
+    float m_speedMultiplier;
 };
-
 
 } // end of namespace bot
 

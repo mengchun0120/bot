@@ -149,6 +149,8 @@
     <ClCompile Include="src\app\bot_app.cpp" />
     <ClCompile Include="src\bot_main.cpp" />
     <ClCompile Include="src\gameobj\bot_game_object.cpp" />
+    <ClCompile Include="src\gameobj\bot_goodie.cpp" />
+    <ClCompile Include="src\gameobj\bot_goodie_effect.cpp" />
     <ClCompile Include="src\gameobj\bot_missile.cpp" />
     <ClCompile Include="src\gameobj\bot_particle_effect.cpp" />
     <ClCompile Include="src\gameobj\bot_player.cpp" />
@@ -170,6 +172,7 @@
     <ClCompile Include="src\gameutil\bot_game_map_loader.cpp" />
     <ClCompile Include="src\gameutil\bot_game_object_manager.cpp" />
     <ClCompile Include="src\gameutil\bot_game_lib.cpp" />
+    <ClCompile Include="src\gameutil\bot_goodie_generator.cpp" />
     <ClCompile Include="src\gameutil\bot_time_delta_smoother.cpp" />
     <ClCompile Include="src\geometry\bot_polygon.cpp" />
     <ClCompile Include="src\geometry\bot_rectangle.cpp" />
@@ -200,7 +203,6 @@
     <ClCompile Include="src\parser\bot_texture_parser.cpp" />
     <ClCompile Include="src\parser\bot_tile_template_parser.cpp" />
     <ClCompile Include="src\screen\bot_game_screen.cpp" />
-    <ClCompile Include="src\screen\bot_screen.cpp" />
     <ClCompile Include="src\screen\bot_screen_manager.cpp" />
     <ClCompile Include="src\screen\bot_start_screen.cpp" />
   </ItemGroup>
@@ -347,6 +349,8 @@
     <ClInclude Include="src\gameobj\bot_game_object.h" />
     <ClInclude Include="src\gameobj\bot_game_object_flag.h" />
     <ClInclude Include="src\gameobj\bot_game_object_type.h" />
+    <ClInclude Include="src\gameobj\bot_goodie.h" />
+    <ClInclude Include="src\gameobj\bot_goodie_effect.h" />
     <ClInclude Include="src\gameobj\bot_goodie_type.h" />
     <ClInclude Include="src\gameobj\bot_missile.h" />
     <ClInclude Include="src\gameobj\bot_move_ability.h" />
@@ -376,6 +380,7 @@
     <ClInclude Include="src\gameutil\bot_game_object_item.h" />
     <ClInclude Include="src\gameutil\bot_game_state.h" />
     <ClInclude Include="src\gameutil\bot_game_lib.h" />
+    <ClInclude Include="src\gameutil\bot_goodie_generator.h" />
     <ClInclude Include="src\gameutil\bot_time_delta_smoother.h" />
     <ClInclude Include="src\geometry\bot_polygon.h" />
     <ClInclude Include="src\geometry\bot_rectangle.h" />

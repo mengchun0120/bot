@@ -69,6 +69,21 @@ public:
 
 	void explode(GameScreen& gameScreen);
 
+    int getExplosionPower() const
+    {
+        return static_cast<int>(getTemplate()->getExplosionPower() * m_damageMultiplier);
+    }
+
+    float getDamageMultiplier() const
+    {
+        return m_damageMultiplier;
+    }
+
+    void setDamageMultiplier(float damageMultiplier)
+    {
+        m_damageMultiplier = damageMultiplier;
+    }
+
 protected:
 	bool checkExplosion(GameObject* obj, float left, float bottom, float right, float top, int explosionPower);
 
@@ -76,6 +91,7 @@ protected:
 	float m_direction[Constants::NUM_FLOATS_PER_POSITION];
 	const Robot* m_shooter;
 	Side m_side;
+    float m_damageMultiplier;
 };
 
 } // end of namespace bot

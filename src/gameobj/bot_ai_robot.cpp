@@ -1,3 +1,4 @@
+#include "screen/bot_game_screen.h"
 #include "gameobj/bot_ai_robot.h"
 
 namespace bot {

@@ -104,9 +104,6 @@
     <ClCompile Include="src\app\bot_app.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\screen\bot_screen.cpp">
-      <Filter>Source Files\screen</Filter>
-    </ClCompile>
     <ClCompile Include="src\gameobj\bot_tile.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
@@ -247,6 +244,15 @@
     </ClCompile>
     <ClCompile Include="src\parser\bot_goodie_template_parser.cpp">
       <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_goodie.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_goodie_generator.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_goodie_effect.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -885,6 +891,15 @@
     </ClInclude>
     <ClInclude Include="src\parser\bot_goodie_template_parser.h">
       <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_goodie.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_goodie_generator.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_goodie_effect.h">
+      <Filter>Source Files\gameobj</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

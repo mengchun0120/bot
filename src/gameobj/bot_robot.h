@@ -14,7 +14,6 @@
 
 namespace bot {
 
-class RobotTemplate;
 class Ability;
 class AI;
 
@@ -127,6 +126,11 @@ public:
     virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
 
     virtual void updateShootAbility(GameScreen& gameScreen);
+
+    float getGoodieSpawnProb() const
+    {
+        return getTemplate()->getGoodieSpawnProb();
+    }
 
 private:
 	void initComponents();
