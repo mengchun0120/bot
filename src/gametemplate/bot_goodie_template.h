@@ -9,6 +9,7 @@ namespace bot {
 class Rectangle;
 class Texture;
 class Color;
+class ProgressRing;
 
 class GoodieTemplate : public GameObjectTemplate {
 public:
@@ -17,8 +18,8 @@ public:
         , m_goodieType(GOODIE_UNKNOWN)
         , m_rect(nullptr)
         , m_texture(nullptr)
-        , m_liveDuration(0.0f)
-        , m_effectDuration(0.0f)
+        , m_ring(nullptr)
+        , m_duration(0.0f)
     {}
 
     virtual ~GoodieTemplate()
@@ -54,29 +55,29 @@ public:
         m_texture = texture;
     }
 
-    float getLiveDuration() const
+    const ProgressRing* getProgressRing() const
     {
-        return m_liveDuration;
+        return m_ring;
     }
 
-    void setLiveDuration(float liveDuration)
+    void setProgressRing(const ProgressRing* ring)
     {
-        m_liveDuration = liveDuration;
+        m_ring = ring;
     }
 
-    float getEffectDuration() const
+    float getDuration() const
     {
-        return m_effectDuration;
+        return m_duration;
     }
 
-    void setEffectDuration(float effectDuration)
+    void setDuration(float duration)
     {
-        m_effectDuration = effectDuration;
+        m_duration = duration;
     }
 
     bool isEffect() const
     {
-        return m_effectDuration > 0.0f;
+        return m_duration > 0.0f;
     }
 
     float getWeight() const
@@ -93,8 +94,8 @@ private:
     GoodieType m_goodieType;
     const Rectangle* m_rect;
     const Texture* m_texture;
-    float m_liveDuration;
-    float m_effectDuration;
+    const ProgressRing* m_ring;
+    float m_duration;
     float m_weight;
 };
 

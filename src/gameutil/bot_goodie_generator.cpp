@@ -51,8 +51,6 @@ int GoodieGenerator::generate(float prob)
         }
     }
 
-    LOG_INFO("gen-goodie %d %d", right, m_maxGoodieIdx);
-
     return right;
 }
 

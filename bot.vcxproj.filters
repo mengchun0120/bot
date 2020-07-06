@@ -254,6 +254,18 @@
     <ClCompile Include="src\gameobj\bot_goodie_effect.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
+    <ClCompile Include="src\gameobj\bot_progress_ring.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_progress_ring_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_dashboard.cpp">
+      <Filter>Source Files\gameobj</Filter>
+    </ClCompile>
+    <ClCompile Include="src\parser\bot_dashboard_template_parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -326,6 +338,12 @@
       <Filter>Resource Files\lib</Filter>
     </None>
     <None Include="res\lib\goodie_template_lib.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\progress_ring_lib.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\dashboard_template.json">
       <Filter>Resource Files\lib</Filter>
     </None>
   </ItemGroup>
@@ -636,6 +654,42 @@
     <Image Include="res\texture\button.png">
       <Filter>Resource Files\texture</Filter>
     </Image>
+    <Image Include="res\texture\barrel.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\base.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\bullet.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\double_damage.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\double_experience.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\gold.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\health.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\indestructable.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\quick_mover.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\quick_shooter.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\spark.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
+    <Image Include="res\texture\tile.png">
+      <Filter>Resource Files\texture</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\map\map_01.json">
@@ -900,6 +954,21 @@
     </ClInclude>
     <ClInclude Include="src\gameobj\bot_goodie_effect.h">
       <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_progress_ring.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_progress_ring_parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_dashboard.h">
+      <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gametemplate\bot_dashboard_template.h">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClInclude>
+    <ClInclude Include="src\parser\bot_dashboard_template_parser.h">
+      <Filter>Source Files\parser</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

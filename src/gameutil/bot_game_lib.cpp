@@ -9,7 +9,9 @@
 #include "parser/bot_goodie_template_parser.h"
 #include "parser/bot_ai_parser.h"
 #include "parser/bot_ai_robot_template_parser.h"
+#include "parser/bot_progress_ring_parser.h"
 #include "parser/bot_player_template_parser.h"
+#include "parser/bot_dashboard_template_parser.h"
 #include "gameutil/bot_game_lib.h"
 
 namespace bot {
@@ -32,7 +34,8 @@ bool GameLib::load(const std::string& textureFolder, const std::string& textureL
                    const std::string& tileTemplateLibFile, const std::string& particleEffectTemplateLibFile,
                    const std::string& missileTemplateLibFile, const std::string& goodieTemplateLibFile, 
                    const std::string& aiLibFile, const std::string& aiRobotTemplateLibFile, 
-                   const std::string& playerTemplateFile)
+                   const std::string& progressRingFile, const std::string& playerTemplateFile,
+                   const std::string& dashboardTemplateFile)
 {
     TextureParser textureParser(textureFolder);
     if (!parseNamedMap(m_textureLib, textureLibFile.c_str(), textureParser))
@@ -88,7 +91,16 @@ bool GameLib::load(const std::string& textureFolder, const std::string& textureL
 
     LOG_INFO("Done loading missile template library from %s", missileTemplateLibFile.c_str());
 
-    GoodieTemplateParser goodieParser(m_textureLib, m_rectLib);
+    ProgressRingParser progressRingParser(m_colorLib);
+    if (!parseNamedMap(m_progressRingLib, progressRingFile.c_str(), progressRingParser))
+    {
+        LOG_ERROR("Failed to read progress ring from %s", progressRingFile.c_str());
+        return false;
+    }
+
+    LOG_INFO("Done loading progress ring library from %s", progressRingFile.c_str());
+
+    GoodieTemplateParser goodieParser(m_textureLib, m_rectLib, m_progressRingLib);
     if (!parseVector(m_goodieTemplateLib, goodieTemplateLibFile.c_str(), goodieParser))
     {
         LOG_ERROR("Failed to read goodie template lib from %s", goodieTemplateLibFile.c_str());
@@ -121,7 +133,14 @@ bool GameLib::load(const std::string& textureFolder, const std::string& textureL
         return false;
     }
     
-    LOG_INFO("Done loading player template from %s", playerTemplateFile.c_str());
+    DashboardTemplateParser dashboardParser;
+    if (!dashboardParser.parse(m_dashboardTemplate, dashboardTemplateFile))
+    {
+        LOG_ERROR("Failed to read dashboard template from %s", dashboardTemplateFile.c_str());
+        return false;
+    }
+
+    LOG_INFO("Done loading dashboard template from %s", dashboardTemplateFile.c_str());
 
     return true;
 }

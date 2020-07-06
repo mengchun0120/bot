@@ -12,7 +12,9 @@
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
+#include "gameobj/bot_progress_ring.h"
 #include "gametemplate/bot_player_template.h"
+#include "gametemplate/bot_dashboard_template.h"
 
 namespace bot {
 
@@ -27,7 +29,8 @@ public:
               const std::string& tileTemplateLibFile, const std::string& particleEffectTemplateLibFile,
               const std::string& missileTemplateLibFile, const std::string& goodieTemplateLibFile,
               const std::string& aiLibFile, const std::string& aiRobotTemplateLibFile,
-              const std::string& playerTemplateFile);
+              const std::string& progressRingFile, const std::string& playerTemplateFile,
+              const std::string& dashboardTemplateFile);
 
     const Texture* getTexture(const std::string& name) const
     {
@@ -84,6 +87,16 @@ public:
         return &m_goodieTemplateLib[goodieIdx];
     }
 
+    const ProgressRing* getProgressRing(const std::string& name) const
+    {
+        return m_progressRingLib.search(name);
+    }
+
+    const DashboardTemplate& getDashboardTemplate() const
+    {
+        return m_dashboardTemplate;
+    }
+
 private:
     bool loadPlayerTemplate(const std::string& playerTemplateFile);
 
@@ -97,7 +110,9 @@ private:
     std::vector<GoodieTemplate> m_goodieTemplateLib;
     NamedMap<AI> m_aiLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
+    NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate* m_playerTemplate;
+    DashboardTemplate m_dashboardTemplate;
 };
 
 } // end of namespace bot

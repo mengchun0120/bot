@@ -41,23 +41,22 @@ GoodieType parseGoodieType(const std::string& typeName)
 
 bool GoodieTemplateParser::parse(GoodieTemplate& t, const rapidjson::Value& elem)
 {
-    std::string textureName, rectName, typeName;
+    std::string textureName, rectName, typeName, ringName;
     float coverBreathX = 0.0f, coverBreathY = 0.0f;
     float collideBreathX = 0.0f, collideBreathY = 0.0f;
-    float liveDuration = 0.0f, effectDuration = 0.0f;
-    float weight = 0.0f;
+    float duration = 0.0f, weight = 0.0f;
 
     std::vector<JsonParseParam> params =
     {
         {&typeName,       "type",           JSONTYPE_STRING},
         {&textureName,    "texture",        JSONTYPE_STRING},
         {&rectName,       "rect",           JSONTYPE_STRING},
+        {&ringName,       "progressRing",   JSONTYPE_STRING},
         {&coverBreathX,   "coverBreathX",   JSONTYPE_FLOAT},
         {&coverBreathY,   "coverBreathY",   JSONTYPE_FLOAT},
         {&collideBreathX, "collideBreathX", JSONTYPE_FLOAT},
         {&collideBreathY, "collideBreathY", JSONTYPE_FLOAT},
-        {&liveDuration,   "liveDuration",   JSONTYPE_FLOAT},
-        {&effectDuration, "effectDuration", JSONTYPE_FLOAT},
+        {&duration,       "duration",       JSONTYPE_FLOAT},
         {&weight,         "weight",         JSONTYPE_FLOAT}
     };
 
@@ -87,6 +86,17 @@ bool GoodieTemplateParser::parse(GoodieTemplate& t, const rapidjson::Value& elem
         return false;
     }
 
+    const ProgressRing* ring = nullptr;
+    if (!ringName.empty())
+    {
+        ring = m_ringLib.search(ringName);
+        if (!ring)
+        {
+            LOG_ERROR("Failed to find progress ring %s", ringName.c_str());
+            return false;
+        }
+    }
+
     t.setCoverBreathX(coverBreathX);
     t.setCoverBreathY(coverBreathY);
     t.setCollideBreathX(collideBreathX);
@@ -94,8 +104,8 @@ bool GoodieTemplateParser::parse(GoodieTemplate& t, const rapidjson::Value& elem
     t.setGoodieType(type);
     t.setRect(rect);
     t.setTexture(texture);
-    t.setLiveDuration(liveDuration);
-    t.setEffectDuration(effectDuration);
+    t.setProgressRing(ring);
+    t.setDuration(duration);
     t.setWeight(weight);
 
     return true;

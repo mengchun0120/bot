@@ -6,10 +6,13 @@
 
 namespace bot {
 
+class SimpleShaderProgram;
+
 class GoodieEffect {
 public:
     GoodieEffect()
         : m_template(nullptr)
+        , m_percent(0.0f)
         , m_next(nullptr)
     {}
 
@@ -43,11 +46,19 @@ public:
 
     void start();
 
-    bool expired() const;
+    void draw(SimpleShaderProgram& program, const float* pos) const;
+
+    const TimePoint& getStartTime() const
+    {
+        return m_startTime;
+    }
+
+    bool update(const TimePoint& now);
 
 private:
     const GoodieTemplate* m_template;
     TimePoint m_startTime;
+    float m_percent;
     GoodieEffect* m_next;
 };
 

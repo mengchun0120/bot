@@ -52,12 +52,10 @@ void Player::consumeGoodie(Goodie* goodie, GameScreen& screen)
 {
     if (isInstantaneousGoodie(goodie->getGoodieType()))
     {
-        LOG_INFO("consume inst goodie %p %p", goodie, goodie->getTemplate());
         applyInstantaneousEffect(goodie);
     }
     else
     {
-        LOG_INFO("consume non-inst goodie %p %p", goodie, goodie->getTemplate());
         applyNonInstantaneousEffect(goodie);
     }
 
@@ -197,13 +195,14 @@ void Player::expireEffect(GoodieEffect* effect)
 void Player::updateEffects()
 {
     GoodieEffect* cur, * prev, * next;
+    TimePoint now = Clock::now();
 
     prev = nullptr;
     for (cur = m_firstActiveEffect; cur; cur = next)
     {
         next = cur->getNext();
         
-        if (cur->expired())
+        if (cur->update(now))
         {
             expireEffect(cur);
 

@@ -35,6 +35,13 @@ bool GameScreen::init()
         return false;
     }
 
+    m_dashboard.init(&(m_app->getGameLib().getDashboardTemplate()), m_app->getViewportWidth(), m_map.getPlayer());
+
+    LOG_INFO("Done loading dashboard");
+
+    m_dashboardOrigin[0] = m_app->getViewportWidth() / 2.0f;
+    m_dashboardOrigin[1] = m_app->getViewportHeight() / 2.0f;
+
     m_state = GAME_STATE_RUNNING;
 
     return true;
@@ -78,7 +85,6 @@ int GameScreen::update(float delta)
     updateMissiles(delta);
     updateRobots(delta);
     updateEffects(delta);
-    updateGoodies(delta);
 
     if (player->testFlag(GAME_OBJ_FLAG_DEAD))
     {
@@ -104,6 +110,7 @@ void GameScreen::present()
         GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_GOODIE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
     };
     static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
+    static const int DONT_DRAW_FLAGS = GAME_OBJ_FLAG_DRAWN | GAME_OBJ_FLAG_DEAD;
 
     int startRow, endRow, startCol, endCol;
 
@@ -123,7 +130,7 @@ void GameScreen::present()
                     next = static_cast<GameObjectItem*>(item->getNext());
 
                     GameObject* obj = item->getObj();
-                    if (obj->getType() != LAYER_ORDER[i] || obj->testFlag(GAME_OBJ_FLAG_DRAWN))
+                    if (obj->getType() != LAYER_ORDER[i] || obj->testFlag(DONT_DRAW_FLAGS))
                     {
                         continue;
                     }
@@ -136,6 +143,7 @@ void GameScreen::present()
     }
 
     presentEffects();
+    presentDashboard();
 }
 
 int GameScreen::processInput(const InputEvent& e)
@@ -212,16 +220,6 @@ void GameScreen::updateEffects(float delta)
     }
 }
 
-void GameScreen::updateGoodies(float delta)
-{
-    Goodie* next = nullptr, * goodie;
-    for (goodie = m_gameObjManager.getFirstActiveGoodie(); goodie; goodie = next)
-    {
-        next = static_cast<Goodie*>(goodie->getNext());
-        goodie->update(delta, *this);
-    }
-}
-
 void GameScreen::presentEffects()
 {
     ParticleShaderProgram& program = m_app->getParticleShaderProgram();
@@ -236,6 +234,17 @@ void GameScreen::presentEffects()
         next = static_cast<ParticleEffect*>(effect->getNext());
         effect->present(program);
     }
+}
+
+void GameScreen::presentDashboard()
+{
+    SimpleShaderProgram& program = m_app->getSimpleShaderProgram();
+
+    program.use();
+    program.setViewportSize(m_app->getViewportSize());
+    program.setViewportOrigin(m_dashboardOrigin);
+
+    m_dashboard.draw(program);
 }
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)

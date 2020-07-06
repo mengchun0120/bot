@@ -14,6 +14,7 @@ public:
     static const unsigned int NUM_FLOATS_DIRECTION = 2;
     static const unsigned int DIRECTION_SIZE = NUM_FLOATS_DIRECTION * sizeof(float);
     static const float FLOAT_ZERO;
+    static const float PI;
 };
 
 } // end of namespace bot

@@ -27,6 +27,11 @@ public:
 
     void consumeGoodie(Goodie* goodie, GameScreen& screen);
 
+    const GoodieEffect* getFirstActiveEffect() const
+    {
+        return m_firstActiveEffect;
+    }
+
 private:
     void initEffects();
 

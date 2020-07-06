@@ -7,9 +7,9 @@
         "collideBreathY": 20.0,
         "texture": "gold",
         "rect": "goodie_rect",
-        "liveDuration": 0.0,
-        "effectDuration": 0.0,
-        "weight": 50.0
+        "progressRing": "",
+        "duration": 0.0,
+        "weight": 10.0
     },
     {
         "type": "health",
@@ -19,9 +19,9 @@
         "collideBreathY": 20.0,
         "texture": "health",
         "rect": "goodie_rect",
-        "liveDuration": 0.0,
-        "effectDuration": 0.0,
-        "weight": 40.0
+        "progressRing": "",
+        "duration": 0.0,
+        "weight": 10.0
     },
     {
         "type": "indestructable",
@@ -31,8 +31,8 @@
         "collideBreathY": 20.0,
         "texture": "indestructable",
         "rect": "goodie_rect",
-        "liveDuration": 300.0,
-        "effectDuration": 300.0,
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
         "weight": 10.0
     },
     {
@@ -43,8 +43,8 @@
         "collideBreathY": 20.0,
         "texture": "double_experience",
         "rect": "goodie_rect",
-        "liveDuration": 300.0,
-        "effectDuration": 180.0,
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
         "weight": 10.0
     },
     {
@@ -55,8 +55,8 @@
         "collideBreathY": 20.0,
         "texture": "quick_shooter",
         "rect": "goodie_rect",
-        "liveDuration": 300.0,
-        "effectDuration": 120.0,
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
         "weight": 10.0
     },
     {
@@ -67,8 +67,8 @@
         "collideBreathY": 20.0,
         "texture": "quick_mover",
         "rect": "goodie_rect",
-        "liveDuration": 300.0,
-        "effectDuration": 120.0,
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
         "weight": 10.0
     },
     {
@@ -79,8 +79,8 @@
         "collideBreathY": 20.0,
         "texture": "double_damage",
         "rect": "goodie_rect",
-        "liveDuration": 300.0,
-        "effectDuration": 120.0,
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
         "weight": 10.0
     }
 ]

@@ -161,6 +161,11 @@ public:
         m_flags &= ~flag;
     }
 
+    void clearAllFlags()
+    {
+        m_flags = 0;
+    }
+
     void setFlag(int flag)
     {
         m_flags |= flag;

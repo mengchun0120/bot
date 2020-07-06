@@ -347,7 +347,9 @@ bool App::initGameLib(const rapidjson::Value& cfg)
     std::string goodieTemplateLibFile;
     std::string aiLibFile;
     std::string aiRobotTemplateLibFile;
+    std::string progressRingLibFile;
     std::string playerTemplateLibFile;
+    std::string dashboardTemplateFile;
 
     std::vector<JsonParseParam> params =
     {
@@ -362,7 +364,9 @@ bool App::initGameLib(const rapidjson::Value& cfg)
         {&particleEffectTemplateLibFile, "particleEffectTemplateLib", JSONTYPE_STRING},
         {&aiLibFile,                     "aiLib",                     JSONTYPE_STRING},
         {&aiRobotTemplateLibFile,        "aiRobotTemplateLib",        JSONTYPE_STRING},
-        {&playerTemplateLibFile,         "playerTemplateLib",         JSONTYPE_STRING}
+        {&progressRingLibFile,           "progressRingLib",           JSONTYPE_STRING},
+        {&playerTemplateLibFile,         "playerTemplateLib",         JSONTYPE_STRING},
+        {&dashboardTemplateFile,         "dashboardTemplate",         JSONTYPE_STRING}
     };
 
     if (!parseJson(params, cfg))
@@ -382,13 +386,16 @@ bool App::initGameLib(const rapidjson::Value& cfg)
     std::string goodieTemplateLibPath = constructPath({ libDir, goodieTemplateLibFile });
     std::string aiLibPath = constructPath({ libDir, aiLibFile });
     std::string aiRobotTemplateLibPath = constructPath({ libDir, aiRobotTemplateLibFile });
+    std::string progressRingLibPath = constructPath({ libDir, progressRingLibFile });
     std::string playerTemplateLibPath = constructPath({ libDir, playerTemplateLibFile });
+    std::string dashboardTemplatePath = constructPath({ libDir, dashboardTemplateFile });
 
     bool success = m_gameLib.load(textureDir, textureLibPath, rectLibPath, colorLibPath,
                                   tileTemplateLibPath, particleEffectTemplateLibPath,
                                   missileTemplateLibPath, goodieTemplateLibPath,
                                   aiLibPath, aiRobotTemplateLibPath, 
-                                  playerTemplateLibPath);
+                                  progressRingLibPath, playerTemplateLibPath,
+                                  dashboardTemplatePath);
 
     if (!success)
     {

@@ -148,12 +148,14 @@
     <ClCompile Include="src\ai\bot_chase_shoot_ai.cpp" />
     <ClCompile Include="src\app\bot_app.cpp" />
     <ClCompile Include="src\bot_main.cpp" />
+    <ClCompile Include="src\gameobj\bot_dashboard.cpp" />
     <ClCompile Include="src\gameobj\bot_game_object.cpp" />
     <ClCompile Include="src\gameobj\bot_goodie.cpp" />
     <ClCompile Include="src\gameobj\bot_goodie_effect.cpp" />
     <ClCompile Include="src\gameobj\bot_missile.cpp" />
     <ClCompile Include="src\gameobj\bot_particle_effect.cpp" />
     <ClCompile Include="src\gameobj\bot_player.cpp" />
+    <ClCompile Include="src\gameobj\bot_progress_ring.cpp" />
     <ClCompile Include="src\gameobj\bot_robot.cpp" />
     <ClCompile Include="src\gameobj\bot_shoot_ability.cpp" />
     <ClCompile Include="src\gameobj\bot_tile.cpp" />
@@ -194,10 +196,12 @@
     <ClCompile Include="src\parser\bot_ai_parser.cpp" />
     <ClCompile Include="src\parser\bot_ai_robot_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_color_parser.cpp" />
+    <ClCompile Include="src\parser\bot_dashboard_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_goodie_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_missile_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_particle_effect_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_player_template_parser.cpp" />
+    <ClCompile Include="src\parser\bot_progress_ring_parser.cpp" />
     <ClCompile Include="src\parser\bot_rectangle_parser.cpp" />
     <ClCompile Include="src\parser\bot_robot_template_parser.cpp" />
     <ClCompile Include="src\parser\bot_texture_parser.cpp" />
@@ -215,10 +219,12 @@
     <None Include="res\glsl\simple_vertex_shader.glsl" />
     <None Include="res\lib\ai_lib.json" />
     <None Include="res\lib\color_lib.json" />
+    <None Include="res\lib\dashboard_template.json" />
     <None Include="res\lib\goodie_template_lib.json" />
     <None Include="res\lib\missile_template_lib.json" />
     <None Include="res\lib\particle_effect_template_lib.json" />
     <None Include="res\lib\player_lib.json" />
+    <None Include="res\lib\progress_ring_lib.json" />
     <None Include="res\lib\rect_lib.json" />
     <None Include="res\lib\ai_robot_template_lib.json" />
     <None Include="res\lib\texture_lib.json" />
@@ -328,13 +334,25 @@
     <Image Include="res\fonts\ascii_97.png" />
     <Image Include="res\fonts\ascii_98.png" />
     <Image Include="res\fonts\ascii_99.png" />
+    <Image Include="res\texture\barrel.png" />
+    <Image Include="res\texture\base.png" />
+    <Image Include="res\texture\bullet.png" />
     <Image Include="res\texture\button.png" />
     <Image Include="res\texture\clay_tile.png" />
     <Image Include="res\texture\darkgreen_barrel.png" />
+    <Image Include="res\texture\double_damage.png" />
+    <Image Include="res\texture\double_experience.png" />
+    <Image Include="res\texture\gold.png" />
     <Image Include="res\texture\green_base.png" />
+    <Image Include="res\texture\health.png" />
     <Image Include="res\texture\ice_tile.png" />
+    <Image Include="res\texture\indestructable.png" />
     <Image Include="res\texture\lightgreen_bullet.png" />
+    <Image Include="res\texture\quick_mover.png" />
+    <Image Include="res\texture\quick_shooter.png" />
+    <Image Include="res\texture\spark.png" />
     <Image Include="res\texture\steel_tile.png" />
+    <Image Include="res\texture\tile.png" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="res\map\map_01.json" />
@@ -346,6 +364,7 @@
     <ClInclude Include="src\gameobj\bot_ability.h" />
     <ClInclude Include="src\gameobj\bot_action.h" />
     <ClInclude Include="src\gameobj\bot_ai_robot.h" />
+    <ClInclude Include="src\gameobj\bot_dashboard.h" />
     <ClInclude Include="src\gameobj\bot_game_object.h" />
     <ClInclude Include="src\gameobj\bot_game_object_flag.h" />
     <ClInclude Include="src\gameobj\bot_game_object_type.h" />
@@ -356,6 +375,7 @@
     <ClInclude Include="src\gameobj\bot_move_ability.h" />
     <ClInclude Include="src\gameobj\bot_particle_effect.h" />
     <ClInclude Include="src\gameobj\bot_player.h" />
+    <ClInclude Include="src\gameobj\bot_progress_ring.h" />
     <ClInclude Include="src\gameobj\bot_robot.h" />
     <ClInclude Include="src\gameobj\bot_shoot_ability.h" />
     <ClInclude Include="src\gameobj\bot_side.h" />
@@ -364,6 +384,7 @@
     <ClInclude Include="src\gametemplate\bot_ability_type.h" />
     <ClInclude Include="src\gametemplate\bot_ai_robot_template.h" />
     <ClInclude Include="src\gametemplate\bot_animation_template.h" />
+    <ClInclude Include="src\gametemplate\bot_dashboard_template.h" />
     <ClInclude Include="src\gametemplate\bot_game_object_template.h" />
     <ClInclude Include="src\gametemplate\bot_goodie_template.h" />
     <ClInclude Include="src\gametemplate\bot_missile_template.h" />
@@ -407,10 +428,12 @@
     <ClInclude Include="src\parser\bot_ai_parser.h" />
     <ClInclude Include="src\parser\bot_ai_robot_template_parser.h" />
     <ClInclude Include="src\parser\bot_color_parser.h" />
+    <ClInclude Include="src\parser\bot_dashboard_template_parser.h" />
     <ClInclude Include="src\parser\bot_goodie_template_parser.h" />
     <ClInclude Include="src\parser\bot_missile_template_parser.h" />
     <ClInclude Include="src\parser\bot_particle_effect_template_parser.h" />
     <ClInclude Include="src\parser\bot_player_template_parser.h" />
+    <ClInclude Include="src\parser\bot_progress_ring_parser.h" />
     <ClInclude Include="src\parser\bot_rectangle_parser.h" />
     <ClInclude Include="src\parser\bot_robot_template_parser.h" />
     <ClInclude Include="src\parser\bot_texture_parser.h" />

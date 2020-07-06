@@ -3,6 +3,7 @@
 #include "opengl/bot_texture.h"
 #include "opengl/bot_simple_shader_program.h"
 #include "screen/bot_game_screen.h"
+#include "gameobj/bot_progress_ring.h"
 #include "gameobj/bot_goodie.h"
 
 namespace bot {
@@ -25,20 +26,6 @@ void Goodie::present(ShaderProgram& program)
     SimpleShaderProgram& p = static_cast<SimpleShaderProgram&>(program);
 
     t->getRect()->draw(p, m_pos, nullptr, nullptr, nullptr, t->getTexture()->textureId(), nullptr);
-}
-
-void Goodie::update(float delta, GameScreen& screen)
-{
-    float liveDuration = getTemplate()->getLiveDuration();
-    if (liveDuration == 0.0f)
-    {
-        return;
-    }
-
-    if (elapsedTimeS(m_startTime) >= liveDuration)
-    {
-        screen.getGameObjManager().sendToDeathQueue(this);
-    }
 }
 
 } // end of namespace bot

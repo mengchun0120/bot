@@ -25,7 +25,8 @@ public:
 
     virtual void present(ShaderProgram& program);
 
-    virtual void update(float delta, GameScreen& screen);
+    virtual void update(float delta, GameScreen& screen)
+    {}
 
 private:
     TimePoint m_startTime;

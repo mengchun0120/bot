@@ -86,6 +86,7 @@ Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate
 								          float directionX, float directionY, Side side, float damageMultiplier)
 {
 	Missile* missile = m_missilePool.alloc();
+    missile->clearAllFlags();
 	missile->setTemplate(missileTemplate);
 	missile->setShooter(shooter);
 	missile->setPos(x, y);
@@ -101,6 +102,7 @@ Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate
 ParticleEffect* GameObjectManager::createParticleEffect(const ParticleEffectTemplate* t, float x, float y)
 {
 	ParticleEffect* effect = m_particleEffectPool.alloc();
+    effect->clearAllFlags();
 	effect->init(t, x, y);
 	m_activeParticleEffect.add(effect);
 	return effect;
@@ -126,7 +128,6 @@ Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
 
     const GoodieTemplate* t = m_gameLib.getGoodieTemplate(goodieIdx);
     Goodie* goodie = new Goodie(t, x, y);
-    LOG_INFO("create-goodie %p %p", goodie, t);
     m_activeGoodies.add(goodie);
 
     return goodie;
