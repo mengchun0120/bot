@@ -45,6 +45,16 @@ public:
         m_rect = rect;
     }
 
+    const Rectangle* getEffectRect() const
+    {
+        return m_effectRect;
+    }
+
+    void setEffectRect(const Rectangle* rect)
+    {
+        m_effectRect = rect;
+    }
+
     const Texture* getTexture() const
     {
         return m_texture;
@@ -93,6 +103,7 @@ public:
 private:
     GoodieType m_goodieType;
     const Rectangle* m_rect;
+    const Rectangle* m_effectRect;
     const Texture* m_texture;
     const ProgressRing* m_ring;
     float m_duration;

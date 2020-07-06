@@ -41,7 +41,7 @@ GoodieType parseGoodieType(const std::string& typeName)
 
 bool GoodieTemplateParser::parse(GoodieTemplate& t, const rapidjson::Value& elem)
 {
-    std::string textureName, rectName, typeName, ringName;
+    std::string textureName, rectName, effectRectName, typeName, ringName;
     float coverBreathX = 0.0f, coverBreathY = 0.0f;
     float collideBreathX = 0.0f, collideBreathY = 0.0f;
     float duration = 0.0f, weight = 0.0f;
@@ -51,6 +51,7 @@ bool GoodieTemplateParser::parse(GoodieTemplate& t, const rapidjson::Value& elem
         {&typeName,       "type",           JSONTYPE_STRING},
         {&textureName,    "texture",        JSONTYPE_STRING},
         {&rectName,       "rect",           JSONTYPE_STRING},
+        {&effectRectName, "effectRect",     JSONTYPE_STRING},
         {&ringName,       "progressRing",   JSONTYPE_STRING},
         {&coverBreathX,   "coverBreathX",   JSONTYPE_FLOAT},
         {&coverBreathY,   "coverBreathY",   JSONTYPE_FLOAT},
@@ -79,6 +80,17 @@ bool GoodieTemplateParser::parse(GoodieTemplate& t, const rapidjson::Value& elem
         return false;
     }
 
+    const Rectangle* effectRect = nullptr;
+    if (!effectRectName.empty())
+    {
+        effectRect = m_rectLib.search(effectRectName);
+        if (!effectRect)
+        {
+            LOG_ERROR("Failed to find effect rect %s", effectRectName.c_str());
+            return false;
+        }
+    }
+
     GoodieType type = parseGoodieType(typeName);
     if (type == GOODIE_UNKNOWN)
     {
@@ -103,6 +115,7 @@ bool GoodieTemplateParser::parse(GoodieTemplate& t, const rapidjson::Value& elem
     t.setCollideBreathY(collideBreathY);
     t.setGoodieType(type);
     t.setRect(rect);
+    t.setEffectRect(effectRect);
     t.setTexture(texture);
     t.setProgressRing(ring);
     t.setDuration(duration);

@@ -28,5 +28,10 @@
         "name": "goodie_rect",
         "width": 40.0,
         "height": 40.0
+    },
+    {
+        "name": "effect_rect",
+        "width": 30.0,
+        "height": 30.0
     }
 ]
