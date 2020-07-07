@@ -11,6 +11,7 @@ namespace bot {
 GameObjectManager::GameObjectManager(const GameLib& gameLib, GameMap& map, int missilePoolSize)
 	: m_gameLib(gameLib)
     , m_map(map)
+    , m_player(nullptr)
     , m_goodieGenerator(gameLib.getGoodieTemplateLib())
 	, m_missilePool(missilePoolSize)
 {
@@ -20,6 +21,7 @@ GameObjectManager::~GameObjectManager()
 {
 	clearActiveObjects();
 	clearDeadObjects();
+    delete m_player;
 }
 
 Tile* GameObjectManager::createTile(const std::string& tileName)
@@ -110,12 +112,11 @@ ParticleEffect* GameObjectManager::createParticleEffect(const ParticleEffectTemp
 
 Player* GameObjectManager::createPlayer(float x, float y, float directionX, float directionY)
 {
-	Player* player = new Player(m_gameLib.getPlayerTemplate());
-	player->setPos(x, y);
-	player->setDirection(directionX, directionY);
-	player->setSide(SIDE_PLAYER);
-    m_activeRobots.add(player);
-	return player;
+	m_player = new Player(m_gameLib.getPlayerTemplate());
+	m_player->setPos(x, y);
+	m_player->setDirection(directionX, directionY);
+	m_player->setSide(SIDE_PLAYER);
+	return m_player;
 }
 
 Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
@@ -142,15 +143,16 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
 		{
 			Tile* tile = static_cast<Tile*>(obj);
 			m_activeTiles.unlink(tile);
+            m_deadObjects.add(obj);
 			break;
 		}
 		case GAME_OBJ_TYPE_ROBOT:
 		{
 			Robot* robot = static_cast<Robot*>(obj);
-			m_activeRobots.unlink(robot);
-            if (robot->getSide() == SIDE_AI)
-            {
+            if (robot->getSide() == SIDE_AI) {
+                m_activeRobots.unlink(robot);
                 onRobotDeath(robot);
+                m_deadObjects.add(obj);
             }
 			break;
 		}
@@ -158,12 +160,14 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
 		{
 			Missile* missile = static_cast<Missile*>(obj);
 			m_activeMissiles.unlink(missile);
+            m_deadObjects.add(obj);
 			break;
 		}
 		case GAME_OBJ_TYPE_PARTICLE_EFFECT:
 		{
 			ParticleEffect* effect = static_cast<ParticleEffect*>(obj);
 			m_activeParticleEffect.unlink(effect);
+            m_deadObjects.add(obj);
 			break;
 		}
 		case GAME_OBJ_TYPE_ANIMATION:
@@ -174,6 +178,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         {
             Goodie* goodie = static_cast<Goodie*>(obj);
             m_activeGoodies.unlink(goodie);
+            m_deadObjects.add(obj);
             break;
         }
 		default: 
@@ -182,7 +187,6 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
 			return;
 		}
 	}
-	m_deadObjects.add(obj);
 }
 
 void GameObjectManager::clearDeadObjects()

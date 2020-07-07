@@ -100,6 +100,16 @@ public:
 
 	Player* createPlayer(float x, float y, float directionX, float directionY);
 
+    const Player* getPlayer() const
+    {
+        return m_player;
+    }
+
+    Player* getPlayer()
+    {
+        return m_player;
+    }
+
 	void sendToDeathQueue(GameObject* obj);
 
 	void clearDeadObjects();
@@ -121,6 +131,7 @@ protected:
 	DoubleLinkedList<ParticleEffect> m_activeParticleEffect;
     DoubleLinkedList<Goodie> m_activeGoodies;
 	DoubleLinkedList<GameObject> m_deadObjects;
+    Player* m_player;
 };
 
 } // end of namespace bot
