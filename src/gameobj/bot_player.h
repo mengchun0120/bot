@@ -32,6 +32,11 @@ public:
         return m_firstActiveEffect;
     }
 
+    int getGoldCount() const
+    {
+        return m_goldCount;
+    }
+
 private:
     void initEffects();
 

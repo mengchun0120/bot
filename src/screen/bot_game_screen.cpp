@@ -35,7 +35,8 @@ bool GameScreen::init()
         return false;
     }
 
-    m_dashboard.init(&(m_app->getGameLib().getDashboardTemplate()), m_app->getViewportWidth(), m_map.getPlayer());
+    m_dashboard.init(&(m_app->getGameLib().getDashboardTemplate()), &(m_app->getTextSystem()), 
+                     m_app->getViewportHeight(), m_map.getPlayer());
 
     LOG_INFO("Done loading dashboard");
 

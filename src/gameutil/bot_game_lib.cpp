@@ -133,7 +133,7 @@ bool GameLib::load(const std::string& textureFolder, const std::string& textureL
         return false;
     }
     
-    DashboardTemplateParser dashboardParser;
+    DashboardTemplateParser dashboardParser(m_rectLib, m_textureLib, m_colorLib);
     if (!dashboardParser.parse(m_dashboardTemplate, dashboardTemplateFile))
     {
         LOG_ERROR("Failed to read dashboard template from %s", dashboardTemplateFile.c_str());
