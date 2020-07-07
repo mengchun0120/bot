@@ -87,10 +87,10 @@ bool TextSystem::init(const std::string& fontFolder)
     return true;
 }
 
-void TextSystem::drawString(SimpleShaderProgram& program, const std::string& str,
-                            Size size, const float *pos, const float *color) const
+void TextSystem::drawString(SimpleShaderProgram& program, const char* str,
+                            Size size, const float* pos, const float* color) const
 {
-    if (str.empty())
+    if (str[0] == '\0')
     {
         return;
     }
@@ -98,39 +98,40 @@ void TextSystem::drawString(SimpleShaderProgram& program, const std::string& str
     program.setUseColor(false);
     program.setUseObjRef(true);
 
-    if (color) 
+    if (color)
     {
         program.setUseTexColor(true);
         program.setTexColor(color);
-    } 
+    }
     else
     {
         program.setUseTexColor(false);
     }
 
-    float realPos[] = {pos[0], pos[1]};
-    Rectangle *rect = m_rectMap[size][str[0] - MIN_CHAR];
+    float realPos[] = { pos[0], pos[1] };
+    Rectangle* rect = m_rectMap[size][str[0] - MIN_CHAR];
     float halfWidth = rect->width() / 2.0f;
-    int len = static_cast<int>(str.size());
-
     realPos[0] += halfWidth;
     realPos[1] += rect->height() / 2.0f;
+    const char* p = str;
 
-    for (int i = 0; i < len; ++i) 
+    while(true)
     {
         program.setObjRef(realPos);
         program.setPosition(rect->vertexArray(), true);
-        program.setTexture(m_textures[str[i] - MIN_CHAR].textureId());
+        program.setTexture(m_textures[*p - MIN_CHAR].textureId());
         glDrawArrays(GL_TRIANGLE_FAN, 0, rect->vertexArray().numVertices());
 
-        if (i < len - 1)
+        ++p;
+        if (*p == '\0')
         {
-            realPos[0] += halfWidth;
-            rect = m_rectMap[size][str[i + 1] - MIN_CHAR];
-            halfWidth = rect->width() / 2.0f;
-            realPos[0] += halfWidth;
-            rect = m_rectMap[size][str[i + 1] - MIN_CHAR];
+            break;
         }
+
+        realPos[0] += halfWidth;
+        rect = m_rectMap[size][*p - MIN_CHAR];
+        halfWidth = rect->width() / 2.0f;
+        realPos[0] += halfWidth;
     }
 }
 

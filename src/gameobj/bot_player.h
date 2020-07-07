@@ -11,6 +11,12 @@ class Goodie;
 class GameObjectManager;
 
 class Player : public Robot {
+private:
+    enum {
+        HP_STR_LEN = 11,
+        GOLD_STR_LEN = 9
+    };
+
 public:
 	Player(const PlayerTemplate* playerTemplate);
 
@@ -32,9 +38,21 @@ public:
         return m_firstActiveEffect;
     }
 
+    virtual bool addHP(int deltaHP);
+
+    const char* getHPStr() const
+    {
+        return m_hpStr;
+    }
+
     int getGoldCount() const
     {
         return m_goldCount;
+    }
+
+    const char* getGoldStr() const
+    {
+        return m_goldStr;
     }
 
 private:
@@ -58,6 +76,8 @@ private:
     int m_goldCount;
     long long m_experience;
     float m_experienceMultiplier;
+    char m_hpStr[HP_STR_LEN];
+    char m_goldStr[GOLD_STR_LEN];
 };
 
 } // end of namespace bot

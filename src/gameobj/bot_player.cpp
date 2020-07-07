@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "misc/bot_log.h"
 #include "screen/bot_game_screen.h"
 #include "gameobj/bot_goodie.h"
@@ -68,9 +69,11 @@ void Player::applyInstantaneousEffect(Goodie* goodie)
     {
     case GOODIE_GOLD:
         m_goldCount++;
+        snprintf(m_goldStr, GOLD_STR_LEN, "%d", m_goldCount);
         break;
     case GOODIE_HEALTH:
         m_hp = getTemplate()->getHP();
+        snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
         break;
     default:
         LOG_ERROR("Goodie type %d is NOT instantaneous!", static_cast<int>(goodie->getGoodieType()));
@@ -225,6 +228,13 @@ void Player::updateEffects()
             prev = cur;
         }
     }
+}
+
+bool Player::addHP(int deltaHP)
+{
+    bool ret = Robot::addHP(deltaHP);
+    snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
+    return ret;
 }
 
 } // end of namespace bot

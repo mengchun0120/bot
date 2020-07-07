@@ -1,4 +1,3 @@
-#include <sstream>
 #include "misc/bot_log.h"
 #include "opengl/bot_text_system.h"
 #include "opengl/bot_color.h"
@@ -66,17 +65,13 @@ void Dashboard::draw(SimpleShaderProgram& program)
     m_template->getHPRect()->draw(program, m_hpIconPos, nullptr, nullptr, nullptr,
                                   m_template->getHPTexture()->textureId(), nullptr);
 
-    std::ostringstream oss1;
-    oss1 << m_player->getHP();
-    m_textSys->drawString(program, oss1.str(), TextSystem::MEDIUM, m_hpTextPos, 
+    m_textSys->drawString(program, m_player->getHPStr(), TextSystem::MEDIUM, m_hpTextPos, 
                           m_template->getHPTextColor()->getColor());
 
     m_template->getGoldRect()->draw(program, m_goldIconPos, nullptr, nullptr, nullptr,
                                     m_template->getGoldTexture()->textureId(), nullptr);
 
-    std::ostringstream oss2;
-    oss2 << m_player->getGoldCount();
-    m_textSys->drawString(program, oss2.str(), TextSystem::MEDIUM, m_goldTextPos,
+    m_textSys->drawString(program, m_player->getGoldStr(), TextSystem::MEDIUM, m_goldTextPos,
                           m_template->getGoldTextColor()->getColor());
 }
 

@@ -55,7 +55,7 @@ public:
 		return m_hp;
 	}
 
-	bool addHP(int deltaHP);
+	virtual bool addHP(int deltaHP);
 
 	const RobotTemplate* getTemplate() const
 	{
