@@ -54,6 +54,8 @@ void Dashboard::initHeader(const DashboardTemplate* t, const TextSystem* textSys
 
 void Dashboard::draw(SimpleShaderProgram& program)
 {
+    const float HP_GOOD_THRESHOLD = 2.0f / 3.0f;
+    const float HP_BAD_THRESHOLD = 1.0f / 3.0f;
     int i = 0;
     const GoodieEffect* effect;
 
@@ -65,8 +67,23 @@ void Dashboard::draw(SimpleShaderProgram& program)
     m_template->getHPRect()->draw(program, m_hpIconPos, nullptr, nullptr, nullptr,
                                   m_template->getHPTexture()->textureId(), nullptr);
 
+    const Color* hpColor = nullptr;
+    float hpRatio = m_player->getHPRatio();
+    if (hpRatio >= HP_GOOD_THRESHOLD)
+    {
+        hpColor = m_template->getHPGoodColor();
+    }
+    else if (hpRatio >= HP_BAD_THRESHOLD)
+    {
+        hpColor = m_template->getHPBadColor();
+    }
+    else
+    {
+        hpColor = m_template->getHPCriticalColor();
+    }
+
     m_textSys->drawString(program, m_player->getHPStr(), TextSystem::MEDIUM, m_hpTextPos, 
-                          m_template->getHPTextColor()->getColor());
+                          hpColor->getColor());
 
     m_template->getGoldRect()->draw(program, m_goldIconPos, nullptr, nullptr, nullptr,
                                     m_template->getGoldTexture()->textureId(), nullptr);

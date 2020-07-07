@@ -21,26 +21,29 @@ bool DashboardTemplateParser::parse(DashboardTemplate& t, const std::string& fil
     }
 
     const rapidjson::Value& cfg = doc.GetObject();
-    std::string hpRectName, hpTextureName, hpTextColorName;
+    std::string hpRectName, hpTextureName;
+    std::string hpGoodColorName, hpBadColorName, hpCriticalColorName;
     std::string goldRectName, goldTextureName, goldTextColorName;
     float effectSpacingX, effectStartX, effectRingRadius;
     float hpIconX, hpTextX, goldIconX, goldTextX, headerTopMargin;
 
     std::vector<JsonParseParam> params = {
-        {&hpRectName,         "hpRect",             JSONTYPE_STRING},
-        {&hpTextureName,      "hpTexture",          JSONTYPE_STRING},
-        {&hpTextColorName,    "hpTextColor",        JSONTYPE_STRING},
-        {&hpIconX,            "hpIconX",            JSONTYPE_FLOAT},
-        {&hpTextX,            "hpTextX",            JSONTYPE_FLOAT},
-        {&goldRectName,       "goldRect",           JSONTYPE_STRING},
-        {&goldTextureName,    "goldTexture",        JSONTYPE_STRING},
-        {&goldTextColorName,  "goldTextColor",      JSONTYPE_STRING},
-        {&goldIconX,          "goldIconX",          JSONTYPE_FLOAT},
-        {&goldTextX,          "goldTextX",          JSONTYPE_FLOAT},
-        {&effectSpacingX,     "effectSpacingX",     JSONTYPE_FLOAT},
-        {&effectStartX,       "effectStartX",       JSONTYPE_FLOAT},
-        {&effectRingRadius,   "effectRingRadius",   JSONTYPE_FLOAT},
-        {&headerTopMargin,    "headerTopMargin",    JSONTYPE_FLOAT}
+        {&hpRectName,          "hpRect",             JSONTYPE_STRING},
+        {&hpTextureName,       "hpTexture",          JSONTYPE_STRING},
+        {&hpGoodColorName,     "hpGoodColor",        JSONTYPE_STRING},
+        {&hpBadColorName,      "hpBadColor",         JSONTYPE_STRING},
+        {&hpCriticalColorName, "hpCriticalColor",    JSONTYPE_STRING},
+        {&hpIconX,             "hpIconX",            JSONTYPE_FLOAT},
+        {&hpTextX,             "hpTextX",            JSONTYPE_FLOAT},
+        {&goldRectName,        "goldRect",           JSONTYPE_STRING},
+        {&goldTextureName,     "goldTexture",        JSONTYPE_STRING},
+        {&goldTextColorName,   "goldTextColor",      JSONTYPE_STRING},
+        {&goldIconX,           "goldIconX",          JSONTYPE_FLOAT},
+        {&goldTextX,           "goldTextX",          JSONTYPE_FLOAT},
+        {&effectSpacingX,      "effectSpacingX",     JSONTYPE_FLOAT},
+        {&effectStartX,        "effectStartX",       JSONTYPE_FLOAT},
+        {&effectRingRadius,    "effectRingRadius",   JSONTYPE_FLOAT},
+        {&headerTopMargin,     "headerTopMargin",    JSONTYPE_FLOAT}
     };
 
     if (!parseJson(params, cfg))
@@ -62,10 +65,24 @@ bool DashboardTemplateParser::parse(DashboardTemplate& t, const std::string& fil
         return false;
     }
 
-    const Color* hpTextColor = m_colorLib.search(hpTextColorName);
-    if (!hpTextColor)
+    const Color* hpGoodColor = m_colorLib.search(hpGoodColorName);
+    if (!hpGoodColor)
     {
-        LOG_ERROR("Failed to find hp text color %s", hpTextColorName.c_str());
+        LOG_ERROR("Failed to find hp good color %s", hpGoodColorName.c_str());
+        return false;
+    }
+
+    const Color* hpBadColor = m_colorLib.search(hpBadColorName);
+    if (!hpBadColor)
+    {
+        LOG_ERROR("Failed to find hp bad color %s", hpBadColorName.c_str());
+        return false;
+    }
+
+    const Color* hpCriticalColor = m_colorLib.search(hpCriticalColorName);
+    if (!hpCriticalColor)
+    {
+        LOG_ERROR("Failed to find hp critical color %s", hpCriticalColorName.c_str());
         return false;
     }
 
@@ -94,7 +111,9 @@ bool DashboardTemplateParser::parse(DashboardTemplate& t, const std::string& fil
     t.setHPTexture(hpTexture);
     t.setHPIconX(hpIconX);
     t.setHPTextX(hpTextX);
-    t.setHPTextColor(hpTextColor);
+    t.setHPGoodColor(hpGoodColor);
+    t.setHPBadColor(hpBadColor);
+    t.setHPCriticalColor(hpCriticalColor);
     t.setGoldRect(goldRect);
     t.setGoldTexture(goldTexture);
     t.setGoldIconX(goldIconX);

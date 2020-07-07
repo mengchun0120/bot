@@ -49,6 +49,13 @@
         "alpha": 255
     },
     {
+        "name": "amber",
+        "red": 255,
+        "green": 191,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
         "name": "darkred",
         "red": 139,
         "green": 0,

@@ -12,7 +12,9 @@ public:
     DashboardTemplate()
         : m_hpRect(nullptr)
         , m_hpTexture(nullptr)
-        , m_hpTextColor(nullptr)
+        , m_hpGoodColor(nullptr)
+        , m_hpBadColor(nullptr)
+        , m_hpCriticalColor(nullptr)
         , m_hpIconX(0.0f)
         , m_hpTextX(0.0f)
         , m_goldRect(nullptr)
@@ -49,14 +51,34 @@ public:
         m_hpTexture = texture;
     }
 
-    const Color* getHPTextColor() const
+    const Color* getHPGoodColor() const
     {
-        return m_hpTextColor;
+        return m_hpGoodColor;
     }
 
-    void setHPTextColor(const Color* color)
+    void setHPGoodColor(const Color* color)
     {
-        m_hpTextColor = color;
+        m_hpGoodColor = color;
+    }
+
+    const Color* getHPBadColor() const
+    {
+        return m_hpBadColor;
+    }
+
+    void setHPBadColor(const Color* color)
+    {
+        m_hpBadColor = color;
+    }
+
+    const Color* getHPCriticalColor() const
+    {
+        return m_hpCriticalColor;
+    }
+
+    void setHPCriticalColor(const Color* color)
+    {
+        m_hpCriticalColor = color;
     }
 
     const Rectangle* getGoldRect() const
@@ -172,7 +194,9 @@ public:
 private:
     const Rectangle* m_hpRect;
     const Texture* m_hpTexture;
-    const Color* m_hpTextColor;
+    const Color* m_hpGoodColor;
+    const Color* m_hpBadColor;
+    const Color* m_hpCriticalColor;
     float m_hpIconX;
     float m_hpTextX;
     const Rectangle* m_goldRect;

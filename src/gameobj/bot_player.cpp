@@ -12,6 +12,8 @@ Player::Player(const PlayerTemplate* playerTemplate)
     , m_experienceMultiplier(1.0f)
 {
     initEffects();
+    snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
+    snprintf(m_goldStr, GOLD_STR_LEN, "%d", m_goldCount);
 }
 
 Player::~Player()
@@ -72,7 +74,7 @@ void Player::applyInstantaneousEffect(Goodie* goodie)
         snprintf(m_goldStr, GOLD_STR_LEN, "%d", m_goldCount);
         break;
     case GOODIE_HEALTH:
-        m_hp = getTemplate()->getHP();
+        refillHP();
         snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
         break;
     default:
@@ -234,6 +236,7 @@ bool Player::addHP(int deltaHP)
 {
     bool ret = Robot::addHP(deltaHP);
     snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
+    LOG_INFO("hp ratio %f", m_hpRatio);
     return ret;
 }
 

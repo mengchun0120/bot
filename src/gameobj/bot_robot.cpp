@@ -13,6 +13,7 @@ namespace bot {
 Robot::Robot(const RobotTemplate* t)
     : GameObject(t)
     , m_hp(t->getHP())
+    , m_hpRatio(1.0f)
     , m_side(SIDE_UNKNOWN)
     , m_curAction(ACTION_NONE)
 {
@@ -152,8 +153,15 @@ bool Robot::addHP(int deltaHP)
     }
 
     m_hp = clamp(m_hp + deltaHP, 0, getTemplate()->getHP());
+    m_hpRatio = static_cast<float>(m_hp) / static_cast<float>(getTemplate()->getHP());
 
     return m_hp > 0;
+}
+
+void Robot::refillHP()
+{
+    m_hp = getTemplate()->getHP();
+    m_hpRatio = 1.0f;
 }
 
 Robot::Component* Robot::getComponentForMoveAbility()

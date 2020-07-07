@@ -4,7 +4,7 @@
     "coverBreathY": 48.28,
     "collideBreathX": 21.2,
     "collideBreathY": 21.2,
-    "hp": 400,
+    "hp": 100,
     "goodieSpawnProb": 0.0,
     "components": [
         {

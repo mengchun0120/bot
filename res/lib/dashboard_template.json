@@ -1,7 +1,9 @@
 {
     "hpRect": "effect_rect",
     "hpTexture": "health",
-    "hpTextColor": "green",
+    "hpGoodColor": "green",
+    "hpBadColor": "amber",
+    "hpCriticalColor": "red",
     "hpIconX": 100.0,
     "hpTextX": 135.0,
     "goldRect": "effect_rect",

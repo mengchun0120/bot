@@ -132,6 +132,13 @@ public:
         return getTemplate()->getGoodieSpawnProb();
     }
 
+    float getHPRatio() const
+    {
+        return m_hpRatio;
+    }
+
+    void refillHP();
+
 private:
 	void initComponents();
 
@@ -141,6 +148,7 @@ private:
 
 protected:
 	int m_hp;
+    float m_hpRatio;
 	Side m_side;
 	float m_direction[Constants::NUM_FLOATS_PER_POSITION];
 	Ability* m_abilities[NUM_OF_ABILITIES];
