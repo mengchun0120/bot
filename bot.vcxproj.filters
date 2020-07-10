@@ -266,6 +266,9 @@
     <ClCompile Include="src\parser\bot_dashboard_template_parser.cpp">
       <Filter>Source Files\parser</Filter>
     </ClCompile>
+    <ClCompile Include="src\app\bot_app_config.cpp">
+      <Filter>Source Files\app</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -865,9 +868,6 @@
     <ClInclude Include="src\structure\bot_double_linked_list.h">
       <Filter>Source Files\structure</Filter>
     </ClInclude>
-    <ClInclude Include="src\structure\bot_linked_item.h">
-      <Filter>Source Files\structure</Filter>
-    </ClInclude>
     <ClInclude Include="src\structure\bot_linked_list.h">
       <Filter>Source Files\structure</Filter>
     </ClInclude>
@@ -969,6 +969,21 @@
     </ClInclude>
     <ClInclude Include="src\parser\bot_dashboard_template_parser.h">
       <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_text_size.h">
+      <Filter>Source Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\input\bot_input_processor.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\bot_app_config.h">
+      <Filter>Source Files\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_int_value.h">
+      <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structure\bot_linked_item.h">
+      <Filter>Source Files\structure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

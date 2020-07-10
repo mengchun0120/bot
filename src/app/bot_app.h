@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_APP
 
 #include <string>
-#include <rapidjson/document.h>
+#include <memory>
 #include "input/bot_input_manager.h"
 #include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_particle_shader_program.h"
@@ -10,6 +10,7 @@
 #include "gameutil/bot_time_delta_smoother.h"
 #include "gameutil/bot_game_lib.h"
 #include "screen/bot_screen_manager.h"
+#include "app/bot_app_config.h"
 
 struct GLFWwindow;
 
@@ -19,45 +20,30 @@ class App {
 public:
     App();
 
+    bool init(const std::string& appDir, const std::string& cfgFile);
+
     ~App();
 
-    bool init(const std::string& appDir, const std::string& cfgFile);
+    const AppConfig& getConfig()
+    {
+        return m_config;
+    }
 
     bool run();
 
-    float getViewportWidth() const
+    float getViewportWidth()
     {
         return m_viewportSize[0];
     }
 
-    float getViewportHeight() const
+    float getViewportHeight()
     {
         return m_viewportSize[1];
     }
     
-    const float* getViewportSize() const
+    const float* getViewportSize()
     {
         return m_viewportSize;
-    }
-
-    const std::string& getAppDir() const
-    {
-        return m_appDir;
-    }
-
-    const std::string& getResDir() const
-    {
-        return m_resDir;
-    }
-
-    const std::string& getMapDir() const
-    {
-        return m_mapDir;
-    }
-
-    const std::string& getMapFile() const
-    {
-        return m_mapFile;
     }
 
     SimpleShaderProgram& getSimpleShaderProgram()
@@ -70,12 +56,12 @@ public:
         return m_particleShaderProgram;
     }
 
-    const GameLib& getGameLib() const
+    const GameLib& getGameLib()
     {
         return m_gameLib;
     }
 
-    const TextSystem& getTextSystem() const
+    const TextSystem& getTextSystem()
     {
         return m_textSystem;
     }
@@ -85,41 +71,28 @@ public:
         return m_screenMgr;
     }
 
-    float getMapPoolFactor() const
-    {
-        return m_mapPoolFactor;
-    }
-
-    int getMissilePoolSize() const
-    {
-        return m_missilePoolSize;
-    }
-
 private:
-    bool initWindow(const rapidjson::Value& cfg);
+    bool initWindow();
 
-    bool initInputManager(const rapidjson::Value& cfg);
+    bool initInputManager();
 
-    bool initOpenGL(const rapidjson::Value& cfg);
+    bool initOpenGL();
 
     void updateViewport();
 
-    bool initGame(const rapidjson::Value& cfg);
+    bool initGame();
 
-    bool initTimeDeltaSmoother(const rapidjson::Value& cfg);
+    bool initTimeDeltaSmoother();
 
-    bool initTextSystem(const rapidjson::Value& cfg);
+    bool initTextSystem();
 
-    bool initGameLib(const rapidjson::Value& cfg);
-
-    bool initMapConfig(const rapidjson::Value& cfg);
+    bool initGameLib();
 
 private:
+    static std::shared_ptr<App> k_app;
+
     GLFWwindow* m_window;
-    std::string m_appDir;
-    std::string m_resDir;
-    std::string m_mapDir;
-    std::string m_mapFile;
+    AppConfig m_config;
     float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
     InputManager m_inputMgr;
     SimpleShaderProgram m_simpleShaderProgram;
@@ -128,8 +101,6 @@ private:
     TextSystem m_textSystem;
     GameLib m_gameLib;
     ScreenManager m_screenMgr;
-    float m_mapPoolFactor;
-    int m_missilePoolSize;
 };
 
 } // end of namespace bot

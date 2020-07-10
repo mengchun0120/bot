@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "app/bot_app_config.h"
 #include "parser/bot_texture_parser.h"
 #include "parser/bot_rectangle_parser.h"
 #include "parser/bot_color_parser.h"
@@ -29,118 +30,112 @@ GameLib::~GameLib()
     }
 }
 
-bool GameLib::load(const std::string& textureFolder, const std::string& textureLibFile,
-                   const std::string& rectLibFile, const std::string& colorLibFile,
-                   const std::string& tileTemplateLibFile, const std::string& particleEffectTemplateLibFile,
-                   const std::string& missileTemplateLibFile, const std::string& goodieTemplateLibFile, 
-                   const std::string& aiLibFile, const std::string& aiRobotTemplateLibFile, 
-                   const std::string& progressRingFile, const std::string& playerTemplateFile,
-                   const std::string& dashboardTemplateFile)
+bool GameLib::load(const AppConfig& cfg)
 {
-    TextureParser textureParser(textureFolder);
-    if (!parseNamedMap(m_textureLib, textureLibFile.c_str(), textureParser))
+    TextureParser textureParser(cfg.getTextureDir());
+    if (!parseNamedMap(m_textureLib, cfg.getTextureLib().c_str(), textureParser))
     {
-        LOG_ERROR("Failed to read texture lib from %s", textureLibFile.c_str());
+        LOG_ERROR("Failed to read texture lib from %s", cfg.getTextureLib().c_str());
         return false;
     }
     
-    LOG_INFO("Done loading texture library from %s", textureLibFile.c_str());
+    LOG_INFO("Done loading texture library from %s", cfg.getTextureLib().c_str());
 
     RectangleParser rectParser;
-    if (!parseNamedMap(m_rectLib, rectLibFile.c_str(), rectParser))
+    if (!parseNamedMap(m_rectLib, cfg.getRectLib().c_str(), rectParser))
     {
-        LOG_ERROR("Failed to read rect lib from %s", rectLibFile.c_str());
+        LOG_ERROR("Failed to read rect lib from %s", cfg.getRectLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading rectangle library from %s", rectLibFile.c_str());
+    LOG_INFO("Done loading rectangle library from %s", cfg.getRectLib().c_str());
     
     ColorParser colorParser;
-    if (!parseNamedMap(m_colorLib, colorLibFile.c_str(), colorParser))
+    if (!parseNamedMap(m_colorLib, cfg.getColorLib().c_str(), colorParser))
     {
-        LOG_ERROR("Failed to read color lib from %s", colorLibFile.c_str());
+        LOG_ERROR("Failed to read color lib from %s", cfg.getColorLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading color library from %s", colorLibFile.c_str());
+    LOG_INFO("Done loading color library from %s", cfg.getColorLib().c_str());
 
     TileTemplateParser tileParser(m_textureLib, m_rectLib, m_colorLib);
-    if (!parseNamedMap(m_tileTemplateLib, tileTemplateLibFile.c_str(), tileParser))
+    if (!parseNamedMap(m_tileTemplateLib, cfg.getTileTemplateLib().c_str(), tileParser))
     {
-        LOG_ERROR("Failed to read tile template lib from %s", tileTemplateLibFile.c_str());
+        LOG_ERROR("Failed to read tile template lib from %s", cfg.getTileTemplateLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading tile template library from %s", tileTemplateLibFile.c_str());
+    LOG_INFO("Done loading tile template library from %s", cfg.getTileTemplateLib().c_str());
 
     ParticleEffectTemplateParser particleEffectParser(m_textureLib, m_colorLib);
-    if (!parseNamedMap(m_particleEffectTemplateLib, particleEffectTemplateLibFile.c_str(), particleEffectParser))
+    if (!parseNamedMap(m_particleEffectTemplateLib, cfg.getParticleEffectTemplateLib().c_str(), particleEffectParser))
     {
-        LOG_ERROR("Failed to read particle effect lib from %s", particleEffectTemplateLibFile.c_str());
+        LOG_ERROR("Failed to read particle effect lib from %s", cfg.getParticleEffectTemplateLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading particle effect lib from %s", particleEffectTemplateLibFile.c_str());
+    LOG_INFO("Done loading particle effect lib from %s", cfg.getParticleEffectTemplateLib().c_str());
 
     MissileTemplateParser missileParser(m_textureLib, m_rectLib, m_colorLib, m_particleEffectTemplateLib);
-    if (!parseNamedMap(m_missileTemplateLib, missileTemplateLibFile.c_str(), missileParser))
+    if (!parseNamedMap(m_missileTemplateLib, cfg.getMissileTemplateLib().c_str(), missileParser))
     {
-        LOG_ERROR("Failed to read missile template lib from %s", missileTemplateLibFile.c_str());
+        LOG_ERROR("Failed to read missile template lib from %s", cfg.getMissileTemplateLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading missile template library from %s", missileTemplateLibFile.c_str());
+    LOG_INFO("Done loading missile template library from %s", cfg.getMissileTemplateLib().c_str());
 
     ProgressRingParser progressRingParser(m_colorLib);
-    if (!parseNamedMap(m_progressRingLib, progressRingFile.c_str(), progressRingParser))
+    if (!parseNamedMap(m_progressRingLib, cfg.getProgressRingLib().c_str(), progressRingParser))
     {
-        LOG_ERROR("Failed to read progress ring from %s", progressRingFile.c_str());
+        LOG_ERROR("Failed to read progress ring from %s", cfg.getProgressRingLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading progress ring library from %s", progressRingFile.c_str());
+    LOG_INFO("Done loading progress ring library from %s", cfg.getProgressRingLib().c_str());
 
     GoodieTemplateParser goodieParser(m_textureLib, m_rectLib, m_progressRingLib);
-    if (!parseVector(m_goodieTemplateLib, goodieTemplateLibFile.c_str(), goodieParser))
+    if (!parseVector(m_goodieTemplateLib, cfg.getGoodieTemplateLib().c_str(), goodieParser))
     {
-        LOG_ERROR("Failed to read goodie template lib from %s", goodieTemplateLibFile.c_str());
+        LOG_ERROR("Failed to read goodie template lib from %s", cfg.getGoodieTemplateLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading goodie template lib from %s", goodieTemplateLibFile.c_str());
+    LOG_INFO("Done loading goodie template lib from %s", cfg.getGoodieTemplateLib().c_str());
 
     AIParser aiParser;
-    if (!parseNamedMap(m_aiLib, aiLibFile.c_str(), aiParser))
+    if (!parseNamedMap(m_aiLib, cfg.getAILib().c_str(), aiParser))
     {
-        LOG_ERROR("Failed to read AI from %s", aiLibFile.c_str());
+        LOG_ERROR("Failed to read AI from %s", cfg.getAILib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading ai library from %s", aiLibFile.c_str());
+    LOG_INFO("Done loading ai library from %s", cfg.getAILib().c_str());
 
     AIRobotTemplateParser aiRobotParser(m_textureLib, m_rectLib, m_colorLib, m_missileTemplateLib, m_aiLib);
-    if (!parseNamedMap(m_aiRobotTemplateLib, aiRobotTemplateLibFile.c_str(), aiRobotParser))
+    if (!parseNamedMap(m_aiRobotTemplateLib, cfg.getAIRobotTemplateLib().c_str(), aiRobotParser))
     {
-        LOG_ERROR("Failed to read ai-robot template lib from %s", aiRobotTemplateLibFile.c_str());
+        LOG_ERROR("Failed to read ai-robot template lib from %s", cfg.getAIRobotTemplateLib().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading ai-robot template library from %s", aiRobotTemplateLibFile.c_str());
+    LOG_INFO("Done loading ai-robot template library from %s", cfg.getAIRobotTemplateLib().c_str());
 
-    if (!loadPlayerTemplate(playerTemplateFile))
+    if (!loadPlayerTemplate(cfg.getPlayerTemplateLib()))
     {
-        LOG_ERROR("Failed to read player template from %s", playerTemplateFile.c_str());
+        LOG_ERROR("Failed to read player template from %s", cfg.getPlayerTemplateLib().c_str());
         return false;
     }
     
     DashboardTemplateParser dashboardParser(m_rectLib, m_textureLib, m_colorLib);
-    if (!dashboardParser.parse(m_dashboardTemplate, dashboardTemplateFile))
+    if (!dashboardParser.parse(m_dashboardTemplate, cfg.getDashboardTemplate()))
     {
-        LOG_ERROR("Failed to read dashboard template from %s", dashboardTemplateFile.c_str());
+        LOG_ERROR("Failed to read dashboard template from %s", cfg.getDashboardTemplate().c_str());
         return false;
     }
 
-    LOG_INFO("Done loading dashboard template from %s", dashboardTemplateFile.c_str());
+    LOG_INFO("Done loading dashboard template from %s", cfg.getDashboardTemplate().c_str());
 
     return true;
 }

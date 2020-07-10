@@ -34,7 +34,7 @@ bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
 {
     const float SCALE_FACTOR[] = {1.0f, 0.75f, 0.5f};
 
-    for(int size = TextSystem::BIG; size < TextSystem::SIZE_COUNT; ++size)
+    for(int size = TEXT_SIZE_BIG; size < TEXT_SIZE_COUNT; ++size)
     {
         for (int ch = 0; ch < TextSystem::CHAR_COUNT; ++ch) 
         {
@@ -88,7 +88,7 @@ bool TextSystem::init(const std::string& fontFolder)
 }
 
 void TextSystem::drawString(SimpleShaderProgram& program, const char* str,
-                            Size size, const float* pos, const float* color) const
+                            TextSize size, const float* pos, const float* color) const
 {
     if (str[0] == '\0')
     {
@@ -135,7 +135,7 @@ void TextSystem::drawString(SimpleShaderProgram& program, const char* str,
     }
 }
 
-void TextSystem::getStringSize(float& width, float& height, Size sz, const std::string& str) const
+void TextSystem::getStringSize(float& width, float& height, TextSize sz, const std::string& str) const
 {
     const Rectangle& rect = getRect(sz, str[0]);
     float w = rect.width();

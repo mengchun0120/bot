@@ -18,19 +18,15 @@
 
 namespace bot {
 
+class AppConfig;
+
 class GameLib {
 public:
     GameLib();
 
     ~GameLib();
 
-    bool load(const std::string& textureFolder, const std::string& textureLibFile, 
-              const std::string& rectLibFile, const std::string& colorLibFile,
-              const std::string& tileTemplateLibFile, const std::string& particleEffectTemplateLibFile,
-              const std::string& missileTemplateLibFile, const std::string& goodieTemplateLibFile,
-              const std::string& aiLibFile, const std::string& aiRobotTemplateLibFile,
-              const std::string& progressRingFile, const std::string& playerTemplateFile,
-              const std::string& dashboardTemplateFile);
+    bool load(const AppConfig& cfg);
 
     const Texture* getTexture(const std::string& name) const
     {
@@ -101,6 +97,8 @@ private:
     bool loadPlayerTemplate(const std::string& playerTemplateFile);
 
 private:
+    static GameLib g_gameLib;
+
     NamedMap<Texture> m_textureLib;
     NamedMap<Rectangle> m_rectLib;
     NamedMap<Color> m_colorLib;

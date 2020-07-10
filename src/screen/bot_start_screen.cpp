@@ -97,7 +97,7 @@ void StartScreen::getTextPos()
     for (int i = 0; i < NUM_BUTTONS; ++i) 
     {
         float w, h;
-        txtSys.getStringSize(w, h, TextSystem::MEDIUM, m_texts[i]);
+        txtSys.getStringSize(w, h, TEXT_SIZE_MEDIUM, m_texts[i]);
         m_textPos[i][0] = m_buttonPos[i][0] - w / 2.0f;
         m_textPos[i][1] = m_buttonPos[i][1] - h / 2.0f;
     }
@@ -135,7 +135,7 @@ void StartScreen::present()
             color = m_normalTextColor->getColor();
         }
         
-        textSys.drawString(program, m_texts[i], TextSystem::MEDIUM, m_textPos[i], color);
+        textSys.drawString(program, m_texts[i], TEXT_SIZE_MEDIUM, m_textPos[i], color);
     }
 }
 

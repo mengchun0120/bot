@@ -147,6 +147,7 @@
   <ItemGroup>
     <ClCompile Include="src\ai\bot_chase_shoot_ai.cpp" />
     <ClCompile Include="src\app\bot_app.cpp" />
+    <ClCompile Include="src\app\bot_app_config.cpp" />
     <ClCompile Include="src\bot_main.cpp" />
     <ClCompile Include="src\gameobj\bot_dashboard.cpp" />
     <ClCompile Include="src\gameobj\bot_game_object.cpp" />
@@ -361,6 +362,7 @@
     <ClInclude Include="src\ai\bot_ai.h" />
     <ClInclude Include="src\ai\bot_chase_shoot_ai.h" />
     <ClInclude Include="src\app\bot_app.h" />
+    <ClInclude Include="src\app\bot_app_config.h" />
     <ClInclude Include="src\gameobj\bot_ability.h" />
     <ClInclude Include="src\gameobj\bot_action.h" />
     <ClInclude Include="src\gameobj\bot_ai_robot.h" />
@@ -408,6 +410,7 @@
     <ClInclude Include="src\geometry\bot_shape.h" />
     <ClInclude Include="src\input\bot_input_event.h" />
     <ClInclude Include="src\input\bot_input_manager.h" />
+    <ClInclude Include="src\input\bot_input_processor.h" />
     <ClInclude Include="src\misc\bot_constants.h" />
     <ClInclude Include="src\misc\bot_file_utils.h" />
     <ClInclude Include="src\misc\bot_json_data_type.h" />
@@ -422,6 +425,7 @@
     <ClInclude Include="src\opengl\bot_particle_shader_program.h" />
     <ClInclude Include="src\opengl\bot_shader_program.h" />
     <ClInclude Include="src\opengl\bot_simple_shader_program.h" />
+    <ClInclude Include="src\opengl\bot_text_size.h" />
     <ClInclude Include="src\opengl\bot_text_system.h" />
     <ClInclude Include="src\opengl\bot_texture.h" />
     <ClInclude Include="src\opengl\bot_vertex_array.h" />
@@ -444,6 +448,7 @@
     <ClInclude Include="src\screen\bot_start_screen.h" />
     <ClInclude Include="src\structure\bot_double_linked_item.h" />
     <ClInclude Include="src\structure\bot_double_linked_list.h" />
+    <ClInclude Include="src\structure\bot_int_value.h" />
     <ClInclude Include="src\structure\bot_linked_item.h" />
     <ClInclude Include="src\structure\bot_linked_list.h" />
     <ClInclude Include="src\structure\bot_named_map.h" />

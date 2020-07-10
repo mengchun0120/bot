@@ -16,7 +16,7 @@ namespace bot {
 
 GameScreen::GameScreen(App* app)
     : m_app(app)
-    , m_gameObjManager(app->getGameLib(), m_map, app->getMissilePoolSize())
+    , m_gameObjManager(app->getGameLib(), m_map, app->getConfig().getMissilePoolSize())
     , m_state(GAME_STATE_INIT)
 {
 }
@@ -29,9 +29,9 @@ bool GameScreen::init()
 {
     LOG_INFO("Initializing GameScreen");
 
-    if (!loadMap(m_app->getMapFile()))
+    if (!loadMap(m_app->getConfig().getMapFile()))
     {
-        LOG_ERROR("Failed to load map from %s", m_app->getMapFile().c_str());
+        LOG_ERROR("Failed to load map from %s", m_app->getConfig().getMapFile().c_str());
         return false;
     }
 
@@ -52,7 +52,7 @@ bool GameScreen::loadMap(const std::string& fileName)
 {
     LOG_INFO("Loading map from %s", fileName.c_str());
 
-    GameMapLoader mapLoader(m_map, m_gameObjManager, m_app->getMapPoolFactor());
+    GameMapLoader mapLoader(m_map, m_gameObjManager, m_app->getConfig().getMapPoolFactor());
     if (!mapLoader.load(fileName, m_app->getViewportWidth(), m_app->getViewportHeight()))
     {
         return false;

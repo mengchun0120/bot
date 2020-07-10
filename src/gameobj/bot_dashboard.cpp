@@ -40,7 +40,7 @@ void Dashboard::initEffectPos(const DashboardTemplate* t, float screenHeight)
 
 void Dashboard::initHeader(const DashboardTemplate* t, const TextSystem* textSys, float screenHeight)
 {
-    const Rectangle& rect = textSys->getRect(TextSystem::MEDIUM, ' ');
+    const Rectangle& rect = textSys->getRect(TEXT_SIZE_MEDIUM, ' ');
     float y = screenHeight - t->getHeaderTopMargin();
     m_hpIconPos[0] = t->getHPIconX() + t->getHPRect()->width() / 2.0f;
     m_hpIconPos[1] = y - t->getHPRect()->height() / 2.0f;
@@ -82,13 +82,13 @@ void Dashboard::draw(SimpleShaderProgram& program)
         hpColor = m_template->getHPCriticalColor();
     }
 
-    m_textSys->drawString(program, m_player->getHPStr(), TextSystem::MEDIUM, m_hpTextPos, 
+    m_textSys->drawString(program, m_player->getHPStr(), TEXT_SIZE_MEDIUM, m_hpTextPos, 
                           hpColor->getColor());
 
     m_template->getGoldRect()->draw(program, m_goldIconPos, nullptr, nullptr, nullptr,
                                     m_template->getGoldTexture()->textureId(), nullptr);
 
-    m_textSys->drawString(program, m_player->getGoldStr(), TextSystem::MEDIUM, m_goldTextPos,
+    m_textSys->drawString(program, m_player->getGoldStr(), TEXT_SIZE_MEDIUM, m_goldTextPos,
                           m_template->getGoldTextColor()->getColor());
 }
 

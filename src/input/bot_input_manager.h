@@ -1,19 +1,12 @@
 #ifndef INCLUDE_BOT_INPUT_MANAGER
 #define INCLUDE_BOT_INPUT_MANAGER
 
-#include <functional>
 #include "structure/bot_queue.h"
 #include "opengl/bot_opengl.h"
 #include "input/bot_input_event.h"
+#include "input/bot_input_processor.h"
 
 namespace bot {
-
-// Prototype of input event processor
-// The processor returns:
-// 0, proceed to next input;
-// 1, clear the event queue and stop processing
-// 2, clear the event queue and exit app
-typedef std::function<int(const InputEvent&)> InputProcessor;
 
 class InputManager {
 public:

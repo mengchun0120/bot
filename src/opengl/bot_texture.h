@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_TEXTURE
 #define INCLUDE_BOT_TEXTURE
 
+#include <rapidjson/document.h>
 #include <string>
 
 namespace bot {
