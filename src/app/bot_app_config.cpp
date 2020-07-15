@@ -67,6 +67,8 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         {&m_progressRingLib,           "progressRingLib",           JSONTYPE_STRING},
         {&m_playerTemplateLib,         "playerTemplateLib",         JSONTYPE_STRING},
         {&m_dashboardTemplate,         "dashboardTemplate",         JSONTYPE_STRING},
+        {&m_buttonConfigFile,          "buttonConfig",              JSONTYPE_STRING},
+        {&m_startScreenConfigFile,     "startScreenConfig",         JSONTYPE_STRING},
         {&m_mapFile,                   "mapFile",                   JSONTYPE_STRING},
         {&m_mapPoolFactor,             "mapPoolFactor",             JSONTYPE_FLOAT},
         {&m_missilePoolSize,           "missilePoolSize",           JSONTYPE_INT}
@@ -106,6 +108,8 @@ void AppConfig::marshalConfig()
     m_progressRingLib           = constructPath({ m_libDir, m_progressRingLib });
     m_playerTemplateLib         = constructPath({ m_libDir, m_playerTemplateLib });
     m_dashboardTemplate         = constructPath({ m_libDir, m_dashboardTemplate });
+    m_buttonConfigFile          = constructPath({ m_libDir, m_buttonConfigFile });
+    m_startScreenConfigFile     = constructPath({ m_libDir, m_startScreenConfigFile });
     m_mapFile                   = constructPath({ m_mapDir, m_mapFile });
 }
 

@@ -26,6 +26,8 @@
     "progressRingLib": "progress_ring_lib.json",
     "playerTemplateLib": "player_lib.json",
     "dashboardTemplate": "dashboard_template.json",
+    "buttonConfig": "button_config.json",
+    "startScreenConfig": "start_screen_config.json",
     "mapFile": "map_01.json",
     "mapPoolFactor": 2.0,
     "missilePoolSize": 200

@@ -4,6 +4,14 @@
 
 namespace bot {
 
+std::shared_ptr<App> App::k_app;
+
+bool App::initInstance(const std::string& appDir, const std::string& cfgFile)
+{
+    k_app.reset(new App());
+    return k_app->init(appDir, cfgFile);
+}
+
 App::App()
     : m_window(nullptr)
 {

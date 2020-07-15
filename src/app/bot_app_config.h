@@ -165,6 +165,16 @@ public:
         return m_missilePoolSize;
     }
 
+    const std::string& getButtonConfigFile() const
+    {
+        return m_buttonConfigFile;
+    }
+
+    const std::string& getStartScreenConfigFile() const
+    {
+        return m_startScreenConfigFile;
+    }
+
 private:
     bool readConfig(const std::string& cfgFile);
 
@@ -199,6 +209,8 @@ private:
     std::string m_progressRingLib;
     std::string m_playerTemplateLib;
     std::string m_dashboardTemplate;
+    std::string m_buttonConfigFile;
+    std::string m_startScreenConfigFile;
     std::string m_mapFile;
     float m_mapPoolFactor;
     int m_missilePoolSize;

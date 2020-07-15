@@ -210,6 +210,11 @@
     <ClCompile Include="src\screen\bot_game_screen.cpp" />
     <ClCompile Include="src\screen\bot_screen_manager.cpp" />
     <ClCompile Include="src\screen\bot_start_screen.cpp" />
+    <ClCompile Include="src\screen\bot_start_screen_config.cpp" />
+    <ClCompile Include="src\widget\bot_button.cpp" />
+    <ClCompile Include="src\widget\bot_button_config.cpp" />
+    <ClCompile Include="src\widget\bot_widget.cpp" />
+    <ClCompile Include="src\widget\bot_widget_group.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -219,6 +224,7 @@
     <None Include="res\glsl\simple_frag_shader.glsl" />
     <None Include="res\glsl\simple_vertex_shader.glsl" />
     <None Include="res\lib\ai_lib.json" />
+    <None Include="res\lib\button_config.json" />
     <None Include="res\lib\color_lib.json" />
     <None Include="res\lib\dashboard_template.json" />
     <None Include="res\lib\goodie_template_lib.json" />
@@ -228,6 +234,7 @@
     <None Include="res\lib\progress_ring_lib.json" />
     <None Include="res\lib\rect_lib.json" />
     <None Include="res\lib\ai_robot_template_lib.json" />
+    <None Include="res\lib\start_screen_config.json" />
     <None Include="res\lib\texture_lib.json" />
     <None Include="res\lib\tile_template_lib.json" />
     <None Include="tools\CreateCharImage.java" />
@@ -446,6 +453,7 @@
     <ClInclude Include="src\screen\bot_screen.h" />
     <ClInclude Include="src\screen\bot_screen_manager.h" />
     <ClInclude Include="src\screen\bot_start_screen.h" />
+    <ClInclude Include="src\screen\bot_start_screen_config.h" />
     <ClInclude Include="src\structure\bot_double_linked_item.h" />
     <ClInclude Include="src\structure\bot_double_linked_list.h" />
     <ClInclude Include="src\structure\bot_int_value.h" />
@@ -454,6 +462,10 @@
     <ClInclude Include="src\structure\bot_named_map.h" />
     <ClInclude Include="src\structure\bot_object_pool.h" />
     <ClInclude Include="src\structure\bot_queue.h" />
+    <ClInclude Include="src\widget\bot_button.h" />
+    <ClInclude Include="src\widget\bot_button_config.h" />
+    <ClInclude Include="src\widget\bot_widget.h" />
+    <ClInclude Include="src\widget\bot_widget_group.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

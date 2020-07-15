@@ -15,6 +15,8 @@
 #include "gameobj/bot_progress_ring.h"
 #include "gametemplate/bot_player_template.h"
 #include "gametemplate/bot_dashboard_template.h"
+#include "widget/bot_button_config.h"
+#include "screen/bot_start_screen_config.h"
 
 namespace bot {
 
@@ -93,12 +95,20 @@ public:
         return m_dashboardTemplate;
     }
 
+    const ButtonConfig& getButtonConfig() const
+    {
+        return m_buttonConfig;
+    }
+
+    const StartScreenConfig& getStartScreenConfig() const
+    {
+        return m_startScreenConfig;
+    }
+
 private:
     bool loadPlayerTemplate(const std::string& playerTemplateFile);
 
 private:
-    static GameLib g_gameLib;
-
     NamedMap<Texture> m_textureLib;
     NamedMap<Rectangle> m_rectLib;
     NamedMap<Color> m_colorLib;
@@ -111,6 +121,8 @@ private:
     NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate* m_playerTemplate;
     DashboardTemplate m_dashboardTemplate;
+    ButtonConfig m_buttonConfig;
+    StartScreenConfig m_startScreenConfig;
 };
 
 } // end of namespace bot

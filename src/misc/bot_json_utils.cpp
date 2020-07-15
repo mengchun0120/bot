@@ -205,7 +205,7 @@ bool parseJson(std::vector<double>& r, const rapidjson::Value& value, const char
 		r[i] = arr[i].GetDouble();
 	}
 
-	return false;
+	return true;
 }
 
 bool parseJson(std::vector<bool>& r, const rapidjson::Value& value, const char* name)
@@ -224,7 +224,7 @@ bool parseJson(std::vector<bool>& r, const rapidjson::Value& value, const char* 
 		r[i] = arr[i].GetBool();
 	}
 
-	return false;
+	return true;
 }
 
 bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const char* name)
@@ -243,7 +243,7 @@ bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const
 		r[i] = arr[i].GetString();
 	}
 
-	return false;
+	return true;
 }
 
 bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value)

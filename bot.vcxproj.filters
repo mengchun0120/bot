@@ -72,6 +72,9 @@
     <Filter Include="Source Files\parser">
       <UniqueIdentifier>{0edd598c-2467-4a31-8955-b361ee26aa96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\widget">
+      <UniqueIdentifier>{4764a14a-b931-48ee-a1e2-9a11172433be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\bot_main.cpp">
@@ -269,6 +272,21 @@
     <ClCompile Include="src\app\bot_app_config.cpp">
       <Filter>Source Files\app</Filter>
     </ClCompile>
+    <ClCompile Include="src\widget\bot_button.cpp">
+      <Filter>Source Files\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\widget\bot_widget.cpp">
+      <Filter>Source Files\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\widget\bot_widget_group.cpp">
+      <Filter>Source Files\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\widget\bot_button_config.cpp">
+      <Filter>Source Files\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\screen\bot_start_screen_config.cpp">
+      <Filter>Source Files\screen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -347,6 +365,12 @@
       <Filter>Resource Files\lib</Filter>
     </None>
     <None Include="res\lib\dashboard_template.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\button_config.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\start_screen_config.json">
       <Filter>Resource Files\lib</Filter>
     </None>
   </ItemGroup>
@@ -984,6 +1008,21 @@
     </ClInclude>
     <ClInclude Include="src\structure\bot_linked_item.h">
       <Filter>Source Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="src\widget\bot_widget.h">
+      <Filter>Source Files\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\widget\bot_button.h">
+      <Filter>Source Files\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\widget\bot_button_config.h">
+      <Filter>Source Files\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\widget\bot_widget_group.h">
+      <Filter>Source Files\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\screen\bot_start_screen_config.h">
+      <Filter>Source Files\screen</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

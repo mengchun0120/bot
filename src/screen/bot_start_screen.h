@@ -4,6 +4,7 @@
 #include <string>
 #include "misc/bot_constants.h"
 #include "screen/bot_screen.h"
+#include "widget/bot_widget_group.h"
 
 namespace bot {
 
@@ -17,7 +18,7 @@ struct KeyEvent;
 
 class StartScreen: public Screen {
 public:
-    StartScreen(App* app);
+    StartScreen();
 
     virtual ~StartScreen();
 
@@ -30,17 +31,13 @@ public:
     virtual int processInput(const InputEvent &e);
 
 private:
-    void getButtonPos();
+    int startGame();
 
-    void getTextPos();
+    int loadGame();
 
-    void processMouseMoveEvent(const MouseMoveEvent &e);
+    int showSettings();
 
-    int processMouseButtonEvent(const MouseButtonEvent &e);
-
-    int processKeyEvent(const KeyEvent &e);
-
-    int getButtonIdx(float x, float y);
+    int exitApp();
 
 private:
     enum {
@@ -51,8 +48,8 @@ private:
         NUM_BUTTONS
     };
 
-    App* m_app;
-    const Texture* m_button;
+    WidgetGroup m_buttons;
+    /*const Texture* m_button;
     const Rectangle* m_rect;
     const Color* m_normalTextColor;
     const Color* m_hoverTextColor;
@@ -61,7 +58,7 @@ private:
     float m_buttonPos[NUM_BUTTONS][Constants::NUM_FLOATS_PER_POSITION];
     float m_textPos[NUM_BUTTONS][Constants::NUM_FLOATS_PER_POSITION];
     int m_hoverButtonIdx;
-    int m_pressedButtonIdx;
+    int m_pressedButtonIdx;*/
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
 };
 

@@ -86,14 +86,12 @@ int main(int argc, char* argv[])
     }
 #endif
 
-    bot::App app;
-
-    if (!app.init(appDir, cfgFile)) 
+    if (!bot::App::initInstance(appDir, cfgFile)) 
     {
         exit(1);
     }
 
-    bool ret = app.run();
+    bool ret = bot::App::getInstance().run();
 
     exit(ret ? 0 : 1);
 }

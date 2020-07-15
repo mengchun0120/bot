@@ -18,30 +18,33 @@ namespace bot {
 
 class App {
 public:
-    App();
+    static bool initInstance(const std::string& appDir, const std::string& cfgFile);
 
-    bool init(const std::string& appDir, const std::string& cfgFile);
+    static App& getInstance()
+    {
+        return *k_app;
+    }
 
     ~App();
 
-    const AppConfig& getConfig()
+    const AppConfig& getConfig() const
     {
         return m_config;
     }
 
     bool run();
 
-    float getViewportWidth()
+    float getViewportWidth() const
     {
         return m_viewportSize[0];
     }
 
-    float getViewportHeight()
+    float getViewportHeight() const
     {
         return m_viewportSize[1];
     }
     
-    const float* getViewportSize()
+    const float* getViewportSize() const
     {
         return m_viewportSize;
     }
@@ -56,12 +59,12 @@ public:
         return m_particleShaderProgram;
     }
 
-    const GameLib& getGameLib()
+    const GameLib& getGameLib() const
     {
         return m_gameLib;
     }
 
-    const TextSystem& getTextSystem()
+    const TextSystem& getTextSystem() const
     {
         return m_textSystem;
     }
@@ -72,6 +75,10 @@ public:
     }
 
 private:
+    App();
+
+    bool init(const std::string& appDir, const std::string& cfgFile);
+
     bool initWindow();
 
     bool initInputManager();

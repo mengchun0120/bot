@@ -30,7 +30,7 @@ ScreenManager::~ScreenManager()
 void ScreenManager::init(App* app)
 {
     m_app = app;
-    m_curScreen = new StartScreen(app);
+    m_curScreen = new StartScreen();
     m_curScreen->init();
     m_curScreenType = SCREEN_START;
 }
@@ -77,7 +77,7 @@ void ScreenManager::switchScreen(ScreenType type)
     switch (type) 
     {
         case SCREEN_START:
-            screen = new StartScreen(m_app);
+            screen = new StartScreen();
             break;
         case SCREEN_GAME:
             screen = new GameScreen(m_app);

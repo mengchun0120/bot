@@ -137,6 +137,22 @@ bool GameLib::load(const AppConfig& cfg)
 
     LOG_INFO("Done loading dashboard template from %s", cfg.getDashboardTemplate().c_str());
 
+    if (!m_buttonConfig.load(cfg.getButtonConfigFile().c_str(), m_textureLib, m_colorLib))
+    {
+        LOG_ERROR("Failed to read button config from %s", cfg.getButtonConfigFile().c_str());
+        return false;
+    }
+
+    LOG_INFO("Done loading button config from %s", cfg.getButtonConfigFile().c_str());
+
+    if (!m_startScreenConfig.load())
+    {
+        LOG_ERROR("Failed to read start screen config");
+        return false;
+    }
+
+    LOG_INFO("Done loading start screen config from %s", cfg.getStartScreenConfigFile().c_str());
+
     return true;
 }
 
