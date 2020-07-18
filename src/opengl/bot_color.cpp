@@ -1,4 +1,5 @@
 #include "misc/bot_log.h"
+#include "misc/bot_json_utils.h"
 #include "opengl/bot_color.h"
 
 namespace bot {
@@ -32,6 +33,17 @@ bool Color::validateColor(int red, int green, int blue, int alpha)
     return true;
 }
 
+Color* Color::create(const rapidjson::Value& elem)
+{
+    Color* color = new Color();
+    if (!color->init(elem))
+    {
+        delete color;
+        return nullptr;
+    }
+    return color;
+}
+
 Color::Color()
 {
     m_color[0] = 0.0f;
@@ -40,7 +52,32 @@ Color::Color()
     m_color[3] = 0.0f;
 }
 
-bool Color::setColor(int red, int green, int blue, int alpha)
+bool Color::init(const rapidjson::Value& elem)
+{
+    int red = 0, green = 0, blue = 0, alpha = 0;
+    std::vector<JsonParseParam> params =
+    {
+        {&red,   "red",   JSONTYPE_INT},
+        {&green, "green", JSONTYPE_INT},
+        {&blue,  "blue",  JSONTYPE_INT},
+        {&alpha, "alpha", JSONTYPE_INT}
+    };
+
+    if (!parseJson(params, elem))
+    {
+        return false;
+    }
+
+    if (!init(red, green, blue, alpha))
+    {
+        LOG_ERROR("Failed to set color");
+        return false;
+    }
+
+    return true;
+}
+
+bool Color::init(int red, int green, int blue, int alpha)
 {
     if (!validateColor(red, green, blue, alpha)) 
     {

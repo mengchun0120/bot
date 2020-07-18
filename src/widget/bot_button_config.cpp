@@ -1,11 +1,14 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "widget/bot_button_config.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
-bool ButtonConfig::load(const char* fileName, const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib)
+bool ButtonConfig::init()
 {
+    const AppConfig& cfg = App::getInstance().getConfig();
+    const char* fileName = cfg.getButtonConfigFile().c_str();
     rapidjson::Document doc;
 
     if (!readJson(doc, fileName))
@@ -19,7 +22,7 @@ bool ButtonConfig::load(const char* fileName, const NamedMap<Texture>& textureLi
         return false;
     }
 
-    const rapidjson::Value& cfg = doc.GetObject();
+    const rapidjson::Value& val = doc.GetObject();
     std::string textureName, normalColorName, hoverColorName, pressColorName;
 
     std::vector<JsonParseParam> params = {
@@ -29,38 +32,42 @@ bool ButtonConfig::load(const char* fileName, const NamedMap<Texture>& textureLi
         {&pressColorName,  "pressTextColor",   JSONTYPE_STRING}
     };
 
-    if (!parseJson(params, cfg))
+    if (!parseJson(params, val))
     {
         return false;
     }
 
-    m_texture = textureLib.search(textureName);
+    const GameLib& lib = App::getInstance().getGameLib();
+
+    m_texture = lib.getTexture(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Failed to find texture %s", textureName.c_str());
         return false;
     }
 
-    m_normalTextColor = colorLib.search(normalColorName);
+    m_normalTextColor = lib.getColor(normalColorName);
     if (!m_normalTextColor)
     {
         LOG_ERROR("Failed to find color %s", normalColorName.c_str());
         return false;
     }
 
-    m_hoverTextColor = colorLib.search(hoverColorName);
+    m_hoverTextColor = lib.getColor(hoverColorName);
     if (!m_hoverTextColor)
     {
         LOG_ERROR("Failed to find color %s", hoverColorName.c_str());
         return false;
     }
 
-    m_pressTextColor = colorLib.search(pressColorName);
+    m_pressTextColor = lib.getColor(pressColorName);
     if (!m_pressTextColor)
     {
         LOG_ERROR("Failed to find color %s", pressColorName.c_str());
         return false;
     }
+
+    LOG_INFO("Done loading button config from %s", fileName);
 
     return true;
 }

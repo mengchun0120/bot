@@ -10,10 +10,14 @@ class SimpleShaderProgram;
 
 class ProgressRing {
 public:
+    static ProgressRing* create(const rapidjson::Value& elem);
+
     ProgressRing();
 
     ~ProgressRing()
     {}
+
+    bool init(const rapidjson::Value& elem);
 
     bool init(const Color* frontColor, const Color* backColor, float radius, int numEdges);
 

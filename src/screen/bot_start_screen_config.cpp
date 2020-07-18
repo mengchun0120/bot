@@ -5,7 +5,7 @@
 
 namespace bot {
 
-bool StartScreenConfig::load()
+bool StartScreenConfig::init()
 {
     const AppConfig& cfg = App::getInstance().getConfig();
     const char* fileName = cfg.getStartScreenConfigFile().c_str();
@@ -35,6 +35,8 @@ bool StartScreenConfig::load()
         LOG_ERROR("Failed to parse start screen config from %s", fileName);
         return false;
     }
+
+    LOG_INFO("Done loading start screen config from %s", fileName);
 
     return true;
 }

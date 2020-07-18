@@ -1,9 +1,9 @@
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
 #include "input/bot_input_event.h"
-#include "app/bot_app.h"
 #include "widget/bot_button.h"
 #include "screen/bot_start_screen.h"
+#include "app/bot_app.h"
 
 namespace bot {
 

@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_ROBOT_TEMPLATE
 
 #include <vector>
+#include <rapidjson/document.h>
 #include "misc/bot_constants.h"
 #include "gametemplate/bot_move_ability_template.h"
 #include "gametemplate/bot_shoot_ability_template.h"
@@ -28,6 +29,8 @@ public:
 	RobotTemplate();
 
 	virtual ~RobotTemplate();
+
+    bool init(const rapidjson::Value& elem);
 
 	int getNumComponents() const
 	{
@@ -155,6 +158,14 @@ protected:
 	void initComponents();
 
 	void initAbilityTemplates();
+
+    bool parseBaseAttributes(const rapidjson::Value& elem);
+
+    bool parseComponents(const rapidjson::Value& elem);
+
+    bool parseMoveAbility(const rapidjson::Value& elem);
+
+    bool parseShootAbility(const rapidjson::Value& elem);
 
 protected:
 	std::vector<ComponentTemplate> m_components;

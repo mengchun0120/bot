@@ -8,8 +8,7 @@
 namespace bot {
 
 class Player;
-class SimpleShaderProgram;
-class DashboardTemplate;
+class DashboardConfig;
 class TextSystem;
 
 class Dashboard {
@@ -23,18 +22,16 @@ public:
     ~Dashboard()
     {}
 
-    void init(const DashboardTemplate* t, const TextSystem* textSys, float screenHeight, const Player* player);
+    void init(const Player* player);
 
-    void draw(SimpleShaderProgram& program);
-
-private:
-    void initEffectPos(const DashboardTemplate* t, float screenHeight);
-
-    void initHeader(const DashboardTemplate* t, const TextSystem* textSys, float screenHeight);
+    void draw();
 
 private:
-    const DashboardTemplate* m_template;
-    const TextSystem* m_textSys;
+    void initEffectPos(const DashboardConfig& cfg, float screenHeight);
+
+    void initHeader(const DashboardConfig& cfg, const TextSystem& textSys, float screenHeight);
+
+private:
     const Player* m_player;
     std::vector<Point> m_effectPositions;
     float m_hpIconPos[Constants::NUM_FLOATS_PER_POSITION];

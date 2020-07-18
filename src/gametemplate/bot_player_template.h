@@ -10,6 +10,8 @@ public:
 	PlayerTemplate();
 
 	virtual ~PlayerTemplate();
+
+    bool init();
 };
 
 } // end of namespace bot

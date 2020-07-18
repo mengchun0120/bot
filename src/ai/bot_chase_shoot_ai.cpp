@@ -2,12 +2,27 @@
 #include "misc/bot_log.h"
 #include "misc/bot_time_utils.h"
 #include "misc/bot_math_utils.h"
+#include "misc/bot_json_utils.h"
 #include "gameobj/bot_robot.h"
 #include "gameobj/bot_player.h"
 #include "screen/bot_game_screen.h"
 #include "ai/bot_chase_shoot_ai.h"
 
 namespace bot {
+
+ChaseShootAI::ChaseShootAI()
+    : m_chaseDurationMs(0.0f)
+    , m_shootDurationMs(0.0f)
+    , m_directionChangeIntervalMs(0.0f)
+    , m_chaseProb(0.0f)
+    , m_stopChaseDist(0.0f)
+    , m_generator(std::random_device()())
+    , m_distribution(0.0, 1.0)
+    , m_directions{ {1.0f, 0.0f}, {0.0f, 1.0f}, {-1.0f, 0.0f}, {0.0f, -1.0f} }
+    , m_numDirections(4)
+{
+
+}
 
 ChaseShootAI::ChaseShootAI(float chaseDurationMs, float shootDurationMs, float directionChangeIntervalMs, 
                            float chaseProb, float stopChaseDist)
@@ -21,6 +36,25 @@ ChaseShootAI::ChaseShootAI(float chaseDurationMs, float shootDurationMs, float d
     , m_directions{ {1.0f, 0.0f}, {0.0f, 1.0f}, {-1.0f, 0.0f}, {0.0f, -1.0f} }
     , m_numDirections(4)
 {
+}
+
+bool ChaseShootAI::init(const rapidjson::Value& elem)
+{
+    std::vector<JsonParseParam> params =
+    {
+        {&m_chaseDurationMs,           "chaseDuration",           JSONTYPE_FLOAT},
+        {&m_directionChangeIntervalMs, "directionChangeInterval", JSONTYPE_FLOAT},
+        {&m_shootDurationMs,           "shootDuration",           JSONTYPE_FLOAT},
+        {&m_chaseProb,                 "chaseProb",               JSONTYPE_FLOAT},
+        {&m_stopChaseDist,             "stopChaseDist",           JSONTYPE_FLOAT}
+    };
+
+    if (!parseJson(params, elem))
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void ChaseShootAI::apply(Robot& robot, float delta, GameScreen& screen)

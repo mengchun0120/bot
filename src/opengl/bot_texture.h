@@ -8,11 +8,15 @@ namespace bot {
 
 class Texture {
 public:
+    static Texture* create(const rapidjson::Value& elem);
+
     Texture();
 
     virtual ~Texture();
 
-    bool load(const std::string& imageFile);
+    bool init(const rapidjson::Value& elem);
+
+    bool init(const std::string& imageFile);
 
     unsigned int textureId() const
     {

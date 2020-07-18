@@ -64,6 +64,11 @@ public:
         return m_gameLib;
     }
 
+    GameLib& getGameLib()
+    {
+        return m_gameLib;
+    }
+
     const TextSystem& getTextSystem() const
     {
         return m_textSystem;

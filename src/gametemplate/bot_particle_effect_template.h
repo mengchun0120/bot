@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_PARTICLE_EFFECT_TEMPLATE
 #define INCLUDE_BOT_PARTICLE_EFFECT_TEMPLATE
 
+#include <rapidjson/document.h>
 #include "opengl/bot_vertex_array.h"
 #include "gametemplate/bot_game_object_template.h"
 
@@ -11,10 +12,14 @@ class Color;
 
 class ParticleEffectTemplate: public GameObjectTemplate {
 public:
+    static ParticleEffectTemplate* create(const rapidjson::Value& elem);
+    
     ParticleEffectTemplate();
 
     virtual ~ParticleEffectTemplate()
     {}
+
+    bool init(const rapidjson::Value& elem);
 
     bool init(float coverBreathX, float coverBreathY, int numParticles, float accelearation, float initSpeed,
               float duration, float particleSize, const float* data, const Texture* texture, const Color* color);

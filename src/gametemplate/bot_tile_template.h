@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_TILE_TEMPLATE
 #define INCLUDE_BOT_TILE_TEMPLATE
 
+#include <rapidjson/document.h>
 #include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
@@ -11,10 +12,14 @@ class Color;
 
 class TileTemplate: public GameObjectTemplate {
 public:
-	TileTemplate();
+    static TileTemplate* create(const rapidjson::Value& elem);
+    
+    TileTemplate();
 
 	virtual ~TileTemplate()
 	{}
+
+    bool init(const rapidjson::Value& elem);
 
 	const Texture* getTexture() const
 	{

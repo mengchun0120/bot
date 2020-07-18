@@ -1,10 +1,9 @@
 #ifndef INCLUDE_BOT_NAMED_MAP
 #define INCLUDE_BOT_NAMED_MAP
 
-#include <string>
 #include <list>
-#include <iostream>
 #include "misc/bot_log.h"
+#include "misc/bot_json_utils.h"
 
 namespace bot {
 
@@ -14,6 +13,8 @@ public:
     NamedMap();
 
     virtual ~NamedMap();
+
+    bool load(const char* fileName);
 
     bool add(const char *name, T* t);
 
@@ -31,7 +32,7 @@ public:
 
     void clear();
 
-    void print();
+    void log() const;
 
 private:
     struct Node {
@@ -59,6 +60,49 @@ template <typename T>
 NamedMap<T>::~NamedMap()
 {
     clear();
+}
+
+template <typename T>
+bool NamedMap<T>::load(const char* fileName)
+{
+    rapidjson::Document doc;
+
+    if (!readJson(doc, fileName))
+    {
+        return false;
+    }
+
+    if (!doc.IsArray())
+    {
+        LOG_ERROR("Invalid format: %s", fileName);
+        return false;
+    }
+
+    const rapidjson::Value& arr = doc.GetArray();
+    int numObjects = arr.Capacity();
+
+    for (int i = 0; i < numObjects; ++i)
+    {
+        const rapidjson::Value& elem = arr[i];
+        std::string name;
+
+        if (!parseJson(name, elem, "name"))
+        {
+            LOG_ERROR("Failed to find name in the %dth object of %s", i, fileName);
+            return false;
+        }
+
+        T* t = T::create(elem);
+        if (!t)
+        {
+            LOG_ERROR("Failed to parse the %dth object of %s", i, fileName);
+            return false;
+        }
+
+        add(name, t);
+    }
+
+    return true;
 }
 
 template <typename T>
@@ -205,7 +249,7 @@ void NamedMap<T>::clear()
 }
 
 template <typename T>
-void NamedMap<T>::print()
+void NamedMap<T>::log() const
 {
     if (!m_root) 
     {
@@ -220,26 +264,7 @@ void NamedMap<T>::print()
         Node* n = q.front();
         q.pop_front();
 
-        std::cout << n->m_ch << ' ' << static_cast<void*>(n->m_ptr);
-
-        if (n->m_left) 
-        {
-            std::cout << ' ' << n->m_left->m_ch;
-        }
-        else {
-            std::cout << " null";
-        }
-
-        if (n->m_right)
-        {
-            std::cout << ' ' << n->m_right->m_ch;
-        }
-        else
-        {
-            std::cout << " null";
-        }
-
-        std::cout << std::endl;
+        LOG_INFO("%p %c %p %p", n, n->m_ch, n->m_left, n->m_right);
 
         if (n->m_left) 
         {

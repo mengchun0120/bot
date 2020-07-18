@@ -2,9 +2,24 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include "misc/bot_log.h"
+#include "misc/bot_file_utils.h"
+#include "misc/bot_json_utils.h"
+#include "app/bot_app.h"
 #include "opengl/bot_texture.h"
 
 namespace bot {
+
+Texture* Texture::create(const rapidjson::Value& elem)
+{
+    Texture* texture = new Texture();
+    if (!texture->init(elem))
+    {
+        delete texture;
+        return nullptr;
+    }
+
+    return texture;
+}
 
 Texture::Texture()
     : m_textureId(0)
@@ -22,7 +37,28 @@ Texture::~Texture()
     }
 }
 
-bool Texture::load(const std::string& imageFile)
+bool Texture::init(const rapidjson::Value& elem)
+{
+    std::string fileName;
+    if (!parseJson(fileName, elem, "file"))
+    {
+        LOG_ERROR("failed to parse file");
+        return false;
+    }
+
+    const std::string& textureDir = App::getInstance().getConfig().getTextureDir();
+    std::string filePath = constructPath({ textureDir, fileName });
+
+    if (!init(filePath))
+    {
+        LOG_ERROR("Failed to load texture from %s", filePath.c_str());
+        return false;
+    }
+
+    return true;
+}
+
+bool Texture::init(const std::string& imageFile)
 {
     glGenTextures(1, &m_textureId);
     glBindTexture(GL_TEXTURE_2D, m_textureId);

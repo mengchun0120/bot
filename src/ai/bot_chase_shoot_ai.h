@@ -11,11 +11,15 @@ namespace bot {
 
 class ChaseShootAI : public AI {
 public:
+    ChaseShootAI();
+
     ChaseShootAI(float chaseDurationMs, float shootDurationMs, float directionChangeIntervalMs,
                  float chaseProb, float stopChaseDist);
 
     virtual ~ChaseShootAI()
     {}
+
+    virtual bool init(const rapidjson::Value& elem);
 
     virtual void apply(Robot& robot, float delta, GameScreen& screen);
 

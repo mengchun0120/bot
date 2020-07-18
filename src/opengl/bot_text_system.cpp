@@ -18,7 +18,7 @@ bool loadTextSystemTextures(const std::string& fontFolder, Texture *textures)
     for (int ch = TextSystem::MIN_CHAR; ch <= TextSystem::MAX_CHAR; ++ch) 
     {
         std::string fileName = getTextSystemImageFile(fontFolder, ch);
-        if (!textures[ch-TextSystem::MIN_CHAR].load(fileName)) 
+        if (!textures[ch-TextSystem::MIN_CHAR].init(fileName)) 
         {
             LOG_ERROR("Failed to create texture for ascii %d", ch);
             return false;

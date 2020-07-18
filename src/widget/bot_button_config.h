@@ -23,7 +23,7 @@ public:
     ~ButtonConfig()
     {}
 
-    bool load(const char* fileName, const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib);
+    bool init();
 
     const Texture* getTexture() const
     {

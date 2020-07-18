@@ -1,17 +1,73 @@
 #include <cmath>
 #include "misc/bot_log.h"
 #include "misc/bot_constants.h"
+#include "misc/bot_json_utils.h"
 #include "opengl/bot_color.h"
 #include "opengl/bot_simple_shader_program.h"
 #include "gameobj/bot_progress_ring.h"
+#include "app/bot_app.h"
 
 namespace bot {
+
+ProgressRing* ProgressRing::create(const rapidjson::Value& elem)
+{
+    ProgressRing* ring = new ProgressRing();
+    if (!ring->init(elem))
+    {
+        delete ring;
+        return nullptr;
+    }
+    return ring;
+}
 
 ProgressRing::ProgressRing()
     : m_frontColor(nullptr)
     , m_backColor(nullptr)
     , m_maxIdx(0)
 {
+}
+
+bool ProgressRing::init(const rapidjson::Value& elem)
+{
+    std::string backColorName, frontColorName;
+    float radius;
+    int numEdges;
+
+    std::vector<JsonParseParam> params = {
+        {&backColorName,  "backColor",  JSONTYPE_STRING},
+        {&frontColorName, "frontColor", JSONTYPE_STRING},
+        {&radius,         "radius",     JSONTYPE_FLOAT},
+        {&numEdges,       "numEdges",   JSONTYPE_INT}
+    };
+
+    if (!parseJson(params, elem))
+    {
+        return false;
+    }
+
+    const GameLib& lib = App::getInstance().getGameLib();
+
+    const Color* backColor = lib.getColor(backColorName);
+    if (!backColor)
+    {
+        LOG_ERROR("Failed to find backColor %s", backColorName.c_str());
+        return false;
+    }
+
+    const Color* frontColor = lib.getColor(frontColorName);
+    if (!frontColor)
+    {
+        LOG_ERROR("Failed to find frontColor %s", frontColorName.c_str());
+        return false;
+    }
+
+    if (!init(frontColor, backColor, radius, numEdges))
+    {
+        LOG_ERROR("Failed to initialize progress ring");
+        return false;
+    }
+
+    return true;
 }
 
 bool ProgressRing::init(const Color* frontColor, const Color* backColor, float radius, int numEdges)
@@ -69,7 +125,7 @@ void ProgressRing::draw(SimpleShaderProgram& program, const float* pos, float pe
     program.setColor(m_backColor->getColor());
     glDrawArrays(GL_TRIANGLES, 0, finishedVertices);
 
-    if (finishedVertices < m_vertices.numVertices())
+    if (finishedVertices < static_cast<int>(m_vertices.numVertices()))
     {
         program.setColor(m_frontColor->getColor());
         glDrawArrays(GL_TRIANGLES, finishedVertices, m_vertices.numVertices() - finishedVertices);

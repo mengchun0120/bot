@@ -1,7 +1,21 @@
+#include "misc/bot_log.h"
 #include "misc/bot_constants.h"
+#include "misc/bot_json_utils.h"
 #include "gametemplate/bot_particle_effect_template.h"
+#include "app/bot_app.h"
 
 namespace bot {
+
+ParticleEffectTemplate* ParticleEffectTemplate::create(const rapidjson::Value& elem)
+{
+    ParticleEffectTemplate* t = new ParticleEffectTemplate();
+    if (!t->init(elem))
+    {
+        delete t;
+        return nullptr;
+    }
+    return t;
+}
 
 ParticleEffectTemplate::ParticleEffectTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_PARTICLE_EFFECT)
@@ -34,6 +48,73 @@ bool ParticleEffectTemplate::init(float coverBreathX, float coverBreathY, int nu
     m_particleSize = particleSize;
     m_texture = texture;
     m_color = color;
+
+    return true;
+}
+
+bool ParticleEffectTemplate::init(const rapidjson::Value& elem)
+{
+    std::vector<float> data;
+    std::string textureName, colorName;
+
+    std::vector<JsonParseParam> params =
+    {
+        {&m_coverBreathX, "coverBreathX", JSONTYPE_FLOAT},
+        {&m_coverBreathY, "coverBreathY", JSONTYPE_FLOAT},
+        {&m_acceleration, "acceleration", JSONTYPE_FLOAT},
+        {&m_initSpeed,    "initSpeed",    JSONTYPE_FLOAT},
+        {&m_duration,     "duration",     JSONTYPE_FLOAT},
+        {&m_particleSize, "particleSize", JSONTYPE_FLOAT},
+        {&textureName,    "texture",      JSONTYPE_STRING},
+        {&colorName,      "color",        JSONTYPE_STRING},
+        {&data,           "particles",    JSONTYPE_FLOAT_ARRAY}
+    };
+
+    if (!parseJson(params, elem))
+    {
+        return false;
+    }
+
+    if (data.size() == 0)
+    {
+        LOG_ERROR("Particles must NOT be empty");
+        return false;
+    }
+
+    const int NUM_FLOATS_PER_PARTICLE = Constants::NUM_FLOATS_PER_POSITION;
+
+    if (data.size() % NUM_FLOATS_PER_PARTICLE != 0)
+    {
+        LOG_ERROR("Length of particles must be multiples of %d", NUM_FLOATS_PER_PARTICLE);
+        return false;
+    }
+
+    m_numParticles = static_cast<int>(data.size()) / NUM_FLOATS_PER_PARTICLE;
+
+    const GameLib& lib = App::getInstance().getGameLib();
+
+    m_texture = lib.getTexture(textureName);
+    if (!m_texture)
+    {
+        LOG_ERROR("Cannot find texture %s", textureName.c_str());
+        return false;
+    }
+
+    m_color = lib.getColor(colorName);
+    if (!m_color)
+    {
+        LOG_ERROR("Cannot find color %s", colorName.c_str());
+        return false;
+    }
+
+    ParticleEffectTemplate* particleEffectTemplate = new ParticleEffectTemplate();
+
+    const int VERTEX_SIZE = Constants::POSITION_SIZE;
+
+    if (!m_vertexArray.load(data.data(), m_numParticles, VERTEX_SIZE, VERTEX_SIZE))
+    {
+        return false;
+    }
 
     return true;
 }

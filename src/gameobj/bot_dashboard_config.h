@@ -1,5 +1,5 @@
-#ifndef INCLUDE_BOT_DASHBOARD_TEMPLATE
-#define INCLUDE_BOT_DASHBOARD_TEMPLATE
+#ifndef INCLUDE_BOT_DASHBOARD_CONFIG
+#define INCLUDE_BOT_DASHBOARD_CONFIG
 
 namespace bot {
 
@@ -7,9 +7,9 @@ class Rectangle;
 class Texture;
 class Color;
 
-class DashboardTemplate {
+class DashboardConfig {
 public:
-    DashboardTemplate()
+    DashboardConfig()
         : m_hpRect(nullptr)
         , m_hpTexture(nullptr)
         , m_hpGoodColor(nullptr)
@@ -28,8 +28,10 @@ public:
         , m_headerTopMargin(0.0f)
     {}
 
-    ~DashboardTemplate()
+    ~DashboardConfig()
     {}
+
+    bool init();
 
     const Rectangle* getHPRect() const
     {

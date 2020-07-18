@@ -1,4 +1,7 @@
+#include "misc/bot_log.h"
+#include "misc/bot_json_utils.h"
 #include "gametemplate/bot_robot_template.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
@@ -17,6 +20,31 @@ RobotTemplate::~RobotTemplate()
 			delete m_abilityTemplates[i];
 		}
 	}
+}
+
+bool RobotTemplate::init(const rapidjson::Value& elem)
+{
+    if (!parseBaseAttributes(elem))
+    {
+        return false;
+    }
+
+    if (!parseComponents(elem))
+    {
+        return false;
+    }
+
+    if (!parseMoveAbility(elem))
+    {
+        return false;
+    }
+
+    if (!parseShootAbility(elem))
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void RobotTemplate::setNumComponents(int numComponents)
@@ -58,6 +86,181 @@ void RobotTemplate::setShootAbilityTemplate(float shootInterval, float shootPosX
 		                                                          shootPosY, missileTemplate);
 
 	m_abilityTemplates[ABILITY_SHOOT] = shootAbility;
+}
+
+bool RobotTemplate::parseBaseAttributes(const rapidjson::Value& elem)
+{
+    std::vector<JsonParseParam> robotParams =
+    {
+        {&m_coverBreathX,    "coverBreathX",    JSONTYPE_FLOAT},
+        {&m_coverBreathY,    "coverBreathY",    JSONTYPE_FLOAT},
+        {&m_collideBreathX,  "collideBreathX",  JSONTYPE_FLOAT},
+        {&m_collideBreathY,  "collideBreathY",  JSONTYPE_FLOAT},
+        {&m_hp,              "hp",              JSONTYPE_INT},
+        {&m_goodieSpawnProb, "goodieSpawnProb", JSONTYPE_FLOAT}
+    };
+
+    if (!parseJson(robotParams, elem))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool RobotTemplate::parseComponents(const rapidjson::Value& elem)
+{
+    if (!elem.HasMember("components"))
+    {
+        LOG_ERROR("Components missing");
+        return false;
+    }
+
+    if (!elem["components"].IsArray())
+    {
+        LOG_ERROR("Components must be an array");
+        return false;
+    }
+
+    const rapidjson::Value& components = elem["components"];
+    int numComponents = components.Capacity();
+    std::string textureName, rectName, colorName;
+    float componentX = 0.0f, componentY = 0.0f;
+    const GameLib& lib = App::getInstance().getGameLib();
+
+    std::vector<JsonParseParam> componentParams =
+    {
+        {&textureName, "texture",    JSONTYPE_STRING},
+        {&rectName,    "rect",       JSONTYPE_STRING},
+        {&colorName,   "color",      JSONTYPE_STRING},
+        {&componentX,  "componentX", JSONTYPE_FLOAT},
+        {&componentY,  "componentY", JSONTYPE_FLOAT}
+    };
+
+    m_components.resize(numComponents);
+    for (int i = 0; i < numComponents; ++i)
+    {
+        if (!parseJson(componentParams, components[i]))
+        {
+            return false;
+        }
+
+        const Texture* texture = lib.getTexture(textureName);
+        if (!texture)
+        {
+            LOG_ERROR("Failed to find texture %s", textureName.c_str());
+            return false;
+        }
+
+        const Rectangle* rect = lib.getRect(rectName);
+        if (!rect)
+        {
+            LOG_ERROR("Failed to find rect %s", rectName.c_str());
+            return false;
+        }
+
+        const Color* color = lib.getColor(colorName);
+        if (!color)
+        {
+            LOG_ERROR("Failed to find color %s", colorName.c_str());
+            return false;
+        }
+
+        m_components[i].m_index = i;
+        m_components[i].m_texture = texture;
+        m_components[i].m_rect = rect;
+        m_components[i].m_color = color;
+        m_components[i].m_pos[0] = componentX;
+        m_components[i].m_pos[1] = componentY;
+    }
+
+    return true;
+}
+
+bool RobotTemplate::parseMoveAbility(const rapidjson::Value& elem)
+{
+    bool movable = false;
+    float moveSpeed = 0.0f;
+    int moveComponentIdx = 0;
+
+    std::vector<JsonParseParam> params =
+    {
+        {&movable,            "movable",            JSONTYPE_BOOL},
+        {&moveSpeed,          "moveSpeed",          JSONTYPE_FLOAT},
+        {&moveComponentIdx,   "moveComponentIdx",   JSONTYPE_INT}
+    };
+
+    if (!parseJson(params, elem))
+    {
+        return false;
+    }
+
+    if (!movable)
+    {
+        return true;
+    }
+
+    if (moveComponentIdx < 0 || moveComponentIdx >= getNumComponents())
+    {
+        LOG_ERROR("moveComponentIdx out of range");
+        return false;
+    }
+
+    MoveAbilityTemplate* moveAbility = new MoveAbilityTemplate(moveSpeed);
+    m_abilityTemplates[ABILITY_MOVE] = moveAbility;
+    m_attachComponents[ABILITY_MOVE] = &m_components[moveComponentIdx];
+
+    return true;
+}
+
+bool RobotTemplate::parseShootAbility(const rapidjson::Value& elem)
+{
+    bool shootable = false;
+    float shootInterval = 0.0f, shootPosX = 0.0f, shootPosY = 0.0f;
+    int shootComponentIdx = 0;
+    std::string missileName;
+
+    std::vector<JsonParseParam> params =
+    {
+        {&shootable,          "shootable",          JSONTYPE_BOOL},
+        {&shootInterval,      "shootInterval",      JSONTYPE_FLOAT},
+        {&shootPosX,          "shootPosX",          JSONTYPE_FLOAT},
+        {&shootPosY,          "shootPosY",          JSONTYPE_FLOAT},
+        {&shootComponentIdx,  "shootComponentIdx",  JSONTYPE_INT},
+        {&missileName,        "missile",            JSONTYPE_STRING}
+    };
+
+    if (!parseJson(params, elem))
+    {
+        return false;
+    }
+
+    if (!shootable)
+    {
+        return true;
+    }
+
+    if (shootComponentIdx < 0 || shootComponentIdx >= getNumComponents())
+    {
+        LOG_ERROR("shootComponentIdx out of range");
+        return false;
+    }
+
+    const GameLib& lib = App::getInstance().getGameLib();
+
+    const MissileTemplate* missile = lib.getMissileTemplate(missileName);
+    if (!missile)
+    {
+        LOG_ERROR("Couldn't find missile %s", missileName.c_str());
+        return false;
+    }
+
+    ShootAbilityTemplate* shootAbility = new ShootAbilityTemplate(shootInterval, shootPosX,
+                                                                  shootPosY, missile);
+    m_abilityTemplates[ABILITY_SHOOT] = shootAbility;
+    m_attachComponents[ABILITY_SHOOT] = &m_components[shootComponentIdx];
+
+    return true;
 }
 
 } // end of namespace bot

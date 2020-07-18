@@ -17,7 +17,7 @@ public:
     ~StartScreenConfig()
     {}
 
-    bool load();
+    bool init();
 
     float getButtonSpacing() const
     {

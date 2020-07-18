@@ -25,7 +25,7 @@
     "aiRobotTemplateLib": "ai_robot_template_lib.json",
     "progressRingLib": "progress_ring_lib.json",
     "playerTemplateLib": "player_lib.json",
-    "dashboardTemplate": "dashboard_template.json",
+    "dashboardConfig": "dashboard_config.json",
     "buttonConfig": "button_config.json",
     "startScreenConfig": "start_screen_config.json",
     "mapFile": "map_01.json",

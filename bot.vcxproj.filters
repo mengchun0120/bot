@@ -69,9 +69,6 @@
     <Filter Include="Source Files\ai">
       <UniqueIdentifier>{edadfa7f-f32b-4292-ae80-b6008408ae32}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\parser">
-      <UniqueIdentifier>{0edd598c-2467-4a31-8955-b361ee26aa96}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\widget">
       <UniqueIdentifier>{4764a14a-b931-48ee-a1e2-9a11172433be}</UniqueIdentifier>
     </Filter>
@@ -212,41 +209,8 @@
     <ClCompile Include="src\gameobj\bot_ai_robot.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\parser\bot_ai_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_ai_robot_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_color_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_missile_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_particle_effect_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_player_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_rectangle_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_robot_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_texture_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_tile_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
     <ClCompile Include="src\gameutil\bot_game_lib.cpp">
       <Filter>Source Files\gameutil</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_goodie_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
     </ClCompile>
     <ClCompile Include="src\gameobj\bot_goodie.cpp">
       <Filter>Source Files\gameobj</Filter>
@@ -260,14 +224,8 @@
     <ClCompile Include="src\gameobj\bot_progress_ring.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
-    <ClCompile Include="src\parser\bot_progress_ring_parser.cpp">
-      <Filter>Source Files\parser</Filter>
-    </ClCompile>
     <ClCompile Include="src\gameobj\bot_dashboard.cpp">
       <Filter>Source Files\gameobj</Filter>
-    </ClCompile>
-    <ClCompile Include="src\parser\bot_dashboard_template_parser.cpp">
-      <Filter>Source Files\parser</Filter>
     </ClCompile>
     <ClCompile Include="src\app\bot_app_config.cpp">
       <Filter>Source Files\app</Filter>
@@ -286,6 +244,18 @@
     </ClCompile>
     <ClCompile Include="src\screen\bot_start_screen_config.cpp">
       <Filter>Source Files\screen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gametemplate\bot_goodie_template.cpp">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gametemplate\bot_ai_robot_template.cpp">
+      <Filter>Source Files\gametemplate</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ai\bot_ai.cpp">
+      <Filter>Source Files\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameobj\bot_dashboard_config.cpp">
+      <Filter>Source Files\gameobj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -364,13 +334,16 @@
     <None Include="res\lib\progress_ring_lib.json">
       <Filter>Resource Files\lib</Filter>
     </None>
-    <None Include="res\lib\dashboard_template.json">
-      <Filter>Resource Files\lib</Filter>
-    </None>
     <None Include="res\lib\button_config.json">
       <Filter>Resource Files\lib</Filter>
     </None>
     <None Include="res\lib\start_screen_config.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="tools\get_total_lines.sh">
+      <Filter>tools</Filter>
+    </None>
+    <None Include="res\lib\dashboard_config.json">
       <Filter>Resource Files\lib</Filter>
     </None>
   </ItemGroup>
@@ -928,36 +901,6 @@
     <ClInclude Include="src\gametemplate\bot_ai_robot_template.h">
       <Filter>Source Files\gametemplate</Filter>
     </ClInclude>
-    <ClInclude Include="src\parser\bot_ai_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_ai_robot_template_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_color_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_missile_template_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_particle_effect_template_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_player_template_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_rectangle_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_robot_template_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_texture_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_tile_template_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
     <ClInclude Include="src\gameutil\bot_game_lib.h">
       <Filter>Source Files\gameutil</Filter>
     </ClInclude>
@@ -966,9 +909,6 @@
     </ClInclude>
     <ClInclude Include="src\gameobj\bot_goodie_type.h">
       <Filter>Source Files\gameobj</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_goodie_template_parser.h">
-      <Filter>Source Files\parser</Filter>
     </ClInclude>
     <ClInclude Include="src\gameobj\bot_goodie.h">
       <Filter>Source Files\gameobj</Filter>
@@ -982,17 +922,8 @@
     <ClInclude Include="src\gameobj\bot_progress_ring.h">
       <Filter>Source Files\gameobj</Filter>
     </ClInclude>
-    <ClInclude Include="src\parser\bot_progress_ring_parser.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
     <ClInclude Include="src\gameobj\bot_dashboard.h">
       <Filter>Source Files\gameobj</Filter>
-    </ClInclude>
-    <ClInclude Include="src\gametemplate\bot_dashboard_template.h">
-      <Filter>Source Files\gametemplate</Filter>
-    </ClInclude>
-    <ClInclude Include="src\parser\bot_dashboard_template_parser.h">
-      <Filter>Source Files\parser</Filter>
     </ClInclude>
     <ClInclude Include="src\opengl\bot_text_size.h">
       <Filter>Source Files\opengl</Filter>
@@ -1023,6 +954,9 @@
     </ClInclude>
     <ClInclude Include="src\screen\bot_start_screen_config.h">
       <Filter>Source Files\screen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameobj\bot_dashboard_config.h">
+      <Filter>Source Files\gameobj</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -112,7 +112,7 @@ ParticleEffect* GameObjectManager::createParticleEffect(const ParticleEffectTemp
 
 Player* GameObjectManager::createPlayer(float x, float y, float directionX, float directionY)
 {
-	m_player = new Player(m_gameLib.getPlayerTemplate());
+	m_player = new Player(&m_gameLib.getPlayerTemplate());
 	m_player->setPos(x, y);
 	m_player->setDirection(directionX, directionY);
 	m_player->setSide(SIDE_PLAYER);

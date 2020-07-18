@@ -35,8 +35,7 @@ bool GameScreen::init()
         return false;
     }
 
-    m_dashboard.init(&(m_app->getGameLib().getDashboardTemplate()), &(m_app->getTextSystem()), 
-                     m_app->getViewportHeight(), m_map.getPlayer());
+    m_dashboard.init(m_map.getPlayer());
 
     LOG_INFO("Done loading dashboard");
 
@@ -245,7 +244,7 @@ void GameScreen::presentDashboard()
     program.setViewportSize(m_app->getViewportSize());
     program.setViewportOrigin(m_dashboardOrigin);
 
-    m_dashboard.draw(program);
+    m_dashboard.draw();
 }
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)

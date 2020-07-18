@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_COLOR
 #define INCLUDE_BOT_COLOR
 
+#include "rapidjson/document.h"
 #include "misc/bot_constants.h"
 
 namespace bot {
@@ -19,12 +20,16 @@ public:
 
     static bool validateColor(int red, int green, int blue, int alpha);
 
+    static Color* create(const rapidjson::Value& elem);
+
     Color();
 
     ~Color()
     {}
 
-    bool setColor(int red, int green, int blue, int alpha);
+    bool init(const rapidjson::Value& elem);
+
+    bool init(int red, int green, int blue, int alpha);
 
     const float *getColor() const
     {

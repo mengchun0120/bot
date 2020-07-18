@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_GOODIE_TEMPLATE
 #define INCLUDE_BOT_GOODIE_TEMPLATE
 
+#include <rapidjson/document.h>
 #include "gameobj/bot_goodie_type.h"
 #include "gametemplate/bot_game_object_template.h"
 
@@ -13,6 +14,8 @@ class ProgressRing;
 
 class GoodieTemplate : public GameObjectTemplate {
 public:
+    static GoodieTemplate* create(const rapidjson::Value& elem);
+    
     GoodieTemplate()
         : GameObjectTemplate(GAME_OBJ_TYPE_GOODIE)
         , m_goodieType(GOODIE_UNKNOWN)
@@ -24,6 +27,8 @@ public:
 
     virtual ~GoodieTemplate()
     {}
+
+    bool init(const rapidjson::Value& elem);
 
     GoodieType getGoodieType() const
     {

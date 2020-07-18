@@ -12,9 +12,9 @@
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
-#include "gameobj/bot_progress_ring.h"
 #include "gametemplate/bot_player_template.h"
-#include "gametemplate/bot_dashboard_template.h"
+#include "gameobj/bot_progress_ring.h"
+#include "gameobj/bot_dashboard_config.h"
 #include "widget/bot_button_config.h"
 #include "screen/bot_start_screen_config.h"
 
@@ -28,7 +28,7 @@ public:
 
     ~GameLib();
 
-    bool load(const AppConfig& cfg);
+    bool load();
 
     const Texture* getTexture(const std::string& name) const
     {
@@ -65,12 +65,17 @@ public:
         return m_aiLib.search(name);
     }
 
+    AI* getAI(const std::string& name)
+    {
+        return m_aiLib.search(name);
+    }
+
     const AIRobotTemplate* getAIRobotTemplate(const std::string& name) const
     {
         return m_aiRobotTemplateLib.search(name);
     }
 
-    const PlayerTemplate* getPlayerTemplate() const
+    const PlayerTemplate& getPlayerTemplate() const
     {
         return m_playerTemplate;
     }
@@ -90,9 +95,9 @@ public:
         return m_progressRingLib.search(name);
     }
 
-    const DashboardTemplate& getDashboardTemplate() const
+    const DashboardConfig& getDashboardConfig() const
     {
-        return m_dashboardTemplate;
+        return m_dashboardConfig;
     }
 
     const ButtonConfig& getButtonConfig() const
@@ -105,10 +110,7 @@ public:
         return m_startScreenConfig;
     }
 
-private:
-    bool loadPlayerTemplate(const std::string& playerTemplateFile);
-
-private:
+//private:
     NamedMap<Texture> m_textureLib;
     NamedMap<Rectangle> m_rectLib;
     NamedMap<Color> m_colorLib;
@@ -119,8 +121,8 @@ private:
     NamedMap<AI> m_aiLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;
-    PlayerTemplate* m_playerTemplate;
-    DashboardTemplate m_dashboardTemplate;
+    PlayerTemplate m_playerTemplate;
+    DashboardConfig m_dashboardConfig;
     ButtonConfig m_buttonConfig;
     StartScreenConfig m_startScreenConfig;
 };

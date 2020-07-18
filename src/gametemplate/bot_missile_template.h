@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_MISSILE_TEMPLATE
 #define INCLUDE_BOT_MISSILE_TEMPLATE
 
+#include <rapidjson/document.h>
 #include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
@@ -12,10 +13,14 @@ class Color;
 
 class MissileTemplate : public GameObjectTemplate {
 public:
-	MissileTemplate();
+    static MissileTemplate* create(const rapidjson::Value& elem);
+    
+    MissileTemplate();
 
 	virtual ~MissileTemplate()
 	{}
+
+    bool init(const rapidjson::Value& elem);
 
 	float getSpeed() const
 	{

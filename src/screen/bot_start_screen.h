@@ -8,14 +8,6 @@
 
 namespace bot {
 
-class Texture;
-class Rectangle;
-class Color;
-class App;
-struct MouseMoveEvent;
-struct MouseButtonEvent;
-struct KeyEvent;
-
 class StartScreen: public Screen {
 public:
     StartScreen();
@@ -49,16 +41,6 @@ private:
     };
 
     WidgetGroup m_buttons;
-    /*const Texture* m_button;
-    const Rectangle* m_rect;
-    const Color* m_normalTextColor;
-    const Color* m_hoverTextColor;
-    const Color* m_pressedTextColor;
-    std::string m_texts[NUM_BUTTONS];
-    float m_buttonPos[NUM_BUTTONS][Constants::NUM_FLOATS_PER_POSITION];
-    float m_textPos[NUM_BUTTONS][Constants::NUM_FLOATS_PER_POSITION];
-    int m_hoverButtonIdx;
-    int m_pressedButtonIdx;*/
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
 };
 
