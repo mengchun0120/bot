@@ -21,9 +21,9 @@ Player::~Player()
 
 }
 
-void Player::present(ShaderProgram& program)
+void Player::present()
 {
-	Robot::present(program);
+	Robot::present();
 }
 
 void Player::update(float delta, GameScreen& screen)

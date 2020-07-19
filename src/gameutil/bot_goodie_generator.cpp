@@ -1,15 +1,22 @@
 #include "misc/bot_log.h"
-#include "gameobj/bot_goodie.h"
 #include "gameutil/bot_goodie_generator.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
-GoodieGenerator::GoodieGenerator(const std::vector<GoodieTemplate>& goodieTemplateLib)
+GoodieGenerator::GoodieGenerator()
     : m_generator(std::random_device()())
     , m_distribution(0.0, 1.0)
 {
+    init();
+}
+
+void GoodieGenerator::init()
+{
+    const GameLib& lib = App::getInstance().getGameLib();
+    const std::vector<GoodieTemplate>& goodieTemplateLib = lib.getGoodieTemplateLib();
     int count = static_cast<int>(goodieTemplateLib.size());
-    
+
     m_maxGoodieIdx = count - 1;
     m_totalWeight = 0.0;
     m_weightSums.resize(count);

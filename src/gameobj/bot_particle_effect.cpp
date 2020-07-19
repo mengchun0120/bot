@@ -1,9 +1,9 @@
 #include "misc/bot_log.h"
-#include "opengl/bot_particle_shader_program.h"
 #include "opengl/bot_color.h"
 #include "opengl/bot_texture.h"
 #include "screen/bot_game_screen.h"
 #include "gameobj/bot_particle_effect.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
@@ -31,9 +31,9 @@ void ParticleEffect::init(const ParticleEffectTemplate* t, float x, float y)
     m_duration = 0.0f;
 }
 
-void ParticleEffect::present(ShaderProgram& program)
+void ParticleEffect::present()
 {
-    ParticleShaderProgram& particleProgram = static_cast<ParticleShaderProgram&>(program);
+    ParticleShaderProgram& particleProgram = App::getInstance().getParticleShaderProgram();
     const ParticleEffectTemplate* t = getTemplate();
 
     particleProgram.setRef(m_pos);

@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <random>
-#include "gametemplate/bot_goodie_template.h"
 
 namespace bot {
 
@@ -11,10 +10,12 @@ class Goodie;
 
 class GoodieGenerator {
 public:
-    GoodieGenerator(const std::vector<GoodieTemplate>& goodieTemplateLib);
+    GoodieGenerator();
 
     ~GoodieGenerator()
     {}
+
+    void init();
 
     int generate(float prob);
 

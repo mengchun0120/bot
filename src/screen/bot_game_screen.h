@@ -16,7 +16,7 @@ class App;
 
 class GameScreen: public Screen {
 public:
-    GameScreen(App* app);
+    GameScreen();
 
     virtual ~GameScreen();
 
@@ -75,7 +75,6 @@ private:
     int handleKey(const KeyEvent& e);
 
 private:
-    App* m_app;
     GameMap m_map;
     GameObjectManager m_gameObjManager;
     GameState m_state;

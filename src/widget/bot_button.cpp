@@ -75,8 +75,8 @@ void Button::present()
     const TextSystem& textSys = app.getTextSystem();
     const ButtonConfig& cfg = app.getGameLib().getButtonConfig();
 
-    m_rect.draw(program, m_pos, nullptr, nullptr, nullptr, cfg.getTexture()->textureId(), nullptr);
-    textSys.drawString(program, m_text, TEXT_SIZE_BIG, m_textPos, m_textColor->getColor());
+    m_rect.draw(m_pos, nullptr, nullptr, nullptr, cfg.getTexture()->textureId(), nullptr);
+    textSys.drawString(m_text, TEXT_SIZE_BIG, m_textPos, m_textColor->getColor());
 }
 
 } // end of namespace bot

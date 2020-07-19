@@ -17,7 +17,7 @@ public:
 
 	virtual ~Missile();
 
-	virtual void present(ShaderProgram& program);
+	virtual void present();
 
 	virtual void update(float delta, GameScreen& screen);
 

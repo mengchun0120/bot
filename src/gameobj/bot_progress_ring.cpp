@@ -3,7 +3,6 @@
 #include "misc/bot_constants.h"
 #include "misc/bot_json_utils.h"
 #include "opengl/bot_color.h"
-#include "opengl/bot_simple_shader_program.h"
 #include "gameobj/bot_progress_ring.h"
 #include "app/bot_app.h"
 
@@ -101,8 +100,10 @@ bool ProgressRing::init(const Color* frontColor, const Color* backColor, float r
     return ret;
 }
 
-void ProgressRing::draw(SimpleShaderProgram& program, const float* pos, float percentage) const
+void ProgressRing::draw(const float* pos, float percentage) const
 {
+    SimpleShaderProgram& program = App::getInstance().getSimpleShaderProgram();
+
     program.setUseObjRef(true);
     program.setObjRef(pos);
     program.setPosition(m_vertices, false);

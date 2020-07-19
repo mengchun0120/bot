@@ -24,7 +24,7 @@ public:
         return m_template->getType();
     }
 
-    virtual void present(ShaderProgram& program) = 0;
+    virtual void present() = 0;
 
     virtual void update(float delta, GameScreen& screen) = 0;
 

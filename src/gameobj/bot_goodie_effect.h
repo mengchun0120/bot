@@ -46,7 +46,7 @@ public:
 
     void start();
 
-    void draw(SimpleShaderProgram& program, const float* pos) const;
+    void draw(const float* pos) const;
 
     const TimePoint& getStartTime() const
     {

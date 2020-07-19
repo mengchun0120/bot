@@ -254,7 +254,7 @@ bool App::initGameLib()
         return false;
     }
 
-    m_screenMgr.init(this);
+    m_screenMgr.init();
 
     LOG_INFO("Done initializing game template libraries");
 

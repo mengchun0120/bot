@@ -21,7 +21,7 @@ public:
         return static_cast<const AIRobotTemplate*>(m_template);
     }
 
-    virtual void present(ShaderProgram& program);
+    virtual void present();
 
     virtual void update(float delta, GameScreen& screen);
 };

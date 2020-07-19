@@ -7,16 +7,15 @@
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_player.h"
 #include "gameutil/bot_game_map_loader.h"
-#include "app/bot_app.h"
 #include "screen/bot_game_screen.h"
+#include "app/bot_app.h"
 
 using namespace rapidjson;
 
 namespace bot {
 
-GameScreen::GameScreen(App* app)
-    : m_app(app)
-    , m_gameObjManager(app->getGameLib(), m_map, app->getConfig().getMissilePoolSize())
+GameScreen::GameScreen()
+    : m_gameObjManager(m_map)
     , m_state(GAME_STATE_INIT)
 {
 }
@@ -29,9 +28,11 @@ bool GameScreen::init()
 {
     LOG_INFO("Initializing GameScreen");
 
-    if (!loadMap(m_app->getConfig().getMapFile()))
+    const App& app = App::getInstance();
+
+    if (!loadMap(app.getConfig().getMapFile()))
     {
-        LOG_ERROR("Failed to load map from %s", m_app->getConfig().getMapFile().c_str());
+        LOG_ERROR("Failed to load map from %s", app.getConfig().getMapFile().c_str());
         return false;
     }
 
@@ -39,8 +40,8 @@ bool GameScreen::init()
 
     LOG_INFO("Done loading dashboard");
 
-    m_dashboardOrigin[0] = m_app->getViewportWidth() / 2.0f;
-    m_dashboardOrigin[1] = m_app->getViewportHeight() / 2.0f;
+    m_dashboardOrigin[0] = app.getViewportWidth() / 2.0f;
+    m_dashboardOrigin[1] = app.getViewportHeight() / 2.0f;
 
     m_state = GAME_STATE_RUNNING;
 
@@ -51,14 +52,16 @@ bool GameScreen::loadMap(const std::string& fileName)
 {
     LOG_INFO("Loading map from %s", fileName.c_str());
 
-    GameMapLoader mapLoader(m_map, m_gameObjManager, m_app->getConfig().getMapPoolFactor());
-    if (!mapLoader.load(fileName, m_app->getViewportWidth(), m_app->getViewportHeight()))
+    const App& app = App::getInstance();
+
+    GameMapLoader mapLoader(m_map, m_gameObjManager, app.getConfig().getMapPoolFactor());
+    if (!mapLoader.load(fileName, app.getViewportWidth(), app.getViewportHeight()))
     {
         return false;
     }
 
-    float windowBreathX = m_app->getViewportWidth() / 2.0f;
-    float windowBreathY = m_app->getViewportHeight() / 2.0f;
+    float windowBreathX = app.getViewportWidth() / 2.0f;
+    float windowBreathY = app.getViewportHeight() / 2.0f;
 
     LOG_INFO("Done loading map");
 
@@ -100,10 +103,11 @@ int GameScreen::update(float delta)
 
 void GameScreen::present()
 {
-    SimpleShaderProgram& simpleShaderProgram = m_app->getSimpleShaderProgram();
+    App& app = App::getInstance();
+    SimpleShaderProgram& simpleShaderProgram = app.getSimpleShaderProgram();
 
     simpleShaderProgram.use();
-    simpleShaderProgram.setViewportSize(m_app->getViewportSize());
+    simpleShaderProgram.setViewportSize(app.getViewportSize());
     simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
 
     static const GameObjectType LAYER_ORDER[] = {
@@ -135,7 +139,7 @@ void GameScreen::present()
                         continue;
                     }
 
-                    obj->present(simpleShaderProgram);
+                    obj->present();
                     obj->setFlag(GAME_OBJ_FLAG_DRAWN);
                 }
             }
@@ -222,26 +226,28 @@ void GameScreen::updateEffects(float delta)
 
 void GameScreen::presentEffects()
 {
-    ParticleShaderProgram& program = m_app->getParticleShaderProgram();
+    App& app = App::getInstance();
+    ParticleShaderProgram& program = app.getParticleShaderProgram();
 
     program.use();
-    program.setViewportSize(m_app->getViewportSize());
+    program.setViewportSize(app.getViewportSize());
     program.setViewportOrigin(m_map.getViewportPos());
 
     ParticleEffect* effect, * next;
     for (effect = m_gameObjManager.getFirstParticleEffect(); effect; effect = next)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
-        effect->present(program);
+        effect->present();
     }
 }
 
 void GameScreen::presentDashboard()
 {
-    SimpleShaderProgram& program = m_app->getSimpleShaderProgram();
+    App& app = App::getInstance();
+    SimpleShaderProgram& program = app.getSimpleShaderProgram();
 
     program.use();
-    program.setViewportSize(m_app->getViewportSize());
+    program.setViewportSize(app.getViewportSize());
     program.setViewportOrigin(m_dashboardOrigin);
 
     m_dashboard.draw();

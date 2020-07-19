@@ -28,16 +28,16 @@ bool GoodieEffect::update(const TimePoint& now)
     return m_percent >= 1.0f;
 }
 
-void GoodieEffect::draw(SimpleShaderProgram& program, const float* pos) const
+void GoodieEffect::draw(const float* pos) const
 {
     if (m_template->getProgressRing())
     {
-        m_template->getProgressRing()->draw(program, pos, m_percent);
+        m_template->getProgressRing()->draw(pos, m_percent);
     }
 
     if (m_template->getEffectRect())
     {
-        m_template->getEffectRect()->draw(program, pos, nullptr, nullptr, nullptr, 
+        m_template->getEffectRect()->draw(pos, nullptr, nullptr, nullptr, 
                                           m_template->getTexture()->textureId(), nullptr);
     }
 }

@@ -14,8 +14,7 @@ public:
 
     virtual ~Shape();
 
-    virtual void draw(SimpleShaderProgram& program,
-                      const float* pos, const float* direction,
+    virtual void draw(const float* pos, const float* direction,
                       const Color* fillColor, const Color* borderColor,
                       const unsigned int textureId, const Color* texColor) const = 0;
 

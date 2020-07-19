@@ -33,13 +33,11 @@ public:
         return *(m_rectMap[sz][static_cast<int>(ch) - MIN_CHAR]);
     }
 
-    void drawString(SimpleShaderProgram& program, const char* str,
-                    TextSize size, const float* pos, const float* color) const;
+    void drawString(const char* str, TextSize size, const float* pos, const float* color) const;
 
-    void drawString(SimpleShaderProgram& program, const std::string& str,
-                    TextSize size, const float* pos, const float* color) const
+    void drawString(const std::string& str, TextSize size, const float* pos, const float* color) const
     {
-        drawString(program, str.c_str(), size, pos, color);
+        drawString(str.c_str(), size, pos, color);
     }
 
     void getStringSize(float &width, float &height, TextSize sz, const std::string& str) const;

@@ -19,7 +19,7 @@ public:
 
     ~ScreenManager();
 
-    void init(App* app);
+    void init();
 
     int update(float delta);
 
@@ -30,7 +30,6 @@ public:
     void switchScreen(ScreenType type);
 
 private:
-    App* m_app;
     ScreenType m_curScreenType;
     Screen* m_prevScreen;
     Screen* m_curScreen;

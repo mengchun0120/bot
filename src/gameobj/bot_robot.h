@@ -8,14 +8,12 @@
 #include "gameobj/bot_shoot_ability.h"
 #include "gameobj/bot_side.h"
 #include "gameobj/bot_action.h"
-#include "ai/bot_ai.h"
 #include "gameutil/bot_game_object_item.h"
 #include "gametemplate/bot_robot_template.h"
 
 namespace bot {
 
 class Ability;
-class AI;
 
 class Robot : public GameObject {
 	struct Component {
@@ -27,7 +25,7 @@ public:
 
 	virtual ~Robot();
 
-    virtual void present(ShaderProgram& program);
+    virtual void present();
 
 	void shiftPos(float deltaX, float deltaY);
 

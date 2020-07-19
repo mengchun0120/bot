@@ -6,8 +6,7 @@
 namespace bot {
 
 ScreenManager::ScreenManager()
-    : m_app(nullptr)
-    , m_curScreenType(SCREEN_NONE)
+    : m_curScreenType(SCREEN_NONE)
     , m_prevScreen(nullptr)
     , m_curScreen(nullptr)
 {
@@ -27,9 +26,8 @@ ScreenManager::~ScreenManager()
     }
 }
 
-void ScreenManager::init(App* app)
+void ScreenManager::init()
 {
-    m_app = app;
     m_curScreen = new StartScreen();
     m_curScreen->init();
     m_curScreenType = SCREEN_START;
@@ -80,7 +78,7 @@ void ScreenManager::switchScreen(ScreenType type)
             screen = new StartScreen();
             break;
         case SCREEN_GAME:
-            screen = new GameScreen(m_app);
+            screen = new GameScreen();
             break;
     }
 

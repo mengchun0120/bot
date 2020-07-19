@@ -1,13 +1,11 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_simple_shader_program.h"
 #include "geometry/bot_rectangle.h"
-#include "gameutil/bot_game_map.h"
 #include "gameutil/bot_collide.h"
-#include "screen/bot_game_screen.h"
 #include "gameobj/bot_robot.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
+#include "screen/bot_game_screen.h"
 
 namespace bot {
 
@@ -34,11 +32,10 @@ Missile::~Missile()
 {
 }
 
-void Missile::present(ShaderProgram& program)
+void Missile::present()
 {
 	const MissileTemplate* t = getTemplate();
-	t->getRect()->draw(static_cast<SimpleShaderProgram&>(program), m_pos, m_direction, 
-		               nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
+	t->getRect()->draw(m_pos, m_direction, nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
 }
 
 void Missile::update(float delta, GameScreen& screen)

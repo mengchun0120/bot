@@ -24,7 +24,7 @@ class GameMap;
 
 class GameObjectManager {
 public:
-	GameObjectManager(const GameLib& gameLib, GameMap& map, int missilePoolSize);
+	GameObjectManager(GameMap& map);
 
 	~GameObjectManager();
 
@@ -120,7 +120,6 @@ private:
     void onRobotDeath(Robot* robot);
 
 protected:
-	const GameLib& m_gameLib;
     GameMap& m_map;
     GoodieGenerator m_goodieGenerator;
 	ObjectPool<Missile> m_missilePool;

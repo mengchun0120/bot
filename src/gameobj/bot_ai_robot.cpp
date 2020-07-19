@@ -1,5 +1,6 @@
-#include "screen/bot_game_screen.h"
 #include "gameobj/bot_ai_robot.h"
+#include "ai/bot_ai.h"
+#include "screen/bot_game_screen.h"
 
 namespace bot {
 
@@ -8,9 +9,9 @@ AIRobot::AIRobot(const AIRobotTemplate* t)
 {
 }
 
-void AIRobot::present(ShaderProgram& program)
+void AIRobot::present()
 {
-    Robot::present(program);
+    Robot::present();
 }
 
 void AIRobot::update(float delta, GameScreen& screen)

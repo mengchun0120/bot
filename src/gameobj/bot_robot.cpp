@@ -2,11 +2,10 @@
 #include "misc/bot_log.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_simple_shader_program.h"
 #include "gameutil/bot_collide.h"
-#include "screen/bot_game_screen.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_player.h"
+#include "screen/bot_game_screen.h"
 
 namespace bot {
 
@@ -75,15 +74,14 @@ void Robot::initAbilities()
     }
 }
 
-void Robot::present(ShaderProgram& program)
+void Robot::present()
 {
     const RobotTemplate* t = getTemplate();
-    SimpleShaderProgram& p = static_cast<SimpleShaderProgram&>(program);
     int count = static_cast<int>(m_components.size());
 
     for (int i = 0; i < count; ++i) {
         const RobotTemplate::ComponentTemplate& ct = t->getComponent(i);
-        ct.m_rect->draw(p, m_components[i].m_pos, m_direction, nullptr, nullptr, 
+        ct.m_rect->draw(m_components[i].m_pos, m_direction, nullptr, nullptr, 
                         ct.m_texture->textureId(), ct.m_color);
     }
 }

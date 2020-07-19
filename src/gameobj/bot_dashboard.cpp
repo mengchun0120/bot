@@ -2,8 +2,8 @@
 #include "opengl/bot_text_system.h"
 #include "opengl/bot_color.h"
 #include "gameobj/bot_dashboard_config.h"
-#include "gameobj/bot_player.h"
 #include "gameobj/bot_dashboard.h"
+#include "gameobj/bot_player.h"
 #include "app/bot_app.h"
 
 namespace bot {
@@ -57,7 +57,6 @@ void Dashboard::initHeader(const DashboardConfig& cfg, const TextSystem& textSys
 void Dashboard::draw()
 {
     App& app = App::getInstance();
-    SimpleShaderProgram& program = app.getSimpleShaderProgram();
     const DashboardConfig& cfg = app.getGameLib().getDashboardConfig();
     const TextSystem& textSys = app.getTextSystem();
     const float HP_GOOD_THRESHOLD = 2.0f / 3.0f;
@@ -67,10 +66,10 @@ void Dashboard::draw()
 
     for (effect = m_player->getFirstActiveEffect(); effect; effect = effect->getNext(), ++i)
     {
-        effect->draw(program, m_effectPositions[i].m_pos);
+        effect->draw(m_effectPositions[i].m_pos);
     }
 
-    cfg.getHPRect()->draw(program, m_hpIconPos, nullptr, nullptr, nullptr,
+    cfg.getHPRect()->draw(m_hpIconPos, nullptr, nullptr, nullptr,
                           cfg.getHPTexture()->textureId(), nullptr);
 
     const Color* hpColor = nullptr;
@@ -88,13 +87,13 @@ void Dashboard::draw()
         hpColor = cfg.getHPCriticalColor();
     }
 
-    textSys.drawString(program, m_player->getHPStr(), TEXT_SIZE_MEDIUM, m_hpTextPos, 
+    textSys.drawString(m_player->getHPStr(), TEXT_SIZE_MEDIUM, m_hpTextPos, 
                        hpColor->getColor());
 
-    cfg.getGoldRect()->draw(program, m_goldIconPos, nullptr, nullptr, nullptr,
+    cfg.getGoldRect()->draw(m_goldIconPos, nullptr, nullptr, nullptr,
                             cfg.getGoldTexture()->textureId(), nullptr);
 
-    textSys.drawString(program, m_player->getGoldStr(), TEXT_SIZE_MEDIUM, m_goldTextPos,
+    textSys.drawString(m_player->getGoldStr(), TEXT_SIZE_MEDIUM, m_goldTextPos,
                        cfg.getGoldTextColor()->getColor());
 }
 
