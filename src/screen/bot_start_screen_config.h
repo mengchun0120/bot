@@ -6,12 +6,13 @@
 
 namespace bot {
 
+class Rectangle;
+
 class StartScreenConfig {
 public:
     StartScreenConfig()
         : m_buttonSpacing(0.0f)
-        , m_buttonWidth(0.0f)
-        , m_buttonHeight(0.0f)
+        , m_rect(nullptr)
     {}
 
     ~StartScreenConfig()
@@ -24,14 +25,9 @@ public:
         return m_buttonSpacing;
     }
 
-    float getButtonWidth() const
+    const Rectangle* getButtonRect() const
     {
-        return m_buttonWidth;
-    }
-
-    float getButtonHeight() const
-    {
-        return m_buttonHeight;
+        return m_rect;
     }
 
     const std::vector<std::string>& getButtonTexts() const
@@ -41,8 +37,7 @@ public:
 
 private:
     float m_buttonSpacing;
-    float m_buttonWidth;
-    float m_buttonHeight;
+    const Rectangle* m_rect;
     std::vector<std::string> m_buttonTexts;
 };
 

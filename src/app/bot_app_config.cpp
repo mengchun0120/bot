@@ -69,6 +69,7 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         {&m_dashboardConfigFile,       "dashboardConfig",           JSONTYPE_STRING},
         {&m_buttonConfigFile,          "buttonConfig",              JSONTYPE_STRING},
         {&m_startScreenConfigFile,     "startScreenConfig",         JSONTYPE_STRING},
+        {&m_messageBoxConfigFile,      "messageBoxConfig",          JSONTYPE_STRING},
         {&m_mapFile,                   "mapFile",                   JSONTYPE_STRING},
         {&m_mapPoolFactor,             "mapPoolFactor",             JSONTYPE_FLOAT},
         {&m_missilePoolSize,           "missilePoolSize",           JSONTYPE_INT}
@@ -110,6 +111,7 @@ void AppConfig::marshalConfig()
     m_dashboardConfigFile       = constructPath({ m_libDir, m_dashboardConfigFile });
     m_buttonConfigFile          = constructPath({ m_libDir, m_buttonConfigFile });
     m_startScreenConfigFile     = constructPath({ m_libDir, m_startScreenConfigFile });
+    m_messageBoxConfigFile      = constructPath({ m_libDir, m_messageBoxConfigFile });
     m_mapFile                   = constructPath({ m_mapDir, m_mapFile });
 }
 

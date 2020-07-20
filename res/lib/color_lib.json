@@ -96,5 +96,19 @@
         "green": 239,
         "blue": 255,
         "alpha": 150
+    },
+    {
+        "name": "lightgray",
+        "red": 211,
+        "green": 211,
+        "blue": 211,
+        "alpha": 255
+    },
+    {
+        "name": "dimgray",
+        "red": 105,
+        "green": 105,
+        "blue": 105,
+        "alpha": 255
     }
 ]

@@ -16,17 +16,18 @@
 #include "gameobj/bot_progress_ring.h"
 #include "gameobj/bot_dashboard_config.h"
 #include "widget/bot_button_config.h"
+#include "widget/bot_message_box_config.h"
 #include "screen/bot_start_screen_config.h"
 
 namespace bot {
 
-class AppConfig;
-
 class GameLib {
 public:
-    GameLib();
+    GameLib()
+    {}
 
-    ~GameLib();
+    ~GameLib()
+    {}
 
     bool load();
 
@@ -105,12 +106,17 @@ public:
         return m_buttonConfig;
     }
 
+    const MessageBoxConfig& getMessageBoxConfig() const
+    {
+        return m_messageBoxConfig;
+    }
+
     const StartScreenConfig& getStartScreenConfig() const
     {
         return m_startScreenConfig;
     }
 
-//private:
+private:
     NamedMap<Texture> m_textureLib;
     NamedMap<Rectangle> m_rectLib;
     NamedMap<Color> m_colorLib;
@@ -124,6 +130,7 @@ public:
     PlayerTemplate m_playerTemplate;
     DashboardConfig m_dashboardConfig;
     ButtonConfig m_buttonConfig;
+    MessageBoxConfig m_messageBoxConfig;
     StartScreenConfig m_startScreenConfig;
 };
 

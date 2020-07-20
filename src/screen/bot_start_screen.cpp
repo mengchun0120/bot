@@ -22,15 +22,14 @@ bool StartScreen::init()
 {
     const App& app = App::getInstance();
     const StartScreenConfig& cfg = app.getGameLib().getStartScreenConfig();
-    float width = cfg.getButtonWidth();
-    float height = cfg.getButtonHeight();
+    const Rectangle* rect = cfg.getButtonRect();
     float spacing = cfg.getButtonSpacing();
     const std::vector<std::string>& buttonTexts = cfg.getButtonTexts();
 
     int n = static_cast<int>(buttonTexts.size());
-    float x = (app.getViewportWidth() - width) / 2.0f;
-    float y = (app.getViewportHeight() + n * height + (n - 1) * spacing) / 2.0f;
-    float deltaY = height + spacing;
+    float x = (app.getViewportWidth() - rect->width()) / 2.0f;
+    float y = (app.getViewportHeight() + n * rect->height() + (n - 1) * spacing) / 2.0f;
+    float deltaY = rect->height() + spacing;
     
     std::vector<Button::ActionFunc> funcs = {
         std::bind(&StartScreen::startGame, this),
@@ -42,7 +41,7 @@ bool StartScreen::init()
     m_buttons.init(n);
     for (int i = 0; i < n; ++i, y -= deltaY) {
         Button* button = new Button();
-        if (!button->init(buttonTexts[i], width, height))
+        if (!button->init(rect, buttonTexts[i]))
         {
             LOG_ERROR("Failed to initialize start game button");
             return false;

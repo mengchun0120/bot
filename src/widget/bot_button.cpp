@@ -1,6 +1,7 @@
 #include "input/bot_input_event.h"
-#include "app/bot_app.h"
+#include "opengl/bot_color.h"
 #include "widget/bot_button.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
@@ -12,13 +13,9 @@ Button::Button()
     m_textPos[1] = 0.0f;
 }
 
-bool Button::init(const std::string& text, float width, float height)
+bool Button::init(const Rectangle* rect, const std::string& text)
 {
-    if (!Widget::init(width, height))
-    {
-        return false;
-    }
-
+    Widget::init(rect);
     m_text = text;
 
     return true;
@@ -70,12 +67,17 @@ void Button::onMouseOut()
 
 void Button::present()
 {
+    if (!m_visible)
+    {
+        return;
+    }
+
     App& app = App::getInstance();
     SimpleShaderProgram& program = app.getSimpleShaderProgram();
     const TextSystem& textSys = app.getTextSystem();
     const ButtonConfig& cfg = app.getGameLib().getButtonConfig();
 
-    m_rect.draw(m_pos, nullptr, nullptr, nullptr, cfg.getTexture()->textureId(), nullptr);
+    m_rect->draw(m_pos, nullptr, nullptr, nullptr, cfg.getTexture()->textureId(), nullptr);
     textSys.drawString(m_text, TEXT_SIZE_BIG, m_textPos, m_textColor->getColor());
 }
 

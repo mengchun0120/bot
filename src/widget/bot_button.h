@@ -9,6 +9,7 @@
 namespace bot {
 
 class ButtonConfig;
+class Color;
 
 class Button : public Widget {
 public:
@@ -19,9 +20,9 @@ public:
     virtual ~Button()
     {}
 
-    bool init(const std::string& text, float width, float height);
+    bool init(const Rectangle* rect, const std::string& text);
 
-    void setActionFunc(ActionFunc& actionFunc)
+    void setActionFunc(const ActionFunc& actionFunc)
     {
         m_actionFunc = actionFunc;
     }

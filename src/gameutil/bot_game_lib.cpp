@@ -4,14 +4,6 @@
 
 namespace bot {
 
-GameLib::GameLib()
-{
-}
-
-GameLib::~GameLib()
-{
-}
-
 bool GameLib::load()
 {
     const AppConfig& cfg = App::getInstance().getConfig();
@@ -107,6 +99,11 @@ bool GameLib::load()
     }
 
     if (!m_buttonConfig.init())
+    {
+        return false;
+    }
+
+    if (!m_messageBoxConfig.init())
     {
         return false;
     }

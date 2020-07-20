@@ -12,6 +12,7 @@ GameObjectManager::GameObjectManager(GameMap& map)
 	: m_map(map)
     , m_player(nullptr)
     , m_goodieGenerator()
+    , m_aiRobotCount(0)
 {
     const AppConfig& cfg = App::getInstance().getConfig();
     m_missilePool.init(cfg.getMissilePoolSize());
@@ -69,6 +70,7 @@ AIRobot* GameObjectManager::createRobot(const AIRobotTemplate* aiRobotTemplate, 
 	robot->setSide(side);
 
 	m_activeRobots.add(robot);
+    ++m_aiRobotCount;
 
 	return robot;
 }
@@ -158,6 +160,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
                 m_activeRobots.unlink(robot);
                 onRobotDeath(robot);
                 m_deadObjects.add(obj);
+                --m_aiRobotCount;
             }
 			break;
 		}

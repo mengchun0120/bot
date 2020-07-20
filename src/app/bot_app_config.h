@@ -175,6 +175,11 @@ public:
         return m_startScreenConfigFile;
     }
 
+    const std::string& getMessageBoxConfigFile() const
+    {
+        return m_messageBoxConfigFile;
+    }
+
 private:
     bool readConfig(const std::string& cfgFile);
 
@@ -211,6 +216,7 @@ private:
     std::string m_dashboardConfigFile;
     std::string m_buttonConfigFile;
     std::string m_startScreenConfigFile;
+    std::string m_messageBoxConfigFile;
     std::string m_mapFile;
     float m_mapPoolFactor;
     int m_missilePoolSize;

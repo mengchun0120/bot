@@ -1,3 +1,4 @@
+#include <functional>
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
 #include "misc/bot_math_utils.h"
@@ -17,6 +18,7 @@ namespace bot {
 GameScreen::GameScreen()
     : m_gameObjManager(m_map)
     , m_state(GAME_STATE_INIT)
+    , m_msgBoxVisible(false)
 {
 }
 
@@ -89,11 +91,15 @@ int GameScreen::update(float delta)
     updateRobots(delta);
     updateEffects(delta);
 
-    if (player->testFlag(GAME_OBJ_FLAG_DEAD))
+    if (player->testFlag(GAME_OBJ_FLAG_DEAD) || m_gameObjManager.getAIRobotCount() <= 0)
     {
-        LOG_INFO("Game end");
+        std::string msg = player->testFlag(GAME_OBJ_FLAG_DEAD) ? "Game Over" : "You are victorious";
+
         m_state = GAME_STATE_END;
         m_map.setPlayer(nullptr);
+        m_msgBoxVisible = true;
+        m_msgBox.init(MessageBox::OPTION_OK, msg);
+        m_msgBox.setOKAction(std::bind(&GameScreen::switchToStart, this));
     }
 
     clearDeadObjects();
@@ -147,20 +153,26 @@ void GameScreen::present()
     }
 
     presentEffects();
-    presentDashboard();
+    presentOverlay();
 }
 
 int GameScreen::processInput(const InputEvent& e)
 {
-    switch (e.m_type) {
-    case InputEvent::ET_MOUSE_MOVE:
-        return handleMouseMove(e.m_mouseMoveEvent);
-    case InputEvent::ET_MOUSE_BUTTON:
-        return handleMouseButton(e.m_mouseButtonEvent);
-    case InputEvent::ET_KEY:
-        return handleKey(e.m_keyEvent);
-    default:
-        LOG_WARN("Unknown input type %d", static_cast<int>(e.m_type));
+    if (m_msgBoxVisible)
+    {
+        return m_msgBox.processInput(e);
+    }
+
+    switch (e.m_type) 
+    {
+        case InputEvent::ET_MOUSE_MOVE:
+            return handleMouseMove(e.m_mouseMoveEvent);
+        case InputEvent::ET_MOUSE_BUTTON:
+            return handleMouseButton(e.m_mouseButtonEvent);
+        case InputEvent::ET_KEY:
+            return handleKey(e.m_keyEvent);
+        default:
+            LOG_WARN("Unknown input type %d", static_cast<int>(e.m_type));
     }
     return 0;
 }
@@ -241,7 +253,7 @@ void GameScreen::presentEffects()
     }
 }
 
-void GameScreen::presentDashboard()
+void GameScreen::presentOverlay()
 {
     App& app = App::getInstance();
     SimpleShaderProgram& program = app.getSimpleShaderProgram();
@@ -251,6 +263,11 @@ void GameScreen::presentDashboard()
     program.setViewportOrigin(m_dashboardOrigin);
 
     m_dashboard.draw();
+
+    if (m_msgBoxVisible)
+    {
+        m_msgBox.show();
+    }
 }
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)
@@ -315,6 +332,13 @@ void GameScreen::clearDeadObjects()
     }
    
     m_gameObjManager.clearDeadObjects();
+}
+
+int GameScreen::switchToStart()
+{
+    ScreenManager& screenMgr = App::getInstance().getScreenManager();
+    screenMgr.switchScreen(ScreenManager::SCREEN_START);
+    return 1;
 }
 
 } // end of namespace bot

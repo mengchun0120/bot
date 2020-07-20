@@ -84,6 +84,7 @@ void ScreenManager::switchScreen(ScreenType type)
 
     m_prevScreen = m_curScreen;
     m_curScreen = screen;
+    m_curScreenType = type;
     m_curScreen->init();
 
     LOG_INFO("Done switching screen");

@@ -116,6 +116,11 @@ public:
 
 	void clearActiveObjects();
 
+    int getAIRobotCount() const
+    {
+        return m_aiRobotCount;
+    }
+
 private:
     void onRobotDeath(Robot* robot);
 
@@ -131,6 +136,7 @@ protected:
     DoubleLinkedList<Goodie> m_activeGoodies;
 	DoubleLinkedList<GameObject> m_deadObjects;
     Player* m_player;
+    int m_aiRobotCount;
 };
 
 } // end of namespace bot

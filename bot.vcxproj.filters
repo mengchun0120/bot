@@ -257,6 +257,12 @@
     <ClCompile Include="src\gameobj\bot_dashboard_config.cpp">
       <Filter>Source Files\gameobj</Filter>
     </ClCompile>
+    <ClCompile Include="src\widget\bot_message_box_config.cpp">
+      <Filter>Source Files\widget</Filter>
+    </ClCompile>
+    <ClCompile Include="src\widget\bot_message_box.cpp">
+      <Filter>Source Files\widget</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -344,6 +350,9 @@
       <Filter>tools</Filter>
     </None>
     <None Include="res\lib\dashboard_config.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
+    <None Include="res\lib\message_box_config.json">
       <Filter>Resource Files\lib</Filter>
     </None>
   </ItemGroup>
@@ -957,6 +966,12 @@
     </ClInclude>
     <ClInclude Include="src\gameobj\bot_dashboard_config.h">
       <Filter>Source Files\gameobj</Filter>
+    </ClInclude>
+    <ClInclude Include="src\widget\bot_message_box.h">
+      <Filter>Source Files\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\widget\bot_message_box_config.h">
+      <Filter>Source Files\widget</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

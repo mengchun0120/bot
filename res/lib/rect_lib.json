@@ -33,5 +33,15 @@
         "name": "effect_rect",
         "width": 30.0,
         "height": 30.0
+    },
+    {
+        "name": "message_box_rect",
+        "width": 400.0,
+        "height": 200.0
+    },
+    {
+        "name": "message_box_button_rect",
+        "width": 120.0,
+        "height": 40.0
     }
 ]

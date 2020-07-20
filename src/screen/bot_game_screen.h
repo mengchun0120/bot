@@ -6,6 +6,7 @@
 #include "gameutil/bot_game_object_manager.h"
 #include "gameutil/bot_game_state.h"
 #include "gameobj/bot_dashboard.h"
+#include "widget/bot_message_box.h"
 
 namespace bot {
 
@@ -64,7 +65,7 @@ private:
 
     void presentEffects();
 
-    void presentDashboard();
+    void presentOverlay();
 
     void clearDeadObjects();
 
@@ -74,6 +75,8 @@ private:
 
     int handleKey(const KeyEvent& e);
 
+    int switchToStart();
+
 private:
     GameMap m_map;
     GameObjectManager m_gameObjManager;
@@ -81,6 +84,8 @@ private:
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
     float m_dashboardOrigin[Constants::NUM_FLOATS_PER_POSITION];
     Dashboard m_dashboard;
+    MessageBox m_msgBox;
+    bool m_msgBoxVisible;
 };
 
 } // end of namespace bot

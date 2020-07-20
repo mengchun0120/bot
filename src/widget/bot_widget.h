@@ -2,13 +2,13 @@
 #define INCLUDE_BOT_WIDGET
 
 #include "misc/bot_constants.h"
-#include "geometry/bot_rectangle.h"
 
 namespace bot {
 
 struct KeyEvent;
 struct MouseMoveEvent;
 struct MouseButtonEvent;
+class Rectangle;
 
 class Widget {
 public:
@@ -17,7 +17,7 @@ public:
     virtual ~Widget()
     {}
 
-    bool init(float width, float height);
+    void init(const Rectangle* rect);
 
     virtual int processKeyEvent(const KeyEvent& event) = 0;
 
@@ -33,12 +33,23 @@ public:
 
     virtual void onMouseOut() = 0;
 
-    bool containPos(float x, float y);
+    bool isVisible() const
+    {
+        return m_visible;
+    }
+
+    void setVisible(bool visible)
+    {
+        m_visible = visible;
+    }
+
+    bool containPos(float x, float y) const;
 
 protected:
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
-    Rectangle m_rect;
+    const Rectangle* m_rect;
     float m_left, m_right, m_top, m_bottom;
+    bool m_visible;
 };
 
 } // end of namespace bot
