@@ -263,6 +263,12 @@
     <ClCompile Include="src\widget\bot_message_box.cpp">
       <Filter>Source Files\widget</Filter>
     </ClCompile>
+    <ClCompile Include="src\gameutil\bot_map_generator.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gameutil\bot_island_map_generator.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -972,6 +978,15 @@
     </ClInclude>
     <ClInclude Include="src\widget\bot_message_box_config.h">
       <Filter>Source Files\widget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_map_generator.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_island_map_generator.h">
+      <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\misc\bot_random.h">
+      <Filter>Source Files\misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

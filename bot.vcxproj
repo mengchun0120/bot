@@ -180,6 +180,8 @@
     <ClCompile Include="src\gameutil\bot_game_object_manager.cpp" />
     <ClCompile Include="src\gameutil\bot_game_lib.cpp" />
     <ClCompile Include="src\gameutil\bot_goodie_generator.cpp" />
+    <ClCompile Include="src\gameutil\bot_map_generator.cpp" />
+    <ClCompile Include="src\gameutil\bot_island_map_generator.cpp" />
     <ClCompile Include="src\gameutil\bot_time_delta_smoother.cpp" />
     <ClCompile Include="src\geometry\bot_polygon.cpp" />
     <ClCompile Include="src\geometry\bot_rectangle.cpp" />
@@ -406,6 +408,8 @@
     <ClInclude Include="src\gameutil\bot_game_state.h" />
     <ClInclude Include="src\gameutil\bot_game_lib.h" />
     <ClInclude Include="src\gameutil\bot_goodie_generator.h" />
+    <ClInclude Include="src\gameutil\bot_map_generator.h" />
+    <ClInclude Include="src\gameutil\bot_island_map_generator.h" />
     <ClInclude Include="src\gameutil\bot_time_delta_smoother.h" />
     <ClInclude Include="src\geometry\bot_polygon.h" />
     <ClInclude Include="src\geometry\bot_rectangle.h" />
@@ -419,6 +423,7 @@
     <ClInclude Include="src\misc\bot_json_utils.h" />
     <ClInclude Include="src\misc\bot_log.h" />
     <ClInclude Include="src\misc\bot_math_utils.h" />
+    <ClInclude Include="src\misc\bot_random.h" />
     <ClInclude Include="src\misc\bot_return_code.h" />
     <ClInclude Include="src\misc\bot_string_utils.h" />
     <ClInclude Include="src\misc\bot_time_utils.h" />
