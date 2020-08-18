@@ -1,4 +1,8 @@
 #include <cmath>
+#include <utility>
+#include <rapidjson/ostreamwrapper.h>
+#include <rapidjson/writer.h>
+#include <fstream>
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gametemplate/bot_tile_template.h"
@@ -60,10 +64,9 @@ bool IslandMapGenerator::generate(const char* fileName)
 
     initMap(map);
     generateTiles(map);
-    generateRobots(map);
-    placePlayer(map);
+    map.deployRobots(m_rand, m_maxRobotCount, m_robotNames, m_robotTemplates);
 
-    return true;
+    return writeMap(fileName, map);
 }
 
 void IslandMapGenerator::generateTiles(Map& map)
@@ -73,13 +76,13 @@ void IslandMapGenerator::generateTiles(Map& map)
     const TileTemplate* t = m_islandTileTemplates[islandTileIdx];
     float tileHeight = t->getCoverBreathY() * 2.0f;
     float tileWidth = t->getCoverBreathX() * 2.0f;
-    int minIslandLenY = static_cast<int>(ceil(m_minIslandLen * tileHeight) / m_robotSlotSize);
-    int maxIslandLenY = static_cast<int>(ceil(m_maxIslandLen * tileHeight) / m_robotSlotSize);
-    int minIslandLenX = static_cast<int>(ceil(m_minIslandLen * tileWidth) / m_robotSlotSize);
-    int maxIslandLenX = static_cast<int>(ceil(m_maxIslandLen * tileWidth) / m_robotSlotSize);
+    int minIslandLenY = static_cast<int>(ceil(m_minIslandLen * tileHeight / m_robotSlotSize));
+    int maxIslandLenY = static_cast<int>(ceil(m_maxIslandLen * tileHeight / m_robotSlotSize));
+    int minIslandLenX = static_cast<int>(ceil(m_minIslandLen * tileWidth / m_robotSlotSize));
+    int maxIslandLenX = static_cast<int>(ceil(m_maxIslandLen * tileWidth / m_robotSlotSize));
     int totalSlotsY = static_cast<int>(map.m_robotSlots.size());
     int totalSlotsX = static_cast<int>(map.m_robotSlots[0].size());
-    int islandSlotY = m_rand.get(m_minIslandDist, m_maxIslandDist);
+    int islandSlotY = m_rand.get(m_minIslandDist, m_maxIslandDist + 1);
 
     while (true)
     {
@@ -100,7 +103,7 @@ void IslandMapGenerator::generateTiles(Map& map)
             maxRowTiles = m_maxIslandLen;
         }
 
-        int islandSlotX = m_rand.get(m_minIslandDist, m_maxIslandDist);
+        int islandSlotX = m_rand.get(m_minIslandDist, m_maxIslandDist + 1);
         while (true)
         {
             int maxColSlots = totalSlotsX - islandSlotX - m_minIslandDist;
@@ -126,10 +129,10 @@ void IslandMapGenerator::generateTiles(Map& map)
             generateIsland(map, tileName, t, islandSlotX, islandSlotY, rows, cols);
 
             int colSlots = static_cast<int>(ceil(cols * tileWidth / m_robotSlotSize));
-            islandSlotX += colSlots + m_rand.get(m_minIslandDist, m_maxIslandDist);
+            islandSlotX += colSlots + m_rand.get(m_minIslandDist, m_maxIslandDist + 1);
         }
 
-        islandSlotY += maxRowSlots + m_rand.get(m_minIslandDist, m_maxIslandDist);
+        islandSlotY += maxRowSlots + m_rand.get(m_minIslandDist, m_maxIslandDist + 1);
     }
 }
 
@@ -146,15 +149,20 @@ void IslandMapGenerator::generateIsland(Map& map, const std::string* tileName, c
         float x = startX;
         for (int c = 0; c < cols; ++c)
         {
-            map.m_tiles.emplace_back(tileName, t, x, y);
+            map.m_tiles.emplace_back();
+            TileItem& tile = map.m_tiles.back();
+            tile.m_name = tileName;
+            tile.m_template = t;
+            tile.m_x = x;
+            tile.m_y = y;
             x += tileWidth;
         }
         
         y += tileHeight;
     }
 
-    int rowSlots = static_cast<int>(ceil(rows * tileHeight) / m_robotSlotSize);
-    int colSlots = static_cast<int>(ceil(cols * tileWidth) / m_robotSlotSize);
+    int rowSlots = static_cast<int>(ceil(rows * tileHeight / m_robotSlotSize));
+    int colSlots = static_cast<int>(ceil(cols * tileWidth / m_robotSlotSize));
 
     int row = islandSlotY;
     for (int i = 0; i < rowSlots; ++i, ++row)
@@ -167,18 +175,26 @@ void IslandMapGenerator::generateIsland(Map& map, const std::string* tileName, c
     }
 }
 
-void IslandMapGenerator::generateRobots(Map& map)
-{
-
-}
-
-void IslandMapGenerator::placePlayer(Map& map)
-{
-
-}
-
 bool IslandMapGenerator::writeMap(const char* fileName, const Map& map)
 {
+    using namespace rapidjson;
+
+    Document doc;
+    map.createJson(doc);
+
+    std::ofstream ofs(fileName);
+    if (!ofs.good())
+    {
+        return false;
+    }
+
+    OStreamWrapper osw(ofs);
+    
+    Writer<OStreamWrapper> writer(osw);
+    doc.Accept(writer);
+
+    ofs.close();
+
     return true;
 }
 

@@ -25,6 +25,11 @@ public:
         return lower + m_distribution(m_generator) * (upper - lower);
     }
 
+    double get(double lower, double upper)
+    {
+        return lower + m_distribution(m_generator) * (upper - lower);
+    }
+
 private:
     std::mt19937 m_generator;
     std::uniform_real_distribution<float> m_distribution;

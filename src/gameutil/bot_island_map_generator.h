@@ -21,12 +21,8 @@ public:
 private:
     void generateTiles(Map& map);
 
-    void generateRobots(Map& map);
-
     void generateIsland(Map& map, const std::string* tileName, const TileTemplate* t,
                         int islandSlotX, int islandSlotY, int rows, int cols);
-
-    void placePlayer(Map& map);
 
     bool writeMap(const char* fileName, const Map& map);
 

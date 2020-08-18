@@ -16,29 +16,12 @@ class TileTemplate;
 class MapGenerator {
 public:
     struct TileItem {
-        TileItem(const std::string* name, const TileTemplate* t, float x, float y)
-            : m_name(name)
-            , m_template(t)
-            , m_x(x)
-            , m_y(y)
-        {}
-
         const std::string* m_name;
         const TileTemplate* m_template;
         float m_x, m_y;
     };
 
     struct RobotItem {
-        RobotItem(const std::string* name, const AIRobotTemplate* t, float x, float y,
-            float directionX, float directionY)
-            : m_name(name)
-            , m_template(t)
-            , m_x(x)
-            , m_y(y)
-            , m_directionX(directionX)
-            , m_directionY(directionY)
-        {}
-
         const std::string* m_name;
         const AIRobotTemplate* m_template;
         float m_x, m_y;
@@ -64,6 +47,13 @@ public:
         float m_mapWidth, m_mapHeight;
         float m_playerX, m_playerY;
         float m_playerDirectionX, m_playerDirectionY;
+
+        void collectFreeSlots(std::vector<const RobotSlot*>& slots) const;
+
+        void deployRobots(Random& rand, int maxRobotCount, const std::vector<std::string>& robotNames,
+                          const std::vector<const AIRobotTemplate*>& robotTemplates);
+
+        void createJson(rapidjson::Document& doc) const;
     };
 
 public:
