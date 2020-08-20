@@ -179,6 +179,7 @@
     <ClCompile Include="src\gameutil\bot_game_map_loader.cpp" />
     <ClCompile Include="src\gameutil\bot_game_object_manager.cpp" />
     <ClCompile Include="src\gameutil\bot_game_lib.cpp" />
+    <ClCompile Include="src\gameutil\bot_generated_map.cpp" />
     <ClCompile Include="src\gameutil\bot_goodie_generator.cpp" />
     <ClCompile Include="src\gameutil\bot_map_generator.cpp" />
     <ClCompile Include="src\gameutil\bot_island_map_generator.cpp" />
@@ -407,6 +408,7 @@
     <ClInclude Include="src\gameutil\bot_game_object_item.h" />
     <ClInclude Include="src\gameutil\bot_game_state.h" />
     <ClInclude Include="src\gameutil\bot_game_lib.h" />
+    <ClInclude Include="src\gameutil\bot_generated_map.h" />
     <ClInclude Include="src\gameutil\bot_goodie_generator.h" />
     <ClInclude Include="src\gameutil\bot_map_generator.h" />
     <ClInclude Include="src\gameutil\bot_island_map_generator.h" />

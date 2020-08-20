@@ -15,38 +15,12 @@ class TileTemplate;
 
 class MapGenerator {
 public:
-    struct TileItem {
-        const std::string* m_name;
-        const TileTemplate* m_template;
-        float m_x, m_y;
-    };
 
-    struct RobotItem {
-        const std::string* m_name;
-        const AIRobotTemplate* m_template;
-        float m_x, m_y;
-        float m_directionX, m_directionY;
-    };
 
-    struct RobotSlot {
-        RobotSlot()
-            : m_occupied(false)
-            , m_x(0.0f)
-            , m_y(0.0f)
-        {}
 
-        bool m_occupied;
-        float m_x, m_y;
-    };
 
     struct Map {
-        std::list<TileItem> m_tiles;
-        std::list<RobotItem> m_robots;
-        std::vector<std::vector<RobotSlot>> m_robotSlots;
-        int m_rowCount, m_colCount;
-        float m_mapWidth, m_mapHeight;
-        float m_playerX, m_playerY;
-        float m_playerDirectionX, m_playerDirectionY;
+
 
         void collectFreeSlots(std::vector<const RobotSlot*>& slots) const;
 

@@ -269,6 +269,9 @@
     <ClCompile Include="src\gameutil\bot_island_map_generator.cpp">
       <Filter>Source Files\gameutil</Filter>
     </ClCompile>
+    <ClCompile Include="src\gameutil\bot_generated_map.cpp">
+      <Filter>Source Files\gameutil</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -987,6 +990,9 @@
     </ClInclude>
     <ClInclude Include="src\misc\bot_random.h">
       <Filter>Source Files\misc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gameutil\bot_generated_map.h">
+      <Filter>Source Files\gameutil</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
