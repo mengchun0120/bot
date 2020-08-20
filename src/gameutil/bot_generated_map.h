@@ -54,7 +54,7 @@ class GeneratedMap {
     };
 
 public:
-    GeneratedMap();
+    GeneratedMap(int rowCount, int colCount, float slotSize);
 
     ~GeneratedMap()
     {}
@@ -68,9 +68,13 @@ public:
     void addRobot(const std::string* name, const AIRobotTemplate* t, float x, float y, 
                   float directionX, float directionY);
 
+    void getFreeSlots(std::vector<Slot*> freeSlots);
+
     bool write(const char* fileName);
 
 private:
+    void initSlots();
+
     void toJson(rapidjson::Document& doc);
 
 private:
@@ -81,6 +85,7 @@ private:
     float m_mapWidth, m_mapHeight;
     float m_playerX, m_playerY;
     float m_playerDirectionX, m_playerDirectionY;
+    float m_slotSize;
 };
 
 } // end of namespace bot

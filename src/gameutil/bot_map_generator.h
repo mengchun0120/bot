@@ -41,7 +41,7 @@ public:
     virtual bool generate(const char* fileName)= 0;
 
 protected:
-    void initMap(Map& map);
+
 
 protected:
     int m_minRowCount, m_maxRowCount;

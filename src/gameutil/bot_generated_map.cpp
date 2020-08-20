@@ -6,16 +6,43 @@
 
 namespace bot {
 
-GeneratedMap::GeneratedMap()
-    : m_rowCount(0)
-    , m_colCount(0)
-    , m_mapWidth(0.0f)
-    , m_mapHeight(0.0f)
+GeneratedMap::GeneratedMap(int rowCount, int colCount, float slotSize)
+    : m_rowCount(rowCount)
+    , m_colCount(colCount)
+    , m_mapWidth(m_rowCount* GameMap::GRID_BREATH)
+    , m_mapHeight(m_colCount* GameMap::GRID_BREATH)
     , m_playerX(0.0f)
     , m_playerY(0.0f)
     , m_playerDirectionX(0.0f)
     , m_playerDirectionY(0.0f)
-{}
+    , m_slotSize(slotSize)
+{
+    initSlots();
+}
+
+void GeneratedMap::initSlots()
+{
+    int slotRowCount = static_cast<int>(floor(m_mapHeight / m_slotSize));
+    int slotColCount = static_cast<int>(floor(m_mapWidth / m_slotSize));
+    float y = m_slotSize / 2.0f;
+
+    m_slots.resize(slotRowCount);
+    for (int r = 0; r < slotRowCount; ++r)
+    {
+        std::vector<Slot>& row = m_slots[r];
+        row.resize(slotColCount);
+
+        float x = m_slotSize / 2.0f;
+        for (int c = 0; c < slotColCount; ++c)
+        {
+            row[c].m_x = x;
+            row[c].m_y = y;
+            x += m_slotSize;
+        }
+
+        y += m_slotSize;
+    }
+}
 
 void GeneratedMap::init(int rowCount, int colCount, float slotSize)
 {
@@ -109,6 +136,38 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
         robots.PushBack(robot, allocator);
     }
     doc.AddMember("robots", robots, allocator);
+}
+
+void GeneratedMap::getFreeSlots(std::vector<Slot*> freeSlots)
+{
+    int freeSlotCount = 0;
+    int rowCount = static_cast<int>(m_slots.size());
+    int colCount = static_cast<int>(m_slots[0].size());
+
+    for (auto& row: m_slots)
+    {
+        for (auto& slot: row)
+        {
+            if (!slot.m_occupied)
+            {
+                ++freeSlotCount;
+            }
+        }
+    }
+
+    int i = 0;
+
+    freeSlots.resize(freeSlotCount);
+    for (auto& row: m_slots)
+    {
+        for (auto& slot: row)
+        {
+            if (!slot.m_occupied)
+            {
+                freeSlots[i++] = &slot;
+            }
+        }
+    }
 }
 
 } // end of namespace bot

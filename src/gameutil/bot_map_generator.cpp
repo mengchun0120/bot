@@ -15,38 +15,6 @@ void randomDirection(Random& rand, float& directionX, float& directionY)
     directionY = static_cast<float>(sin(theta));
 }
 
-void MapGenerator::Map::collectFreeSlots(std::vector<const RobotSlot*>& slots) const
-{
-    int freeSlotCount = 0;
-    int rowCount = static_cast<int>(m_robotSlots.size());
-    int colCount = static_cast<int>(m_robotSlots[0].size());
-
-    for (int r = 0; r < rowCount; ++r)
-    {
-        const std::vector<RobotSlot>& row = m_robotSlots[r];
-        for (int c = 0; c < colCount; ++c)
-        {
-            if (!row[c].m_occupied)
-            {
-                ++freeSlotCount;
-            }
-        }
-    }
-
-    slots.resize(freeSlotCount);
-    for (int r = 0, i = 0; r < rowCount; ++r)
-    {
-        const std::vector<RobotSlot>& row = m_robotSlots[r];
-        for (int c = 0; c < colCount; ++c, ++i)
-        {
-            if (!row[c].m_occupied)
-            {
-                slots[i] = &row[c];
-            }
-        }
-    }
-}
-
 void MapGenerator::Map::deployRobots(Random& rand, int maxRobotCount, const std::vector<std::string>& robotNames,
                                      const std::vector<const AIRobotTemplate*>& robotTemplates)
 {
@@ -93,50 +61,6 @@ void MapGenerator::Map::deployRobots(Random& rand, int maxRobotCount, const std:
             std::swap(freeSlots[robotSlot], freeSlots[lastSlot]);
         }
     }
-}
-
-void MapGenerator::Map::createJson(rapidjson::Document& doc) const
-{
-    using namespace rapidjson;
-
-    doc.SetObject();
-    Document::AllocatorType& allocator = doc.GetAllocator();
-
-    doc.AddMember("numRows", m_rowCount, allocator);
-    doc.AddMember("numCols", m_colCount, allocator);
-
-    Value player(kObjectType);
-    player.AddMember("x", m_playerX, allocator);
-    player.AddMember("y", m_playerY, allocator);
-    player.AddMember("directionX", m_playerDirectionX, allocator);
-    player.AddMember("directionY", m_playerDirectionY, allocator);
-    doc.AddMember("player", player, allocator);
-
-    Value tiles(kArrayType);
-    tiles.Reserve(m_tiles.size(), allocator);
-    for (auto& t : m_tiles)
-    {
-        Value tile(kObjectType);
-        tile.AddMember("name", StringRef(t.m_name->c_str()), allocator);
-        tile.AddMember("x", t.m_x, allocator);
-        tile.AddMember("y", t.m_y, allocator);
-        tiles.PushBack(tile, allocator);
-    }
-    doc.AddMember("tiles", tiles, allocator);
-
-    Value robots(kArrayType);
-    robots.Reserve(m_robots.size(), allocator);
-    for (auto& t : m_robots)
-    {
-        Value robot(kObjectType);
-        robot.AddMember("name", StringRef(t.m_name->c_str()), allocator);
-        robot.AddMember("x", t.m_x, allocator);
-        robot.AddMember("y", t.m_y, allocator);
-        robot.AddMember("directionX", t.m_directionX, allocator);
-        robot.AddMember("directionY", t.m_directionY, allocator);
-        robots.PushBack(robot, allocator);
-    }
-    doc.AddMember("robots", robots, allocator);
 }
 
 MapGenerator::MapGenerator()
@@ -191,35 +115,6 @@ bool MapGenerator::init(const rapidjson::Value& json)
     }
 
     return true;
-}
-
-void MapGenerator::initMap(Map& map)
-{
-    map.m_rowCount = m_rand.get(m_minRowCount, m_maxRowCount);
-    map.m_colCount = m_rand.get(m_minColCount, m_maxColCount);
-    map.m_mapHeight = map.m_rowCount * GameMap::GRID_BREATH;
-    map.m_mapWidth = map.m_colCount * GameMap::GRID_BREATH;
-
-    int slotRowCount = static_cast<int>(floor(map.m_mapHeight / m_robotSlotSize));
-    int slotColCount = static_cast<int>(floor(map.m_mapWidth / m_robotSlotSize));
-    float y = m_robotSlotSize / 2.0f;
-
-    map.m_robotSlots.resize(slotRowCount);
-    for (int r = 0; r < slotRowCount; ++r)
-    {
-        std::vector<RobotSlot>& row = map.m_robotSlots[r];
-        row.resize(slotColCount);
-
-        float x = m_robotSlotSize / 2.0f;
-        for (int c = 0; c < slotColCount; ++c)
-        {
-            row[c].m_x = x;
-            row[c].m_y = y;
-            x += m_robotSlotSize;
-        }
-
-        y += m_robotSlotSize;
-    }
 }
 
 } // end of namespace bot
