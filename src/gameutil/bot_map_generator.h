@@ -2,8 +2,6 @@
 #define INCLUDE_BOT_MAP_GENERATOR
 
 #include <string>
-#include <vector>
-#include <list>
 #include <rapidjson/document.h>
 #include "misc/bot_random.h"
 
@@ -12,24 +10,9 @@ namespace bot {
 class AIRobotTemplate;
 class PlayerTemplate;
 class TileTemplate;
+class GeneratedMap;
 
 class MapGenerator {
-public:
-
-
-
-
-    struct Map {
-
-
-        void collectFreeSlots(std::vector<const RobotSlot*>& slots) const;
-
-        void deployRobots(Random& rand, int maxRobotCount, const std::vector<std::string>& robotNames,
-                          const std::vector<const AIRobotTemplate*>& robotTemplates);
-
-        void createJson(rapidjson::Document& doc) const;
-    };
-
 public:
     MapGenerator();
 
@@ -38,10 +21,10 @@ public:
 
     virtual bool init(const rapidjson::Value& json);
 
-    virtual bool generate(const char* fileName)= 0;
+    virtual bool generate(const char* fileName) = 0;
 
 protected:
-
+    virtual int deployRobots(GeneratedMap& map);
 
 protected:
     int m_minRowCount, m_maxRowCount;

@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <cmath>
 #include "misc/bot_json_utils.h"
+#include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_map_generator.h"
-#include "gameutil/bot_game_map.h"
 #include "app/bot_app.h"
 
 namespace bot {
@@ -13,54 +13,6 @@ void randomDirection(Random& rand, float& directionX, float& directionY)
     double theta = rand.get(0.0, TWO_PI);
     directionX = static_cast<float>(cos(theta));
     directionY = static_cast<float>(sin(theta));
-}
-
-void MapGenerator::Map::deployRobots(Random& rand, int maxRobotCount, const std::vector<std::string>& robotNames,
-                                     const std::vector<const AIRobotTemplate*>& robotTemplates)
-{
-    std::vector<const RobotSlot*> freeSlots;
-    collectFreeSlots(freeSlots);
-    
-    int freeSlotCount = static_cast<int>(freeSlots.size());
-    int lastSlot = freeSlotCount - 1;
-
-    int maxPlayerSlot = std::min(20, freeSlotCount);
-    int playerSlot = rand.get(0, maxPlayerSlot);
-
-    m_playerX = freeSlots[playerSlot]->m_x;
-    m_playerY = freeSlots[playerSlot]->m_y;
-    randomDirection(rand, m_playerDirectionX, m_playerDirectionY);
-    if (lastSlot != playerSlot)
-    {
-        std::swap(freeSlots[lastSlot], freeSlots[playerSlot]);
-    }
-    --freeSlotCount;
-    --lastSlot;
-
-    if (maxRobotCount > freeSlotCount)
-    {
-        maxRobotCount = freeSlotCount;
-    }
-
-    int robotTypeCount = static_cast<int>(robotNames.size());
-    for (int i = 0; i < maxRobotCount; ++i, --freeSlotCount, --lastSlot)
-    {
-        int robotSlot = rand.get(0, freeSlotCount);
-        int robotIdx = rand.get(0, robotTypeCount);
-
-        m_robots.emplace_back();
-        RobotItem& robot = m_robots.back();
-        robot.m_name = &robotNames[robotIdx];
-        robot.m_template = robotTemplates[robotIdx];
-        robot.m_x = freeSlots[robotSlot]->m_x;
-        robot.m_y = freeSlots[robotSlot]->m_y;
-        randomDirection(rand, robot.m_directionX, robot.m_directionY);
-
-        if (robotSlot != lastSlot)
-        {
-            std::swap(freeSlots[robotSlot], freeSlots[lastSlot]);
-        }
-    }
 }
 
 MapGenerator::MapGenerator()
@@ -115,6 +67,55 @@ bool MapGenerator::init(const rapidjson::Value& json)
     }
 
     return true;
+}
+
+int MapGenerator::deployRobots(GeneratedMap& map)
+{
+    std::vector<std::pair<int,int>> freeSlots;
+    map.getFreeSlots(freeSlots);
+
+    int freeSlotCount = static_cast<int>(freeSlots.size());
+    int lastSlot = freeSlotCount - 1;
+
+    int maxPlayerSlot = std::min(20, freeSlotCount);
+    int playerSlot = m_rand.get(0, maxPlayerSlot);
+    float playerDirectionX, playerDirectionY;
+
+    randomDirection(m_rand, playerDirectionX, playerDirectionY);
+    map.setPlayer(freeSlots[playerSlot].first, freeSlots[playerSlot].second, playerDirectionX, playerDirectionY);
+
+    if (lastSlot != playerSlot)
+    {
+        std::swap(freeSlots[lastSlot], freeSlots[playerSlot]);
+    }
+    --freeSlotCount;
+    --lastSlot;
+
+    int maxRobotCount = m_maxRobotCount;
+    if (maxRobotCount > freeSlotCount)
+    {
+        maxRobotCount = freeSlotCount;
+    }
+
+    int robotTypeCount = static_cast<int>(m_robotNames.size());
+    float directionX, directionY;
+
+    for (int i = 0; i < maxRobotCount; ++i, --freeSlotCount, --lastSlot)
+    {
+        int robotSlot = m_rand.get(0, freeSlotCount);
+        int robotIdx = m_rand.get(0, robotTypeCount);
+
+        randomDirection(m_rand, directionX, directionY);
+        map.addRobot(&m_robotNames[robotIdx], m_robotTemplates[robotIdx], freeSlots[robotSlot].first,
+                     freeSlots[robotSlot].second, directionX, directionY);
+
+        if (robotSlot != lastSlot)
+        {
+            std::swap(freeSlots[robotSlot], freeSlots[lastSlot]);
+        }
+    }
+
+    return maxRobotCount;
 }
 
 } // end of namespace bot

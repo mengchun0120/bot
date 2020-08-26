@@ -5,7 +5,7 @@
 
 namespace bot {
 
-class TileTemplate;
+class GeneratedMap;
 
 class IslandMapGenerator: public MapGenerator {
 public:
@@ -19,17 +19,16 @@ public:
     virtual bool generate(const char* fileName);
 
 private:
-    void generateTiles(Map& map);
+    void generateTiles(GeneratedMap& map);
 
-    void generateIsland(Map& map, const std::string* tileName, const TileTemplate* t,
+    void generateIsland(GeneratedMap& map, const std::string* tileName, const TileTemplate* t,
                         int islandSlotX, int islandSlotY, int rows, int cols);
 
-    bool writeMap(const char* fileName, const Map& map);
-
 private:
-    int m_minIslandLen, m_maxIslandLen;
-    int m_minIslandDist, m_maxIslandDist;
+    int m_minIslandLenTiles, m_maxIslandLenTiles;   // min and max length of islands in terms of tiles
+    int m_minIslandDistSlots, m_maxIslandDistSlots; // min and max distance between islands in terms of slots
     std::vector<std::string> m_islandTiles;
+    float m_maxTileHeight, m_maxTileWidth;
     std::vector<const TileTemplate*> m_islandTileTemplates;
 };
 

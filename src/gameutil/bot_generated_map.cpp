@@ -1,6 +1,7 @@
 #include <rapidjson/ostreamwrapper.h>
 #include <rapidjson/writer.h>
 #include <fstream>
+#include "gametemplate/bot_tile_template.h"
 #include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_game_map.h"
 
@@ -44,18 +45,12 @@ void GeneratedMap::initSlots()
     }
 }
 
-void GeneratedMap::init(int rowCount, int colCount, float slotSize)
+void GeneratedMap::setPlayer(int row, int col, float directionX, float directionY)
 {
-    m_rowCount = rowCount;
-    m_colCount = colCount;
-    m_mapHeight = m_rowCount * GameMap::GRID_BREATH;
-    m_mapWidth = m_colCount* GameMap::GRID_BREATH;
-}
-
-void GeneratedMap::setPlayer(float x, float y, float directionX, float directionY)
-{
-    m_playerX = x;
-    m_playerY = y;
+    Slot& slot = m_slots[row][col];
+    m_playerX = slot.m_x;
+    m_playerY = slot.m_y;
+    slot.m_occupied = true;
     m_playerDirectionX = directionX;
     m_playerDirectionY = directionY;
 }
@@ -63,12 +58,35 @@ void GeneratedMap::setPlayer(float x, float y, float directionX, float direction
 void GeneratedMap::addTile(const std::string* name, const TileTemplate* t, float x, float y)
 {
     m_tiles.emplace_back(name, t, x, y);
+
+    int left = getSlotIndex(x - t->getCoverBreathX());
+    int right = getSlotIndex(x + t->getCoverBreathX());
+    int bottom = getSlotIndex(y - t->getCoverBreathY());
+    int top = getSlotIndex(y + t->getCoverBreathY());
+
+    for (int r = bottom; r <= top; ++r)
+    {
+        auto& row = m_slots[r];
+        for (int c = left; c <= right; ++c)
+        {
+            row[c].m_occupied = true;
+        }
+    }
 }
 
-void GeneratedMap::addRobot(const std::string* name, const AIRobotTemplate* t, float x, float y,
+bool GeneratedMap::addRobot(const std::string* name, const AIRobotTemplate* t, int row, int col,
                             float directionX, float directionY)
 {
-    m_robots.emplace_back(name, t, x, y, directionX, directionY);
+    Slot& slot = m_slots[row][col];
+    if (slot.m_occupied)
+    {
+        return false;
+    }
+
+    slot.m_occupied = true;
+    m_robots.emplace_back(name, t, slot.m_x, slot.m_y, directionX, directionY);
+    
+    return true;
 }
 
 bool GeneratedMap::write(const char* fileName)
@@ -138,11 +156,10 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
     doc.AddMember("robots", robots, allocator);
 }
 
-void GeneratedMap::getFreeSlots(std::vector<Slot*> freeSlots)
+void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>> freeSlots)
 {
     int freeSlotCount = 0;
-    int rowCount = static_cast<int>(m_slots.size());
-    int colCount = static_cast<int>(m_slots[0].size());
+
 
     for (auto& row: m_slots)
     {
@@ -156,15 +173,19 @@ void GeneratedMap::getFreeSlots(std::vector<Slot*> freeSlots)
     }
 
     int i = 0;
+    int rowCount = static_cast<int>(m_slots.size());
+    int colCount = static_cast<int>(m_slots[0].size());
 
     freeSlots.resize(freeSlotCount);
-    for (auto& row: m_slots)
+    for (int r = 0; r < rowCount; ++r)
     {
-        for (auto& slot: row)
+        auto& row = m_slots[r];
+        for (int c = 0; c < colCount; ++c)
         {
-            if (!slot.m_occupied)
+            if (!row[c].m_occupied)
             {
-                freeSlots[i++] = &slot;
+                freeSlots[i++].first = r;
+                freeSlots[i++].second = c;
             }
         }
     }

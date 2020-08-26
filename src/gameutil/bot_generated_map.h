@@ -4,6 +4,8 @@
 #include <string>
 #include <list>
 #include <vector>
+#include <utility>
+#include <cmath>
 #include <rapidjson/document.h>
 
 namespace bot {
@@ -59,23 +61,36 @@ public:
     ~GeneratedMap()
     {}
 
-    void init(int rowCount, int colCount, float slotSize);
-
-    void setPlayer(float x, float y, float directionX, float directionY);
+    void setPlayer(int row, int col, float directionX, float directionY);
 
     void addTile(const std::string* name, const TileTemplate* t, float x, float y);
 
-    void addRobot(const std::string* name, const AIRobotTemplate* t, float x, float y, 
+    bool addRobot(const std::string* name, const AIRobotTemplate* t, int row, int col,
                   float directionX, float directionY);
 
-    void getFreeSlots(std::vector<Slot*> freeSlots);
+    void getFreeSlots(std::vector<std::pair<int,int>> freeSlots);
 
     bool write(const char* fileName);
+
+    int getSlotRowCount() const
+    {
+        return static_cast<int>(m_slots.size());
+    }
+
+    int getSlotColCount() const
+    {
+        return static_cast<int>(m_slots[0].size());
+    }
 
 private:
     void initSlots();
 
     void toJson(rapidjson::Document& doc);
+
+    int getSlotIndex(float x)
+    {
+        return static_cast<int>(floor(x / m_slotSize));
+    }
 
 private:
     std::list<TileItem> m_tiles;
