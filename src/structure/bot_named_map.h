@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_NAMED_MAP
 
 #include <list>
+#include <vector>
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 
@@ -16,6 +17,9 @@ public:
 
     bool load(const char* fileName);
 
+    template <typename P>
+    bool load(const char* fileName, P& parser);
+
     bool add(const char *name, T* t);
 
     bool add(const std::string &name, T* t)
@@ -28,6 +32,26 @@ public:
     T* search(const std::string &name) const
     {
         return search(name.c_str());
+    }
+
+    int getNumObjs() const
+    {
+        return static_cast<int>(m_objs.size());
+    }
+
+    T* getObjAt(int idx)
+    {
+        return m_objs[idx];
+    }
+
+    const T* getObjAt(int idx) const
+    {
+        return m_objs[idx];
+    }
+
+    const std::string& getNameAt(int idx) const
+    {
+        return m_names[idx];
     }
 
     void clear();
@@ -49,6 +73,8 @@ private:
     };
 
     Node *m_root;
+    std::vector<T*> m_objs;
+    std::vector<std::string> m_names;
 };
 
 template <typename T>
@@ -81,6 +107,8 @@ bool NamedMap<T>::load(const char* fileName)
     const rapidjson::Value& arr = doc.GetArray();
     int numObjects = arr.Capacity();
 
+    m_objs.resize(numObjects);
+    m_names.resize(numObjects);
     for (int i = 0; i < numObjects; ++i)
     {
         const rapidjson::Value& elem = arr[i];
@@ -100,10 +128,61 @@ bool NamedMap<T>::load(const char* fileName)
         }
 
         add(name, t);
+        m_objs[i] = t;
+        m_names[i] = name;
     }
 
     return true;
 }
+
+template <typename T>
+template <typename P>
+bool NamedMap<T>::load(const char* fileName, P& parser)
+{
+    rapidjson::Document doc;
+
+    if (!readJson(doc, fileName))
+    {
+        return false;
+    }
+
+    if (!doc.IsArray())
+    {
+        LOG_ERROR("Invalid format: %s", fileName);
+        return false;
+    }
+
+    const rapidjson::Value& arr = doc.GetArray();
+    int numObjects = arr.Capacity();
+
+    m_objs.resize(numObjects);
+    m_names.resize(numObjects);
+    for (int i = 0; i < numObjects; ++i)
+    {
+        const rapidjson::Value& elem = arr[i];
+        std::string name;
+
+        if (!parseJson(name, elem, "name"))
+        {
+            LOG_ERROR("Failed to find name in the %dth object of %s", i, fileName);
+            return false;
+        }
+
+        T* t = parser.create(name, elem);
+        if (!t)
+        {
+            LOG_ERROR("Failed to parse the %dth object of %s", i, fileName);
+            return false;
+        }
+
+        add(name, t);
+        m_objs[i] = t;
+        m_names[i] = name;
+    }
+
+    return true;
+}
+
 
 template <typename T>
 bool NamedMap<T>::add(const char* name, T* t)
@@ -246,6 +325,9 @@ void NamedMap<T>::clear()
 
         delete n;
     }
+
+    m_objs.clear();
+    m_names.clear();
 }
 
 template <typename T>

@@ -180,6 +180,11 @@ public:
         return m_messageBoxConfigFile;
     }
 
+    const std::string& getMapGeneratorLib() const
+    {
+        return m_mapGeneratorLib;
+    }
+
 private:
     bool readConfig(const std::string& cfgFile);
 
@@ -218,6 +223,7 @@ private:
     std::string m_startScreenConfigFile;
     std::string m_messageBoxConfigFile;
     std::string m_mapFile;
+    std::string m_mapGeneratorLib;
     float m_mapPoolFactor;
     int m_missilePoolSize;
 };

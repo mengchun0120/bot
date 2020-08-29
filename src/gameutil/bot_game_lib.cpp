@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "gameutil/bot_map_generator.h"
 #include "app/bot_app.h"
 
 namespace bot {
@@ -92,12 +93,21 @@ bool GameLib::load()
     {
         return false;
     }
-    
+
+    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate, m_tileTemplateLib, m_aiRobotTemplateLib);
+    if (!m_mapGeneratorLib.load(cfg.getMapGeneratorLib().c_str(), mapGeneratorParser))
+    {
+        LOG_ERROR("Failed to load map-generator lib from %s", cfg.getMapGeneratorLib().c_str());
+        return false;
+    }
+
+    LOG_INFO("Done loading map-generator lib from %s", cfg.getMapGeneratorLib().c_str());
+
     if (!m_dashboardConfig.init())
     {
         return false;
     }
-
+    
     if (!m_buttonConfig.init())
     {
         return false;
@@ -112,6 +122,7 @@ bool GameLib::load()
     {
         return false;
     }
+
 
     return true;
 }

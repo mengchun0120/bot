@@ -364,6 +364,9 @@
     <None Include="res\lib\message_box_config.json">
       <Filter>Resource Files\lib</Filter>
     </None>
+    <None Include="res\lib\map_generator_lib.json">
+      <Filter>Resource Files\lib</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\fonts\ascii_32.png">

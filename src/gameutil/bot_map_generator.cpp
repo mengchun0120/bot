@@ -1,9 +1,12 @@
 #include <algorithm>
 #include <cmath>
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
+#include "gametemplate/bot_player_template.h"
+#include "gametemplate/bot_ai_robot_template.h"
 #include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_map_generator.h"
-#include "app/bot_app.h"
+#include "gameutil/bot_island_map_generator.h"
 
 namespace bot {
 
@@ -15,18 +18,40 @@ void randomDirection(Random& rand, float& directionX, float& directionY)
     directionY = static_cast<float>(sin(theta));
 }
 
+MapGenerator* MapGenerator::Parser::create(const std::string& name, const rapidjson::Value& elem)
+{
+    MapGenerator* g = nullptr;
+
+    if ("islandMapGenerator" == name)
+    {
+        g = new IslandMapGenerator();
+        if (!g->init(elem, m_playerTemplate, m_robotTemplateLib, m_tileTemplateLib))
+        {
+            delete g;
+            g = nullptr;
+        }
+    }
+    else
+    {
+        LOG_ERROR("Unknown map generator: %s", name.c_str());
+    }
+
+    return g;
+}
+
 MapGenerator::MapGenerator()
     : m_minRowCount(0)
     , m_maxRowCount(0)
     , m_minColCount(0)
     , m_maxColCount(0)
     , m_maxRobotCount(0)
-    , m_playerTemplate(nullptr)
     , m_robotSlotSize(0.0f)
 {
 }
 
-bool MapGenerator::init(const rapidjson::Value& json)
+bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
+                        const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
+                        const NamedMap<TileTemplate>& tileTemplateLib)
 {
     std::vector<JsonParseParam> params = {
         {&m_minRowCount,   "minRowCount",   JSONTYPE_INT},
@@ -42,16 +67,15 @@ bool MapGenerator::init(const rapidjson::Value& json)
         return false;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
     int count = static_cast<int>(m_robotNames.size());
 
-    m_playerTemplate = &lib.getPlayerTemplate();
-    m_robotSlotSize = 2.0f * std::max(m_playerTemplate->getCoverBreathX(), m_playerTemplate->getCoverBreathY());
+    m_robotSlotSize = 2.0f * std::max(playerTemplate->getCoverBreathX(), 
+                                      playerTemplate->getCoverBreathY());
 
     m_robotTemplates.resize(count);
     for (int i = 0; i < count; ++i)
     {
-        const AIRobotTemplate* t = lib.getAIRobotTemplate(m_robotNames[i]);
+        const AIRobotTemplate* t = aiRobotTemplateLib.search(m_robotNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find robot template %s", m_robotNames[i].c_str());
@@ -82,7 +106,8 @@ int MapGenerator::deployRobots(GeneratedMap& map)
     float playerDirectionX, playerDirectionY;
 
     randomDirection(m_rand, playerDirectionX, playerDirectionY);
-    map.setPlayer(freeSlots[playerSlot].first, freeSlots[playerSlot].second, playerDirectionX, playerDirectionY);
+    map.setPlayer(freeSlots[playerSlot].first, freeSlots[playerSlot].second, 
+                  playerDirectionX, playerDirectionY);
 
     if (lastSlot != playerSlot)
     {
@@ -91,12 +116,7 @@ int MapGenerator::deployRobots(GeneratedMap& map)
     --freeSlotCount;
     --lastSlot;
 
-    int maxRobotCount = m_maxRobotCount;
-    if (maxRobotCount > freeSlotCount)
-    {
-        maxRobotCount = freeSlotCount;
-    }
-
+    int maxRobotCount = std::min(m_maxRobotCount, freeSlotCount);
     int robotTypeCount = static_cast<int>(m_robotNames.size());
     float directionX, directionY;
 

@@ -13,6 +13,7 @@
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
 #include "gametemplate/bot_player_template.h"
+#include "gameutil/bot_map_generator.h"
 #include "gameobj/bot_progress_ring.h"
 #include "gameobj/bot_dashboard_config.h"
 #include "widget/bot_button_config.h"
@@ -116,6 +117,11 @@ public:
         return m_startScreenConfig;
     }
 
+    const MapGenerator* getMapGenerator(const std::string& name) const
+    {
+        return m_mapGeneratorLib.search(name);
+    }
+
 private:
     NamedMap<Texture> m_textureLib;
     NamedMap<Rectangle> m_rectLib;
@@ -128,6 +134,7 @@ private:
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate m_playerTemplate;
+    NamedMap<MapGenerator> m_mapGeneratorLib;
     DashboardConfig m_dashboardConfig;
     ButtonConfig m_buttonConfig;
     MessageBoxConfig m_messageBoxConfig;

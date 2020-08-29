@@ -78,7 +78,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)\dependencies\x64\include;$(ProjectDir)\src;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)\dependencies\x64\lib;$(LibraryPath)</LibraryPath>
-    <SourcePath>D:\workspace\bot\src;$(SourcePath)</SourcePath>
+    <SourcePath>$(ProjectDir)\src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -224,6 +224,7 @@
     <None Include="res\lib\color_lib.json" />
     <None Include="res\lib\dashboard_config.json" />
     <None Include="res\lib\goodie_template_lib.json" />
+    <None Include="res\lib\map_generator_lib.json" />
     <None Include="res\lib\message_box_config.json" />
     <None Include="res\lib\missile_template_lib.json" />
     <None Include="res\lib\particle_effect_template_lib.json" />

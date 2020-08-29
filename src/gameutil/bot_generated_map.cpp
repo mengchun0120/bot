@@ -103,8 +103,8 @@ bool GeneratedMap::write(const char* fileName)
     }
 
     OStreamWrapper osw(ofs);
-
     Writer<OStreamWrapper> writer(osw);
+
     doc.Accept(writer);
 
     ofs.close();
@@ -116,9 +116,9 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
 {
     using namespace rapidjson;
 
-    doc.SetObject();
     Document::AllocatorType& allocator = doc.GetAllocator();
 
+    doc.SetObject();
     doc.AddMember("numRows", m_rowCount, allocator);
     doc.AddMember("numCols", m_colCount, allocator);
 

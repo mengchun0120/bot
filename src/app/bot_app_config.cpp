@@ -71,6 +71,7 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         {&m_startScreenConfigFile,     "startScreenConfig",         JSONTYPE_STRING},
         {&m_messageBoxConfigFile,      "messageBoxConfig",          JSONTYPE_STRING},
         {&m_mapFile,                   "mapFile",                   JSONTYPE_STRING},
+        {&m_mapGeneratorLib,           "mapGeneratorLib",           JSONTYPE_STRING},
         {&m_mapPoolFactor,             "mapPoolFactor",             JSONTYPE_FLOAT},
         {&m_missilePoolSize,           "missilePoolSize",           JSONTYPE_INT}
     };
@@ -113,6 +114,7 @@ void AppConfig::marshalConfig()
     m_startScreenConfigFile     = constructPath({ m_libDir, m_startScreenConfigFile });
     m_messageBoxConfigFile      = constructPath({ m_libDir, m_messageBoxConfigFile });
     m_mapFile                   = constructPath({ m_mapDir, m_mapFile });
+    m_mapGeneratorLib           = constructPath({ m_libDir, m_mapGeneratorLib });
 }
 
 } // end of namespace bot
