@@ -1,8 +1,11 @@
 #ifndef INCLUDE_BOT_DASHBOARD_CONFIG
 #define INCLUDE_BOT_DASHBOARD_CONFIG
 
+#include <string>
+
 namespace bot {
 
+template <typename T> class NamedMap;
 class Rectangle;
 class Texture;
 class Color;
@@ -31,7 +34,8 @@ public:
     ~DashboardConfig()
     {}
 
-    bool init();
+    bool init(const std::string& configFile, const NamedMap<Texture>& textureLib, 
+              const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib);
 
     const Rectangle* getHPRect() const
     {

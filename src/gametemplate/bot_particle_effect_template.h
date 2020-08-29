@@ -1,25 +1,42 @@
 #ifndef INCLUDE_BOT_PARTICLE_EFFECT_TEMPLATE
 #define INCLUDE_BOT_PARTICLE_EFFECT_TEMPLATE
 
+#include <string>
 #include <rapidjson/document.h>
 #include "opengl/bot_vertex_array.h"
 #include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
 
+template <typename T> class NamedMap;
 class Texture;
 class Color;
 
 class ParticleEffectTemplate: public GameObjectTemplate {
 public:
-    static ParticleEffectTemplate* create(const rapidjson::Value& elem);
-    
+    class Parser {
+    public:
+        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib)
+            : m_textureLib(textureLib)
+            , m_colorLib(colorLib)
+        {}
+
+        ~Parser()
+        {}
+
+        ParticleEffectTemplate* create(const std::string& name, const rapidjson::Value& elem);
+
+    private:
+        const NamedMap<Texture>& m_textureLib;
+        const NamedMap<Color>& m_colorLib;
+    };
+
     ParticleEffectTemplate();
 
     virtual ~ParticleEffectTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
 
     bool init(float coverBreathX, float coverBreathY, int numParticles, float accelearation, float initSpeed,
               float duration, float particleSize, const float* data, const Texture* texture, const Color* color);

@@ -21,6 +21,8 @@
 #include "screen/bot_start_screen_config.h"
 
 namespace bot {
+    
+class AppConfig;
 
 class GameLib {
 public:
@@ -30,7 +32,7 @@ public:
     ~GameLib()
     {}
 
-    bool load();
+    bool load(float viewportWidth, float viewportHeight, const AppConfig& cfg);
 
     const Texture* getTexture(const std::string& name) const
     {

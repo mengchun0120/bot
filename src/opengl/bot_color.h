@@ -1,13 +1,25 @@
 #ifndef INCLUDE_BOT_COLOR
 #define INCLUDE_BOT_COLOR
 
-#include "rapidjson/document.h"
+#include <string>
+#include <rapidjson/document.h>
 #include "misc/bot_constants.h"
 
 namespace bot {
 
 class Color {
 public:
+    class Parser {
+    public:
+        Parser()
+        {}
+
+        ~Parser()
+        {}
+
+        Color* create(const std::string& name, const rapidjson::Value& elem);
+    };
+
     static bool validateElem(int elem)
     {
         return elem >= 0 && elem <= 255;

@@ -6,6 +6,7 @@
 
 namespace bot {
 
+template <typename T> class NamedMap;
 class Rectangle;
 
 class StartScreenConfig {
@@ -18,7 +19,7 @@ public:
     ~StartScreenConfig()
     {}
 
-    bool init();
+    bool init(const std::string& configFile, const NamedMap<Rectangle>& rectLib);
 
     float getButtonSpacing() const
     {

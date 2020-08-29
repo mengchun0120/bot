@@ -259,7 +259,9 @@ bool NamedMap<T>::add(const char* name, T* t)
         parent = n;
     }
 
-    parent->m_ptr = t;
+    if (parent) {
+        parent->m_ptr = t;
+    }
 
     return true;
 }

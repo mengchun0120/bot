@@ -1,24 +1,25 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
+#include "opengl/bot_texture.h"
+#include "opengl/bot_color.h"
 #include "widget/bot_button_config.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
-bool ButtonConfig::init()
+bool ButtonConfig::init(const std::string& configFile, const NamedMap<Texture>& textureLib,
+                        const NamedMap<Color>& colorLib)
 {
-    const AppConfig& cfg = App::getInstance().getConfig();
-    const char* fileName = cfg.getButtonConfigFile().c_str();
     rapidjson::Document doc;
 
-    if (!readJson(doc, fileName))
+    if (!readJson(doc, configFile.c_str()))
     {
         return false;
     }
 
     if (!doc.IsObject())
     {
-        LOG_ERROR("Invalid file format %s", fileName);
+        LOG_ERROR("Invalid file format %s", configFile.c_str());
         return false;
     }
 
@@ -37,37 +38,33 @@ bool ButtonConfig::init()
         return false;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
-
-    m_texture = lib.getTexture(textureName);
+    m_texture = textureLib.search(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Failed to find texture %s", textureName.c_str());
         return false;
     }
 
-    m_normalTextColor = lib.getColor(normalColorName);
+    m_normalTextColor = colorLib.search(normalColorName);
     if (!m_normalTextColor)
     {
         LOG_ERROR("Failed to find color %s", normalColorName.c_str());
         return false;
     }
 
-    m_hoverTextColor = lib.getColor(hoverColorName);
+    m_hoverTextColor = colorLib.search(hoverColorName);
     if (!m_hoverTextColor)
     {
         LOG_ERROR("Failed to find color %s", hoverColorName.c_str());
         return false;
     }
 
-    m_pressTextColor = lib.getColor(pressColorName);
+    m_pressTextColor = colorLib.search(pressColorName);
     if (!m_pressTextColor)
     {
         LOG_ERROR("Failed to find color %s", pressColorName.c_str());
         return false;
     }
-
-    LOG_INFO("Done loading button config from %s", fileName);
 
     return true;
 }

@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_AI
 #define INCLUDE_BOT_AI
 
+#include <string>
 #include <rapidjson/document.h>
 
 namespace bot {
@@ -10,6 +11,17 @@ class GameScreen;
 
 class AI {
 public:
+    class Parser {
+    public:
+        Parser()
+        {}
+
+        ~Parser()
+        {}
+
+        AI* create(const std::string& name, const rapidjson::Value& elem);
+    };
+
     static AI* create(const rapidjson::Value& elem);
 
     AI()

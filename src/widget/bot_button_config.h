@@ -2,12 +2,10 @@
 #define INCLUDE_BOT_BUTTON_CONFIG
 
 #include <string>
-#include "structure/bot_named_map.h"
-#include "opengl/bot_color.h"
-#include "opengl/bot_texture.h"
 
 namespace bot {
 
+template <typename T> class NamedMap;
 class Color;
 class Texture;
 
@@ -23,7 +21,8 @@ public:
     ~ButtonConfig()
     {}
 
-    bool init();
+    bool init(const std::string& configFile, const NamedMap<Texture>& textureLib,
+              const NamedMap<Color>& colorLib);
 
     const Texture* getTexture() const
     {

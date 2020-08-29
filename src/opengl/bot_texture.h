@@ -1,20 +1,33 @@
 #ifndef INCLUDE_BOT_TEXTURE
 #define INCLUDE_BOT_TEXTURE
 
-#include <rapidjson/document.h>
 #include <string>
+#include <rapidjson/document.h>
 
 namespace bot {
 
 class Texture {
 public:
-    static Texture* create(const rapidjson::Value& elem);
+    class Parser {
+    public:
+        Parser(const std::string& textureDir)
+            : m_textureDir(textureDir)
+        {}
+
+        ~Parser()
+        {}
+
+        Texture* create(const std::string& name, const rapidjson::Value& elem);
+
+    private:
+        const std::string& m_textureDir;
+    };
 
     Texture();
 
     virtual ~Texture();
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const std::string& textureDir, const rapidjson::Value& elem);
 
     bool init(const std::string& imageFile);
 

@@ -1,7 +1,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
+#include "opengl/bot_texture.h"
+#include "opengl/bot_color.h"
+#include "geometry/bot_rectangle.h"
+#include "gametemplate/bot_missile_template.h"
 #include "gametemplate/bot_robot_template.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -22,14 +26,16 @@ RobotTemplate::~RobotTemplate()
 	}
 }
 
-bool RobotTemplate::init(const rapidjson::Value& elem)
+bool RobotTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+                         const NamedMap<Color>& colorLib, const NamedMap<MissileTemplate>& missileLib,
+                         const rapidjson::Value& elem)
 {
     if (!parseBaseAttributes(elem))
     {
         return false;
     }
 
-    if (!parseComponents(elem))
+    if (!parseComponents(textureLib, rectLib, colorLib, elem))
     {
         return false;
     }
@@ -39,7 +45,7 @@ bool RobotTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    if (!parseShootAbility(elem))
+    if (!parseShootAbility(missileLib, elem))
     {
         return false;
     }
@@ -108,7 +114,8 @@ bool RobotTemplate::parseBaseAttributes(const rapidjson::Value& elem)
     return true;
 }
 
-bool RobotTemplate::parseComponents(const rapidjson::Value& elem)
+bool RobotTemplate::parseComponents(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+                                    const NamedMap<Color>& colorLib, const rapidjson::Value& elem)
 {
     if (!elem.HasMember("components"))
     {
@@ -126,8 +133,7 @@ bool RobotTemplate::parseComponents(const rapidjson::Value& elem)
     int numComponents = components.Capacity();
     std::string textureName, rectName, colorName;
     float componentX = 0.0f, componentY = 0.0f;
-    const GameLib& lib = App::getInstance().getGameLib();
-
+    
     std::vector<JsonParseParam> componentParams =
     {
         {&textureName, "texture",    JSONTYPE_STRING},
@@ -145,21 +151,21 @@ bool RobotTemplate::parseComponents(const rapidjson::Value& elem)
             return false;
         }
 
-        const Texture* texture = lib.getTexture(textureName);
+        const Texture* texture = textureLib.search(textureName);
         if (!texture)
         {
             LOG_ERROR("Failed to find texture %s", textureName.c_str());
             return false;
         }
 
-        const Rectangle* rect = lib.getRect(rectName);
+        const Rectangle* rect = rectLib.search(rectName);
         if (!rect)
         {
             LOG_ERROR("Failed to find rect %s", rectName.c_str());
             return false;
         }
 
-        const Color* color = lib.getColor(colorName);
+        const Color* color = colorLib.search(colorName);
         if (!color)
         {
             LOG_ERROR("Failed to find color %s", colorName.c_str());
@@ -213,7 +219,7 @@ bool RobotTemplate::parseMoveAbility(const rapidjson::Value& elem)
     return true;
 }
 
-bool RobotTemplate::parseShootAbility(const rapidjson::Value& elem)
+bool RobotTemplate::parseShootAbility(const NamedMap<MissileTemplate>& missileLib, const rapidjson::Value& elem)
 {
     bool shootable = false;
     float shootInterval = 0.0f, shootPosX = 0.0f, shootPosY = 0.0f;
@@ -246,9 +252,7 @@ bool RobotTemplate::parseShootAbility(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
-
-    const MissileTemplate* missile = lib.getMissileTemplate(missileName);
+    const MissileTemplate* missile = missileLib.search(missileName);
     if (!missile)
     {
         LOG_ERROR("Couldn't find missile %s", missileName.c_str());

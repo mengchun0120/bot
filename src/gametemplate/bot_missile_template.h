@@ -1,11 +1,13 @@
 #ifndef INCLUDE_BOT_MISSILE_TEMPLATE
 #define INCLUDE_BOT_MISSILE_TEMPLATE
 
+#include <string>
 #include <rapidjson/document.h>
 #include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
 
+template <typename T> class NamedMap;
 class Texture;
 class Rectangle;
 class ParticleEffectTemplate;
@@ -13,14 +15,36 @@ class Color;
 
 class MissileTemplate : public GameObjectTemplate {
 public:
-    static MissileTemplate* create(const rapidjson::Value& elem);
-    
+	class Parser {
+	public:
+		Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+			   const NamedMap<ParticleEffectTemplate>& particleEffectLib, const NamedMap<Color>& colorLib)
+			: m_textureLib(textureLib)
+			, m_rectLib(rectLib)
+			, m_particleEffectLib(particleEffectLib)
+			, m_colorLib(colorLib)
+		{}
+
+		~Parser()
+		{}
+
+		MissileTemplate* create(const std::string& name, const rapidjson::Value& elem);
+
+	private:
+		const NamedMap<Texture>& m_textureLib;
+		const NamedMap<Rectangle>& m_rectLib;
+		const NamedMap<ParticleEffectTemplate>& m_particleEffectLib;
+		const NamedMap<Color>& m_colorLib;
+	};
+
     MissileTemplate();
 
 	virtual ~MissileTemplate()
 	{}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+		      const NamedMap<ParticleEffectTemplate>& particleEffectLib, const NamedMap<Color>& colorLib,
+		      const rapidjson::Value& elem);
 
 	float getSpeed() const
 	{

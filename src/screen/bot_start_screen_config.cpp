@@ -1,24 +1,23 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
+#include "geometry/bot_rectangle.h"
 #include "screen/bot_start_screen_config.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
-bool StartScreenConfig::init()
+bool StartScreenConfig::init(const std::string& configFile, const NamedMap<Rectangle>& rectLib)
 {
-    const AppConfig& cfg = App::getInstance().getConfig();
-    const char* fileName = cfg.getStartScreenConfigFile().c_str();
     rapidjson::Document doc;
 
-    if (!readJson(doc, fileName))
+    if (!readJson(doc, configFile.c_str()))
     {
         return false;
     }
 
     if (!doc.IsObject())
     {
-        LOG_ERROR("Invalid file format %s", fileName);
+        LOG_ERROR("Invalid file format %s", configFile.c_str());
         return false;
     }
 
@@ -32,20 +31,16 @@ bool StartScreenConfig::init()
 
     if (!parseJson(params, jsonCfg))
     {
-        LOG_ERROR("Failed to parse start screen config from %s", fileName);
+        LOG_ERROR("Failed to parse start screen config from %s", configFile.c_str());
         return false;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
-    
-    m_rect = lib.getRect(buttonRectName);
+    m_rect = rectLib.search(buttonRectName);
     if (!m_rect)
     {
         LOG_ERROR("Failed to find button %s", buttonRectName.c_str());
         return false;
     }
-
-    LOG_INFO("Done loading start screen config from %s", fileName);
 
     return true;
 }

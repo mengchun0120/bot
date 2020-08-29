@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_RECTANGLE
 #define INCLUDE_BOT_RECTANGLE
 
+#include <string>
 #include <rapidjson/document.h>
 #include "geometry/bot_polygon.h"
 
@@ -8,7 +9,16 @@ namespace bot {
 
 class Rectangle: public Polygon {
 public:
-    static Rectangle* create(const rapidjson::Value& elem);
+    class Parser {
+    public:
+        Parser()
+        {}
+
+        ~Parser()
+        {}
+
+        Rectangle* create(const std::string& name, const rapidjson::Value& elem);
+    };
 
     Rectangle();
 

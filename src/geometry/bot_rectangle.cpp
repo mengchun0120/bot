@@ -4,7 +4,7 @@
 
 namespace bot {
 
-Rectangle* Rectangle::create(const rapidjson::Value& elem)
+Rectangle* Rectangle::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     Rectangle* rect = new Rectangle();
     if (!rect->init(elem))

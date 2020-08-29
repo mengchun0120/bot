@@ -2,16 +2,17 @@
 #include "misc/bot_log.h"
 #include "misc/bot_constants.h"
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
 #include "opengl/bot_color.h"
 #include "gameobj/bot_progress_ring.h"
 #include "app/bot_app.h"
 
 namespace bot {
 
-ProgressRing* ProgressRing::create(const rapidjson::Value& elem)
+ProgressRing* ProgressRing::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     ProgressRing* ring = new ProgressRing();
-    if (!ring->init(elem))
+    if (!ring->init(m_colorLib, elem))
     {
         delete ring;
         return nullptr;
@@ -26,7 +27,7 @@ ProgressRing::ProgressRing()
 {
 }
 
-bool ProgressRing::init(const rapidjson::Value& elem)
+bool ProgressRing::init(const NamedMap<Color>& colorLib, const rapidjson::Value& elem)
 {
     std::string backColorName, frontColorName;
     float radius;
@@ -44,16 +45,14 @@ bool ProgressRing::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
-
-    const Color* backColor = lib.getColor(backColorName);
+    const Color* backColor = colorLib.search(backColorName);
     if (!backColor)
     {
         LOG_ERROR("Failed to find backColor %s", backColorName.c_str());
         return false;
     }
 
-    const Color* frontColor = lib.getColor(frontColorName);
+    const Color* frontColor = colorLib.search(frontColorName);
     if (!frontColor)
     {
         LOG_ERROR("Failed to find frontColor %s", frontColorName.c_str());

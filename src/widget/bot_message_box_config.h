@@ -7,6 +7,7 @@
 
 namespace bot {
 
+template <typename T> class NamedMap;
 class Rectangle;
 class Color;
 
@@ -17,7 +18,8 @@ public:
     ~MessageBoxConfig()
     {}
 
-    bool init();
+    bool init(const std::string& configFile, float viewportWidth, float viewportHeight,
+              const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib);
 
     const Rectangle* getBoxRect() const
     {

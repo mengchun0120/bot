@@ -1,7 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gametemplate/bot_player_template.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -15,26 +14,25 @@ PlayerTemplate::~PlayerTemplate()
 {
 }
 
-bool PlayerTemplate::init()
+bool PlayerTemplate::init(const std::string& playerTemplateFile, const NamedMap<Texture>& textureLib, 
+                          const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib, 
+                          const NamedMap<MissileTemplate>& missileLib)
 {
-    const AppConfig& cfg = App::getInstance().getConfig();
-    const char* fileName = cfg.getPlayerTemplateLib().c_str();
-
     rapidjson::Document doc;
-    if (!readJson(doc, fileName))
+    if (!readJson(doc, playerTemplateFile.c_str()))
     {
         return false;
     }
 
     if (!doc.IsObject())
     {
-        LOG_ERROR("Invalid format in %s", fileName);
+        LOG_ERROR("Invalid format in %s", playerTemplateFile.c_str());
         return false;
     }
 
     const rapidjson::Value& playerJson = doc.GetObject();
 
-    if (!RobotTemplate::init(playerJson))
+    if (!RobotTemplate::init(textureLib, rectLib, colorLib, missileLib, playerJson))
     {
         return false;
     }

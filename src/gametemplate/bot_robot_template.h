@@ -10,9 +10,11 @@
 
 namespace bot {
 
+template <typename T> class NamedMap;
 class Texture;
 class Rectangle;
 class Color;
+class MissileTemplate;
 
 class RobotTemplate: public GameObjectTemplate {
 public:
@@ -30,7 +32,9 @@ public:
 
 	virtual ~RobotTemplate();
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+		      const NamedMap<Color>& colorLib, const NamedMap<MissileTemplate>& missileLib,
+		      const rapidjson::Value& elem);
 
 	int getNumComponents() const
 	{
@@ -161,11 +165,12 @@ protected:
 
     bool parseBaseAttributes(const rapidjson::Value& elem);
 
-    bool parseComponents(const rapidjson::Value& elem);
+    bool parseComponents(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+		                 const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
 
     bool parseMoveAbility(const rapidjson::Value& elem);
 
-    bool parseShootAbility(const rapidjson::Value& elem);
+    bool parseShootAbility(const NamedMap<MissileTemplate>& missileLib, const rapidjson::Value& elem);
 
 protected:
 	std::vector<ComponentTemplate> m_components;

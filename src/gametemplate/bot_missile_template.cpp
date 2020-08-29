@@ -1,14 +1,18 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
+#include "opengl/bot_texture.h"
+#include "opengl/bot_color.h"
+#include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_missile_template.h"
 #include "app/bot_app.h"
 
 namespace bot {
 
-MissileTemplate* MissileTemplate::create(const rapidjson::Value& elem)
+MissileTemplate* MissileTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     MissileTemplate* t = new MissileTemplate();
-    if (!t->init(elem))
+    if (!t->init(m_textureLib, m_rectLib, m_particleEffectLib, m_colorLib, elem))
     {
         delete t;
         return nullptr;
@@ -30,7 +34,11 @@ MissileTemplate::MissileTemplate()
 
 }
 
-bool MissileTemplate::init(const rapidjson::Value& elem)
+bool MissileTemplate::init(const NamedMap<Texture>& textureLib, 
+                           const NamedMap<Rectangle>& rectLib,
+                           const NamedMap<ParticleEffectTemplate>& particleEffectLib, 
+                           const NamedMap<Color>& colorLib,
+                           const rapidjson::Value& elem)
 {
     std::string textureName;
     std::string rectName;
@@ -57,30 +65,28 @@ bool MissileTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
-
-    m_texture = lib.getTexture(textureName);
+    m_texture = textureLib.search(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Couldn't find texture %s", textureName.c_str());
         return false;
     }
 
-    m_rect = lib.getRect(rectName);
+    m_rect = rectLib.search(rectName);
     if (!m_rect)
     {
         LOG_ERROR("Couldn't find rect %s", rectName.c_str());
         return false;
     }
 
-    m_color = lib.getColor(colorName);
+    m_color = colorLib.search(colorName);
     if (!m_color)
     {
         LOG_ERROR("Coundn't find color %s", colorName.c_str());
         return false;
     }
 
-    m_explosionTemplate = lib.getParticleEffectTemplate(explosionEffectName);
+    m_explosionTemplate = particleEffectLib.search(explosionEffectName);
     if (!m_explosionTemplate)
     {
         LOG_ERROR("Couldn't find particle effect %s", explosionEffectName.c_str());

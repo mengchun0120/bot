@@ -247,7 +247,7 @@ bool App::initGameLib()
 {
     LOG_INFO("Initializing game template libraries");
 
-    bool success = m_gameLib.load();
+    bool success = m_gameLib.load(m_viewportSize[0], m_viewportSize[1], m_config);
 
     if (!success)
     {
