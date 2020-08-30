@@ -4,14 +4,6 @@
 
 namespace bot {
 
-std::shared_ptr<App> App::k_app;
-
-bool App::initInstance(const std::string& appDir, const std::string& cfgFile)
-{
-    k_app.reset(new App());
-    return k_app->init(appDir, cfgFile);
-}
-
 App::App()
     : m_window(nullptr)
 {
@@ -72,20 +64,24 @@ bool App::run()
     m_timeDeltaSmoother.start();    
     m_inputMgr.start();
 
-    while(glfwWindowShouldClose(m_window) == 0) {
+    while(glfwWindowShouldClose(m_window) == 0) 
+    {
         glClear(GL_COLOR_BUFFER_BIT);
         
-        if (!m_inputMgr.processInput(processor)) {
+        if (!m_inputMgr.processInput(processor)) 
+        {
             break;
         }
 
         delta = m_timeDeltaSmoother.getTimeDelta();
         ret = m_screenMgr.update(delta);
-        if (ret == 2) {
+        if (ret == 2) 
+        {
             // the app should exit
             break;
         }
-        else if (ret == 1) {
+        else if (ret == 1) 
+        {
             // switched to another screen, clear input
             m_inputMgr.clear();
         }
@@ -142,7 +138,7 @@ bool App::initWindow()
 
 bool App::initInputManager()
 {
-    m_inputMgr.init(m_window, m_config.getEventQueueSize(), getViewportHeight());
+    m_inputMgr.init(m_window, m_config.getEventQueueSize(), m_viewportSize[1]);
 
     LOG_INFO("Done initializing input manager");
 
@@ -159,17 +155,9 @@ bool App::initOpenGL()
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    if (!m_simpleShaderProgram.init(m_config.getSimpleVertexShaderFile(), m_config.getSimpleFragShaderFile())) 
-    {
-        LOG_ERROR("Failed to init simple shader program");
-        return false;
-    }
-
-    if (!m_particleShaderProgram.init(m_config.getParticleVertexShaderFile(), m_config.getParticleFragShaderFile()))
-    {
-        LOG_ERROR("Failed to init particle shader program");
-        return false;
-    }
+    bool ret = m_graphics.init(m_config.getSimpleVertexShaderFile(), m_config.getSimpleFragShaderFile(),
+                               m_config.getParticleVertexShaderFile(), m_config.getParticleFragShaderFile(),
+                               m_config.getFontDir());
 
     updateViewport();
 
@@ -188,7 +176,7 @@ void App::updateViewport()
     m_viewportSize[0] = static_cast<float>(width);
     m_viewportSize[1] = static_cast<float>(height);
 
-    LOG_INFO("viewportWidth=%f viewportHeight=%f", getViewportWidth(), getViewportHeight());
+    LOG_INFO("viewportWidth=%f viewportHeight=%f", m_viewportSize[0], m_viewportSize[1]);
 }
 
 bool App::initGame()
@@ -201,17 +189,13 @@ bool App::initGame()
         return false;
     }
 
-    if (!initTextSystem())
-    {
-        LOG_ERROR("Failed to initialize text system");
-        return false;
-    }
-    
     if (!initGameLib())
     {
         LOG_ERROR("Failed to initialize game template lib");
         return false;
     }
+
+    m_screenMgr.init(&m_config, &m_gameLib, &m_graphics, m_viewportSize[0], m_viewportSize[1]);
 
     LOG_INFO("Done initializing game");
 
@@ -229,20 +213,6 @@ bool App::initTimeDeltaSmoother()
     return true;
 }
 
-bool App::initTextSystem()
-{
-    LOG_INFO("Initializing text system");
-
-    if (!m_textSystem.init(m_config.getFontDir()))
-    {
-        return false;
-    }
-
-    LOG_INFO("Done initializing text system");
-
-    return true;
-}
-
 bool App::initGameLib()
 {
     LOG_INFO("Initializing game template libraries");
@@ -253,8 +223,6 @@ bool App::initGameLib()
     {
         return false;
     }
-
-    m_screenMgr.init();
 
     LOG_INFO("Done initializing game template libraries");
 

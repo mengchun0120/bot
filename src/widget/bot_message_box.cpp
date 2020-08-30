@@ -1,41 +1,44 @@
 #include "input/bot_input_event.h"
+#include "opengl/bot_color.h"
+#include "opengl/bot_graphics.h"
+#include "widget/bot_message_box_config.h"
 #include "widget/bot_message_box.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
 MessageBox::MessageBox()
+    : m_cfg(nullptr)
 {
     m_msgPos[0] = 0.0f;
     m_msgPos[1] = 0.0f;
 }
 
-void MessageBox::init(Option opt, const std::string& msg)
+void MessageBox::init(const MessageBoxConfig* cfg, const ButtonConfig* buttonCfg, const TextSystem& textSys, 
+                      Option opt, const std::string& msg)
 {
-    const App& app = App::getInstance();
-    const TextSystem& textSys = app.getTextSystem();
-    const MessageBoxConfig& cfg = app.getGameLib().getMessageBoxConfig();
-    float boxWidth = cfg.getBoxRect()->width();
-    float boxX = cfg.getBoxLeft();
+    m_cfg = cfg;
+
+    float boxWidth = m_cfg->getBoxRect()->width();
+    float boxX = m_cfg->getBoxLeft();
     float textWidth, textHeight;
     
     m_msg = msg;
     textSys.getStringSize(textWidth, textHeight, TEXT_SIZE_BIG, m_msg);
     m_msgPos[0] = boxX + (boxWidth - textWidth) / 2.0f;
-    m_msgPos[1] = cfg.getBoxTop() - cfg.getMsgMarginY() - textHeight;
+    m_msgPos[1] = m_cfg->getBoxTop() - m_cfg->getMsgMarginY() - textHeight;
 
     int buttonCount = opt == OPTION_OK ? 1 : 2;
-    float buttonWidth = cfg.getButtonRect()->width();
-    float spacing = cfg.getButtonSpacing();
+    float buttonWidth = m_cfg->getButtonRect()->width();
+    float spacing = m_cfg->getButtonSpacing();
     float buttonX = boxX + (boxWidth - buttonCount * buttonWidth - (buttonCount - 1) * spacing) / 2.0f;
-    const std::vector<std::string>& texts = cfg.getButtonTexts();
+    const std::vector<std::string>& texts = m_cfg->getButtonTexts();
 
     m_buttons.init(buttonCount);
     for (int i = 0; i < buttonCount; ++i)
     {
         Button* button = new Button();
-        button->init(cfg.getButtonRect(), texts[i]);
-        button->setPos(buttonX, cfg.getButtonY());
+        button->init(buttonCfg, m_cfg->getButtonRect(), texts[i]);
+        button->setPos(textSys, buttonX, m_cfg->getButtonY());
         m_buttons.setWidget(i, button);
         buttonX += buttonWidth + spacing;
     }
@@ -63,15 +66,13 @@ int MessageBox::processInput(const InputEvent& e)
     return m_buttons.processInput(e);
 }
 
-void MessageBox::show()
+void MessageBox::show(Graphics& g)
 {
-    const App& app = App::getInstance();
-    const TextSystem& textSys = app.getTextSystem();
-    const MessageBoxConfig& cfg = app.getGameLib().getMessageBoxConfig();
-
-    cfg.getBoxRect()->draw(cfg.getBoxPos(), nullptr, cfg.getBoxFillColor(), cfg.getBoxBorderColor(), 0, nullptr);
-    textSys.drawString(m_msg, TEXT_SIZE_BIG, m_msgPos, cfg.getTextColor()->getColor());
-    m_buttons.present();
+    m_cfg->getBoxRect()->draw(g, m_cfg->getBoxPos(), nullptr, m_cfg->getBoxFillColor(), 
+                              m_cfg->getBoxBorderColor(), 0, nullptr);
+    g.getTextSystem().drawString(g.getSimpleShader(), m_msg, TEXT_SIZE_BIG, m_msgPos, 
+                                 m_cfg->getTextColor()->getColor());
+    m_buttons.present(g);
 }
 
 } // end of namespace bot

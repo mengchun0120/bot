@@ -1,21 +1,19 @@
 #include "misc/bot_log.h"
-#include "gameobj/bot_tile.h"
-#include "gameobj/bot_ai_robot.h"
 #include "gameobj/bot_player.h"
 #include "gameutil/bot_game_map.h"
+#include "gameutil/bot_game_lib.h"
 #include "gameutil/bot_game_object_manager.h"
-#include "app/bot_app.h"
+#include "app/bot_app_config.h"
 
 namespace bot {
 
-GameObjectManager::GameObjectManager(GameMap& map)
-	: m_map(map)
-    , m_player(nullptr)
+GameObjectManager::GameObjectManager()
+	: m_map(nullptr)
+	, m_lib(nullptr)
+	, m_player(nullptr)
     , m_goodieGenerator()
     , m_aiRobotCount(0)
 {
-    const AppConfig& cfg = App::getInstance().getConfig();
-    m_missilePool.init(cfg.getMissilePoolSize());
 }
 
 GameObjectManager::~GameObjectManager()
@@ -25,10 +23,17 @@ GameObjectManager::~GameObjectManager()
     delete m_player;
 }
 
+void GameObjectManager::init(GameMap* map, const AppConfig& cfg, const GameLib* lib)
+{
+	m_map = map;
+	m_lib = lib;
+	m_missilePool.init(cfg.getMissilePoolSize());
+	m_goodieGenerator.init(lib->getGoodieTemplateLib());
+}
+
 Tile* GameObjectManager::createTile(const std::string& tileName)
 {
-    const GameLib& lib = App::getInstance().getGameLib();
-	const TileTemplate* tileTemplate = lib.getTileTemplate(tileName);
+	const TileTemplate* tileTemplate = m_lib->getTileTemplate(tileName);
 	if (!tileTemplate)
 	{
 		LOG_ERROR("Failed to find tile template %s", tileName.c_str());
@@ -41,7 +46,6 @@ Tile* GameObjectManager::createTile(const std::string& tileName)
 Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate)
 {
 	Tile* tile = new Tile(tileTemplate);
-	LOG_INFO("add tile %p, %d", static_cast<GameObject*>(tile), tile->getFlags());
 	m_activeTiles.add(tile);
 
 	return tile;
@@ -50,8 +54,7 @@ Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate)
 AIRobot* GameObjectManager::createRobot(const std::string& robotName, float x, float y,
 						                float directionX, float directionY, Side side)
 {
-    const GameLib& lib = App::getInstance().getGameLib();
-	const AIRobotTemplate* aiRobotTemplate = lib.getAIRobotTemplate(robotName);
+	const AIRobotTemplate* aiRobotTemplate = m_lib->getAIRobotTemplate(robotName);
 	if (!aiRobotTemplate)
 	{
 		LOG_ERROR("Failed to find ai-robot template %s", robotName.c_str());
@@ -78,8 +81,7 @@ AIRobot* GameObjectManager::createRobot(const AIRobotTemplate* aiRobotTemplate, 
 Missile* GameObjectManager::createMissile(const std::string& missileName, Robot* shooter, float x, float y,
 								          float directionX, float directionY, Side side, float damageMultiplier)
 {
-    const GameLib& lib = App::getInstance().getGameLib();
-	const MissileTemplate* missileTemplate = lib.getMissileTemplate(missileName);
+	const MissileTemplate* missileTemplate = m_lib->getMissileTemplate(missileName);
 	if (!missileTemplate)
 	{
 		LOG_ERROR("Failed to find missile template %s", missileName.c_str());
@@ -117,8 +119,7 @@ ParticleEffect* GameObjectManager::createParticleEffect(const ParticleEffectTemp
 
 Player* GameObjectManager::createPlayer(float x, float y, float directionX, float directionY)
 {
-    const GameLib& lib = App::getInstance().getGameLib();
-	m_player = new Player(&lib.getPlayerTemplate());
+	m_player = new Player(&m_lib->getPlayerTemplate());
 	m_player->setPos(x, y);
 	m_player->setDirection(directionX, directionY);
 	m_player->setSide(SIDE_PLAYER);
@@ -133,8 +134,7 @@ Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
         return nullptr;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
-    const GoodieTemplate* t = lib.getGoodieTemplate(goodieIdx);
+    const GoodieTemplate* t = m_lib->getGoodieTemplateLib().getObjAt(goodieIdx);
     Goodie* goodie = new Goodie(t, x, y);
     m_activeGoodies.add(goodie);
 
@@ -244,7 +244,7 @@ void GameObjectManager::onRobotDeath(Robot* robot)
     Goodie* goodie = createGoodie(robot->getGoodieSpawnProb(), robot->getPosX(), robot->getPosY());
     if (goodie)
     {
-        m_map.addObject(goodie);
+        m_map->addObject(goodie);
     }
 }
 

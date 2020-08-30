@@ -6,7 +6,10 @@
 namespace bot {
 
 ScreenManager::ScreenManager()
-    : m_curScreenType(SCREEN_NONE)
+    : m_lib(nullptr)
+    , m_cfg(nullptr)
+    , m_graphics(nullptr)
+    , m_curScreenType(SCREEN_NONE)
     , m_prevScreen(nullptr)
     , m_curScreen(nullptr)
 {
@@ -26,10 +29,18 @@ ScreenManager::~ScreenManager()
     }
 }
 
-void ScreenManager::init()
+void ScreenManager::init(const AppConfig* cfg, const GameLib* lib, Graphics* g,
+                         float viewportWidth, float viewportHeight)
 {
-    m_curScreen = new StartScreen();
-    m_curScreen->init();
+    m_lib = lib;
+    m_cfg = cfg;
+    m_graphics = g;
+    m_viewportSize[0] = viewportWidth;
+    m_viewportSize[1] = viewportHeight;
+
+    StartScreen* s = new StartScreen();
+    s->init(m_lib, viewportWidth, viewportHeight, this, g);
+    m_curScreen = s;
     m_curScreenType = SCREEN_START;
 }
 
@@ -75,17 +86,25 @@ void ScreenManager::switchScreen(ScreenType type)
     switch (type) 
     {
         case SCREEN_START:
-            screen = new StartScreen();
+        {
+            StartScreen* s = new StartScreen();
+            s->init(m_lib, m_viewportSize[0], m_viewportSize[1], this, m_graphics);
+            screen = s;
             break;
-        case SCREEN_GAME:
-            screen = new GameScreen();
+        }
+        case SCREEN_GAME: {
+            LOG_INFO("Show game screen")
+            GameScreen* s = new GameScreen();
+            s->init(*m_cfg, m_lib, m_graphics, this, m_viewportSize[0], m_viewportSize[1]);
+            LOG_INFO("Done loading game screen");
+            screen = s;
             break;
+        }
     }
 
     m_prevScreen = m_curScreen;
     m_curScreen = screen;
     m_curScreenType = type;
-    m_curScreen->init();
 
     LOG_INFO("Done switching screen");
 }

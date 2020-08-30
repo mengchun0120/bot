@@ -7,7 +7,6 @@
 
 namespace bot {
 
-class ShaderProgram;
 class GameScreen;
 
 class ParticleEffect: public GameObject {
@@ -26,7 +25,7 @@ public:
         return static_cast<const ParticleEffectTemplate*>(m_template);
     }
 
-    virtual void present();
+    virtual void present(Graphics& g);
 
     virtual void update(float delta, GameScreen& screen);
 

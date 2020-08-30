@@ -6,7 +6,8 @@
 
 namespace bot {
 
-class Goodie;
+template <typename T> class NamedMap;
+class GoodieTemplate;
 
 class GoodieGenerator {
 public:
@@ -15,7 +16,7 @@ public:
     ~GoodieGenerator()
     {}
 
-    void init();
+    void init(const NamedMap<GoodieTemplate>& goodieLib);
 
     int generate(float prob);
 

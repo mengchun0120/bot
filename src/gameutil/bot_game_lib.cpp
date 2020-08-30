@@ -70,7 +70,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done loading progress ring library from %s", cfg.getProgressRingLib().c_str());
 
-    if (!parseVector(m_goodieTemplateLib, cfg.getGoodieTemplateLib().c_str()))
+    GoodieTemplate::Parser goodieParser(m_rectLib, m_textureLib, m_colorLib, m_progressRingLib);
+    if (!m_goodieTemplateLib.load(cfg.getGoodieTemplateLib().c_str(), goodieParser))
     {
         LOG_ERROR("Failed to read goodie template lib from %s", cfg.getGoodieTemplateLib().c_str());
         return false;

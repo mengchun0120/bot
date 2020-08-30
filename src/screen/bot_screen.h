@@ -3,6 +3,7 @@
 
 namespace bot {
 
+class App;
 struct InputEvent;
 
 class Screen {
@@ -12,8 +13,6 @@ public:
 
     virtual ~Screen()
     {}
-
-    virtual bool init() = 0;
 
     // Returns 0 when the screen has been updated;
     // 1 when switched to another screen;

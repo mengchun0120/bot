@@ -9,9 +9,9 @@ AIRobot::AIRobot(const AIRobotTemplate* t)
 {
 }
 
-void AIRobot::present()
+void AIRobot::present(Graphics& g)
 {
-    Robot::present();
+    Robot::present(g);
 }
 
 void AIRobot::update(float delta, GameScreen& screen)

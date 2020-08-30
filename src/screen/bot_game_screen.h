@@ -13,7 +13,10 @@ namespace bot {
 struct MouseMoveEvent;
 struct MouseButtonEvent;
 struct KeyEvent;
-class App;
+class GameLib;
+class Graphics;
+class AppConfig;
+class ScreenManager;
 
 class GameScreen: public Screen {
 public:
@@ -21,9 +24,10 @@ public:
 
     virtual ~GameScreen();
 
-    virtual bool init();
+    virtual bool init(const AppConfig& cfg, const GameLib* lib, Graphics* g,
+                      ScreenManager* screenManager, float viewportWidth, float viewportHeight);
 
-    bool loadMap(const std::string& fileName);
+    bool loadMap(const std::string& fileName, const AppConfig& cfg);
 
     virtual int update(float delta);
 
@@ -78,9 +82,13 @@ private:
     int switchToStart();
 
 private:
+    const GameLib* m_lib;
+    Graphics* m_graphics;
+    ScreenManager* m_screenManager;
     GameMap m_map;
     GameObjectManager m_gameObjManager;
     GameState m_state;
+    float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
     float m_dashboardOrigin[Constants::NUM_FLOATS_PER_POSITION];
     Dashboard m_dashboard;
@@ -91,4 +99,3 @@ private:
 } // end of namespace bot
 
 #endif
-

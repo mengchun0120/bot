@@ -3,6 +3,8 @@
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_ai_robot.h"
 #include "gameobj/bot_player.h"
+#include "gameutil/bot_game_object_manager.h"
+#include "gameutil/bot_game_map.h"
 #include "gameutil/bot_game_map_loader.h"
 
 namespace bot {

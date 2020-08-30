@@ -32,10 +32,10 @@ Missile::~Missile()
 {
 }
 
-void Missile::present()
+void Missile::present(Graphics& g)
 {
 	const MissileTemplate* t = getTemplate();
-	t->getRect()->draw(m_pos, m_direction, nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
+	t->getRect()->draw(g, m_pos, m_direction, nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
 }
 
 void Missile::update(float delta, GameScreen& screen)

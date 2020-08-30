@@ -21,7 +21,19 @@
 #include "screen/bot_start_screen_config.h"
 
 namespace bot {
-    
+   
+template <typename T> class NamedMap;
+class Texture;
+class Color;
+class Rectangle;
+class TileTemplate;
+class MissileTemplate;
+class GoodieTemplate;
+class AI;
+class AIRobotTemplate;
+class ParticleEffectTemplate;
+class ProgressRing;
+class MapGenerator;
 class AppConfig;
 
 class GameLib {
@@ -84,14 +96,9 @@ public:
         return m_playerTemplate;
     }
 
-    const std::vector<GoodieTemplate>& getGoodieTemplateLib() const
+    const NamedMap<GoodieTemplate>& getGoodieTemplateLib() const
     {
         return m_goodieTemplateLib;
-    }
-
-    const GoodieTemplate* getGoodieTemplate(int goodieIdx) const
-    {
-        return &m_goodieTemplateLib[goodieIdx];
     }
 
     const ProgressRing* getProgressRing(const std::string& name) const
@@ -131,7 +138,7 @@ private:
     NamedMap<TileTemplate> m_tileTemplateLib;
     NamedMap<ParticleEffectTemplate> m_particleEffectTemplateLib;
     NamedMap<MissileTemplate> m_missileTemplateLib;
-    std::vector<GoodieTemplate> m_goodieTemplateLib;
+    NamedMap<GoodieTemplate> m_goodieTemplateLib;
     NamedMap<AI> m_aiLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;

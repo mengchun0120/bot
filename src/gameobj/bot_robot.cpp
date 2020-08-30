@@ -74,14 +74,14 @@ void Robot::initAbilities()
     }
 }
 
-void Robot::present()
+void Robot::present(Graphics& g)
 {
     const RobotTemplate* t = getTemplate();
     int count = static_cast<int>(m_components.size());
 
     for (int i = 0; i < count; ++i) {
         const RobotTemplate::ComponentTemplate& ct = t->getComponent(i);
-        ct.m_rect->draw(m_components[i].m_pos, m_direction, nullptr, nullptr, 
+        ct.m_rect->draw(g, m_components[i].m_pos, m_direction, nullptr, nullptr, 
                         ct.m_texture->textureId(), ct.m_color);
     }
 }

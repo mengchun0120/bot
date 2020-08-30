@@ -1,7 +1,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
+#include "opengl/bot_texture.h"
+#include "opengl/bot_color.h"
+#include "geometry/bot_rectangle.h"
+#include "gameobj/bot_progress_ring.h"
 #include "gametemplate/bot_goodie_template.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -39,10 +43,10 @@ GoodieType parseGoodieType(const std::string& typeName)
     return GOODIE_UNKNOWN;
 }
 
-GoodieTemplate* GoodieTemplate::create(const rapidjson::Value& elem)
+GoodieTemplate* GoodieTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     GoodieTemplate* t = new GoodieTemplate();
-    if (!t->init(elem))
+    if (!t->init(name, m_rectLib, m_textureLib, m_colorLib, m_ringLib, elem))
     {
         delete t;
         return nullptr;
@@ -50,13 +54,14 @@ GoodieTemplate* GoodieTemplate::create(const rapidjson::Value& elem)
     return t;
 }
 
-bool GoodieTemplate::init(const rapidjson::Value& elem)
+bool GoodieTemplate::init(const std::string& name, const NamedMap<Rectangle>& rectLib, 
+                          const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib, 
+                          const NamedMap<ProgressRing>& ringLib, const rapidjson::Value& elem)
 {
-    std::string textureName, rectName, effectRectName, typeName, ringName;
+    std::string textureName, rectName, effectRectName, ringName;
 
     std::vector<JsonParseParam> params =
     {
-        {&typeName,         "type",           JSONTYPE_STRING},
         {&textureName,      "texture",        JSONTYPE_STRING},
         {&rectName,         "rect",           JSONTYPE_STRING},
         {&effectRectName,   "effectRect",     JSONTYPE_STRING},
@@ -74,16 +79,14 @@ bool GoodieTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = App::getInstance().getGameLib();
-
-    m_texture = lib.getTexture(textureName);
+    m_texture = textureLib.search(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Failed to find texture %s", textureName.c_str());
         return false;
     }
 
-    m_rect = lib.getRect(rectName);
+    m_rect = rectLib.search(rectName);
     if (!m_rect)
     {
         LOG_ERROR("Failed to find rect %s", rectName.c_str());
@@ -93,7 +96,7 @@ bool GoodieTemplate::init(const rapidjson::Value& elem)
     m_effectRect = nullptr;
     if (!effectRectName.empty())
     {
-        m_effectRect = lib.getRect(effectRectName);
+        m_effectRect = rectLib.search(effectRectName);
         if (!m_effectRect)
         {
             LOG_ERROR("Failed to find effect rect %s", effectRectName.c_str());
@@ -101,17 +104,17 @@ bool GoodieTemplate::init(const rapidjson::Value& elem)
         }
     }
 
-    m_goodieType = parseGoodieType(typeName);
+    m_goodieType = parseGoodieType(name);
     if (m_goodieType == GOODIE_UNKNOWN)
     {
-        LOG_ERROR("Invalid goodie type: %s", typeName.c_str());
+        LOG_ERROR("Invalid goodie type: %s", name.c_str());
         return false;
     }
 
     m_ring = nullptr;
     if (!ringName.empty())
     {
-        m_ring = lib.getProgressRing(ringName);
+        m_ring = ringLib.search(ringName);
         if (!m_ring)
         {
             LOG_ERROR("Failed to find progress ring %s", ringName.c_str());

@@ -27,7 +27,7 @@ public:
 		return static_cast<const PlayerTemplate*>(m_template);
 	}
 
-	virtual void present();
+	virtual void present(Graphics& g);
 
 	virtual void update(float delta, GameScreen& screen);
 

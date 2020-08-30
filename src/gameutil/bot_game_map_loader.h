@@ -8,6 +8,9 @@
 
 namespace bot {
 
+class Map;
+class GameObjectManager;
+
 class GameMapLoader {
 public:
 	GameMapLoader(GameMap& map, GameObjectManager& gameObjManager, float mapPoolFactor)

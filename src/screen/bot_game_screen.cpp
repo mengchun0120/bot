@@ -3,20 +3,25 @@
 #include "misc/bot_file_utils.h"
 #include "misc/bot_math_utils.h"
 #include "input/bot_input_event.h"
+#include "opengl/bot_graphics.h"
 #include "gameobj/bot_game_object_type.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_player.h"
 #include "gameutil/bot_game_map_loader.h"
+#include "gameutil/bot_game_lib.h"
 #include "screen/bot_game_screen.h"
-#include "app/bot_app.h"
+#include "screen/bot_screen_manager.h"
+#include "app/bot_app_config.h"
 
 using namespace rapidjson;
 
 namespace bot {
 
 GameScreen::GameScreen()
-    : m_gameObjManager(m_map)
+    : m_lib(nullptr)
+    , m_graphics(nullptr)
+    , m_gameObjManager()
     , m_state(GAME_STATE_INIT)
     , m_msgBoxVisible(false)
 {
@@ -26,44 +31,49 @@ GameScreen::~GameScreen()
 {
 }
 
-bool GameScreen::init()
+bool GameScreen::init(const AppConfig& cfg, const GameLib* lib, Graphics* g,
+                      ScreenManager* screenManager, float viewportWidth, float viewportHeight)
 {
     LOG_INFO("Initializing GameScreen");
 
-    const App& app = App::getInstance();
+    m_lib = lib;
+    m_graphics = g;
+    m_viewportSize[0] = viewportWidth;
+    m_viewportSize[1] = viewportHeight;
+    m_screenManager = screenManager;
+    m_gameObjManager.init(&m_map, cfg, m_lib);
 
-    if (!loadMap(app.getConfig().getMapFile()))
+    if (!loadMap(cfg.getMapFile(), cfg))
     {
-        LOG_ERROR("Failed to load map from %s", app.getConfig().getMapFile().c_str());
+        LOG_ERROR("Failed to load map from %s", cfg.getMapFile().c_str());
         return false;
     }
 
-    m_dashboard.init(m_map.getPlayer());
+    m_dashboard.init(m_map.getPlayer(), &m_lib->getDashboardConfig(), m_viewportSize[1], 
+                     m_graphics->getTextSystem());
 
     LOG_INFO("Done loading dashboard");
 
-    m_dashboardOrigin[0] = app.getViewportWidth() / 2.0f;
-    m_dashboardOrigin[1] = app.getViewportHeight() / 2.0f;
+    m_dashboardOrigin[0] = viewportWidth / 2.0f;
+    m_dashboardOrigin[1] = viewportHeight / 2.0f;
 
     m_state = GAME_STATE_RUNNING;
 
     return true;
 }
 
-bool GameScreen::loadMap(const std::string& fileName)
+bool GameScreen::loadMap(const std::string& fileName, const AppConfig& cfg)
 {
     LOG_INFO("Loading map from %s", fileName.c_str());
 
-    const App& app = App::getInstance();
-
-    GameMapLoader mapLoader(m_map, m_gameObjManager, app.getConfig().getMapPoolFactor());
-    if (!mapLoader.load(fileName, app.getViewportWidth(), app.getViewportHeight()))
+    GameMapLoader mapLoader(m_map, m_gameObjManager, cfg.getMapPoolFactor());
+    if (!mapLoader.load(fileName, m_viewportSize[0], m_viewportSize[1]))
     {
         return false;
     }
 
-    float windowBreathX = app.getViewportWidth() / 2.0f;
-    float windowBreathY = app.getViewportHeight() / 2.0f;
+    float windowBreathX = m_viewportSize[0] / 2.0f;
+    float windowBreathY = m_viewportSize[1] / 2.0f;
 
     LOG_INFO("Done loading map");
 
@@ -98,7 +108,8 @@ int GameScreen::update(float delta)
         m_state = GAME_STATE_END;
         m_map.setPlayer(nullptr);
         m_msgBoxVisible = true;
-        m_msgBox.init(MessageBox::OPTION_OK, msg);
+        m_msgBox.init(&m_lib->getMessageBoxConfig(), &m_lib->getButtonConfig(), 
+                      m_graphics->getTextSystem(), MessageBox::OPTION_OK, msg);
         m_msgBox.setOKAction(std::bind(&GameScreen::switchToStart, this));
     }
 
@@ -109,11 +120,10 @@ int GameScreen::update(float delta)
 
 void GameScreen::present()
 {
-    App& app = App::getInstance();
-    SimpleShaderProgram& simpleShaderProgram = app.getSimpleShaderProgram();
+    SimpleShaderProgram& simpleShaderProgram = m_graphics->getSimpleShader();
 
     simpleShaderProgram.use();
-    simpleShaderProgram.setViewportSize(app.getViewportSize());
+    simpleShaderProgram.setViewportSize(m_viewportSize);
     simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
 
     static const GameObjectType LAYER_ORDER[] = {
@@ -145,7 +155,7 @@ void GameScreen::present()
                         continue;
                     }
 
-                    obj->present();
+                    obj->present(*m_graphics);
                     obj->setFlag(GAME_OBJ_FLAG_DRAWN);
                 }
             }
@@ -238,35 +248,33 @@ void GameScreen::updateEffects(float delta)
 
 void GameScreen::presentEffects()
 {
-    App& app = App::getInstance();
-    ParticleShaderProgram& program = app.getParticleShaderProgram();
+    ParticleShaderProgram& program = m_graphics->getParticleShader();
 
     program.use();
-    program.setViewportSize(app.getViewportSize());
+    program.setViewportSize(m_viewportSize);
     program.setViewportOrigin(m_map.getViewportPos());
 
     ParticleEffect* effect, * next;
     for (effect = m_gameObjManager.getFirstParticleEffect(); effect; effect = next)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
-        effect->present();
+        effect->present(*m_graphics);
     }
 }
 
 void GameScreen::presentOverlay()
 {
-    App& app = App::getInstance();
-    SimpleShaderProgram& program = app.getSimpleShaderProgram();
+    SimpleShaderProgram& program = m_graphics->getSimpleShader();
 
     program.use();
-    program.setViewportSize(app.getViewportSize());
+    program.setViewportSize(m_viewportSize);
     program.setViewportOrigin(m_dashboardOrigin);
 
-    m_dashboard.draw();
+    m_dashboard.draw(*m_graphics);
 
     if (m_msgBoxVisible)
     {
-        m_msgBox.show();
+        m_msgBox.show(*m_graphics);
     }
 }
 
@@ -336,8 +344,7 @@ void GameScreen::clearDeadObjects()
 
 int GameScreen::switchToStart()
 {
-    ScreenManager& screenMgr = App::getInstance().getScreenManager();
-    screenMgr.switchScreen(ScreenManager::SCREEN_START);
+    m_screenManager->switchScreen(ScreenManager::SCREEN_START);
     return 1;
 }
 

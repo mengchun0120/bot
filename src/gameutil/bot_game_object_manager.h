@@ -4,29 +4,29 @@
 #include <string>
 #include "structure/bot_double_linked_list.h"
 #include "structure/bot_object_pool.h"
+#include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_particle_effect.h"
 #include "gameobj/bot_goodie.h"
 #include "gameutil/bot_goodie_generator.h"
 #include "gameobj/bot_side.h"
+#include "gameobj/bot_ai_robot.h"
 
 namespace bot {
 
 class GameLib;
-class GameObject;
-class Tile;
 class Player;
-class TileTemplate;
-class MissileTemplate;
-class AIRobotTemplate;
-class AIRobot;
 class GameMap;
+class AppConfig;
+class GameLib;
 
 class GameObjectManager {
 public:
-	GameObjectManager(GameMap& map);
+	GameObjectManager();
 
 	~GameObjectManager();
+
+	void init(GameMap* map, const AppConfig& cfg, const GameLib* lib);
 
 	Tile* createTile(const std::string& tileName);
 
@@ -125,7 +125,8 @@ private:
     void onRobotDeath(Robot* robot);
 
 protected:
-    GameMap& m_map;
+    GameMap* m_map;
+	const GameLib* m_lib;
     GoodieGenerator m_goodieGenerator;
 	ObjectPool<Missile> m_missilePool;
 	ObjectPool<ParticleEffect> m_particleEffectPool;

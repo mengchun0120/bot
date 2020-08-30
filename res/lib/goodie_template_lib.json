@@ -1,6 +1,6 @@
 [
     {
-        "type": "gold",
+        "name": "gold",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 20.0,
@@ -13,7 +13,7 @@
         "weight": 10.0
     },
     {
-        "type": "health",
+        "name": "health",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 20.0,
@@ -26,7 +26,7 @@
         "weight": 10.0
     },
     {
-        "type": "indestructable",
+        "name": "indestructable",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 20.0,
@@ -39,7 +39,7 @@
         "weight": 10.0
     },
     {
-        "type": "double_experience",
+        "name": "double_experience",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 20.0,
@@ -52,7 +52,7 @@
         "weight": 10.0
     },
     {
-        "type": "quick_shooter",
+        "name": "quick_shooter",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 20.0,
@@ -65,7 +65,7 @@
         "weight": 10.0
     },
     {
-        "type": "quick_mover",
+        "name": "quick_mover",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 20.0,
@@ -78,7 +78,7 @@
         "weight": 10.0
     },
     {
-        "type": "double_damage",
+        "name": "double_damage",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 20.0,

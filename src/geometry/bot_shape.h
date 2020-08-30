@@ -5,7 +5,7 @@
 
 namespace bot {
 
-class SimpleShaderProgram;
+class Graphics;
 class Color;
 
 class Shape {
@@ -14,7 +14,7 @@ public:
 
     virtual ~Shape();
 
-    virtual void draw(const float* pos, const float* direction,
+    virtual void draw(Graphics& g, const float* pos, const float* direction,
                       const Color* fillColor, const Color* borderColor,
                       const unsigned int textureId, const Color* texColor) const = 0;
 

@@ -7,7 +7,11 @@
 
 namespace bot {
 
+class Graphics;
+class TextSystem;
 class Rectangle;
+class MessageBoxConfig;
+class ButtonConfig;
 struct InputEvent;
 
 class MessageBox {
@@ -27,17 +31,19 @@ public:
     ~MessageBox()
     {}
 
-    void init(Option opt, const std::string& msg);
+    void init(const MessageBoxConfig* cfg, const ButtonConfig* buttonCfg, const TextSystem& textSys,
+              Option opt, const std::string& msg);
 
     void setOKAction(const Button::ActionFunc& func);
 
     void setCancelAction(const Button::ActionFunc& func);
 
-    void show();
+    void show(Graphics& g);
 
     int processInput(const InputEvent& e);
 
 private:
+    const MessageBoxConfig* m_cfg;
     std::string m_msg;
     float m_msgPos[Constants::NUM_FLOATS_PER_POSITION];
     WidgetGroup m_buttons;

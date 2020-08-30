@@ -1,34 +1,45 @@
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
-#include "input/bot_input_event.h"
+#include "opengl/bot_graphics.h"
+#include "geometry/bot_rectangle.h"
+#include "gameutil/bot_game_lib.h"
 #include "widget/bot_button.h"
+#include "screen/bot_start_screen_config.h"
 #include "screen/bot_start_screen.h"
-#include "app/bot_app.h"
+#include "screen/bot_screen_manager.h"
 
 namespace bot {
 
 StartScreen::StartScreen()
+    : m_lib(nullptr)
+    , m_graphics(nullptr)
+    , m_screenManager(nullptr)
 {
-    const App& app = App::getInstance();
-    m_viewportOrigin[0] = app.getViewportWidth() / 2.0f;
-    m_viewportOrigin[1] = app.getViewportHeight() / 2.0f;
 }
 
 StartScreen::~StartScreen()
 {
 }
 
-bool StartScreen::init()
+bool StartScreen::init(const GameLib* lib, float viewportWidth, float viewportHeight, 
+                       ScreenManager* screenManager, Graphics* graphics)
 {
-    const App& app = App::getInstance();
-    const StartScreenConfig& cfg = app.getGameLib().getStartScreenConfig();
+    m_lib = lib;
+    m_graphics = graphics;
+    m_screenManager = screenManager;
+    m_viewportSize[0] = viewportWidth;
+    m_viewportSize[1] = viewportHeight;
+    m_viewportOrigin[0] = viewportWidth / 2.0f;
+    m_viewportOrigin[1] = viewportHeight / 2.0f;
+
+    const StartScreenConfig& cfg = m_lib->getStartScreenConfig();
     const Rectangle* rect = cfg.getButtonRect();
     float spacing = cfg.getButtonSpacing();
     const std::vector<std::string>& buttonTexts = cfg.getButtonTexts();
 
     int n = static_cast<int>(buttonTexts.size());
-    float x = (app.getViewportWidth() - rect->width()) / 2.0f;
-    float y = (app.getViewportHeight() + n * rect->height() + (n - 1) * spacing) / 2.0f;
+    float x = (viewportWidth - rect->width()) / 2.0f;
+    float y = (viewportHeight + n * rect->height() + (n - 1) * spacing) / 2.0f;
     float deltaY = rect->height() + spacing;
     
     std::vector<Button::ActionFunc> funcs = {
@@ -41,12 +52,12 @@ bool StartScreen::init()
     m_buttons.init(n);
     for (int i = 0; i < n; ++i, y -= deltaY) {
         Button* button = new Button();
-        if (!button->init(rect, buttonTexts[i]))
+        if (!button->init(&m_lib->getButtonConfig(), rect, buttonTexts[i]))
         {
             LOG_ERROR("Failed to initialize start game button");
             return false;
         }
-        button->setPos(x, y);
+        button->setPos(m_graphics->getTextSystem(), x, y);
         button->setActionFunc(funcs[i]);
         m_buttons.setWidget(i, button);
     }
@@ -61,14 +72,13 @@ int StartScreen::update(float delta)
 
 void StartScreen::present()
 {
-    App& app = App::getInstance();
-    SimpleShaderProgram& program = app.getSimpleShaderProgram();
+    SimpleShaderProgram& program = m_graphics->getSimpleShader();
 
     program.use();
-    program.setViewportSize(app.getViewportSize());
+    program.setViewportSize(m_viewportSize);
     program.setViewportOrigin(m_viewportOrigin);
 
-    m_buttons.present();
+    m_buttons.present(*m_graphics);
 }
 
 int StartScreen::processInput(const InputEvent& e)
@@ -78,8 +88,7 @@ int StartScreen::processInput(const InputEvent& e)
 
 int StartScreen::startGame()
 {
-    ScreenManager& screenMgr = App::getInstance().getScreenManager();
-    screenMgr.switchScreen(ScreenManager::SCREEN_GAME);
+    m_screenManager->switchScreen(ScreenManager::SCREEN_GAME);
     return 1;
 }
 

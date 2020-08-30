@@ -195,6 +195,7 @@
     <ClCompile Include="src\misc\bot_math_utils.cpp" />
     <ClCompile Include="src\misc\bot_string_utils.cpp" />
     <ClCompile Include="src\opengl\bot_color.cpp" />
+    <ClCompile Include="src\opengl\bot_graphics.cpp" />
     <ClCompile Include="src\opengl\bot_particle_shader_program.cpp" />
     <ClCompile Include="src\opengl\bot_shader_program.cpp" />
     <ClCompile Include="src\opengl\bot_simple_shader_program.cpp" />
@@ -431,6 +432,7 @@
     <ClInclude Include="src\misc\bot_string_utils.h" />
     <ClInclude Include="src\misc\bot_time_utils.h" />
     <ClInclude Include="src\opengl\bot_color.h" />
+    <ClInclude Include="src\opengl\bot_graphics.h" />
     <ClInclude Include="src\opengl\bot_opengl.h" />
     <ClInclude Include="src\opengl\bot_particle_shader_program.h" />
     <ClInclude Include="src\opengl\bot_shader_program.h" />

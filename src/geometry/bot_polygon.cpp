@@ -1,6 +1,6 @@
 #include "opengl/bot_color.h"
+#include "opengl/bot_graphics.h"
 #include "geometry/bot_polygon.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -25,11 +25,11 @@ bool Polygon::init(const float *vertices, unsigned int numVertices, bool hasTexC
     return m_vertexArray.load(vertices, numVertices, vertexSize, stride);
 }
 
-void Polygon::draw(const float* pos, const float* direction,
+void Polygon::draw(Graphics& g, const float* pos, const float* direction,
                    const Color* fillColor, const Color* borderColor,
                    const unsigned int textureId, const Color* texColor) const
 {
-    SimpleShaderProgram& program = App::getInstance().getSimpleShaderProgram();
+    SimpleShaderProgram& program = g.getSimpleShader();
 
     if (pos) 
     {

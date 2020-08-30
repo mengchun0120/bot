@@ -1,6 +1,7 @@
 #include "misc/bot_log.h"
+#include "structure/bot_named_map.h"
+#include "gametemplate/bot_goodie_template.h"
 #include "gameutil/bot_goodie_generator.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -8,21 +9,18 @@ GoodieGenerator::GoodieGenerator()
     : m_generator(std::random_device()())
     , m_distribution(0.0, 1.0)
 {
-    init();
 }
 
-void GoodieGenerator::init()
+void GoodieGenerator::init(const NamedMap<GoodieTemplate>& goodieLib)
 {
-    const GameLib& lib = App::getInstance().getGameLib();
-    const std::vector<GoodieTemplate>& goodieTemplateLib = lib.getGoodieTemplateLib();
-    int count = static_cast<int>(goodieTemplateLib.size());
+    int count = static_cast<int>(goodieLib.getNumObjs());
 
     m_maxGoodieIdx = count - 1;
     m_totalWeight = 0.0;
     m_weightSums.resize(count);
     for (int i = 0; i <= m_maxGoodieIdx; ++i)
     {
-        m_totalWeight += goodieTemplateLib[i].getWeight();
+        m_totalWeight += goodieLib.getObjAt(i)->getWeight();
         m_weightSums[i] = m_totalWeight;
     }
 }

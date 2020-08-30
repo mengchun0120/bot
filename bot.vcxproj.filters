@@ -272,6 +272,9 @@
     <ClCompile Include="src\gameutil\bot_generated_map.cpp">
       <Filter>Source Files\gameutil</Filter>
     </ClCompile>
+    <ClCompile Include="src\opengl\bot_graphics.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\glsl\simple_frag_shader.glsl">
@@ -996,6 +999,9 @@
     </ClInclude>
     <ClInclude Include="src\gameutil\bot_generated_map.h">
       <Filter>Source Files\gameutil</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\bot_graphics.h">
+      <Filter>Source Files\opengl</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

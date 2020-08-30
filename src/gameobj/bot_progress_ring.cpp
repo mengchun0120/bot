@@ -4,8 +4,8 @@
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
 #include "opengl/bot_color.h"
+#include "opengl/bot_graphics.h"
 #include "gameobj/bot_progress_ring.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -99,9 +99,9 @@ bool ProgressRing::init(const Color* frontColor, const Color* backColor, float r
     return ret;
 }
 
-void ProgressRing::draw(const float* pos, float percentage) const
+void ProgressRing::draw(Graphics& g, const float* pos, float percentage) const
 {
-    SimpleShaderProgram& program = App::getInstance().getSimpleShaderProgram();
+    SimpleShaderProgram& program = g.getSimpleShader();
 
     program.setUseObjRef(true);
     program.setObjRef(pos);

@@ -37,7 +37,7 @@ public:
 
     bool init(const Color* frontColor, const Color* backColor, float radius, int numEdges);
 
-    void draw(const float* pos, float percentage) const;
+    void draw(Graphics& g, const float* pos, float percentage) const;
 
 private:
     const Color* m_frontColor;

@@ -9,6 +9,7 @@ struct KeyEvent;
 struct MouseMoveEvent;
 struct MouseButtonEvent;
 class Rectangle;
+class Graphics;
 
 class Widget {
 public:
@@ -27,7 +28,7 @@ public:
 
     virtual void setPos(float x, float y);
 
-    virtual void present() = 0;
+    virtual void present(Graphics& g) = 0;
 
     virtual void onLostFocus() = 0;
 

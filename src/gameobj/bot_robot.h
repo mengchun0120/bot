@@ -25,7 +25,7 @@ public:
 
 	virtual ~Robot();
 
-    virtual void present();
+    virtual void present(Graphics& g);
 
 	void shiftPos(float deltaX, float deltaY);
 

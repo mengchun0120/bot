@@ -1,8 +1,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
 #include "geometry/bot_rectangle.h"
+#include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_text_system.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -86,11 +86,9 @@ bool TextSystem::init(const std::string& fontFolder)
     return true;
 }
 
-void TextSystem::drawString(const char* str,
+void TextSystem::drawString(SimpleShaderProgram& program, const char* str,
                             TextSize size, const float* pos, const float* color) const
 {
-    SimpleShaderProgram& program = App::getInstance().getSimpleShaderProgram();
-
     if (str[0] == '\0')
     {
         return;

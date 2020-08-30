@@ -4,7 +4,6 @@
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
 #include "gameobj/bot_tile.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -20,14 +19,14 @@ Tile::Tile(const TileTemplate* tileTemplate)
 Tile::~Tile()
 {}
 
-void Tile::present()
+void Tile::present(Graphics& g)
 {
 	const TileTemplate* t = static_cast<const TileTemplate*>(m_template);
 	const Rectangle* rect = t->getRect();
 	const Texture* texture = t->getTexture();
 	const Color* color = t->getColor();
 
-	rect->draw(m_pos, nullptr, nullptr, nullptr, texture->textureId(), color);
+	rect->draw(g, m_pos, nullptr, nullptr, nullptr, texture->textureId(), color);
 }
 
 void Tile::update(float delta, GameScreen& screen)

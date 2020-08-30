@@ -23,7 +23,7 @@ public:
         return getTemplate()->getGoodieType();
     }
 
-    virtual void present();
+    virtual void present(Graphics& g);
 
     virtual void update(float delta, GameScreen& screen)
     {}

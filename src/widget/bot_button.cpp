@@ -1,30 +1,31 @@
-#include "input/bot_input_event.h"
+#include "opengl/bot_opengl.h"
 #include "opengl/bot_color.h"
+#include "opengl/bot_graphics.h"
+#include "input/bot_input_event.h"
+#include "widget/bot_button_config.h"
 #include "widget/bot_button.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
 Button::Button()
+    : m_cfg(nullptr)
+    , m_textColor(nullptr)
 {
-    const ButtonConfig& cfg = App::getInstance().getGameLib().getButtonConfig();
-    m_textColor = cfg.getNormalTextColor();
     m_textPos[0] = 0.0f;
     m_textPos[1] = 0.0f;
 }
 
-bool Button::init(const Rectangle* rect, const std::string& text)
+bool Button::init(const ButtonConfig* cfg, const Rectangle* rect, const std::string& text)
 {
     Widget::init(rect);
+    m_cfg = cfg;
     m_text = text;
 
     return true;
 }
 
-void Button::setPos(float x, float y)
+void Button::setPos(const TextSystem& textSys, float x, float y)
 {
-    const TextSystem& textSys = App::getInstance().getTextSystem();
-
     Widget::setPos(x, y);
 
     float textWidth, textHeight;
@@ -36,8 +37,7 @@ void Button::setPos(float x, float y)
 
 int Button::processMouseMoveEvent(const MouseMoveEvent& event)
 {
-    const ButtonConfig& cfg = App::getInstance().getGameLib().getButtonConfig();
-    m_textColor = cfg.getHoverTextColor();
+    m_textColor = m_cfg->getHoverTextColor();
     return 0;
 }
 
@@ -47,8 +47,7 @@ int Button::processMouseButtonEvent(const MouseButtonEvent& event)
     {
         if (event.m_action == GLFW_PRESS)
         {
-            const ButtonConfig& cfg = App::getInstance().getGameLib().getButtonConfig();
-            m_textColor = cfg.getPressTextColor();
+            m_textColor = m_cfg->getPressTextColor();
         }
         else if (event.m_action == GLFW_RELEASE && m_actionFunc)
         {
@@ -61,24 +60,18 @@ int Button::processMouseButtonEvent(const MouseButtonEvent& event)
 
 void Button::onMouseOut()
 {
-    const ButtonConfig& cfg = App::getInstance().getGameLib().getButtonConfig();
-    m_textColor = cfg.getNormalTextColor();
+    m_textColor = m_cfg->getNormalTextColor();
 }
 
-void Button::present()
+void Button::present(Graphics& g)
 {
     if (!m_visible)
     {
         return;
     }
 
-    App& app = App::getInstance();
-    SimpleShaderProgram& program = app.getSimpleShaderProgram();
-    const TextSystem& textSys = app.getTextSystem();
-    const ButtonConfig& cfg = app.getGameLib().getButtonConfig();
-
-    m_rect->draw(m_pos, nullptr, nullptr, nullptr, cfg.getTexture()->textureId(), nullptr);
-    textSys.drawString(m_text, TEXT_SIZE_BIG, m_textPos, m_textColor->getColor());
+    m_rect->draw(g, m_pos, nullptr, nullptr, nullptr, m_cfg->getTexture()->textureId(), nullptr);
+    g.getTextSystem().drawString(g.getSimpleShader(), m_text, TEXT_SIZE_BIG, m_textPos, m_textColor->getColor());
 }
 
 } // end of namespace bot

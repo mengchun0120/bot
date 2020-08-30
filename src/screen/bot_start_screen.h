@@ -8,13 +8,18 @@
 
 namespace bot {
 
+class Graphics;
+class GameLib;
+class ScreenManager;
+
 class StartScreen: public Screen {
 public:
     StartScreen();
 
     virtual ~StartScreen();
 
-    virtual bool init();
+    virtual bool init(const GameLib* lib, float viewportWidth, float viewportHeight,
+                      ScreenManager* screenManager, Graphics* graphics);
 
     virtual int update(float delta);
 
@@ -40,6 +45,10 @@ private:
         NUM_BUTTONS
     };
 
+    const GameLib* m_lib;
+    Graphics* m_graphics;
+    ScreenManager* m_screenManager;
+    float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
     WidgetGroup m_buttons;
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
 };
